@@ -49,7 +49,7 @@ body {
     justify-content: flex-start;
     align-items: center;
 
-    padding: 85px 20px 30px;
+    padding: 120px 20px 30px;
 }
 
 .portrait {
@@ -269,6 +269,7 @@ h1 {
 
 .photos-section .button-row {
     justify-content: center;
+
     width: 100%;
 }
 
@@ -384,6 +385,7 @@ h1 {
 }
 
 @keyframes arrowBounce {
+
     0%,
     100% {
         transform: translateY(0);
@@ -392,6 +394,7 @@ h1 {
     50% {
         transform: translateY(4px);
     }
+
 }
 
 
@@ -413,7 +416,7 @@ h1 {
     .hero {
         min-height: 80vh;
 
-        padding-top: 70px;
+        padding-top: 100px;
 
         padding-bottom: 20px;
     }
@@ -478,6 +481,7 @@ h1 {
     .page-end {
         height: 260px;
     }
+
 }
 
 

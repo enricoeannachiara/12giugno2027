@@ -108,16 +108,27 @@ h1 {
 
 
 /* -------------------------------- */
-/* SEZIONE ANDIAMO */
+/* SEZIONI */
 /* -------------------------------- */
 
-.locations {
+.locations,
+.photos-section {
 
     width: min(100% - 32px, 700px);
 
     margin: 0 auto;
 
-    padding: 80px 0 140px;
+}
+
+.locations {
+
+    padding: 80px 0 80px;
+
+}
+
+.photos-section {
+
+    padding: 40px 0 140px;
 
 }
 
@@ -155,16 +166,21 @@ h1 {
 
 }
 
+.section-emoji {
+
+    font-size: 2rem;
+
+    line-height: 1;
+
+}
+
 
 /* -------------------------------- */
-/* CARD */
+/* CARD LOCATION */
 /* -------------------------------- */
 
-.location-card {
-
-    margin: 0 0 28px;
-
-    padding: 34px 22px 26px;
+.location-card,
+.photo-card {
 
     background: var(--card);
 
@@ -179,6 +195,14 @@ h1 {
     backdrop-filter: blur(18px);
 
     -webkit-backdrop-filter: blur(18px);
+
+}
+
+.location-card {
+
+    margin: 0 0 28px;
+
+    padding: 34px 22px 26px;
 
 }
 
@@ -221,7 +245,9 @@ h1 {
 
 }
 
-.nav-button {
+.nav-button,
+.album-button,
+.copy-button {
 
     display: inline-flex;
 
@@ -229,11 +255,7 @@ h1 {
 
     align-items: center;
 
-    min-width: 150px;
-
     min-height: 48px;
-
-    padding: 13px 22px;
 
     border-radius: 999px;
 
@@ -249,6 +271,14 @@ h1 {
         transform 0.15s ease,
         box-shadow 0.15s ease,
         background 0.15s ease;
+
+}
+
+.nav-button {
+
+    min-width: 150px;
+
+    padding: 13px 22px;
 
 }
 
@@ -268,7 +298,9 @@ h1 {
 
 }
 
-.nav-button:hover {
+.nav-button:hover,
+.album-button:hover,
+.copy-button:hover {
 
     transform: translateY(-2px);
 
@@ -276,7 +308,9 @@ h1 {
 
 }
 
-.nav-button:active {
+.nav-button:active,
+.album-button:active,
+.copy-button:active {
 
     transform: scale(0.97);
 
@@ -291,6 +325,117 @@ h1 {
 .waze:hover {
 
     background: #E6E0EF;
+
+}
+
+
+/* -------------------------------- */
+/* FOTO */
+/* -------------------------------- */
+
+.photo-card {
+
+    padding: 34px 24px;
+
+}
+
+.photo-intro {
+
+    max-width: 500px;
+
+    margin: 0 auto 28px;
+
+    color: #5d5752;
+
+    font-size: 1.08rem;
+
+    line-height: 1.7;
+
+}
+
+.album-button {
+
+    padding: 14px 28px;
+
+    background: var(--lilac);
+
+    color: white;
+
+}
+
+.album-button:hover {
+
+    background: var(--lilac-dark);
+
+}
+
+.access-code-box {
+
+    margin-top: 30px;
+
+    padding: 22px;
+
+    background: rgba(250, 247, 242, 0.85);
+
+    border-radius: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+.access-label {
+
+    color: var(--muted);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 0.82rem;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+
+}
+
+#accessCode {
+
+    font-family: "Courier New", monospace;
+
+    font-size: 1.25rem;
+
+    letter-spacing: 1.5px;
+
+}
+
+.copy-button {
+
+    border: 0;
+
+    padding: 12px 20px;
+
+    cursor: pointer;
+
+    background: #F0EDF6;
+
+    color: #514A59;
+
+}
+
+.copy-message {
+
+    min-height: 18px;
+
+    color: var(--muted);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 0.82rem;
 
 }
 
@@ -397,19 +542,29 @@ h1 {
 
     }
 
-    .locations {
+    .locations,
+    .photos-section {
 
         width: calc(100% - 28px);
 
+    }
+
+    .locations {
+
         padding-top: 65px;
+
+    }
+
+    .location-card,
+    .photo-card {
+
+        border-radius: 24px;
 
     }
 
     .location-card {
 
         padding: 30px 18px 22px;
-
-        border-radius: 24px;
 
     }
 

@@ -1,9 +1,14 @@
+/* ---------- STILE GENERALE ---------- */
+
 body{
     margin:0;
-    background:#faf7f2;
-    color:#3e3a39;
-    font-family:Georgia,serif;
+    background:#FAF7F2;
+    color:#3E3A39;
+    font-family:Georgia, serif;
 }
+
+
+/* ---------- HOMEPAGE ---------- */
 
 .hero{
 
@@ -12,26 +17,35 @@ body{
     display:flex;
     flex-direction:column;
 
-    justify-content:center;
     align-items:center;
 
-    padding:40px 20px;
+    justify-content:flex-start;
+
+    padding:60px 20px 40px;
 
     box-sizing:border-box;
 
 }
 
+
+/* ---------- RITRATTO ---------- */
+
 .portrait{
 
-    width:min(92vw,620px);
+    width:min(60vw,380px);
 
-    margin-bottom:30px;
+    height:auto;
+
+    margin-bottom:28px;
 
     user-select:none;
 
     pointer-events:none;
 
 }
+
+
+/* ---------- TITOLO ---------- */
 
 h1{
 
@@ -41,13 +55,18 @@ h1{
 
     font-weight:400;
 
+    line-height:1.1;
+
 }
+
+
+/* ---------- DATA ---------- */
 
 .data{
 
     margin-top:18px;
 
-    font-size:clamp(1rem,2vw,1.4rem);
+    font-size:clamp(1rem,2vw,1.35rem);
 
     letter-spacing:4px;
 

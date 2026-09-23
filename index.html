@@ -2,14 +2,12 @@
 <html lang="it">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Enrico & Annachiara</title>
 
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
@@ -18,7 +16,11 @@
 
     <section class="hero">
 
-        <img src="images/ritratto.png" alt="Enrico e Annachiara" class="portrait">
+        <img
+            src="images/ritratto.png"
+            alt="Enrico e Annachiara"
+            class="portrait"
+        >
 
         <h1>Enrico & Annachiara</h1>
 
@@ -26,76 +28,172 @@
             12 giugno 2027
         </p>
 
-        <div class="scroll">
-            <span>↓</span>
-            Scorri
-        </div>
-
     </section>
 
-    <!-- DOVE -->
+
+    <!-- ANDIAMO -->
 
     <section class="locations">
 
-        <h2>📍 Dove</h2>
+        <div class="section-title">
 
-        <div class="location-card">
+            <img
+                src="images/pin.png"
+                alt=""
+                class="pin-icon"
+            >
+
+            <h2>Andiamo</h2>
+
+        </div>
+
+
+        <!-- CASA DELLO SPOSO -->
+
+        <article class="location-card">
+
+            <div class="location-emoji">🏠</div>
 
             <h3>Casa dello sposo</h3>
 
-            <a href="https://maps.app.goo.gl/kmqRrXZQPzqEgdiU8"
-                class="button"
-                target="_blank">
+            <div class="navigation-buttons">
 
-                🏠 Casa dello sposo
+                <a
+                    href="https://maps.app.goo.gl/kmqRrXZQPzqEgdiU8"
+                    class="nav-button maps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
 
-            </a>
+                <a
+                    href="https://waze.com/ul?ll=40.608131%2C14.978180&navigate=yes"
+                    class="nav-button waze"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
 
-        </div>
+            </div>
 
-        <div class="location-card">
+        </article>
+
+
+        <!-- CASA DELLA SPOSA -->
+
+        <article class="location-card">
+
+            <div class="location-emoji">🏠</div>
 
             <h3>Casa della sposa</h3>
 
-            <a href="https://maps.app.goo.gl/kNUKDeFUFzFnu2As5"
-                class="button"
-                target="_blank">
+            <div class="navigation-buttons">
 
-                🏠 Casa della sposa
+                <a
+                    href="https://maps.app.goo.gl/kNUKDeFUFzFnu2As5"
+                    class="nav-button maps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
 
-            </a>
+                <a
+                    href="https://waze.com/ul?ll=40.739052%2C14.755519&navigate=yes"
+                    class="nav-button waze"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
 
-        </div>
+            </div>
 
-        <div class="location-card">
+        </article>
 
-            <h3>Chiesa</h3>
 
-            <a href="https://maps.app.goo.gl/6omwCTy1Atd1c3Cb7"
-                class="button"
-                target="_blank">
+        <!-- CHIESA -->
 
-                ⛪ Chiesa
+        <article class="location-card">
 
-            </a>
+            <div class="location-emoji">⛪️</div>
 
-        </div>
+            <h3>Chiesa di San Martino Vescovo</h3>
 
-        <div class="location-card">
+            <div class="navigation-buttons">
 
-            <h3>Masseria</h3>
+                <a
+                    href="https://maps.app.goo.gl/6omwCTy1Atd1c3Cb7"
+                    class="nav-button maps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
 
-            <a href="https://maps.app.goo.gl/2apy9TeoYDG768eM7"
-                class="button"
-                target="_blank">
+                <a
+                    href="https://waze.com/ul?ll=40.761874%2C14.785191&navigate=yes"
+                    class="nav-button waze"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
 
-                🍽️ Masseria
+            </div>
 
-            </a>
+        </article>
 
-        </div>
+
+        <!-- MASSERIA -->
+
+        <article class="location-card">
+
+            <div class="location-emoji">🍽️</div>
+
+            <h3>Masseria La Morella</h3>
+
+            <div class="navigation-buttons">
+
+                <a
+                    href="https://maps.app.goo.gl/2apy9TeoYDG768eM7"
+                    class="nav-button maps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
+
+                <a
+                    href="https://waze.com/ul?ll=40.610224%2C14.942694&navigate=yes"
+                    class="nav-button waze"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
+
+            </div>
+
+        </article>
 
     </section>
+
+
+    <!-- SCRITTA SCORRI IN SOVRAIMPRESSIONE -->
+
+    <div class="scroll-indicator" id="scrollIndicator">
+
+        <span>Scorri</span>
+
+        <span class="scroll-arrow">↓</span>
+
+    </div>
+
+
+    <script src="script.js"></script>
 
 </body>
 

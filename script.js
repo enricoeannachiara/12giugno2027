@@ -18,7 +18,7 @@ function updateScrollIndicator() {
     const distanceFromBottom =
         pageHeight - scrollPosition;
 
-    if (distanceFromBottom < 80) {
+    if (distanceFromBottom < 90) {
 
         scrollIndicator.classList.add("hidden");
 
@@ -33,21 +33,25 @@ function updateScrollIndicator() {
 
 async function copyAccessCode() {
 
-    const code = accessCode.textContent.trim();
+    const code =
+        accessCode.textContent.trim();
 
     try {
 
         await navigator.clipboard.writeText(code);
 
-        copyMessage.textContent = "Codice copiato";
+        copyMessage.textContent =
+            "Codice copiato";
 
-        copyCodeButton.textContent = "Copiato ✓";
+        copyCodeButton.textContent =
+            "Copiato ✓";
 
         setTimeout(() => {
 
             copyMessage.textContent = "";
 
-            copyCodeButton.textContent = "Copia codice";
+            copyCodeButton.textContent =
+                "Copia codice";
 
         }, 1800);
 
@@ -61,10 +65,19 @@ async function copyAccessCode() {
 }
 
 
-window.addEventListener("scroll", updateScrollIndicator);
+window.addEventListener(
+    "scroll",
+    updateScrollIndicator
+);
 
-window.addEventListener("resize", updateScrollIndicator);
+window.addEventListener(
+    "resize",
+    updateScrollIndicator
+);
 
-copyCodeButton.addEventListener("click", copyAccessCode);
+copyCodeButton.addEventListener(
+    "click",
+    copyAccessCode
+);
 
 updateScrollIndicator();

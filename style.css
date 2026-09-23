@@ -1,23 +1,13 @@
-/* -------------------------------- */
-/* COLORI */
-/* -------------------------------- */
-
 :root {
-
     --background: #FAF7F2;
-
     --text: #3E3A39;
-
     --muted: #8A8178;
 
     --lilac: #A89CC8;
-
     --lilac-dark: #9181BB;
 
-    --card: rgba(255, 255, 255, 0.82);
-
+    --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
-
 }
 
 
@@ -34,7 +24,6 @@ html {
 }
 
 body {
-
     margin: 0;
 
     background: var(--background);
@@ -44,7 +33,6 @@ body {
     font-family: Georgia, serif;
 
     text-align: center;
-
 }
 
 
@@ -53,39 +41,30 @@ body {
 /* -------------------------------- */
 
 .hero {
-
-    min-height: 100vh;
+    min-height: 82vh;
 
     display: flex;
-
     flex-direction: column;
 
     justify-content: flex-start;
-
     align-items: center;
 
-    padding: 60px 20px 70px;
-
+    padding: 50px 20px 30px;
 }
 
 .portrait {
-
     width: min(60vw, 380px);
-
     height: auto;
 
     display: block;
 
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 
     user-select: none;
-
     pointer-events: none;
-
 }
 
 h1 {
-
     margin: 0;
 
     font-size: clamp(2.3rem, 5vw, 4rem);
@@ -93,17 +72,14 @@ h1 {
     line-height: 1.1;
 
     font-weight: 400;
-
 }
 
 .data {
-
     margin: 18px 0 0;
 
     font-size: clamp(1rem, 2vw, 1.35rem);
 
     letter-spacing: 4px;
-
 }
 
 
@@ -111,76 +87,59 @@ h1 {
 /* SEZIONI */
 /* -------------------------------- */
 
-.locations,
-.photos-section {
-
+.section {
     width: min(100% - 32px, 700px);
 
     margin: 0 auto;
 
-}
-
-.locations {
-
-    padding: 80px 0 80px;
-
+    padding: 45px 0 35px;
 }
 
 .photos-section {
-
-    padding: 40px 0 140px;
-
+    padding-bottom: 60px;
 }
 
 .section-title {
-
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 12px;
 
-    margin-bottom: 45px;
-
+    margin-bottom: 36px;
 }
 
 .section-title h2 {
-
     margin: 0;
 
     font-size: clamp(2rem, 5vw, 2.7rem);
 
     font-weight: 400;
-
 }
 
 .pin-icon {
-
     width: 32px;
-
     height: 42px;
 
     object-fit: contain;
-
 }
 
 .section-emoji {
-
     font-size: 2rem;
 
     line-height: 1;
-
 }
 
 
 /* -------------------------------- */
-/* CARD LOCATION */
+/* CARD */
 /* -------------------------------- */
 
-.location-card,
-.photo-card {
+.card {
+    margin: 0 0 28px;
+
+    padding: 32px 22px 26px;
 
     background: var(--card);
 
@@ -193,48 +152,45 @@ h1 {
         0 18px 40px rgba(0, 0, 0, 0.055);
 
     backdrop-filter: blur(18px);
-
     -webkit-backdrop-filter: blur(18px);
-
 }
 
-.location-card {
-
-    margin: 0 0 28px;
-
-    padding: 34px 22px 26px;
-
-}
-
-.location-emoji {
-
+.card-icon {
     margin-bottom: 16px;
 
     font-size: 3.2rem;
 
     line-height: 1;
-
 }
 
-.location-card h3 {
-
-    margin: 0 0 26px;
+.card h3 {
+    margin: 0 0 24px;
 
     font-size: clamp(1.4rem, 4vw, 1.75rem);
 
     line-height: 1.25;
 
     font-weight: 400;
+}
 
+.card-text {
+    max-width: 500px;
+
+    margin: 0 auto 24px;
+
+    color: #5D5752;
+
+    font-size: 1.05rem;
+
+    line-height: 1.65;
 }
 
 
 /* -------------------------------- */
-/* PULSANTI NAVIGAZIONE */
+/* PULSANTI */
 /* -------------------------------- */
 
-.navigation-buttons {
-
+.button-row {
     display: flex;
 
     justify-content: center;
@@ -242,24 +198,26 @@ h1 {
     gap: 12px;
 
     flex-wrap: wrap;
-
 }
 
-.nav-button,
-.album-button,
-.copy-button {
-
+.button {
     display: inline-flex;
 
     justify-content: center;
-
     align-items: center;
 
+    min-width: 150px;
     min-height: 48px;
+
+    padding: 13px 22px;
+
+    border: 0;
 
     border-radius: 999px;
 
     text-decoration: none;
+
+    cursor: pointer;
 
     font-family: Arial, sans-serif;
 
@@ -271,111 +229,49 @@ h1 {
         transform 0.15s ease,
         box-shadow 0.15s ease,
         background 0.15s ease;
-
 }
 
-.nav-button {
-
-    min-width: 150px;
-
-    padding: 13px 22px;
-
-}
-
-.maps {
-
-    background: var(--lilac);
-
-    color: white;
-
-}
-
-.waze {
-
-    background: #F0EDF6;
-
-    color: #514A59;
-
-}
-
-.nav-button:hover,
-.album-button:hover,
-.copy-button:hover {
-
+.button:hover {
     transform: translateY(-2px);
 
     box-shadow: 0 7px 18px rgba(0, 0, 0, 0.09);
-
 }
 
-.nav-button:active,
-.album-button:active,
-.copy-button:active {
-
+.button:active {
     transform: scale(0.97);
-
 }
 
-.maps:hover {
-
-    background: var(--lilac-dark);
-
-}
-
-.waze:hover {
-
-    background: #E6E0EF;
-
-}
-
-
-/* -------------------------------- */
-/* FOTO */
-/* -------------------------------- */
-
-.photo-card {
-
-    padding: 34px 24px;
-
-}
-
-.photo-intro {
-
-    max-width: 500px;
-
-    margin: 0 auto 28px;
-
-    color: #5d5752;
-
-    font-size: 1.08rem;
-
-    line-height: 1.7;
-
-}
-
-.album-button {
-
-    padding: 14px 28px;
-
+.button-primary {
     background: var(--lilac);
 
     color: white;
-
 }
 
-.album-button:hover {
-
+.button-primary:hover {
     background: var(--lilac-dark);
-
 }
 
-.access-code-box {
+.button-secondary {
+    background: #F0EDF6;
 
-    margin-top: 30px;
+    color: #514A59;
+}
 
-    padding: 22px;
+.button-secondary:hover {
+    background: #E6E0EF;
+}
 
-    background: rgba(250, 247, 242, 0.85);
+
+/* -------------------------------- */
+/* WEDSHOOTS */
+/* -------------------------------- */
+
+.access-box {
+    margin-top: 28px;
+
+    padding: 20px;
+
+    background: rgba(250, 247, 242, 0.9);
 
     border-radius: 20px;
 
@@ -386,49 +282,29 @@ h1 {
     align-items: center;
 
     gap: 12px;
-
 }
 
 .access-label {
-
     color: var(--muted);
 
     font-family: Arial, sans-serif;
 
-    font-size: 0.82rem;
+    font-size: 0.8rem;
 
     letter-spacing: 1.2px;
 
     text-transform: uppercase;
-
 }
 
 #accessCode {
-
     font-family: "Courier New", monospace;
 
     font-size: 1.25rem;
 
     letter-spacing: 1.5px;
-
-}
-
-.copy-button {
-
-    border: 0;
-
-    padding: 12px 20px;
-
-    cursor: pointer;
-
-    background: #F0EDF6;
-
-    color: #514A59;
-
 }
 
 .copy-message {
-
     min-height: 18px;
 
     color: var(--muted);
@@ -436,7 +312,6 @@ h1 {
     font-family: Arial, sans-serif;
 
     font-size: 0.82rem;
-
 }
 
 
@@ -445,11 +320,9 @@ h1 {
 /* -------------------------------- */
 
 .scroll-indicator {
-
     position: fixed;
 
     left: 50%;
-
     bottom: 18px;
 
     transform: translateX(-50%);
@@ -468,14 +341,13 @@ h1 {
 
     color: var(--muted);
 
-    background: rgba(250, 247, 242, 0.80);
+    background: rgba(250, 247, 242, 0.82);
 
     border: 1px solid rgba(70, 65, 60, 0.06);
 
     border-radius: 999px;
 
     backdrop-filter: blur(10px);
-
     -webkit-backdrop-filter: blur(10px);
 
     font-family: Arial, sans-serif;
@@ -489,29 +361,23 @@ h1 {
     transition:
         opacity 0.35s ease,
         transform 0.35s ease;
-
 }
 
 .scroll-indicator.hidden {
-
     opacity: 0;
 
     transform: translate(-50%, 14px);
-
 }
 
 .scroll-arrow {
-
     font-size: 1.15rem;
 
     line-height: 1;
 
     animation: arrowBounce 1.5s ease-in-out infinite;
-
 }
 
 @keyframes arrowBounce {
-
     0%,
     100% {
         transform: translateY(0);
@@ -520,7 +386,15 @@ h1 {
     50% {
         transform: translateY(4px);
     }
+}
 
+
+/* -------------------------------- */
+/* SPAZIO FINALE */
+/* -------------------------------- */
+
+.page-end {
+    height: 220px;
 }
 
 
@@ -531,45 +405,36 @@ h1 {
 @media (max-width: 600px) {
 
     .hero {
+        min-height: 78vh;
 
-        padding-top: 45px;
+        padding-top: 42px;
 
+        padding-bottom: 20px;
     }
 
     .portrait {
-
         width: min(72vw, 340px);
 
+        margin-bottom: 20px;
     }
 
-    .locations,
-    .photos-section {
-
+    .section {
         width: calc(100% - 28px);
 
+        padding-top: 40px;
     }
 
-    .locations {
-
-        padding-top: 65px;
-
+    .section-title {
+        margin-bottom: 30px;
     }
 
-    .location-card,
-    .photo-card {
-
-        border-radius: 24px;
-
-    }
-
-    .location-card {
-
+    .card {
         padding: 30px 18px 22px;
 
+        border-radius: 24px;
     }
 
-    .navigation-buttons {
-
+    .button-row {
         display: grid;
 
         grid-template-columns: 1fr 1fr;
@@ -577,21 +442,24 @@ h1 {
         width: 100%;
 
         gap: 10px;
-
     }
 
-    .nav-button {
-
+    .button {
         min-width: 0;
 
         width: 100%;
 
         padding-left: 10px;
-
         padding-right: 10px;
-
     }
 
+    .access-box {
+        margin-top: 24px;
+    }
+
+    .page-end {
+        height: 240px;
+    }
 }
 
 
@@ -601,10 +469,8 @@ h1 {
 
 @media (max-width: 370px) {
 
-    .navigation-buttons {
-
+    .button-row {
         grid-template-columns: 1fr;
-
     }
 
 }

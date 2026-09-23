@@ -1,23 +1,56 @@
-/* ----------------------------- */
-/* STILE GENERALE */
-/* ----------------------------- */
+/* -------------------------------- */
+/* COLORI */
+/* -------------------------------- */
+
+:root {
+
+    --background: #FAF7F2;
+
+    --text: #3E3A39;
+
+    --muted: #8A8178;
+
+    --lilac: #A89CC8;
+
+    --lilac-dark: #9181BB;
+
+    --card: rgba(255, 255, 255, 0.82);
+
+    --border: rgba(60, 55, 50, 0.08);
+
+}
+
+
+/* -------------------------------- */
+/* GENERALE */
+/* -------------------------------- */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
 
     margin: 0;
 
-    background: #FAF7F2;
+    background: var(--background);
 
-    color: #3E3A39;
+    color: var(--text);
 
     font-family: Georgia, serif;
+
+    text-align: center;
 
 }
 
 
-/* ----------------------------- */
+/* -------------------------------- */
 /* HERO */
-/* ----------------------------- */
+/* -------------------------------- */
 
 .hero {
 
@@ -31,9 +64,7 @@ body {
 
     align-items: center;
 
-    padding: 60px 20px 40px;
-
-    box-sizing: border-box;
+    padding: 60px 20px 70px;
 
 }
 
@@ -42,6 +73,8 @@ body {
     width: min(60vw, 380px);
 
     height: auto;
+
+    display: block;
 
     margin-bottom: 28px;
 
@@ -57,15 +90,15 @@ h1 {
 
     font-size: clamp(2.3rem, 5vw, 4rem);
 
-    font-weight: 400;
-
     line-height: 1.1;
+
+    font-weight: 400;
 
 }
 
 .data {
 
-    margin-top: 18px;
+    margin: 18px 0 0;
 
     font-size: clamp(1rem, 2vw, 1.35rem);
 
@@ -74,15 +107,209 @@ h1 {
 }
 
 
-/* ----------------------------- */
-/* SCROLL */
-/* ----------------------------- */
+/* -------------------------------- */
+/* SEZIONE ANDIAMO */
+/* -------------------------------- */
 
-.scroll {
+.locations {
 
-    margin-top: auto;
+    width: min(100% - 32px, 700px);
 
-    padding-top: 70px;
+    margin: 0 auto;
+
+    padding: 80px 0 140px;
+
+}
+
+.section-title {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 45px;
+
+}
+
+.section-title h2 {
+
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 2.7rem);
+
+    font-weight: 400;
+
+}
+
+.pin-icon {
+
+    width: 32px;
+
+    height: 42px;
+
+    object-fit: contain;
+
+}
+
+
+/* -------------------------------- */
+/* CARD */
+/* -------------------------------- */
+
+.location-card {
+
+    margin: 0 0 28px;
+
+    padding: 34px 22px 26px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.03),
+        0 18px 40px rgba(0, 0, 0, 0.055);
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
+
+}
+
+.location-emoji {
+
+    margin-bottom: 16px;
+
+    font-size: 3.2rem;
+
+    line-height: 1;
+
+}
+
+.location-card h3 {
+
+    margin: 0 0 26px;
+
+    font-size: clamp(1.4rem, 4vw, 1.75rem);
+
+    line-height: 1.25;
+
+    font-weight: 400;
+
+}
+
+
+/* -------------------------------- */
+/* PULSANTI NAVIGAZIONE */
+/* -------------------------------- */
+
+.navigation-buttons {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+}
+
+.nav-button {
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-width: 150px;
+
+    min-height: 48px;
+
+    padding: 13px 22px;
+
+    border-radius: 999px;
+
+    text-decoration: none;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+
+}
+
+.maps {
+
+    background: var(--lilac);
+
+    color: white;
+
+}
+
+.waze {
+
+    background: #F0EDF6;
+
+    color: #514A59;
+
+}
+
+.nav-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.09);
+
+}
+
+.nav-button:active {
+
+    transform: scale(0.97);
+
+}
+
+.maps:hover {
+
+    background: var(--lilac-dark);
+
+}
+
+.waze:hover {
+
+    background: #E6E0EF;
+
+}
+
+
+/* -------------------------------- */
+/* SCORRI IN SOVRAIMPRESSIONE */
+/* -------------------------------- */
+
+.scroll-indicator {
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 18px;
+
+    transform: translateX(-50%);
+
+    z-index: 1000;
 
     display: flex;
 
@@ -90,25 +317,55 @@ h1 {
 
     align-items: center;
 
-    gap: 6px;
+    gap: 3px;
 
-    color: #8a8178;
+    padding: 8px 16px;
 
-    font-size: .95rem;
+    color: var(--muted);
 
-    letter-spacing: 2px;
+    background: rgba(250, 247, 242, 0.80);
+
+    border: 1px solid rgba(70, 65, 60, 0.06);
+
+    border-radius: 999px;
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 0.78rem;
+
+    letter-spacing: 1.5px;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
 
 }
 
-.scroll span {
+.scroll-indicator.hidden {
 
-    font-size: 1.5rem;
+    opacity: 0;
 
-    animation: bounce 1.8s infinite;
+    transform: translate(-50%, 14px);
 
 }
 
-@keyframes bounce {
+.scroll-arrow {
+
+    font-size: 1.15rem;
+
+    line-height: 1;
+
+    animation: arrowBounce 1.5s ease-in-out infinite;
+
+}
+
+@keyframes arrowBounce {
 
     0%,
     100% {
@@ -116,76 +373,83 @@ h1 {
     }
 
     50% {
-        transform: translateY(8px);
+        transform: translateY(4px);
     }
 
 }
 
 
-/* ----------------------------- */
-/* LOCATION */
-/* ----------------------------- */
+/* -------------------------------- */
+/* SMARTPHONE */
+/* -------------------------------- */
 
-.locations {
+@media (max-width: 600px) {
 
-    max-width: 700px;
+    .hero {
 
-    margin: 0 auto;
+        padding-top: 45px;
 
-    padding: 90px 20px;
+    }
 
-}
+    .portrait {
 
-.locations h2 {
+        width: min(72vw, 340px);
 
-    text-align: center;
+    }
 
-    font-size: 2.2rem;
+    .locations {
 
-    margin-bottom: 60px;
+        width: calc(100% - 28px);
 
-    font-weight: 400;
+        padding-top: 65px;
 
-}
+    }
 
-.location-card {
+    .location-card {
 
-    text-align: center;
+        padding: 30px 18px 22px;
 
-    margin-bottom: 60px;
+        border-radius: 24px;
 
-}
+    }
 
-.location-card h3 {
+    .navigation-buttons {
 
-    margin-bottom: 20px;
+        display: grid;
 
-    font-size: 1.6rem;
+        grid-template-columns: 1fr 1fr;
 
-    font-weight: 400;
+        width: 100%;
 
-}
+        gap: 10px;
 
-.button {
+    }
 
-    display: inline-block;
+    .nav-button {
 
-    padding: 14px 30px;
+        min-width: 0;
 
-    background: #A89CC8;
+        width: 100%;
 
-    color: white;
+        padding-left: 10px;
 
-    text-decoration: none;
+        padding-right: 10px;
 
-    border-radius: 999px;
-
-    transition: .25s;
+    }
 
 }
 
-.button:hover {
 
-    background: #9181BB;
+/* -------------------------------- */
+/* SCHERMI MOLTO PICCOLI */
+/* -------------------------------- */
+
+@media (max-width: 370px) {
+
+    .navigation-buttons {
+
+        grid-template-columns: 1fr;
+
+    }
 
 }

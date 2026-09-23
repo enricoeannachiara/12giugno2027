@@ -1,5 +1,12 @@
 const scrollIndicator = document.getElementById("scrollIndicator");
 
+const copyCodeButton = document.getElementById("copyCodeButton");
+
+const copyMessage = document.getElementById("copyMessage");
+
+const accessCode = document.getElementById("accessCode");
+
+
 function updateScrollIndicator() {
 
     const scrollPosition =
@@ -23,8 +30,41 @@ function updateScrollIndicator() {
 
 }
 
+
+async function copyAccessCode() {
+
+    const code = accessCode.textContent.trim();
+
+    try {
+
+        await navigator.clipboard.writeText(code);
+
+        copyMessage.textContent = "Codice copiato";
+
+        copyCodeButton.textContent = "Copiato ✓";
+
+        setTimeout(() => {
+
+            copyMessage.textContent = "";
+
+            copyCodeButton.textContent = "Copia codice";
+
+        }, 1800);
+
+    } catch (error) {
+
+        copyMessage.textContent =
+            "Tieni premuto sul codice per copiarlo";
+
+    }
+
+}
+
+
 window.addEventListener("scroll", updateScrollIndicator);
 
 window.addEventListener("resize", updateScrollIndicator);
+
+copyCodeButton.addEventListener("click", copyAccessCode);
 
 updateScrollIndicator();

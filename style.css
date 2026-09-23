@@ -49,7 +49,7 @@ body {
     justify-content: flex-start;
     align-items: center;
 
-    padding: 50px 20px 30px;
+    padding: 85px 20px 30px;
 }
 
 .portrait {
@@ -96,7 +96,7 @@ h1 {
 }
 
 .photos-section {
-    padding-bottom: 60px;
+    padding-bottom: 70px;
 }
 
 .section-title {
@@ -194,6 +194,7 @@ h1 {
     display: flex;
 
     justify-content: center;
+    align-items: center;
 
     gap: 12px;
 
@@ -263,8 +264,13 @@ h1 {
 
 
 /* -------------------------------- */
-/* WEDSHOOTS */
+/* FOTO / WEDSHOOTS */
 /* -------------------------------- */
+
+.photos-section .button-row {
+    justify-content: center;
+    width: 100%;
+}
 
 .access-box {
     margin-top: 28px;
@@ -394,7 +400,7 @@ h1 {
 /* -------------------------------- */
 
 .page-end {
-    height: 220px;
+    height: 240px;
 }
 
 
@@ -405,9 +411,9 @@ h1 {
 @media (max-width: 600px) {
 
     .hero {
-        min-height: 78vh;
+        min-height: 80vh;
 
-        padding-top: 42px;
+        padding-top: 70px;
 
         padding-bottom: 20px;
     }
@@ -444,6 +450,18 @@ h1 {
         gap: 10px;
     }
 
+    .photos-section .button-row {
+        display: flex;
+
+        justify-content: center;
+    }
+
+    .photos-section .button-row .button {
+        width: auto;
+
+        min-width: 170px;
+    }
+
     .button {
         min-width: 0;
 
@@ -458,7 +476,7 @@ h1 {
     }
 
     .page-end {
-        height: 240px;
+        height: 260px;
     }
 }
 
@@ -471,6 +489,10 @@ h1 {
 
     .button-row {
         grid-template-columns: 1fr;
+    }
+
+    .photos-section .button-row {
+        display: flex;
     }
 
 }

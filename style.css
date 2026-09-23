@@ -2,15 +2,15 @@
 /* STILE GENERALE */
 /* ----------------------------- */
 
-body{
+body {
 
-    margin:0;
+    margin: 0;
 
-    background:#FAF7F2;
+    background: #FAF7F2;
 
-    color:#3E3A39;
+    color: #3E3A39;
 
-    font-family:Georgia,serif;
+    font-family: Georgia, serif;
 
 }
 
@@ -19,57 +19,57 @@ body{
 /* HERO */
 /* ----------------------------- */
 
-.hero{
+.hero {
 
-    min-height:100vh;
+    min-height: 100vh;
 
-    display:flex;
+    display: flex;
 
-    flex-direction:column;
+    flex-direction: column;
 
-    justify-content:flex-start;
+    justify-content: flex-start;
 
-    align-items:center;
+    align-items: center;
 
-    padding:60px 20px 40px;
+    padding: 60px 20px 40px;
 
-    box-sizing:border-box;
-
-}
-
-.portrait{
-
-    width:min(60vw,380px);
-
-    height:auto;
-
-    margin-bottom:28px;
-
-    user-select:none;
-
-    pointer-events:none;
+    box-sizing: border-box;
 
 }
 
-h1{
+.portrait {
 
-    margin:0;
+    width: min(60vw, 380px);
 
-    font-size:clamp(2.3rem,5vw,4rem);
+    height: auto;
 
-    font-weight:400;
+    margin-bottom: 28px;
 
-    line-height:1.1;
+    user-select: none;
+
+    pointer-events: none;
 
 }
 
-.data{
+h1 {
 
-    margin-top:18px;
+    margin: 0;
 
-    font-size:clamp(1rem,2vw,1.35rem);
+    font-size: clamp(2.3rem, 5vw, 4rem);
 
-    letter-spacing:4px;
+    font-weight: 400;
+
+    line-height: 1.1;
+
+}
+
+.data {
+
+    margin-top: 18px;
+
+    font-size: clamp(1rem, 2vw, 1.35rem);
+
+    letter-spacing: 4px;
 
 }
 
@@ -78,48 +78,45 @@ h1{
 /* SCROLL */
 /* ----------------------------- */
 
-.scroll{
+.scroll {
 
-    margin-top:auto;
+    margin-top: auto;
 
-    padding-top:70px;
+    padding-top: 70px;
 
-    display:flex;
+    display: flex;
 
-    flex-direction:column;
+    flex-direction: column;
 
-    align-items:center;
+    align-items: center;
 
-    gap:6px;
+    gap: 6px;
 
-    color:#8a8178;
+    color: #8a8178;
 
-    font-size:.95rem;
+    font-size: .95rem;
 
-    letter-spacing:2px;
-
-}
-
-.scroll span{
-
-    font-size:1.5rem;
-
-    animation:bounce 1.8s infinite;
+    letter-spacing: 2px;
 
 }
 
-@keyframes bounce{
+.scroll span {
 
-    0%,100%{
+    font-size: 1.5rem;
 
-        transform:translateY(0);
+    animation: bounce 1.8s infinite;
 
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
     }
 
-    50%{
-
-        transform:translateY(8px);
-
+    50% {
+        transform: translateY(8px);
     }
 
 }
@@ -129,74 +126,66 @@ h1{
 /* LOCATION */
 /* ----------------------------- */
 
-.locations{
+.locations {
 
-    max-width:700px;
+    max-width: 700px;
 
-    margin:0 auto;
+    margin: 0 auto;
 
-    padding:90px 20px;
-
-}
-
-.locations h2{
-
-    text-align:center;
-
-    font-size:2.2rem;
-
-    margin-bottom:60px;
-
-    font-weight:400;
+    padding: 90px 20px;
 
 }
 
-.location-card{
+.locations h2 {
 
-    text-align:center;
+    text-align: center;
 
-    margin-bottom:70px;
+    font-size: 2.2rem;
 
-}
+    margin-bottom: 60px;
 
-.icon{
-
-    font-size:4rem;
-
-    margin-bottom:18px;
+    font-weight: 400;
 
 }
 
-.location-card h3{
+.location-card {
 
-    margin-bottom:22px;
+    text-align: center;
 
-    font-size:1.6rem;
-
-    font-weight:400;
+    margin-bottom: 60px;
 
 }
 
-.button{
+.location-card h3 {
 
-    display:inline-block;
+    margin-bottom: 20px;
 
-    padding:14px 30px;
+    font-size: 1.6rem;
 
-    background:#A89CC8;
-
-    color:white;
-
-    text-decoration:none;
-
-    border-radius:999px;
-
-    transition:.25s;
+    font-weight: 400;
 
 }
 
-.button:hover{
+.button {
 
-    background:#9181bb;
+    display: inline-block;
+
+    padding: 14px 30px;
+
+    background: #A89CC8;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 999px;
+
+    transition: .25s;
+
+}
+
+.button:hover {
+
+    background: #9181BB;
 
 }

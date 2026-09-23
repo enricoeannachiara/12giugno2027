@@ -33,7 +33,7 @@
 
     <!-- ANDIAMO -->
 
-    <section class="locations">
+    <section class="section">
 
         <div class="section-title">
 
@@ -50,17 +50,17 @@
 
         <!-- CASA DELLO SPOSO -->
 
-        <article class="location-card">
+        <article class="card">
 
-            <div class="location-emoji">🏠</div>
+            <div class="card-icon">🏠</div>
 
             <h3>Casa dello sposo</h3>
 
-            <div class="navigation-buttons">
+            <div class="button-row">
 
                 <a
                     href="https://maps.app.goo.gl/kmqRrXZQPzqEgdiU8"
-                    class="nav-button maps"
+                    class="button button-primary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -69,7 +69,7 @@
 
                 <a
                     href="https://waze.com/ul?ll=40.608131%2C14.978180&navigate=yes"
-                    class="nav-button waze"
+                    class="button button-secondary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -83,17 +83,17 @@
 
         <!-- CASA DELLA SPOSA -->
 
-        <article class="location-card">
+        <article class="card">
 
-            <div class="location-emoji">🏠</div>
+            <div class="card-icon">🏠</div>
 
             <h3>Casa della sposa</h3>
 
-            <div class="navigation-buttons">
+            <div class="button-row">
 
                 <a
                     href="https://maps.app.goo.gl/kNUKDeFUFzFnu2As5"
-                    class="nav-button maps"
+                    class="button button-primary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -102,7 +102,7 @@
 
                 <a
                     href="https://waze.com/ul?ll=40.739052%2C14.755519&navigate=yes"
-                    class="nav-button waze"
+                    class="button button-secondary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -116,17 +116,17 @@
 
         <!-- CHIESA -->
 
-        <article class="location-card">
+        <article class="card">
 
-            <div class="location-emoji">⛪️</div>
+            <div class="card-icon">⛪️</div>
 
             <h3>Chiesa di San Martino Vescovo</h3>
 
-            <div class="navigation-buttons">
+            <div class="button-row">
 
                 <a
                     href="https://maps.app.goo.gl/6omwCTy1Atd1c3Cb7"
-                    class="nav-button maps"
+                    class="button button-primary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -135,7 +135,7 @@
 
                 <a
                     href="https://waze.com/ul?ll=40.761874%2C14.785191&navigate=yes"
-                    class="nav-button waze"
+                    class="button button-secondary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -149,17 +149,17 @@
 
         <!-- MASSERIA -->
 
-        <article class="location-card">
+        <article class="card">
 
-            <div class="location-emoji">🍽️</div>
+            <div class="card-icon">🍽️</div>
 
             <h3>Masseria La Morella</h3>
 
-            <div class="navigation-buttons">
+            <div class="button-row">
 
                 <a
                     href="https://maps.app.goo.gl/2apy9TeoYDG768eM7"
-                    class="nav-button maps"
+                    class="button button-primary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -168,7 +168,7 @@
 
                 <a
                     href="https://waze.com/ul?ll=40.610224%2C14.942694&navigate=yes"
-                    class="nav-button waze"
+                    class="button button-secondary"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -184,30 +184,43 @@
 
     <!-- FOTO -->
 
-    <section class="photos-section">
+    <section class="section photos-section">
 
         <div class="section-title">
+
             <div class="section-emoji">📸</div>
-            <h2>Le vostre foto</h2>
+
+            <h2>Condividi i tuoi ricordi</h2>
+
         </div>
 
-        <div class="photo-card">
 
-            <p class="photo-intro">
-                Durante la giornata potrete condividere con noi
-                le foto e i video che scatterete.
+        <article class="card">
+
+            <div class="card-icon">📸</div>
+
+            <h3>Album fotografico</h3>
+
+            <p class="card-text">
+                Durante la giornata potrai condividere con noi
+                le foto e i video che scatterai.
             </p>
 
-            <a
-                href="https://www.matrimonio.com/mail-TraceClick.php?tipo=CREACION_ALBUM_WEDSHOOTS&durl=%2F%2Fwww.matrimonio.com%2Fweb%2FW7327156%2Falbum&utm_source=bodas_creacion_album_wedshoots&utm_medium=email&utm_campaign=bodas_creacion_album_wedshoots&utm_idTrack=421817291"
-                class="album-button"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                📸 Apri l'album
-            </a>
+            <div class="button-row">
 
-            <div class="access-code-box">
+                <a
+                    href="https://www.wedshoots.com/it?albumId=ITb2ea31c8"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Apri WedShoots
+                </a>
+
+            </div>
+
+
+            <div class="access-box">
 
                 <span class="access-label">
                     Codice di accesso
@@ -219,7 +232,7 @@
 
                 <button
                     type="button"
-                    class="copy-button"
+                    class="button button-secondary"
                     id="copyCodeButton"
                 >
                     Copia codice
@@ -233,14 +246,22 @@
 
             </div>
 
-        </div>
+        </article>
 
     </section>
 
 
-    <!-- SCRITTA SCORRI IN SOVRAIMPRESSIONE -->
+    <!-- SPAZIO FINALE -->
 
-    <div class="scroll-indicator" id="scrollIndicator">
+    <div class="page-end"></div>
+
+
+    <!-- SCORRI IN SOVRAIMPRESSIONE -->
+
+    <div
+        class="scroll-indicator"
+        id="scrollIndicator"
+    >
 
         <span>Scorri</span>
 

@@ -1,34 +1,41 @@
-/* ---------- STILE GENERALE ---------- */
+/* ----------------------------- */
+/* STILE GENERALE */
+/* ----------------------------- */
 
 body{
+
     margin:0;
+
     background:#FAF7F2;
+
     color:#3E3A39;
-    font-family:Georgia, serif;
+
+    font-family:Georgia,serif;
+
 }
 
 
-/* ---------- HOMEPAGE ---------- */
+/* ----------------------------- */
+/* HERO */
+/* ----------------------------- */
 
 .hero{
 
     min-height:100vh;
 
     display:flex;
+
     flex-direction:column;
 
-    align-items:center;
-
     justify-content:flex-start;
+
+    align-items:center;
 
     padding:60px 20px 40px;
 
     box-sizing:border-box;
 
 }
-
-
-/* ---------- RITRATTO ---------- */
 
 .portrait{
 
@@ -44,9 +51,6 @@ body{
 
 }
 
-
-/* ---------- TITOLO ---------- */
-
 h1{
 
     margin:0;
@@ -59,9 +63,6 @@ h1{
 
 }
 
-
-/* ---------- DATA ---------- */
-
 .data{
 
     margin-top:18px;
@@ -69,5 +70,133 @@ h1{
     font-size:clamp(1rem,2vw,1.35rem);
 
     letter-spacing:4px;
+
+}
+
+
+/* ----------------------------- */
+/* SCROLL */
+/* ----------------------------- */
+
+.scroll{
+
+    margin-top:auto;
+
+    padding-top:70px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:6px;
+
+    color:#8a8178;
+
+    font-size:.95rem;
+
+    letter-spacing:2px;
+
+}
+
+.scroll span{
+
+    font-size:1.5rem;
+
+    animation:bounce 1.8s infinite;
+
+}
+
+@keyframes bounce{
+
+    0%,100%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(8px);
+
+    }
+
+}
+
+
+/* ----------------------------- */
+/* LOCATION */
+/* ----------------------------- */
+
+.locations{
+
+    max-width:700px;
+
+    margin:0 auto;
+
+    padding:90px 20px;
+
+}
+
+.locations h2{
+
+    text-align:center;
+
+    font-size:2.2rem;
+
+    margin-bottom:60px;
+
+    font-weight:400;
+
+}
+
+.location-card{
+
+    text-align:center;
+
+    margin-bottom:70px;
+
+}
+
+.icon{
+
+    font-size:4rem;
+
+    margin-bottom:18px;
+
+}
+
+.location-card h3{
+
+    margin-bottom:22px;
+
+    font-size:1.6rem;
+
+    font-weight:400;
+
+}
+
+.button{
+
+    display:inline-block;
+
+    padding:14px 30px;
+
+    background:#A89CC8;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:999px;
+
+    transition:.25s;
+
+}
+
+.button:hover{
+
+    background:#9181bb;
 
 }

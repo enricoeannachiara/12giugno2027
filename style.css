@@ -14,6 +14,14 @@
 
     --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
+
+    --envelope-paper: #F1E5D5;
+    --envelope-paper-light: #F8EFE4;
+    --envelope-paper-dark: #E4D3BE;
+
+    --wax: #8C3F4B;
+    --wax-dark: #73313C;
+    --wax-light: #A95662;
 }
 
 
@@ -39,6 +47,370 @@ body {
     font-family: Georgia, serif;
 
     text-align: center;
+}
+
+
+/* -------------------------------- */
+/* BUSTA INIZIALE */
+/* -------------------------------- */
+
+.envelope-screen {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5000;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    background: var(--background);
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transition:
+        opacity 0.65s ease,
+        visibility 0.65s ease;
+}
+
+.envelope-screen.opened {
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* -------------------------------- */
+/* CONTENITORE BUSTA */
+/* -------------------------------- */
+
+.envelope {
+    position: relative;
+
+    width: min(82vw, 430px);
+
+    aspect-ratio: 1.55 / 1;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    perspective: 1200px;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transform: translateY(-5px);
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
+}
+
+.envelope:hover {
+    transform: translateY(-8px);
+}
+
+.envelope:active {
+    transform: translateY(-3px) scale(0.985);
+}
+
+
+/* -------------------------------- */
+/* RETRO BUSTA */
+/* -------------------------------- */
+
+.envelope-back {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--envelope-paper-light),
+            var(--envelope-paper)
+        );
+
+    border: 1px solid rgba(120, 95, 70, 0.12);
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 12px 32px rgba(65, 50, 38, 0.12),
+        0 4px 10px rgba(65, 50, 38, 0.07);
+}
+
+
+/* -------------------------------- */
+/* LEMBO SUPERIORE */
+/* -------------------------------- */
+
+.envelope-flap {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    z-index: 4;
+
+    width: 100%;
+    height: 58%;
+
+    background:
+        linear-gradient(
+            160deg,
+            var(--envelope-paper-light),
+            var(--envelope-paper)
+        );
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    transform-origin: top center;
+
+    transform: rotateX(0deg);
+
+    backface-visibility: hidden;
+
+    transition:
+        transform 0.85s cubic-bezier(.4, 0, .2, 1);
+
+    filter:
+        drop-shadow(
+            0 4px 4px rgba(70, 55, 40, 0.07)
+        );
+}
+
+
+/* -------------------------------- */
+/* FRONTE BUSTA */
+/* -------------------------------- */
+
+.envelope-front {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 3;
+
+    overflow: hidden;
+
+    border-radius: 7px;
+
+    pointer-events: none;
+}
+
+.envelope-front::before,
+.envelope-front::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+
+    width: 72%;
+    height: 100%;
+
+    background: var(--envelope-paper);
+}
+
+.envelope-front::before {
+    left: 0;
+
+    clip-path: polygon(
+        0 22%,
+        100% 100%,
+        0 100%
+    );
+}
+
+.envelope-front::after {
+    right: 0;
+
+    clip-path: polygon(
+        100% 22%,
+        0 100%,
+        100% 100%
+    );
+}
+
+.envelope-front {
+    background:
+        linear-gradient(
+            to top,
+            var(--envelope-paper-dark) 0,
+            var(--envelope-paper-dark) 2px,
+            transparent 2px
+        );
+}
+
+
+/* -------------------------------- */
+/* SIGILLO IN CERALACCA */
+/* -------------------------------- */
+
+.wax-seal {
+    position: absolute;
+
+    left: 50%;
+    top: 48%;
+
+    z-index: 8;
+
+    width: 78px;
+    height: 78px;
+
+    transform:
+        translate(-50%, -50%)
+        rotate(-4deg);
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    color: #F7ECDD;
+
+    background:
+        radial-gradient(
+            circle at 34% 28%,
+            var(--wax-light) 0%,
+            var(--wax) 38%,
+            var(--wax-dark) 100%
+        );
+
+    border:
+        2px solid
+        rgba(110, 38, 48, 0.32);
+
+    box-shadow:
+        inset 2px 3px 6px rgba(255, 255, 255, 0.15),
+        inset -4px -5px 8px rgba(60, 15, 25, 0.22),
+        0 5px 10px rgba(55, 28, 28, 0.22);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.45s ease;
+}
+
+.wax-seal::before,
+.wax-seal::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.wax-seal::before {
+    inset: 7px;
+
+    border:
+        1px solid
+        rgba(245, 220, 195, 0.25);
+}
+
+.wax-seal::after {
+    inset: 13px;
+
+    border:
+        1px solid
+        rgba(90, 25, 35, 0.25);
+}
+
+
+/* -------------------------------- */
+/* LETTERE AE */
+/* -------------------------------- */
+
+.wax-seal span {
+    position: relative;
+
+    z-index: 2;
+
+    display: block;
+
+    margin-top: -3px;
+
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        "Snell Roundhand",
+        cursive;
+
+    font-size: 2rem;
+
+    font-style: italic;
+
+    font-weight: 500;
+
+    letter-spacing: -2px;
+
+    line-height: 1;
+
+    text-shadow:
+        0 1px 1px rgba(70, 20, 28, 0.25);
+
+    user-select: none;
+}
+
+
+/* -------------------------------- */
+/* ANIMAZIONE APERTURA BUSTA */
+/* -------------------------------- */
+
+.envelope-screen.opening .wax-seal {
+    opacity: 0;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.72)
+        rotate(-12deg);
+}
+
+.envelope-screen.opening .envelope-flap {
+    transform: rotateX(180deg);
+}
+
+.envelope-screen.opening .envelope {
+    transform: translateY(10px);
+}
+
+
+/* -------------------------------- */
+/* ACCESSIBILITÀ MOVIMENTO */
+/* -------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .envelope-screen,
+    .envelope,
+    .wax-seal,
+    .envelope-flap {
+        transition: none;
+    }
+
 }
 
 
@@ -277,7 +649,7 @@ h1 {
 
 
 /* -------------------------------- */
-/* PULSANTE ORO / CHAMPAGNE */
+/* PULSANTE CHAMPAGNE */
 /* -------------------------------- */
 
 .button-gold {
@@ -567,6 +939,19 @@ h1 {
 
 @media (max-width: 600px) {
 
+    .envelope {
+        width: min(86vw, 390px);
+    }
+
+    .wax-seal {
+        width: 72px;
+        height: 72px;
+    }
+
+    .wax-seal span {
+        font-size: 1.85rem;
+    }
+
     .hero {
         min-height: 100vh;
 
@@ -672,6 +1057,19 @@ h1 {
 /* -------------------------------- */
 
 @media (max-width: 370px) {
+
+    .envelope {
+        width: 88vw;
+    }
+
+    .wax-seal {
+        width: 66px;
+        height: 66px;
+    }
+
+    .wax-seal span {
+        font-size: 1.65rem;
+    }
 
     .button-row {
         grid-template-columns: 1fr;

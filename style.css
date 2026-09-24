@@ -271,6 +271,24 @@ h1 {
 
 
 /* -------------------------------- */
+/* LIBRETTO CERIMONIA */
+/* -------------------------------- */
+
+.ceremony-booklet {
+    margin-top: 16px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.ceremony-booklet .button {
+    min-width: 230px;
+}
+
+
+/* -------------------------------- */
 /* RSVP */
 /* -------------------------------- */
 
@@ -585,6 +603,16 @@ h1 {
         padding-right: 10px;
     }
 
+    .ceremony-booklet {
+        margin-top: 14px;
+    }
+
+    .ceremony-booklet .button {
+        width: auto;
+
+        min-width: 220px;
+    }
+
     .access-box {
         margin-top: 24px;
     }
@@ -625,6 +653,12 @@ h1 {
     .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
+    }
+
+    .ceremony-booklet .button {
+        min-width: 0;
+
+        width: 100%;
     }
 
 }

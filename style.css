@@ -15,11 +15,10 @@
     --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
 
-    /* BUSTA */
+    /* LEMBO */
     --envelope-paper: #EADCC8;
-    --envelope-paper-back: #E4D3BB;
-    --envelope-edge: #BFA98B;
-    --envelope-fold: rgba(120, 96, 72, 0.32);
+    --envelope-paper-back: #E7D8C4;
+    --envelope-edge: #C4AE90;
 }
 
 
@@ -49,7 +48,7 @@ body {
 
 
 /* ================================= */
-/* BUSTA FULL SCREEN */
+/* OVERLAY INIZIALE */
 /* ================================= */
 
 .envelope-screen {
@@ -62,8 +61,6 @@ body {
     overflow: hidden;
 
     background: transparent;
-
-    visibility: visible;
 
     pointer-events: auto;
 }
@@ -87,156 +84,22 @@ body {
 
     outline: none;
 
-    perspective: 1700px;
+    /*
+        Prospettiva volutamente ampia:
+        il lembo deve sembrare carta,
+        non una tavoletta che ruota.
+    */
 
-    perspective-origin: 50% 40%;
+    perspective: 2200px;
 
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
+    perspective-origin: 50% 42%;
 
     -webkit-tap-highlight-color: transparent;
 }
 
 
 /* ================================= */
-/* RETRO DELLA BUSTA */
-/* ================================= */
-
-.envelope-back {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 1;
-
-    background: var(--envelope-paper-back);
-}
-
-
-/* ================================= */
-/* TASCA ANTERIORE */
-/* ================================= */
-
-.envelope-pocket {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 5;
-
-    pointer-events: none;
-}
-
-.envelope-pocket-panel {
-    position: absolute;
-
-    inset: 0;
-
-    background: var(--envelope-paper);
-}
-
-
-/* --------------------------------- */
-/* LATO SINISTRO */
-/* --------------------------------- */
-
-.envelope-pocket-left {
-    z-index: 2;
-
-    clip-path: polygon(
-        0 0,
-        50% 50%,
-        0 100%
-    );
-
-    -webkit-clip-path: polygon(
-        0 0,
-        50% 50%,
-        0 100%
-    );
-}
-
-
-/* --------------------------------- */
-/* LATO DESTRO */
-/* --------------------------------- */
-
-.envelope-pocket-right {
-    z-index: 2;
-
-    clip-path: polygon(
-        100% 0,
-        100% 100%,
-        50% 50%
-    );
-
-    -webkit-clip-path: polygon(
-        100% 0,
-        100% 100%,
-        50% 50%
-    );
-}
-
-
-/* --------------------------------- */
-/* FONDO */
-/* --------------------------------- */
-
-.envelope-pocket-bottom {
-    z-index: 3;
-
-    clip-path: polygon(
-        0 100%,
-        50% 50%,
-        100% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        0 100%,
-        50% 50%,
-        100% 100%
-    );
-}
-
-
-/* ================================= */
-/* PIEGHE DELLA TASCA */
-/* ================================= */
-
-.envelope-fold {
-    position: absolute;
-
-    z-index: 6;
-
-    top: 0;
-
-    width: 70.8%;
-    height: 1.5px;
-
-    background: var(--envelope-fold);
-
-    pointer-events: none;
-}
-
-.envelope-fold-left {
-    left: 0;
-
-    transform-origin: left center;
-
-    transform: rotate(45deg);
-}
-
-.envelope-fold-right {
-    right: 0;
-
-    transform-origin: right center;
-
-    transform: rotate(-45deg);
-}
-
-
-/* ================================= */
-/* LEMBO COMPLESSIVO */
+/* LEMBO */
 /* ================================= */
 
 .envelope-flap {
@@ -245,40 +108,44 @@ body {
     top: 0;
     left: 0;
 
-    z-index: 10;
-
     width: 100%;
     height: 50%;
+
+    z-index: 10;
 
     transform-origin: 50% 0;
 
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
+
+    transform: rotateX(0deg);
+
+    /*
+        Una sola transition.
+        Nessun keyframe intermedio.
+    */
+
+    transition:
+        transform 3.4s
+        cubic-bezier(0.37, 0, 0.63, 1);
+
+    will-change: transform;
 
     pointer-events: none;
 }
 
 
 /* ================================= */
-/* PARTE PRINCIPALE DEL LEMBO */
+/* APERTURA */
 /* ================================= */
 
-.flap-main {
-    position: absolute;
-
-    inset: 0;
-
-    transform-origin: 50% 0;
-
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-
-    will-change: transform;
+.envelope-screen.opening .envelope-flap {
+    transform: rotateX(180deg);
 }
 
 
 /* ================================= */
-/* FACCIA GENERICA */
+/* FACCE DEL LEMBO */
 /* ================================= */
 
 .flap-face {
@@ -297,34 +164,34 @@ body {
 
 
 /* ================================= */
-/* FRONTE LEMBO PRINCIPALE */
+/* FRONTE */
 /* ================================= */
 
-.flap-main-front {
+.flap-front {
     z-index: 2;
 
-    transform: translateZ(1px);
+    transform: translateZ(0.5px);
 }
 
 
 /* ================================= */
-/* RETRO LEMBO PRINCIPALE */
+/* RETRO */
 /* ================================= */
 
-.flap-main-back {
+.flap-back {
     z-index: 1;
 
     transform:
         rotateX(180deg)
-        translateZ(1px);
+        translateZ(0.5px);
 }
 
 
 /* ================================= */
-/* CARTA DEL LEMBO PRINCIPALE */
+/* FORMA DEL LEMBO */
 /* ================================= */
 
-.flap-main-paper {
+.flap-paper {
     position: absolute;
 
     inset: 0;
@@ -334,165 +201,79 @@ body {
     clip-path: polygon(
         0 0,
         100% 0,
-        50% 74%
+        50% 100%
     );
 
     -webkit-clip-path: polygon(
         0 0,
         100% 0,
-        50% 74%
+        50% 100%
     );
 }
 
 
 /* ================================= */
-/* RETRO DELLA CARTA PRINCIPALE */
+/* RETRO DELLA CARTA */
 /* ================================= */
 
-.flap-main-back .flap-main-paper {
+.flap-back .flap-paper {
     background: var(--envelope-paper-back);
 }
 
 
 /* ================================= */
-/* PUNTA DEL LEMBO */
+/* BORDO DEL LEMBO */
 /* ================================= */
 
-.flap-tip {
-    position: absolute;
+/*
+    Un bordo molto leggero aiuta a leggere
+    il triangolo senza creare linee incrociate.
+*/
 
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: 100%;
-
-    transform-origin: 50% 74%;
-
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-
-    will-change: transform;
-}
-
-
-/* ================================= */
-/* CARTA DELLA PUNTA */
-/* ================================= */
-
-.flap-tip-paper {
-    position: absolute;
-
-    inset: 0;
-
-    background: var(--envelope-paper);
-
-    clip-path: polygon(
-        50% 74%,
-        100% 0,
-        50% 100%,
-        0 0
-    );
-
-    -webkit-clip-path: polygon(
-        50% 74%,
-        100% 0,
-        50% 100%,
-        0 0
-    );
-}
-
-
-/* ================================= */
-/* FRONTE PUNTA */
-/* ================================= */
-
-.flap-tip-front {
-    z-index: 2;
-
-    transform: translateZ(2px);
-}
-
-
-/* ================================= */
-/* RETRO PUNTA */
-/* ================================= */
-
-.flap-tip-back {
-    z-index: 1;
-
-    transform:
-        rotateX(180deg)
-        translateZ(2px);
-}
-
-
-/* ================================= */
-/* RETRO CARTA PUNTA */
-/* ================================= */
-
-.flap-tip-back .flap-tip-paper {
-    background: var(--envelope-paper-back);
-}
-
-
-/* ================================= */
-/* BORDI DEL LEMBO */
-/* ================================= */
-
-.flap-main-front::before,
-.flap-main-back::before,
-.flap-tip-front::before,
-.flap-tip-back::before {
+.flap-front::before,
+.flap-back::before {
     content: "";
 
     position: absolute;
 
-    inset: -1px;
+    inset: -1.5px;
 
     z-index: -1;
 
-    opacity: 0.65;
-
     background: var(--envelope-edge);
-}
 
-
-/* forma bordo parte principale */
-
-.flap-main-front::before,
-.flap-main-back::before {
     clip-path: polygon(
         0 0,
         100% 0,
-        50% 74%
+        50% 100%
     );
 
     -webkit-clip-path: polygon(
         0 0,
         100% 0,
-        50% 74%
+        50% 100%
     );
+
+    opacity: 0.55;
 }
 
 
-/* forma bordo punta */
+/* ================================= */
+/* OMBRA LEGGERA E STATICA */
+/* ================================= */
 
-.flap-tip-front::before,
-.flap-tip-back::before {
-    clip-path: polygon(
-        50% 74%,
-        100% 0,
-        50% 100%,
-        0 0
-    );
+/*
+    Nessuna animazione del filter.
+    Serve solo a staccare leggermente
+    la carta dalla Hero sottostante.
+*/
 
-    -webkit-clip-path: polygon(
-        50% 74%,
-        100% 0,
-        50% 100%,
-        0 0
-    );
+.flap-front .flap-paper {
+    filter:
+        drop-shadow(
+            0 4px 3px
+            rgba(70, 50, 34, 0.12)
+        );
 }
 
 
@@ -506,14 +287,14 @@ body {
     left: 50%;
     bottom: 0;
 
-    z-index: 10;
+    z-index: 5;
 
     width: 116px;
     height: 116px;
 
     transform:
         translate(-50%, 50%)
-        translateZ(4px);
+        translateZ(2px);
 
     display: flex;
 
@@ -528,7 +309,7 @@ body {
 
 
 /* ================================= */
-/* IMMAGINE SIGILLO */
+/* IMMAGINE DEL SIGILLO */
 /* ================================= */
 
 .wax-image {
@@ -546,157 +327,7 @@ body {
     filter:
         drop-shadow(
             0 6px 6px
-            rgba(65, 24, 20, 0.24)
-        );
-}
-
-
-/* ================================= */
-/* APERTURA DEL LEMBO PRINCIPALE */
-/* ================================= */
-
-.envelope-screen.opening .flap-main {
-    animation:
-        flapMainOpen
-        2.6s
-        cubic-bezier(0.20, 0.64, 0.30, 1)
-        forwards;
-}
-
-
-/* ================================= */
-/* APERTURA DELLA PUNTA */
-/* ================================= */
-
-.envelope-screen.opening .flap-tip {
-    animation:
-        flapTipOpen
-        2.6s
-        cubic-bezier(0.20, 0.64, 0.30, 1)
-        forwards;
-}
-
-
-/* ================================= */
-/* MOVIMENTO PRINCIPALE */
-/* ================================= */
-
-@keyframes flapMainOpen {
-
-    0% {
-        transform: rotateX(0deg);
-    }
-
-    /*
-        Scatto iniziale.
-    */
-
-    4% {
-        transform: rotateX(8deg);
-    }
-
-    /*
-        Da qui movimento molto più lento.
-    */
-
-    16% {
-        transform: rotateX(24deg);
-    }
-
-    34% {
-        transform: rotateX(58deg);
-    }
-
-    52% {
-        transform: rotateX(94deg);
-    }
-
-    70% {
-        transform: rotateX(132deg);
-    }
-
-    86% {
-        transform: rotateX(161deg);
-    }
-
-    100% {
-        transform: rotateX(180deg);
-    }
-
-}
-
-
-/* ================================= */
-/* MOVIMENTO DELLA PUNTA */
-/* ================================= */
-
-/*
-    La punta segue la parte principale
-    con un leggerissimo ritardo.
-
-    Questa differenza è ciò che dà
-    la sensazione che la carta si fletta.
-*/
-
-@keyframes flapTipOpen {
-
-    0% {
-        transform: rotateX(0deg);
-    }
-
-    4% {
-        transform: rotateX(1deg);
-    }
-
-    10% {
-        transform: rotateX(4deg);
-    }
-
-    18% {
-        transform: rotateX(9deg);
-    }
-
-    34% {
-        transform: rotateX(5deg);
-    }
-
-    52% {
-        transform: rotateX(-4deg);
-    }
-
-    70% {
-        transform: rotateX(-7deg);
-    }
-
-    86% {
-        transform: rotateX(-3deg);
-    }
-
-    100% {
-        transform: rotateX(0deg);
-    }
-
-}
-
-
-/* ================================= */
-/* LEGGERA OMBRA DEL LEMBO */
-/* ================================= */
-
-/*
-    Niente ombre animate pesanti.
-
-    Questa è volutamente statica:
-    migliora la profondità senza
-    appesantire l'animazione.
-*/
-
-.flap-main-front .flap-main-paper,
-.flap-tip-front .flap-tip-paper {
-    filter:
-        drop-shadow(
-            0 3px 2px
-            rgba(70, 50, 34, 0.13)
+            rgba(65, 24, 20, 0.22)
         );
 }
 
@@ -1382,9 +1013,8 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
 
-    .flap-main,
-    .flap-tip {
-        animation-duration: 0.01ms !important;
+    .envelope-flap {
+        transition-duration: 0.01ms !important;
     }
 
 }

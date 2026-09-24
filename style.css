@@ -17,10 +17,9 @@
 
     /* BUSTA */
     --envelope-paper: #EADCC8;
-    --envelope-paper-back: #E5D4BD;
-    --envelope-paper-shadow: #D2BEA2;
-    --envelope-edge: #BDA78A;
-    --envelope-fold: rgba(120, 96, 72, 0.34);
+    --envelope-paper-back: #E4D3BB;
+    --envelope-edge: #BFA98B;
+    --envelope-fold: rgba(120, 96, 72, 0.32);
 }
 
 
@@ -88,12 +87,11 @@ body {
 
     outline: none;
 
-    perspective: 1500px;
+    perspective: 1700px;
 
-    perspective-origin: 50% 42%;
+    perspective-origin: 50% 40%;
 
     transform-style: preserve-3d;
-
     -webkit-transform-style: preserve-3d;
 
     -webkit-tap-highlight-color: transparent;
@@ -101,29 +99,10 @@ body {
 
 
 /* ================================= */
-/* CORPO DELLA BUSTA */
-/* ================================= */
-
-.envelope-body {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 5;
-
-    overflow: hidden;
-
-    transform: translateY(0);
-
-    will-change: transform;
-}
-
-
-/* ================================= */
 /* RETRO DELLA BUSTA */
 /* ================================= */
 
-.envelope-back-sheet {
+.envelope-back {
     position: absolute;
 
     inset: 0;
@@ -131,104 +110,6 @@ body {
     z-index: 1;
 
     background: var(--envelope-paper-back);
-}
-
-
-/* ================================= */
-/* PARTECIPAZIONE INTERNA */
-/* ================================= */
-
-.envelope-letter {
-    position: absolute;
-
-    left: 50%;
-    top: 13%;
-
-    z-index: 3;
-
-    width: min(78vw, 560px);
-    height: 74%;
-
-    transform: translateX(-50%) translateZ(2px);
-
-    background: #FFFDF9;
-
-    border-radius: 4px;
-
-    box-shadow:
-        0 10px 26px rgba(66, 48, 32, 0.10),
-        0 2px 5px rgba(66, 48, 32, 0.06);
-
-    overflow: hidden;
-}
-
-
-/* ================================= */
-/* CONTENUTO PARTECIPAZIONE */
-/* ================================= */
-
-.envelope-letter-content {
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    padding: 40px 24px;
-}
-
-
-/* ================================= */
-/* RITRATTO DENTRO LA BUSTA */
-/* ================================= */
-
-.envelope-letter-portrait {
-    display: block;
-
-    width: min(62%, 320px);
-    height: auto;
-
-    margin-bottom: 22px;
-
-    object-fit: contain;
-
-    user-select: none;
-
-    -webkit-user-drag: none;
-
-    pointer-events: none;
-}
-
-
-/* ================================= */
-/* NOMI DENTRO LA PARTECIPAZIONE */
-/* ================================= */
-
-.envelope-letter-names {
-    font-size: clamp(1.8rem, 4vw, 3rem);
-
-    line-height: 1.1;
-
-    color: var(--text);
-}
-
-
-/* ================================= */
-/* DATA DENTRO LA PARTECIPAZIONE */
-/* ================================= */
-
-.envelope-letter-date {
-    margin-top: 14px;
-
-    font-size: clamp(0.9rem, 2vw, 1.15rem);
-
-    letter-spacing: 3px;
-
-    color: var(--text);
 }
 
 
@@ -246,11 +127,6 @@ body {
     pointer-events: none;
 }
 
-
-/* ================================= */
-/* PANNELLI DELLA TASCA */
-/* ================================= */
-
 .envelope-pocket-panel {
     position: absolute;
 
@@ -260,11 +136,13 @@ body {
 }
 
 
-/* ================================= */
+/* --------------------------------- */
 /* LATO SINISTRO */
-/* ================================= */
+/* --------------------------------- */
 
 .envelope-pocket-left {
+    z-index: 2;
+
     clip-path: polygon(
         0 0,
         50% 50%,
@@ -276,16 +154,16 @@ body {
         50% 50%,
         0 100%
     );
-
-    z-index: 2;
 }
 
 
-/* ================================= */
+/* --------------------------------- */
 /* LATO DESTRO */
-/* ================================= */
+/* --------------------------------- */
 
 .envelope-pocket-right {
+    z-index: 2;
+
     clip-path: polygon(
         100% 0,
         100% 100%,
@@ -297,16 +175,16 @@ body {
         100% 100%,
         50% 50%
     );
-
-    z-index: 2;
 }
 
 
-/* ================================= */
-/* FONDO DELLA TASCA */
-/* ================================= */
+/* --------------------------------- */
+/* FONDO */
+/* --------------------------------- */
 
 .envelope-pocket-bottom {
+    z-index: 3;
+
     clip-path: polygon(
         0 100%,
         50% 50%,
@@ -318,8 +196,6 @@ body {
         50% 50%,
         100% 100%
     );
-
-    z-index: 3;
 }
 
 
@@ -332,39 +208,26 @@ body {
 
     z-index: 6;
 
-    height: 1px;
+    top: 0;
+
+    width: 70.8%;
+    height: 1.5px;
 
     background: var(--envelope-fold);
-
-    transform-origin: left center;
 
     pointer-events: none;
 }
 
-
-/* ================================= */
-/* PIEGA SINISTRA */
-/* ================================= */
-
 .envelope-fold-left {
     left: 0;
-    top: 0;
 
-    width: 70.8%;
+    transform-origin: left center;
 
     transform: rotate(45deg);
 }
 
-
-/* ================================= */
-/* PIEGA DESTRA */
-/* ================================= */
-
 .envelope-fold-right {
     right: 0;
-    top: 0;
-
-    width: 70.8%;
 
     transform-origin: right center;
 
@@ -373,7 +236,7 @@ body {
 
 
 /* ================================= */
-/* LEMBO SUPERIORE */
+/* LEMBO COMPLESSIVO */
 /* ================================= */
 
 .envelope-flap {
@@ -390,30 +253,43 @@ body {
     transform-origin: 50% 0;
 
     transform-style: preserve-3d;
-
     -webkit-transform-style: preserve-3d;
 
-    transform: rotateX(0deg);
+    pointer-events: none;
+}
+
+
+/* ================================= */
+/* PARTE PRINCIPALE DEL LEMBO */
+/* ================================= */
+
+.flap-main {
+    position: absolute;
+
+    inset: 0;
+
+    transform-origin: 50% 0;
+
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 
     will-change: transform;
 }
 
 
 /* ================================= */
-/* FACCIA GENERICA DEL LEMBO */
+/* FACCIA GENERICA */
 /* ================================= */
 
-.envelope-flap-face {
+.flap-face {
     position: absolute;
 
     inset: 0;
 
     transform-style: preserve-3d;
-
     -webkit-transform-style: preserve-3d;
 
     backface-visibility: hidden;
-
     -webkit-backface-visibility: hidden;
 
     pointer-events: none;
@@ -421,22 +297,22 @@ body {
 
 
 /* ================================= */
-/* FRONTE DEL LEMBO */
+/* FRONTE LEMBO PRINCIPALE */
 /* ================================= */
 
-.envelope-flap-front {
-    z-index: 3;
+.flap-main-front {
+    z-index: 2;
 
     transform: translateZ(1px);
 }
 
 
 /* ================================= */
-/* RETRO DEL LEMBO */
+/* RETRO LEMBO PRINCIPALE */
 /* ================================= */
 
-.envelope-flap-back {
-    z-index: 2;
+.flap-main-back {
+    z-index: 1;
 
     transform:
         rotateX(180deg)
@@ -445,10 +321,10 @@ body {
 
 
 /* ================================= */
-/* TRIANGOLO DI CARTA */
+/* CARTA DEL LEMBO PRINCIPALE */
 /* ================================= */
 
-.envelope-flap-paper {
+.flap-main-paper {
     position: absolute;
 
     inset: 0;
@@ -458,94 +334,165 @@ body {
     clip-path: polygon(
         0 0,
         100% 0,
-        50% 100%
+        50% 74%
     );
 
     -webkit-clip-path: polygon(
         0 0,
         100% 0,
-        50% 100%
+        50% 74%
     );
 }
 
 
 /* ================================= */
-/* RETRO DELLA CARTA */
+/* RETRO DELLA CARTA PRINCIPALE */
 /* ================================= */
 
-.envelope-flap-back .envelope-flap-paper {
+.flap-main-back .flap-main-paper {
     background: var(--envelope-paper-back);
 }
 
 
 /* ================================= */
-/* SPESSORE DEL LEMBO */
+/* PUNTA DEL LEMBO */
 /* ================================= */
 
-.envelope-flap-edge {
+.flap-tip {
     position: absolute;
 
     left: 0;
     top: 0;
 
-    z-index: 1;
-
     width: 100%;
-    height: 50%;
+    height: 100%;
 
-    transform:
-        translateZ(0.5px);
+    transform-origin: 50% 74%;
 
-    pointer-events: none;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+
+    will-change: transform;
 }
 
 
 /* ================================= */
-/* BORDO DEL TRIANGOLO */
+/* CARTA DELLA PUNTA */
 /* ================================= */
 
-.envelope-flap-front::before,
-.envelope-flap-back::before {
+.flap-tip-paper {
+    position: absolute;
+
+    inset: 0;
+
+    background: var(--envelope-paper);
+
+    clip-path: polygon(
+        50% 74%,
+        100% 0,
+        50% 100%,
+        0 0
+    );
+
+    -webkit-clip-path: polygon(
+        50% 74%,
+        100% 0,
+        50% 100%,
+        0 0
+    );
+}
+
+
+/* ================================= */
+/* FRONTE PUNTA */
+/* ================================= */
+
+.flap-tip-front {
+    z-index: 2;
+
+    transform: translateZ(2px);
+}
+
+
+/* ================================= */
+/* RETRO PUNTA */
+/* ================================= */
+
+.flap-tip-back {
+    z-index: 1;
+
+    transform:
+        rotateX(180deg)
+        translateZ(2px);
+}
+
+
+/* ================================= */
+/* RETRO CARTA PUNTA */
+/* ================================= */
+
+.flap-tip-back .flap-tip-paper {
+    background: var(--envelope-paper-back);
+}
+
+
+/* ================================= */
+/* BORDI DEL LEMBO */
+/* ================================= */
+
+.flap-main-front::before,
+.flap-main-back::before,
+.flap-tip-front::before,
+.flap-tip-back::before {
     content: "";
 
     position: absolute;
 
-    top: 0;
-    left: -2px;
+    inset: -1px;
 
-    width: calc(100% + 4px);
-    height: calc(100% + 3px);
+    z-index: -1;
 
+    opacity: 0.65;
+
+    background: var(--envelope-edge);
+}
+
+
+/* forma bordo parte principale */
+
+.flap-main-front::before,
+.flap-main-back::before {
     clip-path: polygon(
         0 0,
         100% 0,
-        50% 100%
+        50% 74%
     );
 
     -webkit-clip-path: polygon(
         0 0,
         100% 0,
-        50% 100%
+        50% 74%
     );
-
-    background: var(--envelope-edge);
-
-    opacity: 0.72;
-
-    z-index: -1;
 }
 
 
-/* ================================= */
-/* OMBRA INIZIALE DEL LEMBO */
-/* ================================= */
+/* forma bordo punta */
 
-.envelope-flap-front .envelope-flap-paper {
-    filter:
-        drop-shadow(
-            0 4px 3px
-            rgba(70, 50, 34, 0.16)
-        );
+.flap-tip-front::before,
+.flap-tip-back::before {
+    clip-path: polygon(
+        50% 74%,
+        100% 0,
+        50% 100%,
+        0 0
+    );
+
+    -webkit-clip-path: polygon(
+        50% 74%,
+        100% 0,
+        50% 100%,
+        0 0
+    );
 }
 
 
@@ -561,8 +508,8 @@ body {
 
     z-index: 10;
 
-    width: 118px;
-    height: 118px;
+    width: 116px;
+    height: 116px;
 
     transform:
         translate(-50%, 50%)
@@ -573,11 +520,10 @@ body {
     justify-content: center;
     align-items: center;
 
-    pointer-events: none;
-
     backface-visibility: hidden;
-
     -webkit-backface-visibility: hidden;
+
+    pointer-events: none;
 }
 
 
@@ -599,415 +545,159 @@ body {
 
     filter:
         drop-shadow(
-            0 8px 8px
-            rgba(68, 25, 22, 0.28)
+            0 6px 6px
+            rgba(65, 24, 20, 0.24)
         );
 }
 
 
 /* ================================= */
-/* OMBRA DINAMICA DEL LEMBO */
+/* APERTURA DEL LEMBO PRINCIPALE */
 /* ================================= */
 
-.envelope-flap-shadow {
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    z-index: 8;
-
-    width: 70%;
-    height: 12%;
-
-    transform:
-        translate(-50%, -50%)
-        scaleY(0.15);
-
-    transform-origin: center;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            rgba(60, 42, 28, 0.24) 0%,
-            rgba(60, 42, 28, 0.12) 45%,
-            rgba(60, 42, 28, 0) 75%
-        );
-
-    filter: blur(8px);
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    will-change:
-        opacity,
-        transform;
-}
-
-
-/* ================================= */
-/* APERTURA DEL LEMBO */
-/* ================================= */
-
-.envelope-screen.opening .envelope-flap {
+.envelope-screen.opening .flap-main {
     animation:
-        envelopeFlapOpen
-        1.8s
+        flapMainOpen
+        2.6s
+        cubic-bezier(0.20, 0.64, 0.30, 1)
         forwards;
 }
 
 
 /* ================================= */
-/* ROTAZIONE 3D DEL LEMBO */
+/* APERTURA DELLA PUNTA */
 /* ================================= */
 
-@keyframes envelopeFlapOpen {
+.envelope-screen.opening .flap-tip {
+    animation:
+        flapTipOpen
+        2.6s
+        cubic-bezier(0.20, 0.64, 0.30, 1)
+        forwards;
+}
+
+
+/* ================================= */
+/* MOVIMENTO PRINCIPALE */
+/* ================================= */
+
+@keyframes flapMainOpen {
 
     0% {
-        transform:
-            rotateX(0deg)
-            translateZ(0);
+        transform: rotateX(0deg);
     }
 
     /*
-        Piccolo scatto iniziale.
+        Scatto iniziale.
     */
 
-    6% {
-        transform:
-            rotateX(12deg)
-            translateZ(2px);
+    4% {
+        transform: rotateX(8deg);
     }
 
     /*
-        Da qui rallenta.
+        Da qui movimento molto più lento.
     */
 
-    18% {
-        transform:
-            rotateX(28deg)
-            translateZ(5px);
+    16% {
+        transform: rotateX(24deg);
     }
 
     34% {
-        transform:
-            rotateX(54deg)
-            translateZ(9px);
+        transform: rotateX(58deg);
     }
 
-    /*
-        Punto di massima tridimensionalità.
-    */
-
     52% {
-        transform:
-            rotateX(92deg)
-            translateZ(14px);
+        transform: rotateX(94deg);
     }
 
     70% {
-        transform:
-            rotateX(129deg)
-            translateZ(9px);
+        transform: rotateX(132deg);
     }
 
     86% {
-        transform:
-            rotateX(159deg)
-            translateZ(4px);
+        transform: rotateX(161deg);
     }
 
     100% {
-        transform:
-            rotateX(180deg)
-            translateZ(0);
+        transform: rotateX(180deg);
     }
 
 }
 
 
 /* ================================= */
-/* LUCE FRONTE DEL LEMBO */
-/* ================================= */
-
-.envelope-screen.opening
-.envelope-flap-front
-.envelope-flap-paper {
-
-    animation:
-        envelopeFlapFrontLight
-        1.8s
-        forwards;
-}
-
-
-/* ================================= */
-/* VARIAZIONE LUCE FRONTE */
-/* ================================= */
-
-@keyframes envelopeFlapFrontLight {
-
-    0% {
-        filter:
-            brightness(1)
-            drop-shadow(
-                0 4px 3px
-                rgba(70, 50, 34, 0.16)
-            );
-    }
-
-    20% {
-        filter:
-            brightness(0.98)
-            drop-shadow(
-                0 8px 7px
-                rgba(70, 50, 34, 0.19)
-            );
-    }
-
-    40% {
-        filter:
-            brightness(0.95)
-            drop-shadow(
-                0 14px 12px
-                rgba(70, 50, 34, 0.22)
-            );
-    }
-
-    52% {
-        filter:
-            brightness(0.92)
-            drop-shadow(
-                0 18px 15px
-                rgba(70, 50, 34, 0.23)
-            );
-    }
-
-    100% {
-        filter:
-            brightness(0.96)
-            drop-shadow(
-                0 4px 4px
-                rgba(70, 50, 34, 0.10)
-            );
-    }
-
-}
-
-
-/* ================================= */
-/* LUCE RETRO DEL LEMBO */
-/* ================================= */
-
-.envelope-screen.opening
-.envelope-flap-back
-.envelope-flap-paper {
-
-    animation:
-        envelopeFlapBackLight
-        1.8s
-        forwards;
-}
-
-
-/* ================================= */
-/* VARIAZIONE LUCE RETRO */
-/* ================================= */
-
-@keyframes envelopeFlapBackLight {
-
-    0% {
-        filter:
-            brightness(0.90);
-    }
-
-    42% {
-        filter:
-            brightness(0.92);
-    }
-
-    58% {
-        filter:
-            brightness(0.96)
-            drop-shadow(
-                0 12px 10px
-                rgba(70, 50, 34, 0.17)
-            );
-    }
-
-    78% {
-        filter:
-            brightness(0.99)
-            drop-shadow(
-                0 8px 7px
-                rgba(70, 50, 34, 0.12)
-            );
-    }
-
-    100% {
-        filter:
-            brightness(1);
-    }
-
-}
-
-
-/* ================================= */
-/* OMBRA DURANTE LA ROTAZIONE */
-/* ================================= */
-
-.envelope-screen.opening
-.envelope-flap-shadow {
-
-    animation:
-        envelopeFlapShadowMove
-        1.8s
-        forwards;
-}
-
-
-/* ================================= */
-/* MOVIMENTO OMBRA */
-/* ================================= */
-
-@keyframes envelopeFlapShadowMove {
-
-    0% {
-        opacity: 0;
-
-        transform:
-            translate(-50%, -50%)
-            scaleX(0.85)
-            scaleY(0.12);
-    }
-
-    12% {
-        opacity: 0.12;
-
-        transform:
-            translate(-50%, -48%)
-            scaleX(0.90)
-            scaleY(0.24);
-    }
-
-    32% {
-        opacity: 0.26;
-
-        transform:
-            translate(-50%, -42%)
-            scaleX(0.82)
-            scaleY(0.55);
-    }
-
-    52% {
-        opacity: 0.34;
-
-        transform:
-            translate(-50%, -32%)
-            scaleX(0.68)
-            scaleY(1);
-    }
-
-    72% {
-        opacity: 0.20;
-
-        transform:
-            translate(-50%, -20%)
-            scaleX(0.78)
-            scaleY(0.52);
-    }
-
-    100% {
-        opacity: 0;
-
-        transform:
-            translate(-50%, -5%)
-            scaleX(0.90)
-            scaleY(0.12);
-    }
-
-}
-
-
-/* ================================= */
-/* DISCESA DEL CORPO DELLA BUSTA */
-/* ================================= */
-
-.envelope-screen.reveal
-.envelope-body {
-
-    animation:
-        envelopeBodyDown
-        1.35s
-        forwards;
-}
-
-
-/* ================================= */
-/* MOVIMENTO CORPO */
-/* ================================= */
-
-@keyframes envelopeBodyDown {
-
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(105%);
-    }
-
-}
-
-
-/* ================================= */
-/* MOVIMENTO DEL CARTONCINO */
+/* MOVIMENTO DELLA PUNTA */
 /* ================================= */
 
 /*
-    Un leggerissimo movimento verso l'alto
-    fa sembrare che il cartoncino venga
-    liberato dalla tasca.
+    La punta segue la parte principale
+    con un leggerissimo ritardo.
+
+    Questa differenza è ciò che dà
+    la sensazione che la carta si fletta.
 */
 
-.envelope-screen.reveal
-.envelope-letter {
-
-    animation:
-        envelopeLetterRise
-        1.20s
-        forwards;
-}
-
-
-@keyframes envelopeLetterRise {
+@keyframes flapTipOpen {
 
     0% {
-        transform:
-            translateX(-50%)
-            translateY(0)
-            translateZ(2px);
+        transform: rotateX(0deg);
+    }
+
+    4% {
+        transform: rotateX(1deg);
+    }
+
+    10% {
+        transform: rotateX(4deg);
+    }
+
+    18% {
+        transform: rotateX(9deg);
+    }
+
+    34% {
+        transform: rotateX(5deg);
+    }
+
+    52% {
+        transform: rotateX(-4deg);
+    }
+
+    70% {
+        transform: rotateX(-7deg);
+    }
+
+    86% {
+        transform: rotateX(-3deg);
     }
 
     100% {
-        transform:
-            translateX(-50%)
-            translateY(-4%)
-            translateZ(2px);
+        transform: rotateX(0deg);
     }
 
 }
 
 
 /* ================================= */
-/* FINE ANIMAZIONE */
+/* LEGGERA OMBRA DEL LEMBO */
 /* ================================= */
 
-.envelope-screen.opened {
-    visibility: hidden;
+/*
+    Niente ombre animate pesanti.
 
-    pointer-events: none;
+    Questa è volutamente statica:
+    migliora la profondità senza
+    appesantire l'animazione.
+*/
+
+.flap-main-front .flap-main-paper,
+.flap-tip-front .flap-tip-paper {
+    filter:
+        drop-shadow(
+            0 3px 2px
+            rgba(70, 50, 34, 0.13)
+        );
 }
 
 
@@ -1027,7 +717,6 @@ body {
     flex-direction: column;
 
     justify-content: center;
-
     align-items: center;
 
     padding: 40px 20px;
@@ -1093,7 +782,6 @@ h1 {
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 12px;
@@ -1111,7 +799,6 @@ h1 {
 
 .pin-icon {
     width: 32px;
-
     height: 42px;
 
     object-fit: contain;
@@ -1181,7 +868,6 @@ h1 {
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 12px;
@@ -1193,11 +879,9 @@ h1 {
     display: inline-flex;
 
     justify-content: center;
-
     align-items: center;
 
     min-width: 150px;
-
     min-height: 48px;
 
     padding: 13px 22px;
@@ -1286,7 +970,6 @@ h1 {
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 }
 
@@ -1394,7 +1077,9 @@ h1 {
 
     padding-top: 26px;
 
-    border-top: 1px solid rgba(60, 55, 50, 0.08);
+    border-top:
+        1px solid
+        rgba(60, 55, 50, 0.08);
 
     opacity: 1;
 
@@ -1464,7 +1149,6 @@ h1 {
     position: fixed;
 
     left: 50%;
-
     bottom: 18px;
 
     transform: translateX(-50%);
@@ -1483,9 +1167,12 @@ h1 {
 
     color: var(--muted);
 
-    background: rgba(250, 247, 242, 0.82);
+    background:
+        rgba(250, 247, 242, 0.82);
 
-    border: 1px solid rgba(70, 65, 60, 0.06);
+    border:
+        1px solid
+        rgba(70, 65, 60, 0.06);
 
     border-radius: 999px;
 
@@ -1554,32 +1241,10 @@ h1 {
 
 @media (max-width: 600px) {
 
-    .envelope-letter {
-        width: 84vw;
-
-        height: 70%;
-
-        top: 15%;
-    }
-
-
-    .envelope-letter-content {
-        padding: 30px 18px;
-    }
-
-
-    .envelope-letter-portrait {
-        width: min(70%, 280px);
-
-        margin-bottom: 18px;
-    }
-
-
     .wax-seal {
         width: 104px;
         height: 104px;
     }
-
 
     .hero {
         min-height: 100vh;
@@ -1589,13 +1254,11 @@ h1 {
         padding: 35px 20px;
     }
 
-
     .portrait {
         width: min(72vw, 340px);
 
         margin-bottom: 20px;
     }
-
 
     .section {
         width: calc(100% - 28px);
@@ -1603,18 +1266,15 @@ h1 {
         padding-top: 40px;
     }
 
-
     .section-title {
         margin-bottom: 30px;
     }
-
 
     .card {
         padding: 30px 18px 22px;
 
         border-radius: 24px;
     }
-
 
     .button-row {
         display: grid;
@@ -1627,14 +1287,12 @@ h1 {
         gap: 10px;
     }
 
-
     .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
 
         justify-content: center;
     }
-
 
     .rsvp-section .button-row .button,
     .photos-section .button-row .button {
@@ -1643,22 +1301,18 @@ h1 {
         min-width: 170px;
     }
 
-
     .button {
         min-width: 0;
 
         width: 100%;
 
         padding-left: 10px;
-
         padding-right: 10px;
     }
-
 
     .ceremony-booklet {
         margin-top: 14px;
     }
-
 
     .ceremony-booklet .button {
         width: auto;
@@ -1666,11 +1320,9 @@ h1 {
         min-width: 220px;
     }
 
-
     .access-box {
         margin-top: 24px;
     }
-
 
     .gift-intro {
         font-size: 1rem;
@@ -1678,18 +1330,15 @@ h1 {
         line-height: 1.65;
     }
 
-
     .bank-code {
         font-size: 0.93rem;
     }
-
 
     .copy-bank-button {
         width: auto;
 
         min-width: 150px;
     }
-
 
     .page-end {
         height: 180px;
@@ -1706,21 +1355,17 @@ h1 {
 
     .wax-seal {
         width: 94px;
-
         height: 94px;
     }
-
 
     .button-row {
         grid-template-columns: 1fr;
     }
 
-
     .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
     }
-
 
     .ceremony-booklet .button {
         min-width: 0;
@@ -1737,14 +1382,9 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
 
-    .envelope-flap,
-    .envelope-body,
-    .envelope-letter,
-    .envelope-flap-shadow,
-    .envelope-flap-paper {
+    .flap-main,
+    .flap-tip {
         animation-duration: 0.01ms !important;
-
-        animation-delay: 0ms !important;
     }
 
 }

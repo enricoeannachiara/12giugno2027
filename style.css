@@ -99,6 +99,10 @@ h1 {
     padding-bottom: 70px;
 }
 
+.rsvp-section {
+    padding-top: 50px;
+}
+
 .section-title {
     display: flex;
 
@@ -260,6 +264,21 @@ h1 {
 
 .button-secondary:hover {
     background: #E6E0EF;
+}
+
+
+/* -------------------------------- */
+/* RSVP */
+/* -------------------------------- */
+
+.rsvp-section .button-row {
+    justify-content: center;
+
+    width: 100%;
+}
+
+.rsvp-section .button {
+    min-width: 190px;
 }
 
 
@@ -453,12 +472,14 @@ h1 {
         gap: 10px;
     }
 
+    .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
 
         justify-content: center;
     }
 
+    .rsvp-section .button-row .button,
     .photos-section .button-row .button {
         width: auto;
 
@@ -495,6 +516,7 @@ h1 {
         grid-template-columns: 1fr;
     }
 
+    .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
     }

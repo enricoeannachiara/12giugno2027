@@ -1,194 +1,431 @@
-const scrollIndicator = document.getElementById("scrollIndicator");
+<!DOCTYPE html>
+<html lang="it">
 
-const copyCodeButton = document.getElementById("copyCodeButton");
-const copyMessage = document.getElementById("copyMessage");
-const accessCode = document.getElementById("accessCode");
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const giftToggle = document.getElementById("giftToggle");
-const giftDetails = document.getElementById("giftDetails");
+    <title>Enrico & Annachiara</title>
 
-const copyIbanButton = document.getElementById("copyIbanButton");
-const copyIbanMessage = document.getElementById("copyIbanMessage");
-const ibanCode = document.getElementById("ibanCode");
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
 
-/* -------------------------------- */
-/* INDICATORE "SCORRI" */
-/* -------------------------------- */
 
-function updateScrollIndicator() {
+    <!-- ======================================== -->
+    <!-- HERO -->
+    <!-- ======================================== -->
 
-    const scrollPosition =
-        window.scrollY + window.innerHeight;
+    <section class="hero">
 
-    const pageHeight =
-        document.documentElement.scrollHeight;
+        <img
+            src="images/ritratto.png"
+            alt="Enrico e Annachiara"
+            class="portrait"
+        >
 
-    const distanceFromBottom =
-        pageHeight - scrollPosition;
+        <h1>Enrico & Annachiara</h1>
 
-    if (distanceFromBottom < 90) {
+        <p class="data">
+            12 giugno 2027
+        </p>
 
-        scrollIndicator.classList.add("hidden");
+    </section>
 
-    } else {
 
-        scrollIndicator.classList.remove("hidden");
+    <!-- ======================================== -->
+    <!-- CONFERMA PRESENZA -->
+    <!-- ======================================== -->
 
-    }
+    <section class="section rsvp-section">
 
-}
+        <div class="section-title">
+            <h2>Conferma la tua presenza</h2>
+        </div>
 
+        <article class="card">
 
-/* -------------------------------- */
-/* COPIA CODICE WEDSHOOTS */
-/* -------------------------------- */
+            <div class="card-icon">💌</div>
 
-async function copyAccessCode() {
+            <h3>Ci sarai?</h3>
 
-    const code =
-        accessCode.textContent.trim();
+            <p class="card-text">
+                Compila il modulo per comunicarci la tua partecipazione
+                e aiutarci a organizzare al meglio la giornata.
+            </p>
 
-    try {
+            <div class="button-row">
 
-        await navigator.clipboard.writeText(code);
+                <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfR47MLRdUuwzttRWqgoxmSrlCjPIJb15usxh1CkX8zXxw4Rw/viewform"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Compila il modulo
+                </a>
 
-        copyMessage.textContent =
-            "Codice copiato";
+            </div>
 
-        copyCodeButton.textContent =
-            "Copiato ✓";
+        </article>
 
-        setTimeout(() => {
+    </section>
 
-            copyMessage.textContent = "";
 
-            copyCodeButton.textContent =
-                "Copia codice";
+    <!-- ======================================== -->
+    <!-- I LUOGHI DELLA GIORNATA -->
+    <!-- ======================================== -->
 
-        }, 1800);
+    <section class="section locations-section">
 
-    } catch (error) {
+        <div class="section-title">
 
-        copyMessage.textContent =
-            "Tieni premuto sul codice per copiarlo";
+            <img
+                src="images/pin.png"
+                alt=""
+                class="pin-icon"
+            >
 
-    }
+            <h2>I luoghi della giornata</h2>
 
-}
+        </div>
 
 
-/* -------------------------------- */
-/* APERTURA / CHIUSURA DATI BONIFICO */
-/* -------------------------------- */
+        <!-- CASA DELLO SPOSO -->
 
-function toggleGiftDetails() {
+        <article class="card">
 
-    const isHidden =
-        giftDetails.hasAttribute("hidden");
+            <div class="card-icon">🏠</div>
 
-    if (isHidden) {
+            <h3>Casa dello sposo</h3>
 
-        giftDetails.removeAttribute("hidden");
+            <div class="button-row">
 
-        giftToggle.setAttribute(
-            "aria-expanded",
-            "true"
-        );
+                <a
+                    href="https://maps.app.goo.gl/kmqRrXZQPzqEgdiU8"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
 
-        giftToggle.textContent =
-            "Nascondi";
+                <a
+                    href="https://waze.com/ul?ll=40.608131%2C14.978180&navigate=yes"
+                    class="button button-secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
 
-    } else {
+            </div>
 
-        giftDetails.setAttribute(
-            "hidden",
-            ""
-        );
+        </article>
 
-        giftToggle.setAttribute(
-            "aria-expanded",
-            "false"
-        );
 
-        giftToggle.textContent =
-            "Scopri di più";
+        <!-- CASA DELLA SPOSA -->
 
-    }
+        <article class="card">
 
-}
+            <div class="card-icon">🏠</div>
 
+            <h3>Casa della sposa</h3>
 
-/* -------------------------------- */
-/* COPIA IBAN */
-/* -------------------------------- */
+            <div class="button-row">
 
-async function copyIban() {
+                <a
+                    href="https://maps.app.goo.gl/kNUKDeFUFzFnu2As5"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
 
-    const iban =
-        ibanCode.textContent.trim();
+                <a
+                    href="https://waze.com/ul?ll=40.739052%2C14.755519&navigate=yes"
+                    class="button button-secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
 
-    try {
+            </div>
 
-        await navigator.clipboard.writeText(iban);
+        </article>
 
-        copyIbanMessage.textContent =
-            "IBAN copiato";
 
-        copyIbanButton.textContent =
-            "Copiato ✓";
+        <!-- CHIESA -->
 
-        setTimeout(() => {
+        <article class="card">
 
-            copyIbanMessage.textContent = "";
+            <div class="card-icon">⛪️</div>
 
-            copyIbanButton.textContent =
-                "Copia IBAN";
+            <h3>Chiesa di San Martino Vescovo</h3>
 
-        }, 1800);
+            <div class="button-row">
 
-    } catch (error) {
+                <a
+                    href="https://maps.app.goo.gl/6omwCTy1Atd1c3Cb7"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
 
-        copyIbanMessage.textContent =
-            "Tieni premuto sull'IBAN per copiarlo";
+                <a
+                    href="https://waze.com/ul?ll=40.761874%2C14.785191&navigate=yes"
+                    class="button button-secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
 
-    }
+            </div>
 
-}
+            <div class="ceremony-booklet">
 
+                <a
+                    href="libretto.pdf"
+                    class="button button-secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    📖 Segui con noi la cerimonia
+                </a>
 
-/* -------------------------------- */
-/* EVENTI */
-/* -------------------------------- */
+            </div>
 
-window.addEventListener(
-    "scroll",
-    updateScrollIndicator
-);
+        </article>
 
-window.addEventListener(
-    "resize",
-    updateScrollIndicator
-);
 
-copyCodeButton.addEventListener(
-    "click",
-    copyAccessCode
-);
+        <!-- MASSERIA -->
 
-giftToggle.addEventListener(
-    "click",
-    toggleGiftDetails
-);
+        <article class="card">
 
-copyIbanButton.addEventListener(
-    "click",
-    copyIban
-);
+            <div class="card-icon">🍽️</div>
 
+            <h3>Masseria La Morella</h3>
 
-/* -------------------------------- */
-/* AVVIO */
-/* -------------------------------- */
+            <div class="button-row">
 
-updateScrollIndicator();
+                <a
+                    href="https://maps.app.goo.gl/2apy9TeoYDG768eM7"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Maps
+                </a>
+
+                <a
+                    href="https://waze.com/ul?ll=40.610224%2C14.942694&navigate=yes"
+                    class="button button-secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Vai con Waze
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ======================================== -->
+    <!-- FOTO -->
+    <!-- ======================================== -->
+
+    <section class="section photos-section">
+
+        <div class="section-title">
+            <h2>Condividi i tuoi ricordi</h2>
+        </div>
+
+        <article class="card">
+
+            <div class="card-icon">📸</div>
+
+            <h3>Album fotografico</h3>
+
+            <p class="card-text">
+                Durante la giornata potrai condividere con noi
+                le foto e i video che scatterai.
+            </p>
+
+            <div class="button-row">
+
+                <a
+                    href="https://www.wedshoots.com/it?albumId=ITb2ea31c8"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Apri WedShoots
+                </a>
+
+            </div>
+
+
+            <div class="access-box">
+
+                <span class="access-label">
+                    Codice di accesso
+                </span>
+
+                <strong id="accessCode">
+                    ITb2ea31c8
+                </strong>
+
+                <button
+                    type="button"
+                    class="button button-secondary"
+                    id="copyCodeButton"
+                >
+                    Copia codice
+                </button>
+
+                <span
+                    class="copy-message"
+                    id="copyMessage"
+                    aria-live="polite"
+                ></span>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ======================================== -->
+    <!-- IL NOSTRO SOGNO -->
+    <!-- ======================================== -->
+
+    <section class="section gift-section">
+
+        <div class="section-title">
+            <h2>Il nostro sogno</h2>
+        </div>
+
+        <article class="card gift-card">
+
+            <div class="card-icon">❤️</div>
+
+            <p class="gift-intro">
+                Il nostro desiderio più grande è avervi con noi nel nostro giorno.
+                Se desiderate contribuire alla realizzazione del nostro sogno,
+                cliccate qui.
+            </p>
+
+            <button
+                type="button"
+                class="button button-primary"
+                id="giftToggle"
+                aria-expanded="false"
+                aria-controls="giftDetails"
+            >
+                Scopri di più
+            </button>
+
+
+            <div
+                class="gift-details"
+                id="giftDetails"
+                hidden
+            >
+
+                <div class="bank-detail">
+
+                    <span class="bank-label">
+                        Intestatario
+                    </span>
+
+                    <strong>
+                        Enrico Forte
+                    </strong>
+
+                </div>
+
+
+                <div class="bank-detail">
+
+                    <span class="bank-label">
+                        IBAN
+                    </span>
+
+                    <strong
+                        class="bank-code"
+                        id="ibanCode"
+                    >
+                        IT95D0367401600000878189011
+                    </strong>
+
+                    <button
+                        type="button"
+                        class="button button-secondary copy-bank-button"
+                        id="copyIbanButton"
+                    >
+                        Copia IBAN
+                    </button>
+
+                    <span
+                        class="copy-message"
+                        id="copyIbanMessage"
+                        aria-live="polite"
+                    ></span>
+
+                </div>
+
+
+                <div class="bank-detail">
+
+                    <span class="bank-label">
+                        BIC / SWIFT
+                    </span>
+
+                    <strong class="bank-code">
+                        TRBKITMMXXX
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ======================================== -->
+    <!-- SPAZIO FINALE -->
+    <!-- ======================================== -->
+
+    <div class="page-end"></div>
+
+
+    <!-- ======================================== -->
+    <!-- SCORRI IN SOVRAIMPRESSIONE -->
+    <!-- ======================================== -->
+
+    <div
+        class="scroll-indicator"
+        id="scrollIndicator"
+    >
+        <span>Scorri</span>
+        <span class="scroll-arrow">↓</span>
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

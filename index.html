@@ -22,7 +22,7 @@
 
 
     <!-- ================================================== -->
-    <!-- TEST LEMBO BUSTA - PAGE CURL                        -->
+    <!-- APERTURA INIZIALE - PAGE CURL                      -->
     <!-- ================================================== -->
 
     <div
@@ -32,7 +32,7 @@
     >
 
         <div
-            class="envelope-scene"
+            class="envelope-stage"
             id="envelopeButton"
             role="button"
             tabindex="0"
@@ -41,138 +41,108 @@
 
 
             <!-- ========================================== -->
-            <!-- LEMBO SEGMENTATO                          -->
+            <!-- MOTORE PAGE FLIP                          -->
             <!-- ========================================== -->
 
-            <div class="pagecurl-flap">
+            <!--
+                StPageFlip lavora normalmente con pagine
+                rettangolari e con movimento orizzontale.
+
+                Nel CSS ruoteremo l'intero viewer di 90°
+                per trasformare il page-flip orizzontale
+                in un'apertura verticale del lembo.
+
+                All'interno della pagina rettangolare
+                mostreremo soltanto il triangolo della
+                busta tramite una maschera CSS.
+            -->
+
+            <div class="flap-flip-rotation">
+
+                <div
+                    class="flap-book"
+                    id="flapBook"
+                >
 
 
-                <!-- FASCIA 1 -->
+                    <!-- ================================== -->
+                    <!-- PAGINA 1 - LEMBO                  -->
+                    <!-- ================================== -->
 
-                <div class="flap-strip strip-1">
+                    <!--
+                        data-density="soft"
 
-                    <div class="strip-face strip-front"></div>
+                        È fondamentale:
+                        vogliamo il comportamento di una
+                        pagina flessibile, non quello di
+                        una copertina rigida.
+                    -->
 
-                    <div class="strip-face strip-back"></div>
+                    <div
+                        class="flap-page flap-page-front"
+                        data-density="soft"
+                    >
 
-                </div>
-
-
-                <!-- FASCIA 2 -->
-
-                <div class="flap-strip strip-2">
-
-                    <div class="strip-face strip-front"></div>
-
-                    <div class="strip-face strip-back"></div>
-
-                </div>
-
-
-                <!-- FASCIA 3 -->
-
-                <div class="flap-strip strip-3">
-
-                    <div class="strip-face strip-front"></div>
-
-                    <div class="strip-face strip-back"></div>
-
-                </div>
+                        <div class="flap-page-content">
 
 
-                <!-- FASCIA 4 -->
+                            <!-- ========================== -->
+                            <!-- CARTA DEL LEMBO            -->
+                            <!-- ========================== -->
 
-                <div class="flap-strip strip-4">
-
-                    <div class="strip-face strip-front"></div>
-
-                    <div class="strip-face strip-back"></div>
-
-                </div>
+                            <div class="flap-paper">
 
 
-                <!-- FASCIA 5 -->
+                                <!-- ====================== -->
+                                <!-- SIGILLO                -->
+                                <!-- ====================== -->
 
-                <div class="flap-strip strip-5">
+                                <div class="wax-seal">
 
-                    <div class="strip-face strip-front"></div>
+                                    <img
+                                        src="images/sigillo-AE.png"
+                                        alt=""
+                                        class="wax-image"
+                                        draggable="false"
+                                    >
 
-                    <div class="strip-face strip-back"></div>
+                                </div>
 
-                </div>
-
-
-                <!-- FASCIA 6 -->
-
-                <div class="flap-strip strip-6">
-
-                    <div class="strip-face strip-front"></div>
-
-                    <div class="strip-face strip-back"></div>
-
-                </div>
-
-
-                <!-- FASCIA 7 -->
-
-                <div class="flap-strip strip-7">
-
-                    <div class="strip-face strip-front"></div>
-
-                    <div class="strip-face strip-back"></div>
-
-                </div>
-
-
-                <!-- FASCIA 8 -->
-
-                <div class="flap-strip strip-8">
-
-                    <div class="strip-face strip-front"></div>
-
-                    <div class="strip-face strip-back"></div>
-
-                </div>
-
-
-                <!-- FASCIA 9 -->
-
-                <div class="flap-strip strip-9">
-
-                    <div class="strip-face strip-front"></div>
-
-                    <div class="strip-face strip-back"></div>
-
-                </div>
-
-
-                <!-- FASCIA 10 -->
-
-                <div class="flap-strip strip-10">
-
-                    <div class="strip-face strip-front">
-
-                        <!-- SIGILLO -->
-
-                        <div class="wax-seal">
-
-                            <img
-                                src="images/sigillo-AE.png"
-                                alt=""
-                                class="wax-image"
-                                draggable="false"
-                            >
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <div class="strip-face strip-back"></div>
+
+                    <!-- ================================== -->
+                    <!-- PAGINA 2 - RETRO / DESTINAZIONE   -->
+                    <!-- ================================== -->
+
+                    <!--
+                        Questa seconda pagina serve al
+                        motore per completare lo sfoglio.
+
+                        Visivamente resterà trasparente:
+                        dietro deve vedersi direttamente
+                        la vera Hero del sito.
+                    -->
+
+                    <div
+                        class="flap-page flap-page-back"
+                        data-density="soft"
+                    >
+
+                        <div class="flap-page-content flap-page-transparent">
+                        </div>
+
+                    </div>
+
 
                 </div>
 
-
             </div>
+
 
         </div>
 
@@ -674,7 +644,22 @@
 
 
     <!-- ================================================== -->
-    <!-- SCRIPT                                             -->
+    <!-- STPAGEFLIP                                         -->
+    <!-- ================================================== -->
+
+    <!--
+        Copia il file ufficiale:
+        dist/js/page-flip.browser.js
+
+        nella cartella:
+        js/page-flip.browser.js
+    -->
+
+    <script src="js/page-flip.browser.js"></script>
+
+
+    <!-- ================================================== -->
+    <!-- SCRIPT DEL SITO                                    -->
     <!-- ================================================== -->
 
     <script src="script.js"></script>

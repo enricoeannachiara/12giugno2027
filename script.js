@@ -12,7 +12,7 @@ let envelopeOpened = false;
 
 
 /* ========================================= */
-/* APERTURA BUSTA */
+/* APERTURA DELLA BUSTA */
 /* ========================================= */
 
 function openEnvelope() {
@@ -32,54 +32,50 @@ function openEnvelope() {
      * FASE 1
      * -----------------------------------------
      *
-     * Il tocco non provoca un movimento
-     * immediato.
+     * L'apertura parte subito.
      *
-     * Attendiamo 100 ms per rendere
-     * l'apertura leggermente più naturale.
+     * Lo "scatto" iniziale del lembo
+     * non viene gestito qui:
+     * è già incorporato nei keyframe CSS.
      *
-     * Dopo 100 ms il lembo comincia
-     * lentamente a ruotare.
+     * Durata totale rotazione lembo:
+     * circa 1,8 secondi.
      */
 
-    setTimeout(() => {
-
-        envelopeScreen.classList.add("opening");
-
-    }, 100);
+    envelopeScreen.classList.add("opening");
 
 
     /*
      * FASE 2
      * -----------------------------------------
      *
-     * Il lembo ha già iniziato ad aprirsi.
+     * Aspettiamo che il lembo sia già
+     * abbondantemente sollevato.
      *
-     * La Hero sottostante è visibile attraverso
-     * l'apertura triangolare della tasca.
-     *
-     * Solo a questo punto iniziamo a far
-     * scendere il corpo inferiore della busta.
+     * A questo punto la partecipazione
+     * interna è ben visibile e iniziamo
+     * a far scendere la struttura della busta.
      */
 
     setTimeout(() => {
 
         envelopeScreen.classList.add("reveal");
 
-    }, 900);
+    }, 1050);
 
 
     /*
      * FASE 3
      * -----------------------------------------
      *
-     * Aspettiamo che:
+     * Attendiamo la conclusione sia:
      *
-     * - il lembo abbia terminato la rotazione;
-     * - il corpo della busta sia sceso;
-     * - la Hero sia ormai completamente visibile.
+     * - della rotazione del lembo;
+     * - della discesa della busta;
+     * - del leggero movimento del cartoncino.
      *
-     * Solo ora togliamo l'overlay.
+     * Solo allora togliamo completamente
+     * l'overlay.
      */
 
     setTimeout(() => {
@@ -93,7 +89,7 @@ function openEnvelope() {
 
         updateScrollIndicator();
 
-    }, 2400);
+    }, 2550);
 
 }
 
@@ -111,12 +107,7 @@ if (envelopeButton) {
 
 
     /*
-     * Accessibilità tastiera.
-     *
-     * La busta può essere aperta anche con:
-     *
-     * - INVIO
-     * - BARRA SPAZIATRICE
+     * ACCESSIBILITÀ TASTIERA
      */
 
     envelopeButton.addEventListener(
@@ -156,9 +147,8 @@ function updateScrollIndicator() {
 
 
     /*
-     * Finché la busta è visibile,
-     * l'indicatore "Scorri" deve
-     * rimanere nascosto.
+     * Finché la busta è ancora presente,
+     * l'indicatore resta nascosto.
      */
 
     if (
@@ -183,9 +173,8 @@ function updateScrollIndicator() {
 
 
     /*
-     * Nascondiamo l'indicatore quando
-     * ci troviamo quasi alla fine
-     * della pagina.
+     * Nascondiamo "Scorri" quando
+     * siamo quasi a fondo pagina.
      */
 
     if (distanceFromBottom < 90) {
@@ -210,7 +199,6 @@ window.addEventListener(
     updateScrollIndicator,
     { passive: true }
 );
-
 
 window.addEventListener(
     "resize",
@@ -238,7 +226,6 @@ async function copyAccessCode() {
         return;
     }
 
-
     const code =
         accessCode.textContent.trim();
 
@@ -249,35 +236,22 @@ async function copyAccessCode() {
 
 
         if (copyMessage) {
-
-            copyMessage.textContent =
-                "Codice copiato";
-
+            copyMessage.textContent = "Codice copiato";
         }
 
-
         if (copyCodeButton) {
-
-            copyCodeButton.textContent =
-                "Copiato ✓";
-
+            copyCodeButton.textContent = "Copiato ✓";
         }
 
 
         setTimeout(() => {
 
             if (copyMessage) {
-
                 copyMessage.textContent = "";
-
             }
 
-
             if (copyCodeButton) {
-
-                copyCodeButton.textContent =
-                    "Copia codice";
-
+                copyCodeButton.textContent = "Copia codice";
             }
 
         }, 1800);
@@ -391,7 +365,6 @@ async function copyIban() {
         return;
     }
 
-
     const iban =
         ibanCode.textContent.trim();
 
@@ -402,35 +375,22 @@ async function copyIban() {
 
 
         if (copyIbanMessage) {
-
-            copyIbanMessage.textContent =
-                "IBAN copiato";
-
+            copyIbanMessage.textContent = "IBAN copiato";
         }
 
-
         if (copyIbanButton) {
-
-            copyIbanButton.textContent =
-                "Copiato ✓";
-
+            copyIbanButton.textContent = "Copiato ✓";
         }
 
 
         setTimeout(() => {
 
             if (copyIbanMessage) {
-
                 copyIbanMessage.textContent = "";
-
             }
 
-
             if (copyIbanButton) {
-
-                copyIbanButton.textContent =
-                    "Copia IBAN";
-
+                copyIbanButton.textContent = "Copia IBAN";
             }
 
         }, 1800);
@@ -463,14 +423,5 @@ if (copyIbanButton) {
 /* ========================================= */
 /* AVVIO */
 /* ========================================= */
-
-/*
- * Al caricamento della pagina:
- *
- * - la busta è chiusa;
- * - il sigillo è al centro;
- * - la Hero è già presente dietro;
- * - l'indicatore "Scorri" resta nascosto.
- */
 
 updateScrollIndicator();

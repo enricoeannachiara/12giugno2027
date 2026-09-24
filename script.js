@@ -12,7 +12,7 @@ let envelopeOpened = false;
 
 
 /* ========================================= */
-/* APERTURA DELLA BUSTA */
+/* APERTURA DEL LEMBO */
 /* ========================================= */
 
 function openEnvelope() {
@@ -27,75 +27,26 @@ function openEnvelope() {
 
     envelopeOpened = true;
 
-
     /*
-     * FASE 1
-     * -----------------------------------------
+     * Per ora facciamo una cosa sola:
      *
-     * L'apertura parte subito.
+     * - il lembo si apre;
+     * - la punta segue con la lieve flessione
+     *   definita nel CSS;
+     * - la busta NON scende;
+     * - l'overlay NON viene ancora rimosso.
      *
-     * Lo "scatto" iniziale del lembo
-     * non viene gestito qui:
-     * è già incorporato nei keyframe CSS.
-     *
-     * Durata totale rotazione lembo:
-     * circa 1,8 secondi.
+     * In questo modo possiamo giudicare
+     * esclusivamente il movimento della carta.
      */
 
     envelopeScreen.classList.add("opening");
-
-
-    /*
-     * FASE 2
-     * -----------------------------------------
-     *
-     * Aspettiamo che il lembo sia già
-     * abbondantemente sollevato.
-     *
-     * A questo punto la partecipazione
-     * interna è ben visibile e iniziamo
-     * a far scendere la struttura della busta.
-     */
-
-    setTimeout(() => {
-
-        envelopeScreen.classList.add("reveal");
-
-    }, 1050);
-
-
-    /*
-     * FASE 3
-     * -----------------------------------------
-     *
-     * Attendiamo la conclusione sia:
-     *
-     * - della rotazione del lembo;
-     * - della discesa della busta;
-     * - del leggero movimento del cartoncino.
-     *
-     * Solo allora togliamo completamente
-     * l'overlay.
-     */
-
-    setTimeout(() => {
-
-        envelopeScreen.classList.add("opened");
-
-        envelopeScreen.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        updateScrollIndicator();
-
-    }, 2550);
 
 }
 
 
 /* ========================================= */
-/* APERTURA CON TAP / CLICK */
+/* CLICK / TAP */
 /* ========================================= */
 
 if (envelopeButton) {
@@ -147,8 +98,12 @@ function updateScrollIndicator() {
 
 
     /*
-     * Finché la busta è ancora presente,
-     * l'indicatore resta nascosto.
+     * Finché la busta iniziale è attiva,
+     * l'indicatore deve rimanere nascosto.
+     *
+     * In questa fase di test non rimuoviamo
+     * ancora l'overlay, quindi resterà sempre
+     * nascosto durante l'animazione.
      */
 
     if (
@@ -171,11 +126,6 @@ function updateScrollIndicator() {
     const distanceFromBottom =
         pageHeight - scrollPosition;
 
-
-    /*
-     * Nascondiamo "Scorri" quando
-     * siamo quasi a fondo pagina.
-     */
 
     if (distanceFromBottom < 90) {
 

@@ -8,62 +8,83 @@ const envelopeScreen =
 const envelopeButton =
     document.getElementById("envelopeButton");
 
-if (envelopeScreen && envelopeButton) {
-
-    let envelopeOpened = false;
-
-    function openEnvelope() {
-
-        if (envelopeOpened) {
-            return;
-        }
-
-        envelopeOpened = true;
-
-        envelopeScreen.classList.add("opening");
-
-        /*
-         * FASE 2
-         * Dopo che il lembo ha iniziato ad aprirsi,
-         * la parte inferiore comincia a scorrere
-         * verso il basso.
-         */
-
-        setTimeout(() => {
-
-            envelopeScreen.classList.add("reveal");
-
-        }, 450);
+let envelopeOpened = false;
 
 
-        /*
-         * FASE 3
-         * Al termine dell'animazione rimuoviamo
-         * completamente la schermata della busta.
-         */
+function openEnvelope() {
 
-        setTimeout(() => {
-
-            envelopeScreen.classList.add("opened");
-
-            envelopeScreen.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-
-            /*
-             * Dopo l'apertura mostriamo correttamente
-             * anche l'indicatore "Scorri".
-             */
-
-            updateScrollIndicator();
-
-        }, 1500);
-
+    if (!envelopeScreen || !envelopeButton) {
+        return;
     }
 
+    if (envelopeOpened) {
+        return;
+    }
 
-    /* Apertura con click / tap */
+    envelopeOpened = true;
+
+
+    /*
+     * FASE 1
+     *
+     * Il lembo ruota all'indietro.
+     * Il sigillo è fisicamente contenuto
+     * nella faccia frontale del lembo,
+     * quindi ruota insieme ad esso.
+     */
+
+    envelopeScreen.classList.add("opening");
+
+
+    /*
+     * FASE 2
+     *
+     * Aspettiamo che il lembo sia già
+     * visibilmente sollevato prima di
+     * iniziare a far scendere il corpo
+     * della busta.
+     *
+     * In questo momento comincia a vedersi
+     * direttamente la Hero sottostante.
+     */
+
+    setTimeout(() => {
+
+        envelopeScreen.classList.add("reveal");
+
+    }, 520);
+
+
+    /*
+     * FASE 3
+     *
+     * Lembo completamente aperto e corpo
+     * della busta ormai fuori dallo schermo.
+     *
+     * Rimuoviamo l'overlay dall'interazione.
+     */
+
+    setTimeout(() => {
+
+        envelopeScreen.classList.add("opened");
+
+        envelopeScreen.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        updateScrollIndicator();
+
+    }, 1700);
+
+}
+
+
+/* ----------------------------------------- */
+/* APERTURA CON TAP / CLICK */
+/* ----------------------------------------- */
+
+if (envelopeButton) {
 
     envelopeButton.addEventListener(
         "click",
@@ -71,7 +92,10 @@ if (envelopeScreen && envelopeButton) {
     );
 
 
-    /* Accessibilità tastiera */
+    /*
+     * Supporto tastiera:
+     * Invio o barra spaziatrice.
+     */
 
     envelopeButton.addEventListener(
         "keydown",
@@ -108,9 +132,10 @@ function updateScrollIndicator() {
         return;
     }
 
+
     /*
-     * Finché la busta non è completamente aperta
-     * nascondiamo l'indicatore.
+     * Prima che la busta sia completamente
+     * aperta, "Scorri" non deve essere visibile.
      */
 
     if (
@@ -135,8 +160,8 @@ function updateScrollIndicator() {
 
 
     /*
-     * Lo nascondiamo solo quando siamo quasi
-     * arrivati in fondo alla pagina.
+     * Quando siamo quasi arrivati in fondo,
+     * l'indicatore scompare.
      */
 
     if (distanceFromBottom < 90) {
@@ -183,6 +208,7 @@ async function copyAccessCode() {
     if (!accessCode) {
         return;
     }
+
 
     const code =
         accessCode.textContent.trim();
@@ -285,7 +311,6 @@ function toggleGiftDetails() {
 
         giftToggle.textContent =
             "Nascondi";
-
 
     } else {
 

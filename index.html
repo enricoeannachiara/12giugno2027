@@ -3,19 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Enrico & Annachiara</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
+
 
 <body>
 
 
-    <!-- ======================================== -->
-    <!-- BUSTA INIZIALE FULL SCREEN -->
-    <!-- ======================================== -->
+    <!-- ================================================== -->
+    <!-- BUSTA / PARTECIPAZIONE INIZIALE                     -->
+    <!-- ================================================== -->
 
     <div
         class="envelope-screen"
@@ -24,7 +32,7 @@
     >
 
         <div
-            class="envelope-stage"
+            class="envelope-scene"
             id="envelopeButton"
             role="button"
             tabindex="0"
@@ -32,65 +40,197 @@
         >
 
 
-            <!-- ================================= -->
-            <!-- CORPO DELLA BUSTA -->
-            <!-- ================================= -->
+            <!-- ========================================== -->
+            <!-- STRUTTURA INFERIORE DELLA BUSTA           -->
+            <!-- ========================================== -->
 
             <!--
-                Il corpo della busta copre inizialmente
-                la partecipazione.
-
-                Nel CSS avrà una geometria a V:
-                quando il lembo si solleva, la Hero
-                sottostante sarà visibile attraverso
-                un'apertura triangolare.
-            -->
-
-            <div class="envelope-bottom"></div>
-
-
-            <!-- ================================= -->
-            <!-- LEMBO SUPERIORE -->
-            <!-- ================================= -->
-
-            <!--
-                L'intero flap-wrapper ruota in 3D.
-
-                Al suo interno ci sono:
-                - faccia anteriore
-                - sigillo
-                - faccia posteriore
-
-                Il sigillo appartiene alla faccia
-                anteriore e ruota quindi insieme
+                Questo gruppo rappresenta fisicamente
+                la parte della busta che resta sotto
                 al lembo.
+
+                Più avanti sarà questo elemento a
+                scendere verso il basso.
             -->
 
-            <div class="flap-wrapper">
+            <div class="envelope-body">
 
 
-                <!-- ============================= -->
-                <!-- FACCIA ANTERIORE -->
-                <!-- ============================= -->
+                <!-- ====================================== -->
+                <!-- RETRO INTERNO DELLA BUSTA              -->
+                <!-- ====================================== -->
 
-                <div class="flap-face flap-front">
-
-                    <div class="flap-shape"></div>
+                <div class="envelope-back-sheet"></div>
 
 
-                    <!-- ========================= -->
-                    <!-- SIGILLO IN CERALACCA -->
-                    <!-- ========================= -->
+                <!-- ====================================== -->
+                <!-- PARTECIPAZIONE DENTRO LA BUSTA         -->
+                <!-- ====================================== -->
+
+                <!--
+                    È un vero elemento separato.
+
+                    Rimane dietro alla tasca anteriore
+                    ma davanti al retro della busta.
+
+                    In questo modo, appena il lembo si
+                    solleva, vedremo davvero il cartoncino
+                    della partecipazione all'interno.
+                -->
+
+                <div
+                    class="envelope-letter"
+                    aria-hidden="true"
+                >
+
+                    <div class="envelope-letter-content">
+
+                        <img
+                            src="images/ritratto.png"
+                            alt=""
+                            class="envelope-letter-portrait"
+                            draggable="false"
+                        >
+
+                        <div class="envelope-letter-names">
+                            Enrico & Annachiara
+                        </div>
+
+                        <div class="envelope-letter-date">
+                            12 giugno 2027
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ====================================== -->
+                <!-- TASCA ANTERIORE DELLA BUSTA            -->
+                <!-- ====================================== -->
+
+                <!--
+                    La tasca non è un unico poligono.
+
+                    È costruita come una vera busta:
+                    lato sinistro, lato destro e fondo.
+
+                    Sovrapponendo questi tre piani avremo
+                    pieghe e ombre molto più naturali.
+                -->
+
+                <div class="envelope-pocket">
+
+
+                    <!-- LATO SINISTRO -->
+
+                    <div
+                        class="
+                            envelope-pocket-panel
+                            envelope-pocket-left
+                        "
+                    ></div>
+
+
+                    <!-- LATO DESTRO -->
+
+                    <div
+                        class="
+                            envelope-pocket-panel
+                            envelope-pocket-right
+                        "
+                    ></div>
+
+
+                    <!-- FONDO -->
+
+                    <div
+                        class="
+                            envelope-pocket-panel
+                            envelope-pocket-bottom
+                        "
+                    ></div>
+
 
                     <!--
-                        Il centro del sigillo verrà
-                        posizionato esattamente sulla
-                        punta del lembo.
+                        Linee di piega dedicate.
 
-                        Poiché il lembo arriverà fino
-                        al centro dello schermo,
-                        anche il sigillo sarà centrato
-                        nel viewport.
+                        Non useremo gradienti incrociati:
+                        saranno bordi separati e controllabili.
+                    -->
+
+                    <div
+                        class="
+                            envelope-fold
+                            envelope-fold-left
+                        "
+                    ></div>
+
+                    <div
+                        class="
+                            envelope-fold
+                            envelope-fold-right
+                        "
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================== -->
+            <!-- LEMBO SUPERIORE 3D                        -->
+            <!-- ========================================== -->
+
+            <!--
+                Tutto il gruppo ruota nello spazio.
+
+                Contiene:
+                - fronte
+                - retro
+                - sottile bordo della carta
+
+                Il sigillo appartiene esclusivamente
+                alla faccia frontale.
+            -->
+
+            <div class="envelope-flap">
+
+
+                <!-- ====================================== -->
+                <!-- BORDO / SPESSORE CARTA                -->
+                <!-- ====================================== -->
+
+                <div class="envelope-flap-edge"></div>
+
+
+                <!-- ====================================== -->
+                <!-- FRONTE DEL LEMBO                       -->
+                <!-- ====================================== -->
+
+                <div
+                    class="
+                        envelope-flap-face
+                        envelope-flap-front
+                    "
+                >
+
+                    <div class="envelope-flap-paper"></div>
+
+
+                    <!-- ================================== -->
+                    <!-- SIGILLO                            -->
+                    <!-- ================================== -->
+
+                    <!--
+                        Il sigillo è fisicamente figlio
+                        della faccia anteriore.
+
+                        Quindi:
+                        - ruota insieme al lembo;
+                        - non ha animazione indipendente;
+                        - superati i 90° viene occultato
+                          naturalmente dal retro del lembo.
                     -->
 
                     <div class="wax-seal">
@@ -107,44 +247,59 @@
                 </div>
 
 
-                <!-- ============================= -->
-                <!-- FACCIA POSTERIORE -->
-                <!-- ============================= -->
+                <!-- ====================================== -->
+                <!-- RETRO DEL LEMBO                        -->
+                <!-- ====================================== -->
 
-                <!--
-                    Quando il lembo supera i 90°,
-                    questa faccia prende il posto
-                    della faccia anteriore.
+                <div
+                    class="
+                        envelope-flap-face
+                        envelope-flap-back
+                    "
+                >
 
-                    Il sigillo non è presente qui:
-                    sembrerà quindi correttamente
-                    nascosto dietro la carta.
-                -->
-
-                <div class="flap-face flap-back">
-
-                    <div class="flap-shape"></div>
+                    <div class="envelope-flap-paper"></div>
 
                 </div>
 
-
             </div>
+
+
+            <!-- ========================================== -->
+            <!-- OMBRA DEL LEMBO                           -->
+            <!-- ========================================== -->
+
+            <!--
+                Elemento indipendente.
+
+                Ci permetterà di far muovere e sfumare
+                l'ombra sulla partecipazione mentre il
+                lembo si solleva, aumentando molto
+                la sensazione di profondità.
+            -->
+
+            <div
+                class="envelope-flap-shadow"
+                aria-hidden="true"
+            ></div>
+
 
         </div>
 
     </div>
 
 
-    <!-- ======================================== -->
-    <!-- HERO -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- HERO PRINCIPALE                                    -->
+    <!-- ================================================== -->
 
     <!--
-        La Hero è già presente dietro la busta.
+        La pagina vera è già presente dietro la busta.
 
-        Non viene caricata dopo l'apertura:
-        viene semplicemente scoperta progressivamente
-        dall'animazione.
+        La partecipazione contenuta nella busta ripete
+        volutamente questa composizione per consentire
+        un passaggio visivo continuo.
     -->
 
     <section class="hero">
@@ -166,9 +321,10 @@
     </section>
 
 
-    <!-- ======================================== -->
-    <!-- CONFERMA PRESENZA -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- CONFERMA PRESENZA                                  -->
+    <!-- ================================================== -->
 
     <section class="section rsvp-section">
 
@@ -215,9 +371,10 @@
     </section>
 
 
-    <!-- ======================================== -->
-    <!-- I LUOGHI DELLA GIORNATA -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- I LUOGHI DELLA GIORNATA                            -->
+    <!-- ================================================== -->
 
     <section class="section locations-section">
 
@@ -236,9 +393,8 @@
         </div>
 
 
-        <!-- ==================================== -->
+
         <!-- CASA DELLO SPOSO -->
-        <!-- ==================================== -->
 
         <article class="card">
 
@@ -262,7 +418,6 @@
                     Vai con Maps
                 </a>
 
-
                 <a
                     href="https://waze.com/ul?ll=40.608131%2C14.978180&navigate=yes"
                     class="button button-secondary"
@@ -277,9 +432,8 @@
         </article>
 
 
-        <!-- ==================================== -->
+
         <!-- CASA DELLA SPOSA -->
-        <!-- ==================================== -->
 
         <article class="card">
 
@@ -303,7 +457,6 @@
                     Vai con Maps
                 </a>
 
-
                 <a
                     href="https://waze.com/ul?ll=40.739052%2C14.755519&navigate=yes"
                     class="button button-secondary"
@@ -318,9 +471,8 @@
         </article>
 
 
-        <!-- ==================================== -->
+
         <!-- CHIESA -->
-        <!-- ==================================== -->
 
         <article class="card">
 
@@ -344,7 +496,6 @@
                     Vai con Maps
                 </a>
 
-
                 <a
                     href="https://waze.com/ul?ll=40.761874%2C14.785191&navigate=yes"
                     class="button button-secondary"
@@ -356,8 +507,6 @@
 
             </div>
 
-
-            <!-- LIBRETTO CERIMONIA -->
 
             <div class="ceremony-booklet">
 
@@ -375,9 +524,8 @@
         </article>
 
 
-        <!-- ==================================== -->
+
         <!-- MASSERIA -->
-        <!-- ==================================== -->
 
         <article class="card">
 
@@ -401,7 +549,6 @@
                     Vai con Maps
                 </a>
 
-
                 <a
                     href="https://waze.com/ul?ll=40.610224%2C14.942694&navigate=yes"
                     class="button button-secondary"
@@ -418,9 +565,10 @@
     </section>
 
 
-    <!-- ======================================== -->
-    <!-- CONDIVIDI I TUOI RICORDI -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- CONDIVIDI I TUOI RICORDI                           -->
+    <!-- ================================================== -->
 
     <section class="section photos-section">
 
@@ -464,19 +612,15 @@
             </div>
 
 
-            <!-- CODICE ACCESSO -->
-
             <div class="access-box">
 
                 <span class="access-label">
                     Codice di accesso
                 </span>
 
-
                 <strong id="accessCode">
                     ITb2ea31c8
                 </strong>
-
 
                 <button
                     type="button"
@@ -485,7 +629,6 @@
                 >
                     Copia codice
                 </button>
-
 
                 <span
                     class="copy-message"
@@ -500,9 +643,10 @@
     </section>
 
 
-    <!-- ======================================== -->
-    <!-- IL NOSTRO SOGNO -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- IL NOSTRO SOGNO                                    -->
+    <!-- ================================================== -->
 
     <section class="section gift-section">
 
@@ -540,8 +684,6 @@
             </button>
 
 
-            <!-- DATI BONIFICO -->
-
             <div
                 class="gift-details"
                 id="giftDetails"
@@ -564,6 +706,7 @@
                 </div>
 
 
+
                 <!-- IBAN -->
 
                 <div class="bank-detail">
@@ -572,14 +715,12 @@
                         IBAN
                     </span>
 
-
                     <strong
                         class="bank-code"
                         id="ibanCode"
                     >
                         IT95D0367401600000878189011
                     </strong>
-
 
                     <button
                         type="button"
@@ -588,7 +729,6 @@
                     >
                         Copia IBAN
                     </button>
-
 
                     <span
                         class="copy-message"
@@ -599,7 +739,8 @@
                 </div>
 
 
-                <!-- BIC -->
+
+                <!-- BIC / SWIFT -->
 
                 <div class="bank-detail">
 
@@ -620,16 +761,18 @@
     </section>
 
 
-    <!-- ======================================== -->
-    <!-- SPAZIO FINALE -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- SPAZIO FINALE                                      -->
+    <!-- ================================================== -->
 
     <div class="page-end"></div>
 
 
-    <!-- ======================================== -->
-    <!-- INDICATORE SCORRI -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- INDICATORE SCORRI                                  -->
+    <!-- ================================================== -->
 
     <div
         class="scroll-indicator"
@@ -647,9 +790,10 @@
     </div>
 
 
-    <!-- ======================================== -->
-    <!-- SCRIPT -->
-    <!-- ======================================== -->
+
+    <!-- ================================================== -->
+    <!-- SCRIPT                                             -->
+    <!-- ================================================== -->
 
     <script src="script.js"></script>
 

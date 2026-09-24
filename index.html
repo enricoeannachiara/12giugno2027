@@ -12,7 +12,10 @@
 
 <body>
 
+
+    <!-- ======================================== -->
     <!-- HERO -->
+    <!-- ======================================== -->
 
     <section class="hero">
 
@@ -31,9 +34,52 @@
     </section>
 
 
-    <!-- I LUOGHI DELLA GIORNATA -->
 
-    <section class="section">
+    <!-- ======================================== -->
+    <!-- CONFERMA PRESENZA -->
+    <!-- ======================================== -->
+
+    <section class="section rsvp-section">
+
+        <div class="section-title">
+            <h2>Conferma la tua presenza</h2>
+        </div>
+
+        <article class="card">
+
+            <div class="card-icon">💌</div>
+
+            <h3>Ci sarai?</h3>
+
+            <p class="card-text">
+                Compila il modulo per comunicarci la tua partecipazione
+                e aiutarci a organizzare al meglio la giornata.
+            </p>
+
+            <div class="button-row">
+
+                <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfR47MLRdUuwzttRWqgoxmSrlCjPIJb15usxh1CkX8zXxw4Rw/viewform"
+                    class="button button-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Compila il modulo
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- ======================================== -->
+    <!-- I LUOGHI DELLA GIORNATA -->
+    <!-- ======================================== -->
+
+    <section class="section locations-section">
 
         <div class="section-title">
 
@@ -182,53 +228,15 @@
     </section>
 
 
-    <!-- CONFERMA PRESENZA -->
 
-    <section class="section rsvp-section">
-
-        <div class="section-title">
-
-            <h2>Conferma la tua presenza</h2>
-
-        </div>
-
-        <article class="card">
-
-            <div class="card-icon">💌</div>
-
-            <h3>Ci sarai?</h3>
-
-            <p class="card-text">
-                Compila il modulo per comunicarci la tua partecipazione
-                e aiutarci a organizzare al meglio la giornata.
-            </p>
-
-            <div class="button-row">
-
-                <a
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSfR47MLRdUuwzttRWqgoxmSrlCjPIJb15usxh1CkX8zXxw4Rw/viewform"
-                    class="button button-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Compila il modulo
-                </a>
-
-            </div>
-
-        </article>
-
-    </section>
-
-
+    <!-- ======================================== -->
     <!-- FOTO -->
+    <!-- ======================================== -->
 
     <section class="section photos-section">
 
         <div class="section-title">
-
             <h2>Condividi i tuoi ricordi</h2>
-
         </div>
 
 
@@ -288,12 +296,120 @@
     </section>
 
 
+
+    <!-- ======================================== -->
+    <!-- IL NOSTRO SOGNO -->
+    <!-- ======================================== -->
+
+    <section class="section gift-section">
+
+        <div class="section-title">
+            <h2>Il nostro sogno</h2>
+        </div>
+
+        <article class="card gift-card">
+
+            <div class="card-icon">❤️</div>
+
+            <p class="gift-intro">
+                Il nostro desiderio più grande è avervi con noi nel nostro giorno.
+                Se desiderate contribuire alla realizzazione del nostro sogno,
+                cliccate qui.
+            </p>
+
+            <button
+                type="button"
+                class="button button-primary"
+                id="giftToggle"
+                aria-expanded="false"
+                aria-controls="giftDetails"
+            >
+                Scopri di più
+            </button>
+
+
+            <!-- DATI BONIFICO -->
+
+            <div
+                class="gift-details"
+                id="giftDetails"
+                hidden
+            >
+
+                <div class="bank-detail">
+
+                    <span class="bank-label">
+                        Intestatario
+                    </span>
+
+                    <strong>
+                        Enrico Forte
+                    </strong>
+
+                </div>
+
+
+                <div class="bank-detail">
+
+                    <span class="bank-label">
+                        IBAN
+                    </span>
+
+                    <strong
+                        class="bank-code"
+                        id="ibanCode"
+                    >
+                        IT95D0367401600000878189011
+                    </strong>
+
+                    <button
+                        type="button"
+                        class="button button-secondary copy-bank-button"
+                        id="copyIbanButton"
+                    >
+                        Copia IBAN
+                    </button>
+
+                    <span
+                        class="copy-message"
+                        id="copyIbanMessage"
+                        aria-live="polite"
+                    ></span>
+
+                </div>
+
+
+                <div class="bank-detail">
+
+                    <span class="bank-label">
+                        BIC / SWIFT
+                    </span>
+
+                    <strong class="bank-code">
+                        TRBKITMMXXX
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- ======================================== -->
     <!-- SPAZIO FINALE -->
+    <!-- ======================================== -->
 
     <div class="page-end"></div>
 
 
+
+    <!-- ======================================== -->
     <!-- SCORRI IN SOVRAIMPRESSIONE -->
+    <!-- ======================================== -->
 
     <div
         class="scroll-indicator"
@@ -305,6 +421,7 @@
         <span class="scroll-arrow">↓</span>
 
     </div>
+
 
 
     <script src="script.js"></script>

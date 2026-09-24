@@ -14,7 +14,7 @@
 
 
     <!-- ======================================== -->
-    <!-- BUSTA INIZIALE -->
+    <!-- BUSTA INIZIALE FULL SCREEN -->
     <!-- ======================================== -->
 
     <div
@@ -25,19 +25,42 @@
 
         <button
             type="button"
-            class="envelope"
+            class="envelope-stage"
             id="envelopeButton"
             aria-label="Apri la partecipazione"
         >
 
-            <div class="envelope-back"></div>
+            <!-- PARTE SUPERIORE / LEMBO -->
 
-            <div class="envelope-flap"></div>
+            <div class="envelope-top">
 
-            <div class="envelope-front"></div>
+                <div class="envelope-flap"></div>
 
-            <div class="wax-seal" aria-hidden="true">
-                <span>AE</span>
+                <div class="wax-seal">
+
+                    <span class="seal-letter seal-a">
+                        A
+                    </span>
+
+                    <span class="seal-letter seal-e">
+                        E
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PARTE INFERIORE DELLA BUSTA -->
+
+            <div class="envelope-bottom">
+
+                <div class="envelope-bottom-left"></div>
+
+                <div class="envelope-bottom-right"></div>
+
+                <div class="envelope-bottom-center"></div>
+
             </div>
 
         </button>

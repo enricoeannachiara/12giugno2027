@@ -15,8 +15,9 @@
     --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
 
+    /* BUSTA */
     --envelope: #EADCC8;
-    --envelope-line: #C8B69D;
+    --envelope-edge: #BFA98B;
 }
 
 
@@ -66,9 +67,9 @@ body {
 }
 
 
-/* -------------------------------- */
-/* AREA CLICCABILE */
-/* -------------------------------- */
+/* ================================= */
+/* AREA DELLA BUSTA */
+/* ================================= */
 
 .envelope-stage {
     position: absolute;
@@ -78,23 +79,40 @@ body {
     width: 100%;
     height: 100%;
 
-    background: transparent;
+    overflow: hidden;
 
     cursor: pointer;
 
-    overflow: hidden;
+    outline: none;
 
     perspective: 1800px;
 
     -webkit-tap-highlight-color: transparent;
-
-    outline: none;
 }
 
 
 /* ================================= */
-/* PARTE INFERIORE DELLA BUSTA */
+/* CORPO INFERIORE DELLA BUSTA */
 /* ================================= */
+
+/*
+    Questa è la parte fondamentale.
+
+    Il corpo NON è più un semplice
+    rettangolo.
+
+    La V superiore lascia scoperto
+    un triangolo della Hero quando
+    il lembo comincia ad alzarsi.
+
+           \          /
+            \ HERO   /
+             \      /
+              \    /
+               \  /
+                \/
+
+*/
 
 .envelope-bottom {
     position: absolute;
@@ -105,24 +123,107 @@ body {
 
     background: var(--envelope);
 
+    /*
+        50% 50% = la punta della V
+        coincide esattamente con
+        il centro dello schermo.
+    */
+
+    clip-path: polygon(
+        0 0,
+        50% 50%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+
+    -webkit-clip-path: polygon(
+        0 0,
+        50% 50%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+
     transform: translateY(0);
 
     will-change: transform;
 
     transition:
-        transform 1.15s
-        cubic-bezier(
-            0.22,
-            0.61,
-            0.36,
-            1
-        );
+        transform 1.35s
+        cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 
 /* ================================= */
-/* LEMBO */
+/* BORDI INTERNI DELLA BUSTA */
 /* ================================= */
+
+/*
+    Creiamo due sottili bordi diagonali
+    che definiscono chiaramente la V.
+
+    Non utilizziamo gradienti incrociati:
+    sono due linee fisiche separate.
+*/
+
+.envelope-bottom::before,
+.envelope-bottom::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    width: 1.5px;
+
+    height: 71%;
+
+    background: var(--envelope-edge);
+
+    opacity: 0.72;
+
+    transform-origin: top center;
+
+    pointer-events: none;
+}
+
+
+/* bordo sinistro */
+
+.envelope-bottom::before {
+    left: 0;
+
+    transform:
+        rotate(-45deg);
+
+    transform-origin: top left;
+}
+
+
+/* bordo destro */
+
+.envelope-bottom::after {
+    right: 0;
+
+    transform:
+        rotate(45deg);
+
+    transform-origin: top right;
+}
+
+
+/* ================================= */
+/* LEMBO SUPERIORE */
+/* ================================= */
+
+/*
+    Altezza 50vh.
+
+    In questo modo la punta del triangolo
+    arriva esattamente al centro verticale
+    dello schermo.
+*/
 
 .flap-wrapper {
     position: absolute;
@@ -133,49 +234,54 @@ body {
     z-index: 10;
 
     width: 100%;
-    height: 46%;
+    height: 50%;
 
     transform-origin: top center;
 
     transform-style: preserve-3d;
 
+    -webkit-transform-style: preserve-3d;
+
     transform: rotateX(0deg);
 
     will-change: transform;
 
-    transition:
-        transform 1.15s
-        cubic-bezier(
-            0.22,
-            0.61,
-            0.36,
-            1
-        );
+    /*
+        Movimento volutamente lento.
+        Il ritardo di 0,1 s dal tocco
+        verrà gestito dallo script.
+    */
 
-    pointer-events: none;
+    transition:
+        transform 1.55s
+        cubic-bezier(0.20, 0.65, 0.30, 1);
 }
 
 
-/* -------------------------------- */
-/* FACCIA GENERICA */
-/* -------------------------------- */
+/* ================================= */
+/* FACCE DEL LEMBO */
+/* ================================= */
 
 .flap-face {
     position: absolute;
 
     inset: 0;
 
+    transform-style: preserve-3d;
+
+    -webkit-transform-style: preserve-3d;
+
     backface-visibility: hidden;
 
     -webkit-backface-visibility: hidden;
 
-    transform-style: preserve-3d;
+    pointer-events: none;
 }
 
 
-/* -------------------------------- */
-/* FACCIA FRONTALE */
-/* -------------------------------- */
+/* ================================= */
+/* FRONTE DEL LEMBO */
+/* ================================= */
 
 .flap-front {
     z-index: 2;
@@ -184,9 +290,9 @@ body {
 }
 
 
-/* -------------------------------- */
-/* FACCIA POSTERIORE */
-/* -------------------------------- */
+/* ================================= */
+/* RETRO DEL LEMBO */
+/* ================================= */
 
 .flap-back {
     z-index: 1;
@@ -195,9 +301,9 @@ body {
 }
 
 
-/* -------------------------------- */
-/* FORMA DEL LEMBO */
-/* -------------------------------- */
+/* ================================= */
+/* TRIANGOLO DEL LEMBO */
+/* ================================= */
 
 .flap-shape {
     position: absolute;
@@ -211,51 +317,123 @@ body {
         100% 0,
         50% 100%
     );
+
+    -webkit-clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
 }
 
 
-/* -------------------------------- */
-/* BORDO / PIEGA DEL LEMBO */
-/* -------------------------------- */
+/* ================================= */
+/* BORDI DEL LEMBO */
+/* ================================= */
 
-.flap-front .flap-shape {
-    filter:
-        drop-shadow(
-            0 3px 2px
-            rgba(80, 60, 42, 0.10)
-        );
-}
+/*
+    Una copia leggermente più grande
+    del triangolo viene posta dietro
+    al lembo.
 
-.flap-front .flap-shape::after {
+    Il risultato è un bordo continuo
+    e leggibile sui due lati diagonali,
+    senza creare la X che avevamo prima.
+*/
+
+.flap-front::before {
     content: "";
 
     position: absolute;
 
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0;
+    left: -2px;
 
-    height: 1px;
+    width: calc(100% + 4px);
+    height: calc(100% + 3px);
 
-    background:
-        rgba(150, 125, 95, 0.30);
+    background: var(--envelope-edge);
 
-    transform-origin: center;
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    -webkit-clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    opacity: 0.75;
+
+    z-index: -1;
 }
 
 
-/* -------------------------------- */
+/*
+    Una lieve ombra sotto il lembo
+    aiuta a percepirlo come carta
+    sovrapposta alla tasca.
+*/
+
+.flap-front .flap-shape {
+    filter:
+        drop-shadow(
+            0 4px 3px
+            rgba(73, 53, 35, 0.15)
+        );
+}
+
+
+/* ================================= */
 /* RETRO DEL LEMBO */
-/* -------------------------------- */
+/* ================================= */
 
 .flap-back .flap-shape {
     background: var(--envelope);
 
     filter:
         drop-shadow(
-            0 -2px 2px
-            rgba(80, 60, 42, 0.08)
+            0 -3px 3px
+            rgba(73, 53, 35, 0.10)
         );
+}
+
+
+/*
+    Anche il retro conserva un bordo
+    molto leggero.
+*/
+
+.flap-back::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -2px;
+
+    width: calc(100% + 4px);
+    height: calc(100% + 3px);
+
+    background: var(--envelope-edge);
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    -webkit-clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    opacity: 0.45;
+
+    z-index: -1;
 }
 
 
@@ -263,19 +441,30 @@ body {
 /* SIGILLO */
 /* ================================= */
 
+/*
+    La punta del lembo si trova a:
+
+    X = 50vw
+    Y = 50vh
+
+    Il centro del sigillo viene posto
+    esattamente lì.
+*/
+
 .wax-seal {
     position: absolute;
 
     left: 50%;
-    bottom: -58px;
+    bottom: 0;
 
-    z-index: 5;
+    z-index: 10;
 
-    width: 116px;
-    height: 116px;
+    width: 118px;
+    height: 118px;
 
     transform:
-        translateX(-50%);
+        translate(-50%, 50%)
+        translateZ(3px);
 
     display: flex;
 
@@ -290,9 +479,9 @@ body {
 }
 
 
-/* -------------------------------- */
-/* IMMAGINE SIGILLO */
-/* -------------------------------- */
+/* ================================= */
+/* IMMAGINE DEL SIGILLO */
+/* ================================= */
 
 .wax-image {
     display: block;
@@ -308,21 +497,27 @@ body {
 
     filter:
         drop-shadow(
-            0 6px 7px
-            rgba(60, 25, 25, 0.24)
+            0 7px 7px
+            rgba(70, 25, 20, 0.27)
         );
 }
 
 
 /* ================================= */
-/* APERTURA BUSTA */
+/* APERTURA DEL LEMBO */
 /* ================================= */
 
 /*
-   Il wrapper ruota insieme al sigillo.
-   Poiché il sigillo è dentro la faccia frontale,
-   quando il lembo supera i 90° il sigillo
-   viene nascosto dalla faccia posteriore.
+    Il sigillo non ha alcuna animazione
+    propria.
+
+    Ruota perché appartiene alla faccia
+    anteriore del lembo.
+
+    Superati i 90°, la faccia anteriore
+    non è più visibile e appare il retro:
+    il sigillo rimane quindi correttamente
+    nascosto dietro la carta.
 */
 
 .envelope-screen.opening .flap-wrapper {
@@ -330,29 +525,29 @@ body {
 }
 
 
-/* -------------------------------- */
-/* DISCESA DELLA PARTE INFERIORE */
-/* -------------------------------- */
+/* ================================= */
+/* DISCESA DELLA TASCA */
+/* ================================= */
 
 .envelope-screen.reveal .envelope-bottom {
     transform: translateY(105%);
 }
 
 
-/* -------------------------------- */
-/* USCITA DEL LEMBO APERTO */
-/* -------------------------------- */
+/* ================================= */
+/* LEMBO COMPLETAMENTE APERTO */
+/* ================================= */
 
 .envelope-screen.reveal .flap-wrapper {
     transform:
         rotateX(180deg)
-        translateY(-10%);
+        translateY(-5%);
 }
 
 
-/* -------------------------------- */
+/* ================================= */
 /* FINE ANIMAZIONE */
-/* -------------------------------- */
+/* ================================= */
 
 .envelope-screen.opened {
     visibility: hidden;
@@ -362,24 +557,14 @@ body {
 
 
 /* ================================= */
-/* ACCESSIBILITÀ MOVIMENTO */
-/* ================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .flap-wrapper,
-    .envelope-bottom {
-        transition-duration: 0.01ms;
-    }
-
-}
-
-
-/* ================================= */
 /* HERO */
 /* ================================= */
 
 .hero {
+    position: relative;
+
+    z-index: 1;
+
     min-height: 100vh;
 
     display: flex;
@@ -400,6 +585,7 @@ body {
     margin-bottom: 24px;
 
     user-select: none;
+
     pointer-events: none;
 }
 
@@ -434,21 +620,14 @@ h1 {
     padding: 45px 0 35px;
 }
 
-.rsvp-section {
-    padding-top: 50px;
-}
-
-.locations-section {
-    padding-top: 50px;
-}
-
-.photos-section {
+.rsvp-section,
+.locations-section,
+.photos-section,
+.gift-section {
     padding-top: 50px;
 }
 
 .gift-section {
-    padding-top: 50px;
-
     padding-bottom: 50px;
 }
 
@@ -499,6 +678,7 @@ h1 {
         0 18px 40px rgba(0, 0, 0, 0.055);
 
     backdrop-filter: blur(18px);
+
     -webkit-backdrop-filter: blur(18px);
 }
 
@@ -813,7 +993,7 @@ h1 {
 
 
 /* ================================= */
-/* SCORRI */
+/* INDICATORE SCORRI */
 /* ================================= */
 
 .scroll-indicator {
@@ -845,6 +1025,7 @@ h1 {
     border-radius: 999px;
 
     backdrop-filter: blur(10px);
+
     -webkit-backdrop-filter: blur(10px);
 
     font-family: Arial, sans-serif;
@@ -889,7 +1070,6 @@ h1 {
     50% {
         transform: translateY(4px);
     }
-
 }
 
 
@@ -908,16 +1088,24 @@ h1 {
 
 @media (max-width: 600px) {
 
+    /*
+        NON riduciamo l'altezza del lembo.
+
+        Deve rimanere 50% anche su telefono
+        perché sigillo e punta devono restare
+        al centro esatto dello schermo.
+    */
+
     .flap-wrapper {
-        height: 44%;
+        height: 50%;
     }
+
 
     .wax-seal {
-        width: 102px;
-        height: 102px;
-
-        bottom: -51px;
+        width: 104px;
+        height: 104px;
     }
+
 
     .hero {
         min-height: 100vh;
@@ -927,11 +1115,13 @@ h1 {
         padding: 35px 20px;
     }
 
+
     .portrait {
         width: min(72vw, 340px);
 
         margin-bottom: 20px;
     }
+
 
     .section {
         width: calc(100% - 28px);
@@ -939,15 +1129,18 @@ h1 {
         padding-top: 40px;
     }
 
+
     .section-title {
         margin-bottom: 30px;
     }
+
 
     .card {
         padding: 30px 18px 22px;
 
         border-radius: 24px;
     }
+
 
     .button-row {
         display: grid;
@@ -960,6 +1153,7 @@ h1 {
         gap: 10px;
     }
 
+
     .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
@@ -967,12 +1161,14 @@ h1 {
         justify-content: center;
     }
 
+
     .rsvp-section .button-row .button,
     .photos-section .button-row .button {
         width: auto;
 
         min-width: 170px;
     }
+
 
     .button {
         min-width: 0;
@@ -983,9 +1179,11 @@ h1 {
         padding-right: 10px;
     }
 
+
     .ceremony-booklet {
         margin-top: 14px;
     }
+
 
     .ceremony-booklet .button {
         width: auto;
@@ -993,9 +1191,11 @@ h1 {
         min-width: 220px;
     }
 
+
     .access-box {
         margin-top: 24px;
     }
+
 
     .gift-intro {
         font-size: 1rem;
@@ -1003,15 +1203,18 @@ h1 {
         line-height: 1.65;
     }
 
+
     .bank-code {
         font-size: 0.93rem;
     }
+
 
     .copy-bank-button {
         width: auto;
 
         min-width: 150px;
     }
+
 
     .page-end {
         height: 180px;
@@ -1027,25 +1230,40 @@ h1 {
 @media (max-width: 370px) {
 
     .wax-seal {
-        width: 92px;
-        height: 92px;
-
-        bottom: -46px;
+        width: 94px;
+        height: 94px;
     }
+
 
     .button-row {
         grid-template-columns: 1fr;
     }
+
 
     .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
     }
 
+
     .ceremony-booklet .button {
         min-width: 0;
 
         width: 100%;
+    }
+
+}
+
+
+/* ================================= */
+/* RIDUZIONE MOVIMENTO */
+/* ================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .flap-wrapper,
+    .envelope-bottom {
+        transition-duration: 0.01ms;
     }
 
 }

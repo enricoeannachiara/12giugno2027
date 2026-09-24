@@ -6,6 +6,12 @@
     --lilac: #A89CC8;
     --lilac-dark: #9181BB;
 
+    --gold: #CDBB8B;
+    --gold-dark: #BDA978;
+    --gold-active: #B19E70;
+
+    --warm-white: #FFFDF8;
+
     --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
 }
@@ -267,6 +273,27 @@ h1 {
 
 .button-secondary:hover {
     background: #E6E0EF;
+}
+
+
+/* -------------------------------- */
+/* PULSANTE ORO / CHAMPAGNE */
+/* -------------------------------- */
+
+.button-gold {
+    background: var(--gold);
+
+    color: var(--warm-white);
+}
+
+.button-gold:hover {
+    background: var(--gold-dark);
+}
+
+.button-gold:active {
+    background: var(--gold-active);
+
+    transform: scale(0.97);
 }
 
 

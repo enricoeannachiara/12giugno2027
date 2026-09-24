@@ -5,19 +5,47 @@
 const envelopeScreen = document.getElementById("envelopeScreen");
 const envelopeButton = document.getElementById("envelopeButton");
 
-if (envelopeButton && envelopeScreen) {
+if (envelopeScreen && envelopeButton) {
+
+    let envelopeOpened = false;
 
     envelopeButton.addEventListener("click", () => {
 
+        if (envelopeOpened) return;
+
+        envelopeOpened = true;
+
         envelopeButton.disabled = true;
 
+        /* Fase 1:
+           il sigillo scompare e il lembo comincia ad aprirsi
+        */
         envelopeScreen.classList.add("opening");
 
+        /* Fase 2:
+           dopo che il lembo ha iniziato a ruotare,
+           facciamo scorrere via la parte inferiore
+        */
+        setTimeout(() => {
+
+            envelopeScreen.classList.add("reveal");
+
+        }, 500);
+
+        /* Fase 3:
+           terminata l'animazione,
+           rimuoviamo visivamente tutta la busta
+        */
         setTimeout(() => {
 
             envelopeScreen.classList.add("opened");
 
-        }, 900);
+            envelopeScreen.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+        }, 1350);
 
     });
 
@@ -25,7 +53,7 @@ if (envelopeButton && envelopeScreen) {
 
 
 /* ========================================= */
-/* SCORRI */
+/* INDICATORE "SCORRI" */
 /* ========================================= */
 
 const scrollIndicator = document.getElementById("scrollIndicator");
@@ -34,13 +62,16 @@ function updateScrollIndicator() {
 
     if (!scrollIndicator) return;
 
-    const scrollBottom =
-        window.innerHeight + window.scrollY;
+    const scrollPosition =
+        window.scrollY + window.innerHeight;
 
     const pageHeight =
         document.documentElement.scrollHeight;
 
-    if (window.scrollY > 40 || scrollBottom >= pageHeight - 20) {
+    const distanceFromBottom =
+        pageHeight - scrollPosition;
+
+    if (distanceFromBottom < 90) {
 
         scrollIndicator.classList.add("hidden");
 
@@ -52,50 +83,83 @@ function updateScrollIndicator() {
 
 }
 
-window.addEventListener("scroll", updateScrollIndicator);
+window.addEventListener(
+    "scroll",
+    updateScrollIndicator
+);
+
+window.addEventListener(
+    "resize",
+    updateScrollIndicator
+);
 
 updateScrollIndicator();
 
 
 /* ========================================= */
-/* WEDSHOOTS */
+/* COPIA CODICE WEDSHOOTS */
 /* ========================================= */
 
-const copyCodeButton = document.getElementById("copyCodeButton");
-const accessCode = document.getElementById("accessCode");
-const copyMessage = document.getElementById("copyMessage");
+const copyCodeButton =
+    document.getElementById("copyCodeButton");
 
-if (copyCodeButton && accessCode) {
+const copyMessage =
+    document.getElementById("copyMessage");
 
-    copyCodeButton.addEventListener("click", async () => {
+const accessCode =
+    document.getElementById("accessCode");
 
-        try {
+async function copyAccessCode() {
 
-            await navigator.clipboard.writeText(accessCode.textContent.trim());
+    if (!accessCode) return;
 
-            if (copyMessage) {
+    const code =
+        accessCode.textContent.trim();
 
-                copyMessage.textContent = "Codice copiato!";
+    try {
 
-                setTimeout(() => {
+        await navigator.clipboard.writeText(code);
 
-                    copyMessage.textContent = "";
-
-                }, 2000);
-
-            }
-
-        } catch {
-
-            if (copyMessage) {
-
-                copyMessage.textContent = "Impossibile copiare.";
-
-            }
-
+        if (copyMessage) {
+            copyMessage.textContent =
+                "Codice copiato";
         }
 
-    });
+        if (copyCodeButton) {
+            copyCodeButton.textContent =
+                "Copiato ✓";
+        }
+
+        setTimeout(() => {
+
+            if (copyMessage) {
+                copyMessage.textContent = "";
+            }
+
+            if (copyCodeButton) {
+                copyCodeButton.textContent =
+                    "Copia codice";
+            }
+
+        }, 1800);
+
+    } catch (error) {
+
+        if (copyMessage) {
+            copyMessage.textContent =
+                "Tieni premuto sul codice per copiarlo";
+        }
+
+    }
+
+}
+
+if (copyCodeButton) {
+
+    copyCodeButton.addEventListener(
+        "click",
+        copyAccessCode
+    );
 
 }
 
@@ -104,34 +168,56 @@ if (copyCodeButton && accessCode) {
 /* IL NOSTRO SOGNO */
 /* ========================================= */
 
-const giftToggle = document.getElementById("giftToggle");
-const giftDetails = document.getElementById("giftDetails");
+const giftToggle =
+    document.getElementById("giftToggle");
 
-if (giftToggle && giftDetails) {
+const giftDetails =
+    document.getElementById("giftDetails");
 
-    giftToggle.addEventListener("click", () => {
+function toggleGiftDetails() {
 
-        const hidden = giftDetails.hasAttribute("hidden");
+    if (!giftToggle || !giftDetails) return;
 
-        if (hidden) {
+    const isHidden =
+        giftDetails.hasAttribute("hidden");
 
-            giftDetails.removeAttribute("hidden");
+    if (isHidden) {
 
-            giftToggle.textContent = "Nascondi";
+        giftDetails.removeAttribute("hidden");
 
-            giftToggle.setAttribute("aria-expanded", "true");
+        giftToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
 
-        } else {
+        giftToggle.textContent =
+            "Nascondi";
 
-            giftDetails.setAttribute("hidden", "");
+    } else {
 
-            giftToggle.textContent = "Scopri di più";
+        giftDetails.setAttribute(
+            "hidden",
+            ""
+        );
 
-            giftToggle.setAttribute("aria-expanded", "false");
+        giftToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
 
-        }
+        giftToggle.textContent =
+            "Scopri di più";
 
-    });
+    }
+
+}
+
+if (giftToggle) {
+
+    giftToggle.addEventListener(
+        "click",
+        toggleGiftDetails
+    );
 
 }
 
@@ -140,40 +226,65 @@ if (giftToggle && giftDetails) {
 /* COPIA IBAN */
 /* ========================================= */
 
-const copyIbanButton = document.getElementById("copyIbanButton");
-const ibanCode = document.getElementById("ibanCode");
-const copyIbanMessage = document.getElementById("copyIbanMessage");
+const copyIbanButton =
+    document.getElementById("copyIbanButton");
 
-if (copyIbanButton && ibanCode) {
+const copyIbanMessage =
+    document.getElementById("copyIbanMessage");
 
-    copyIbanButton.addEventListener("click", async () => {
+const ibanCode =
+    document.getElementById("ibanCode");
 
-        try {
+async function copyIban() {
 
-            await navigator.clipboard.writeText(ibanCode.textContent.trim());
+    if (!ibanCode) return;
 
-            if (copyIbanMessage) {
+    const iban =
+        ibanCode.textContent.trim();
 
-                copyIbanMessage.textContent = "IBAN copiato!";
+    try {
 
-                setTimeout(() => {
+        await navigator.clipboard.writeText(iban);
 
-                    copyIbanMessage.textContent = "";
-
-                }, 2000);
-
-            }
-
-        } catch {
-
-            if (copyIbanMessage) {
-
-                copyIbanMessage.textContent = "Impossibile copiare.";
-
-            }
-
+        if (copyIbanMessage) {
+            copyIbanMessage.textContent =
+                "IBAN copiato";
         }
 
-    });
+        if (copyIbanButton) {
+            copyIbanButton.textContent =
+                "Copiato ✓";
+        }
+
+        setTimeout(() => {
+
+            if (copyIbanMessage) {
+                copyIbanMessage.textContent = "";
+            }
+
+            if (copyIbanButton) {
+                copyIbanButton.textContent =
+                    "Copia IBAN";
+            }
+
+        }, 1800);
+
+    } catch (error) {
+
+        if (copyIbanMessage) {
+            copyIbanMessage.textContent =
+                "Tieni premuto sull'IBAN per copiarlo";
+        }
+
+    }
+
+}
+
+if (copyIbanButton) {
+
+    copyIbanButton.addEventListener(
+        "click",
+        copyIban
+    );
 
 }

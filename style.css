@@ -16,8 +16,11 @@
     --border: rgba(60, 55, 50, 0.08);
 
     /* BUSTA */
-    --envelope: #EADCC8;
-    --envelope-edge: #BFA98B;
+    --envelope-paper: #EADCC8;
+    --envelope-paper-back: #E5D4BD;
+    --envelope-paper-shadow: #D2BEA2;
+    --envelope-edge: #BDA78A;
+    --envelope-fold: rgba(120, 96, 72, 0.34);
 }
 
 
@@ -68,10 +71,10 @@ body {
 
 
 /* ================================= */
-/* AREA DELLA BUSTA */
+/* SCENA 3D */
 /* ================================= */
 
-.envelope-stage {
+.envelope-scene {
     position: absolute;
 
     inset: 0;
@@ -85,131 +88,287 @@ body {
 
     outline: none;
 
-    perspective: 1800px;
+    perspective: 1500px;
+
+    perspective-origin: 50% 42%;
+
+    transform-style: preserve-3d;
+
+    -webkit-transform-style: preserve-3d;
 
     -webkit-tap-highlight-color: transparent;
 }
 
 
 /* ================================= */
-/* CORPO INFERIORE DELLA BUSTA */
+/* CORPO DELLA BUSTA */
 /* ================================= */
 
-/*
-    Questa è la parte fondamentale.
-
-    Il corpo NON è più un semplice
-    rettangolo.
-
-    La V superiore lascia scoperto
-    un triangolo della Hero quando
-    il lembo comincia ad alzarsi.
-
-           \          /
-            \ HERO   /
-             \      /
-              \    /
-               \  /
-                \/
-
-*/
-
-.envelope-bottom {
+.envelope-body {
     position: absolute;
 
     inset: 0;
 
     z-index: 5;
 
-    background: var(--envelope);
+    overflow: hidden;
 
-    /*
-        50% 50% = la punta della V
-        coincide esattamente con
-        il centro dello schermo.
-    */
+    transform: translateY(0);
 
+    will-change: transform;
+}
+
+
+/* ================================= */
+/* RETRO DELLA BUSTA */
+/* ================================= */
+
+.envelope-back-sheet {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background: var(--envelope-paper-back);
+}
+
+
+/* ================================= */
+/* PARTECIPAZIONE INTERNA */
+/* ================================= */
+
+.envelope-letter {
+    position: absolute;
+
+    left: 50%;
+    top: 13%;
+
+    z-index: 3;
+
+    width: min(78vw, 560px);
+    height: 74%;
+
+    transform: translateX(-50%) translateZ(2px);
+
+    background: #FFFDF9;
+
+    border-radius: 4px;
+
+    box-shadow:
+        0 10px 26px rgba(66, 48, 32, 0.10),
+        0 2px 5px rgba(66, 48, 32, 0.06);
+
+    overflow: hidden;
+}
+
+
+/* ================================= */
+/* CONTENUTO PARTECIPAZIONE */
+/* ================================= */
+
+.envelope-letter-content {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 24px;
+}
+
+
+/* ================================= */
+/* RITRATTO DENTRO LA BUSTA */
+/* ================================= */
+
+.envelope-letter-portrait {
+    display: block;
+
+    width: min(62%, 320px);
+    height: auto;
+
+    margin-bottom: 22px;
+
+    object-fit: contain;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    pointer-events: none;
+}
+
+
+/* ================================= */
+/* NOMI DENTRO LA PARTECIPAZIONE */
+/* ================================= */
+
+.envelope-letter-names {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+
+    line-height: 1.1;
+
+    color: var(--text);
+}
+
+
+/* ================================= */
+/* DATA DENTRO LA PARTECIPAZIONE */
+/* ================================= */
+
+.envelope-letter-date {
+    margin-top: 14px;
+
+    font-size: clamp(0.9rem, 2vw, 1.15rem);
+
+    letter-spacing: 3px;
+
+    color: var(--text);
+}
+
+
+/* ================================= */
+/* TASCA ANTERIORE */
+/* ================================= */
+
+.envelope-pocket {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 5;
+
+    pointer-events: none;
+}
+
+
+/* ================================= */
+/* PANNELLI DELLA TASCA */
+/* ================================= */
+
+.envelope-pocket-panel {
+    position: absolute;
+
+    inset: 0;
+
+    background: var(--envelope-paper);
+}
+
+
+/* ================================= */
+/* LATO SINISTRO */
+/* ================================= */
+
+.envelope-pocket-left {
     clip-path: polygon(
         0 0,
         50% 50%,
-        100% 0,
-        100% 100%,
         0 100%
     );
 
     -webkit-clip-path: polygon(
         0 0,
         50% 50%,
-        100% 0,
-        100% 100%,
         0 100%
     );
 
-    transform: translateY(0);
-
-    will-change: transform;
-
-    transition:
-        transform 1.35s
-        cubic-bezier(0.22, 0.61, 0.36, 1);
+    z-index: 2;
 }
 
 
 /* ================================= */
-/* BORDI INTERNI DELLA BUSTA */
+/* LATO DESTRO */
 /* ================================= */
 
-/*
-    Creiamo due sottili bordi diagonali
-    che definiscono chiaramente la V.
+.envelope-pocket-right {
+    clip-path: polygon(
+        100% 0,
+        100% 100%,
+        50% 50%
+    );
 
-    Non utilizziamo gradienti incrociati:
-    sono due linee fisiche separate.
-*/
+    -webkit-clip-path: polygon(
+        100% 0,
+        100% 100%,
+        50% 50%
+    );
 
-.envelope-bottom::before,
-.envelope-bottom::after {
-    content: "";
+    z-index: 2;
+}
 
+
+/* ================================= */
+/* FONDO DELLA TASCA */
+/* ================================= */
+
+.envelope-pocket-bottom {
+    clip-path: polygon(
+        0 100%,
+        50% 50%,
+        100% 100%
+    );
+
+    -webkit-clip-path: polygon(
+        0 100%,
+        50% 50%,
+        100% 100%
+    );
+
+    z-index: 3;
+}
+
+
+/* ================================= */
+/* PIEGHE DELLA TASCA */
+/* ================================= */
+
+.envelope-fold {
     position: absolute;
 
-    top: 0;
+    z-index: 6;
 
-    width: 1.5px;
+    height: 1px;
 
-    height: 71%;
+    background: var(--envelope-fold);
 
-    background: var(--envelope-edge);
-
-    opacity: 0.72;
-
-    transform-origin: top center;
+    transform-origin: left center;
 
     pointer-events: none;
 }
 
 
-/* bordo sinistro */
+/* ================================= */
+/* PIEGA SINISTRA */
+/* ================================= */
 
-.envelope-bottom::before {
+.envelope-fold-left {
     left: 0;
+    top: 0;
 
-    transform:
-        rotate(-45deg);
+    width: 70.8%;
 
-    transform-origin: top left;
+    transform: rotate(45deg);
 }
 
 
-/* bordo destro */
+/* ================================= */
+/* PIEGA DESTRA */
+/* ================================= */
 
-.envelope-bottom::after {
+.envelope-fold-right {
     right: 0;
+    top: 0;
 
-    transform:
-        rotate(45deg);
+    width: 70.8%;
 
-    transform-origin: top right;
+    transform-origin: right center;
+
+    transform: rotate(-45deg);
 }
 
 
@@ -217,15 +376,7 @@ body {
 /* LEMBO SUPERIORE */
 /* ================================= */
 
-/*
-    Altezza 50vh.
-
-    In questo modo la punta del triangolo
-    arriva esattamente al centro verticale
-    dello schermo.
-*/
-
-.flap-wrapper {
+.envelope-flap {
     position: absolute;
 
     top: 0;
@@ -236,7 +387,7 @@ body {
     width: 100%;
     height: 50%;
 
-    transform-origin: top center;
+    transform-origin: 50% 0;
 
     transform-style: preserve-3d;
 
@@ -245,24 +396,14 @@ body {
     transform: rotateX(0deg);
 
     will-change: transform;
-
-    /*
-        Movimento volutamente lento.
-        Il ritardo di 0,1 s dal tocco
-        verrà gestito dallo script.
-    */
-
-    transition:
-        transform 1.55s
-        cubic-bezier(0.20, 0.65, 0.30, 1);
 }
 
 
 /* ================================= */
-/* FACCE DEL LEMBO */
+/* FACCIA GENERICA DEL LEMBO */
 /* ================================= */
 
-.flap-face {
+.envelope-flap-face {
     position: absolute;
 
     inset: 0;
@@ -283,10 +424,10 @@ body {
 /* FRONTE DEL LEMBO */
 /* ================================= */
 
-.flap-front {
-    z-index: 2;
+.envelope-flap-front {
+    z-index: 3;
 
-    transform: rotateX(0deg);
+    transform: translateZ(1px);
 }
 
 
@@ -294,23 +435,25 @@ body {
 /* RETRO DEL LEMBO */
 /* ================================= */
 
-.flap-back {
-    z-index: 1;
+.envelope-flap-back {
+    z-index: 2;
 
-    transform: rotateX(180deg);
+    transform:
+        rotateX(180deg)
+        translateZ(1px);
 }
 
 
 /* ================================= */
-/* TRIANGOLO DEL LEMBO */
+/* TRIANGOLO DI CARTA */
 /* ================================= */
 
-.flap-shape {
+.envelope-flap-paper {
     position: absolute;
 
     inset: 0;
 
-    background: var(--envelope);
+    background: var(--envelope-paper);
 
     clip-path: polygon(
         0 0,
@@ -327,20 +470,42 @@ body {
 
 
 /* ================================= */
-/* BORDI DEL LEMBO */
+/* RETRO DELLA CARTA */
 /* ================================= */
 
-/*
-    Una copia leggermente più grande
-    del triangolo viene posta dietro
-    al lembo.
+.envelope-flap-back .envelope-flap-paper {
+    background: var(--envelope-paper-back);
+}
 
-    Il risultato è un bordo continuo
-    e leggibile sui due lati diagonali,
-    senza creare la X che avevamo prima.
-*/
 
-.flap-front::before {
+/* ================================= */
+/* SPESSORE DEL LEMBO */
+/* ================================= */
+
+.envelope-flap-edge {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    z-index: 1;
+
+    width: 100%;
+    height: 50%;
+
+    transform:
+        translateZ(0.5px);
+
+    pointer-events: none;
+}
+
+
+/* ================================= */
+/* BORDO DEL TRIANGOLO */
+/* ================================= */
+
+.envelope-flap-front::before,
+.envelope-flap-back::before {
     content: "";
 
     position: absolute;
@@ -351,8 +516,6 @@ body {
     width: calc(100% + 4px);
     height: calc(100% + 3px);
 
-    background: var(--envelope-edge);
-
     clip-path: polygon(
         0 0,
         100% 0,
@@ -365,91 +528,30 @@ body {
         50% 100%
     );
 
-    opacity: 0.75;
+    background: var(--envelope-edge);
+
+    opacity: 0.72;
 
     z-index: -1;
 }
 
 
-/*
-    Una lieve ombra sotto il lembo
-    aiuta a percepirlo come carta
-    sovrapposta alla tasca.
-*/
+/* ================================= */
+/* OMBRA INIZIALE DEL LEMBO */
+/* ================================= */
 
-.flap-front .flap-shape {
+.envelope-flap-front .envelope-flap-paper {
     filter:
         drop-shadow(
             0 4px 3px
-            rgba(73, 53, 35, 0.15)
+            rgba(70, 50, 34, 0.16)
         );
-}
-
-
-/* ================================= */
-/* RETRO DEL LEMBO */
-/* ================================= */
-
-.flap-back .flap-shape {
-    background: var(--envelope);
-
-    filter:
-        drop-shadow(
-            0 -3px 3px
-            rgba(73, 53, 35, 0.10)
-        );
-}
-
-
-/*
-    Anche il retro conserva un bordo
-    molto leggero.
-*/
-
-.flap-back::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: -2px;
-
-    width: calc(100% + 4px);
-    height: calc(100% + 3px);
-
-    background: var(--envelope-edge);
-
-    clip-path: polygon(
-        0 0,
-        100% 0,
-        50% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        0 0,
-        100% 0,
-        50% 100%
-    );
-
-    opacity: 0.45;
-
-    z-index: -1;
 }
 
 
 /* ================================= */
 /* SIGILLO */
 /* ================================= */
-
-/*
-    La punta del lembo si trova a:
-
-    X = 50vw
-    Y = 50vh
-
-    Il centro del sigillo viene posto
-    esattamente lì.
-*/
 
 .wax-seal {
     position: absolute;
@@ -464,7 +566,7 @@ body {
 
     transform:
         translate(-50%, 50%)
-        translateZ(3px);
+        translateZ(4px);
 
     display: flex;
 
@@ -480,7 +582,7 @@ body {
 
 
 /* ================================= */
-/* IMMAGINE DEL SIGILLO */
+/* IMMAGINE SIGILLO */
 /* ================================= */
 
 .wax-image {
@@ -497,9 +599,50 @@ body {
 
     filter:
         drop-shadow(
-            0 7px 7px
-            rgba(70, 25, 20, 0.27)
+            0 8px 8px
+            rgba(68, 25, 22, 0.28)
         );
+}
+
+
+/* ================================= */
+/* OMBRA DINAMICA DEL LEMBO */
+/* ================================= */
+
+.envelope-flap-shadow {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    z-index: 8;
+
+    width: 70%;
+    height: 12%;
+
+    transform:
+        translate(-50%, -50%)
+        scaleY(0.15);
+
+    transform-origin: center;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(60, 42, 28, 0.24) 0%,
+            rgba(60, 42, 28, 0.12) 45%,
+            rgba(60, 42, 28, 0) 75%
+        );
+
+    filter: blur(8px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    will-change:
+        opacity,
+        transform;
 }
 
 
@@ -507,41 +650,353 @@ body {
 /* APERTURA DEL LEMBO */
 /* ================================= */
 
+.envelope-screen.opening .envelope-flap {
+    animation:
+        envelopeFlapOpen
+        1.8s
+        forwards;
+}
+
+
+/* ================================= */
+/* ROTAZIONE 3D DEL LEMBO */
+/* ================================= */
+
+@keyframes envelopeFlapOpen {
+
+    0% {
+        transform:
+            rotateX(0deg)
+            translateZ(0);
+    }
+
+    /*
+        Piccolo scatto iniziale.
+    */
+
+    6% {
+        transform:
+            rotateX(12deg)
+            translateZ(2px);
+    }
+
+    /*
+        Da qui rallenta.
+    */
+
+    18% {
+        transform:
+            rotateX(28deg)
+            translateZ(5px);
+    }
+
+    34% {
+        transform:
+            rotateX(54deg)
+            translateZ(9px);
+    }
+
+    /*
+        Punto di massima tridimensionalità.
+    */
+
+    52% {
+        transform:
+            rotateX(92deg)
+            translateZ(14px);
+    }
+
+    70% {
+        transform:
+            rotateX(129deg)
+            translateZ(9px);
+    }
+
+    86% {
+        transform:
+            rotateX(159deg)
+            translateZ(4px);
+    }
+
+    100% {
+        transform:
+            rotateX(180deg)
+            translateZ(0);
+    }
+
+}
+
+
+/* ================================= */
+/* LUCE FRONTE DEL LEMBO */
+/* ================================= */
+
+.envelope-screen.opening
+.envelope-flap-front
+.envelope-flap-paper {
+
+    animation:
+        envelopeFlapFrontLight
+        1.8s
+        forwards;
+}
+
+
+/* ================================= */
+/* VARIAZIONE LUCE FRONTE */
+/* ================================= */
+
+@keyframes envelopeFlapFrontLight {
+
+    0% {
+        filter:
+            brightness(1)
+            drop-shadow(
+                0 4px 3px
+                rgba(70, 50, 34, 0.16)
+            );
+    }
+
+    20% {
+        filter:
+            brightness(0.98)
+            drop-shadow(
+                0 8px 7px
+                rgba(70, 50, 34, 0.19)
+            );
+    }
+
+    40% {
+        filter:
+            brightness(0.95)
+            drop-shadow(
+                0 14px 12px
+                rgba(70, 50, 34, 0.22)
+            );
+    }
+
+    52% {
+        filter:
+            brightness(0.92)
+            drop-shadow(
+                0 18px 15px
+                rgba(70, 50, 34, 0.23)
+            );
+    }
+
+    100% {
+        filter:
+            brightness(0.96)
+            drop-shadow(
+                0 4px 4px
+                rgba(70, 50, 34, 0.10)
+            );
+    }
+
+}
+
+
+/* ================================= */
+/* LUCE RETRO DEL LEMBO */
+/* ================================= */
+
+.envelope-screen.opening
+.envelope-flap-back
+.envelope-flap-paper {
+
+    animation:
+        envelopeFlapBackLight
+        1.8s
+        forwards;
+}
+
+
+/* ================================= */
+/* VARIAZIONE LUCE RETRO */
+/* ================================= */
+
+@keyframes envelopeFlapBackLight {
+
+    0% {
+        filter:
+            brightness(0.90);
+    }
+
+    42% {
+        filter:
+            brightness(0.92);
+    }
+
+    58% {
+        filter:
+            brightness(0.96)
+            drop-shadow(
+                0 12px 10px
+                rgba(70, 50, 34, 0.17)
+            );
+    }
+
+    78% {
+        filter:
+            brightness(0.99)
+            drop-shadow(
+                0 8px 7px
+                rgba(70, 50, 34, 0.12)
+            );
+    }
+
+    100% {
+        filter:
+            brightness(1);
+    }
+
+}
+
+
+/* ================================= */
+/* OMBRA DURANTE LA ROTAZIONE */
+/* ================================= */
+
+.envelope-screen.opening
+.envelope-flap-shadow {
+
+    animation:
+        envelopeFlapShadowMove
+        1.8s
+        forwards;
+}
+
+
+/* ================================= */
+/* MOVIMENTO OMBRA */
+/* ================================= */
+
+@keyframes envelopeFlapShadowMove {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translate(-50%, -50%)
+            scaleX(0.85)
+            scaleY(0.12);
+    }
+
+    12% {
+        opacity: 0.12;
+
+        transform:
+            translate(-50%, -48%)
+            scaleX(0.90)
+            scaleY(0.24);
+    }
+
+    32% {
+        opacity: 0.26;
+
+        transform:
+            translate(-50%, -42%)
+            scaleX(0.82)
+            scaleY(0.55);
+    }
+
+    52% {
+        opacity: 0.34;
+
+        transform:
+            translate(-50%, -32%)
+            scaleX(0.68)
+            scaleY(1);
+    }
+
+    72% {
+        opacity: 0.20;
+
+        transform:
+            translate(-50%, -20%)
+            scaleX(0.78)
+            scaleY(0.52);
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            translate(-50%, -5%)
+            scaleX(0.90)
+            scaleY(0.12);
+    }
+
+}
+
+
+/* ================================= */
+/* DISCESA DEL CORPO DELLA BUSTA */
+/* ================================= */
+
+.envelope-screen.reveal
+.envelope-body {
+
+    animation:
+        envelopeBodyDown
+        1.35s
+        forwards;
+}
+
+
+/* ================================= */
+/* MOVIMENTO CORPO */
+/* ================================= */
+
+@keyframes envelopeBodyDown {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(105%);
+    }
+
+}
+
+
+/* ================================= */
+/* MOVIMENTO DEL CARTONCINO */
+/* ================================= */
+
 /*
-    Il sigillo non ha alcuna animazione
-    propria.
-
-    Ruota perché appartiene alla faccia
-    anteriore del lembo.
-
-    Superati i 90°, la faccia anteriore
-    non è più visibile e appare il retro:
-    il sigillo rimane quindi correttamente
-    nascosto dietro la carta.
+    Un leggerissimo movimento verso l'alto
+    fa sembrare che il cartoncino venga
+    liberato dalla tasca.
 */
 
-.envelope-screen.opening .flap-wrapper {
-    transform: rotateX(180deg);
+.envelope-screen.reveal
+.envelope-letter {
+
+    animation:
+        envelopeLetterRise
+        1.20s
+        forwards;
 }
 
 
-/* ================================= */
-/* DISCESA DELLA TASCA */
-/* ================================= */
+@keyframes envelopeLetterRise {
 
-.envelope-screen.reveal .envelope-bottom {
-    transform: translateY(105%);
-}
+    0% {
+        transform:
+            translateX(-50%)
+            translateY(0)
+            translateZ(2px);
+    }
 
+    100% {
+        transform:
+            translateX(-50%)
+            translateY(-4%)
+            translateZ(2px);
+    }
 
-/* ================================= */
-/* LEMBO COMPLETAMENTE APERTO */
-/* ================================= */
-
-.envelope-screen.reveal .flap-wrapper {
-    transform:
-        rotateX(180deg)
-        translateY(-5%);
 }
 
 
@@ -568,9 +1023,11 @@ body {
     min-height: 100vh;
 
     display: flex;
+
     flex-direction: column;
 
     justify-content: center;
+
     align-items: center;
 
     padding: 40px 20px;
@@ -578,6 +1035,7 @@ body {
 
 .portrait {
     width: min(60vw, 380px);
+
     height: auto;
 
     display: block;
@@ -635,6 +1093,7 @@ h1 {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     gap: 12px;
@@ -652,6 +1111,7 @@ h1 {
 
 .pin-icon {
     width: 32px;
+
     height: 42px;
 
     object-fit: contain;
@@ -721,6 +1181,7 @@ h1 {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     gap: 12px;
@@ -732,9 +1193,11 @@ h1 {
     display: inline-flex;
 
     justify-content: center;
+
     align-items: center;
 
     min-width: 150px;
+
     min-height: 48px;
 
     padding: 13px 22px;
@@ -823,6 +1286,7 @@ h1 {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 }
 
@@ -1000,6 +1464,7 @@ h1 {
     position: fixed;
 
     left: 50%;
+
     bottom: 18px;
 
     transform: translateX(-50%);
@@ -1070,6 +1535,7 @@ h1 {
     50% {
         transform: translateY(4px);
     }
+
 }
 
 
@@ -1088,16 +1554,24 @@ h1 {
 
 @media (max-width: 600px) {
 
-    /*
-        NON riduciamo l'altezza del lembo.
+    .envelope-letter {
+        width: 84vw;
 
-        Deve rimanere 50% anche su telefono
-        perché sigillo e punta devono restare
-        al centro esatto dello schermo.
-    */
+        height: 70%;
 
-    .flap-wrapper {
-        height: 50%;
+        top: 15%;
+    }
+
+
+    .envelope-letter-content {
+        padding: 30px 18px;
+    }
+
+
+    .envelope-letter-portrait {
+        width: min(70%, 280px);
+
+        margin-bottom: 18px;
     }
 
 
@@ -1176,6 +1650,7 @@ h1 {
         width: 100%;
 
         padding-left: 10px;
+
         padding-right: 10px;
     }
 
@@ -1231,6 +1706,7 @@ h1 {
 
     .wax-seal {
         width: 94px;
+
         height: 94px;
     }
 
@@ -1261,9 +1737,14 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
 
-    .flap-wrapper,
-    .envelope-bottom {
-        transition-duration: 0.01ms;
+    .envelope-flap,
+    .envelope-body,
+    .envelope-letter,
+    .envelope-flap-shadow,
+    .envelope-flap-paper {
+        animation-duration: 0.01ms !important;
+
+        animation-delay: 0ms !important;
     }
 
 }

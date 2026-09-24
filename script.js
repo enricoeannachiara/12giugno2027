@@ -28,16 +28,13 @@ function openEnvelope() {
     envelopeOpened = true;
 
     /*
-     * Per ora facciamo una cosa sola:
+     * Un'unica azione:
      *
-     * - il lembo si apre;
-     * - la punta segue con la lieve flessione
-     *   definita nel CSS;
-     * - la busta NON scende;
-     * - l'overlay NON viene ancora rimosso.
+     * aggiungiamo la classe "opening".
      *
-     * In questo modo possiamo giudicare
-     * esclusivamente il movimento della carta.
+     * Il CSS si occupa interamente
+     * della rotazione lenta e continua
+     * del lembo.
      */
 
     envelopeScreen.classList.add("opening");
@@ -57,9 +54,7 @@ if (envelopeButton) {
     );
 
 
-    /*
-     * ACCESSIBILITÀ TASTIERA
-     */
+    /* ACCESSIBILITÀ TASTIERA */
 
     envelopeButton.addEventListener(
         "keydown",
@@ -98,12 +93,9 @@ function updateScrollIndicator() {
 
 
     /*
-     * Finché la busta iniziale è attiva,
-     * l'indicatore deve rimanere nascosto.
-     *
-     * In questa fase di test non rimuoviamo
-     * ancora l'overlay, quindi resterà sempre
-     * nascosto durante l'animazione.
+     * Durante questa fase di test
+     * l'overlay non viene ancora rimosso,
+     * quindi "Scorri" resta nascosto.
      */
 
     if (

@@ -22,7 +22,7 @@
 
 
     <!-- ================================================== -->
-    <!-- BUSTA INIZIALE                                     -->
+    <!-- TEST LEMBO BUSTA                                   -->
     <!-- ================================================== -->
 
     <div
@@ -41,193 +41,71 @@
 
 
             <!-- ========================================== -->
-            <!-- RETRO DELLA BUSTA                         -->
+            <!-- LEMBO SUPERIORE                           -->
             <!-- ========================================== -->
 
             <!--
-                Questa superficie costituisce il fondo
-                della busta.
+                Per questa fase lavoriamo esclusivamente
+                sul lembo.
 
-                La zona centrale superiore resterà
-                visivamente aperta/trasparente quando
-                il lembo si solleverà, così si vedrà
-                direttamente la vera Hero sottostante.
-            -->
+                Nessun retro della busta.
+                Nessuna tasca inferiore.
+                Nessuna Hero duplicata.
 
-            <div class="envelope-back"></div>
-
-
-            <!-- ========================================== -->
-            <!-- TASCA ANTERIORE                            -->
-            <!-- ========================================== -->
-
-            <!--
-                La tasca è costruita con tre superfici
-                separate:
-                - sinistra
-                - destra
-                - inferiore
-
-                In questo modo possiamo simulare le
-                pieghe reali della carta senza creare
-                strani triangoli sovrapposti.
-            -->
-
-            <div class="envelope-pocket">
-
-                <div
-                    class="
-                        envelope-pocket-panel
-                        envelope-pocket-left
-                    "
-                ></div>
-
-                <div
-                    class="
-                        envelope-pocket-panel
-                        envelope-pocket-right
-                    "
-                ></div>
-
-                <div
-                    class="
-                        envelope-pocket-panel
-                        envelope-pocket-bottom
-                    "
-                ></div>
-
-
-                <!-- PIEGHE -->
-
-                <div
-                    class="
-                        envelope-fold
-                        envelope-fold-left
-                    "
-                ></div>
-
-                <div
-                    class="
-                        envelope-fold
-                        envelope-fold-right
-                    "
-                ></div>
-
-            </div>
-
-
-            <!-- ========================================== -->
-            <!-- LEMBO SUPERIORE FLESSIBILE                -->
-            <!-- ========================================== -->
-
-            <!--
-                Il lembo non è più un unico triangolo
-                rigido.
-
-                È composto da due segmenti:
-
-                1. flap-main
-                   parte superiore del lembo
-
-                2. flap-tip
-                   parte finale con punta e sigillo
-
-                I due elementi ruoteranno con tempi
-                leggermente differenti per simulare
-                una lieve flessione della carta.
+                Dietro il lembo c'è direttamente
+                la vera pagina del matrimonio.
             -->
 
             <div class="envelope-flap">
 
 
                 <!-- ====================================== -->
-                <!-- PARTE PRINCIPALE DEL LEMBO             -->
+                <!-- FRONTE DEL LEMBO                       -->
                 <!-- ====================================== -->
 
-                <div class="flap-main">
+                <div
+                    class="
+                        flap-face
+                        flap-front
+                    "
+                >
 
-
-                    <!-- FRONTE -->
-
-                    <div
-                        class="
-                            flap-face
-                            flap-main-front
-                        "
-                    >
-
-                        <div class="flap-main-paper"></div>
-
-                    </div>
-
-
-                    <!-- RETRO -->
-
-                    <div
-                        class="
-                            flap-face
-                            flap-main-back
-                        "
-                    >
-
-                        <div class="flap-main-paper"></div>
-
-                    </div>
+                    <div class="flap-paper"></div>
 
 
                     <!-- ================================== -->
-                    <!-- PARTE FINALE / PUNTA              -->
+                    <!-- SIGILLO                            -->
                     <!-- ================================== -->
 
-                    <div class="flap-tip">
+                    <div class="wax-seal">
 
-
-                        <!-- FRONTE PUNTA -->
-
-                        <div
-                            class="
-                                flap-face
-                                flap-tip-front
-                            "
+                        <img
+                            src="images/sigillo-AE.png"
+                            alt=""
+                            class="wax-image"
+                            draggable="false"
                         >
-
-                            <div class="flap-tip-paper"></div>
-
-
-                            <!-- ========================== -->
-                            <!-- SIGILLO                    -->
-                            <!-- ========================== -->
-
-                            <div class="wax-seal">
-
-                                <img
-                                    src="images/sigillo-AE.png"
-                                    alt=""
-                                    class="wax-image"
-                                    draggable="false"
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- RETRO PUNTA -->
-
-                        <div
-                            class="
-                                flap-face
-                                flap-tip-back
-                            "
-                        >
-
-                            <div class="flap-tip-paper"></div>
-
-                        </div>
 
                     </div>
 
                 </div>
+
+
+                <!-- ====================================== -->
+                <!-- RETRO DEL LEMBO                        -->
+                <!-- ====================================== -->
+
+                <div
+                    class="
+                        flap-face
+                        flap-back
+                    "
+                >
+
+                    <div class="flap-paper"></div>
+
+                </div>
+
 
             </div>
 

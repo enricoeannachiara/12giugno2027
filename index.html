@@ -22,7 +22,7 @@
 
 
     <!-- ================================================== -->
-    <!-- BUSTA / PARTECIPAZIONE INIZIALE                     -->
+    <!-- BUSTA INIZIALE                                     -->
     <!-- ================================================== -->
 
     <div
@@ -41,248 +41,195 @@
 
 
             <!-- ========================================== -->
-            <!-- STRUTTURA INFERIORE DELLA BUSTA           -->
+            <!-- RETRO DELLA BUSTA                         -->
             <!-- ========================================== -->
 
             <!--
-                Questo gruppo rappresenta fisicamente
-                la parte della busta che resta sotto
-                al lembo.
+                Questa superficie costituisce il fondo
+                della busta.
 
-                Più avanti sarà questo elemento a
-                scendere verso il basso.
+                La zona centrale superiore resterà
+                visivamente aperta/trasparente quando
+                il lembo si solleverà, così si vedrà
+                direttamente la vera Hero sottostante.
             -->
 
-            <div class="envelope-body">
+            <div class="envelope-back"></div>
 
 
-                <!-- ====================================== -->
-                <!-- RETRO INTERNO DELLA BUSTA              -->
-                <!-- ====================================== -->
+            <!-- ========================================== -->
+            <!-- TASCA ANTERIORE                            -->
+            <!-- ========================================== -->
 
-                <div class="envelope-back-sheet"></div>
+            <!--
+                La tasca è costruita con tre superfici
+                separate:
+                - sinistra
+                - destra
+                - inferiore
 
+                In questo modo possiamo simulare le
+                pieghe reali della carta senza creare
+                strani triangoli sovrapposti.
+            -->
 
-                <!-- ====================================== -->
-                <!-- PARTECIPAZIONE DENTRO LA BUSTA         -->
-                <!-- ====================================== -->
-
-                <!--
-                    È un vero elemento separato.
-
-                    Rimane dietro alla tasca anteriore
-                    ma davanti al retro della busta.
-
-                    In questo modo, appena il lembo si
-                    solleva, vedremo davvero il cartoncino
-                    della partecipazione all'interno.
-                -->
+            <div class="envelope-pocket">
 
                 <div
-                    class="envelope-letter"
-                    aria-hidden="true"
-                >
+                    class="
+                        envelope-pocket-panel
+                        envelope-pocket-left
+                    "
+                ></div>
 
-                    <div class="envelope-letter-content">
+                <div
+                    class="
+                        envelope-pocket-panel
+                        envelope-pocket-right
+                    "
+                ></div>
 
-                        <img
-                            src="images/ritratto.png"
-                            alt=""
-                            class="envelope-letter-portrait"
-                            draggable="false"
-                        >
-
-                        <div class="envelope-letter-names">
-                            Enrico & Annachiara
-                        </div>
-
-                        <div class="envelope-letter-date">
-                            12 giugno 2027
-                        </div>
-
-                    </div>
-
-                </div>
+                <div
+                    class="
+                        envelope-pocket-panel
+                        envelope-pocket-bottom
+                    "
+                ></div>
 
 
-                <!-- ====================================== -->
-                <!-- TASCA ANTERIORE DELLA BUSTA            -->
-                <!-- ====================================== -->
+                <!-- PIEGHE -->
 
-                <!--
-                    La tasca non è un unico poligono.
+                <div
+                    class="
+                        envelope-fold
+                        envelope-fold-left
+                    "
+                ></div>
 
-                    È costruita come una vera busta:
-                    lato sinistro, lato destro e fondo.
-
-                    Sovrapponendo questi tre piani avremo
-                    pieghe e ombre molto più naturali.
-                -->
-
-                <div class="envelope-pocket">
-
-
-                    <!-- LATO SINISTRO -->
-
-                    <div
-                        class="
-                            envelope-pocket-panel
-                            envelope-pocket-left
-                        "
-                    ></div>
-
-
-                    <!-- LATO DESTRO -->
-
-                    <div
-                        class="
-                            envelope-pocket-panel
-                            envelope-pocket-right
-                        "
-                    ></div>
-
-
-                    <!-- FONDO -->
-
-                    <div
-                        class="
-                            envelope-pocket-panel
-                            envelope-pocket-bottom
-                        "
-                    ></div>
-
-
-                    <!--
-                        Linee di piega dedicate.
-
-                        Non useremo gradienti incrociati:
-                        saranno bordi separati e controllabili.
-                    -->
-
-                    <div
-                        class="
-                            envelope-fold
-                            envelope-fold-left
-                        "
-                    ></div>
-
-                    <div
-                        class="
-                            envelope-fold
-                            envelope-fold-right
-                        "
-                    ></div>
-
-                </div>
+                <div
+                    class="
+                        envelope-fold
+                        envelope-fold-right
+                    "
+                ></div>
 
             </div>
 
 
             <!-- ========================================== -->
-            <!-- LEMBO SUPERIORE 3D                        -->
+            <!-- LEMBO SUPERIORE FLESSIBILE                -->
             <!-- ========================================== -->
 
             <!--
-                Tutto il gruppo ruota nello spazio.
+                Il lembo non è più un unico triangolo
+                rigido.
 
-                Contiene:
-                - fronte
-                - retro
-                - sottile bordo della carta
+                È composto da due segmenti:
 
-                Il sigillo appartiene esclusivamente
-                alla faccia frontale.
+                1. flap-main
+                   parte superiore del lembo
+
+                2. flap-tip
+                   parte finale con punta e sigillo
+
+                I due elementi ruoteranno con tempi
+                leggermente differenti per simulare
+                una lieve flessione della carta.
             -->
 
             <div class="envelope-flap">
 
 
                 <!-- ====================================== -->
-                <!-- BORDO / SPESSORE CARTA                -->
+                <!-- PARTE PRINCIPALE DEL LEMBO             -->
                 <!-- ====================================== -->
 
-                <div class="envelope-flap-edge"></div>
+                <div class="flap-main">
 
 
-                <!-- ====================================== -->
-                <!-- FRONTE DEL LEMBO                       -->
-                <!-- ====================================== -->
+                    <!-- FRONTE -->
 
-                <div
-                    class="
-                        envelope-flap-face
-                        envelope-flap-front
-                    "
-                >
+                    <div
+                        class="
+                            flap-face
+                            flap-main-front
+                        "
+                    >
 
-                    <div class="envelope-flap-paper"></div>
+                        <div class="flap-main-paper"></div>
+
+                    </div>
+
+
+                    <!-- RETRO -->
+
+                    <div
+                        class="
+                            flap-face
+                            flap-main-back
+                        "
+                    >
+
+                        <div class="flap-main-paper"></div>
+
+                    </div>
 
 
                     <!-- ================================== -->
-                    <!-- SIGILLO                            -->
+                    <!-- PARTE FINALE / PUNTA              -->
                     <!-- ================================== -->
 
-                    <!--
-                        Il sigillo è fisicamente figlio
-                        della faccia anteriore.
+                    <div class="flap-tip">
 
-                        Quindi:
-                        - ruota insieme al lembo;
-                        - non ha animazione indipendente;
-                        - superati i 90° viene occultato
-                          naturalmente dal retro del lembo.
-                    -->
 
-                    <div class="wax-seal">
+                        <!-- FRONTE PUNTA -->
 
-                        <img
-                            src="images/sigillo-AE.png"
-                            alt=""
-                            class="wax-image"
-                            draggable="false"
+                        <div
+                            class="
+                                flap-face
+                                flap-tip-front
+                            "
                         >
+
+                            <div class="flap-tip-paper"></div>
+
+
+                            <!-- ========================== -->
+                            <!-- SIGILLO                    -->
+                            <!-- ========================== -->
+
+                            <div class="wax-seal">
+
+                                <img
+                                    src="images/sigillo-AE.png"
+                                    alt=""
+                                    class="wax-image"
+                                    draggable="false"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RETRO PUNTA -->
+
+                        <div
+                            class="
+                                flap-face
+                                flap-tip-back
+                            "
+                        >
+
+                            <div class="flap-tip-paper"></div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
-
-                <!-- ====================================== -->
-                <!-- RETRO DEL LEMBO                        -->
-                <!-- ====================================== -->
-
-                <div
-                    class="
-                        envelope-flap-face
-                        envelope-flap-back
-                    "
-                >
-
-                    <div class="envelope-flap-paper"></div>
-
-                </div>
-
             </div>
-
-
-            <!-- ========================================== -->
-            <!-- OMBRA DEL LEMBO                           -->
-            <!-- ========================================== -->
-
-            <!--
-                Elemento indipendente.
-
-                Ci permetterà di far muovere e sfumare
-                l'ombra sulla partecipazione mentre il
-                lembo si solleva, aumentando molto
-                la sensazione di profondità.
-            -->
-
-            <div
-                class="envelope-flap-shadow"
-                aria-hidden="true"
-            ></div>
-
 
         </div>
 
@@ -293,14 +240,6 @@
     <!-- ================================================== -->
     <!-- HERO PRINCIPALE                                    -->
     <!-- ================================================== -->
-
-    <!--
-        La pagina vera è già presente dietro la busta.
-
-        La partecipazione contenuta nella busta ripete
-        volutamente questa composizione per consentire
-        un passaggio visivo continuo.
-    -->
 
     <section class="hero">
 

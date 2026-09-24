@@ -11,6 +11,10 @@ const envelopeButton =
 let envelopeOpened = false;
 
 
+/* ========================================= */
+/* APERTURA BUSTA */
+/* ========================================= */
+
 function openEnvelope() {
 
     if (!envelopeScreen || !envelopeButton) {
@@ -26,42 +30,56 @@ function openEnvelope() {
 
     /*
      * FASE 1
+     * -----------------------------------------
      *
-     * Il lembo ruota all'indietro.
-     * Il sigillo è fisicamente contenuto
-     * nella faccia frontale del lembo,
-     * quindi ruota insieme ad esso.
+     * Il tocco non provoca un movimento
+     * immediato.
+     *
+     * Attendiamo 100 ms per rendere
+     * l'apertura leggermente più naturale.
+     *
+     * Dopo 100 ms il lembo comincia
+     * lentamente a ruotare.
      */
 
-    envelopeScreen.classList.add("opening");
+    setTimeout(() => {
+
+        envelopeScreen.classList.add("opening");
+
+    }, 100);
 
 
     /*
      * FASE 2
+     * -----------------------------------------
      *
-     * Aspettiamo che il lembo sia già
-     * visibilmente sollevato prima di
-     * iniziare a far scendere il corpo
-     * della busta.
+     * Il lembo ha già iniziato ad aprirsi.
      *
-     * In questo momento comincia a vedersi
-     * direttamente la Hero sottostante.
+     * La Hero sottostante è visibile attraverso
+     * l'apertura triangolare della tasca.
+     *
+     * Solo a questo punto iniziamo a far
+     * scendere il corpo inferiore della busta.
      */
 
     setTimeout(() => {
 
         envelopeScreen.classList.add("reveal");
 
-    }, 520);
+    }, 900);
 
 
     /*
      * FASE 3
+     * -----------------------------------------
      *
-     * Lembo completamente aperto e corpo
-     * della busta ormai fuori dallo schermo.
+     * Aspettiamo che:
      *
-     * Rimuoviamo l'overlay dall'interazione.
+     * - il lembo abbia terminato la rotazione;
+     * - il corpo della busta sia sceso;
+     * - la Hero sia ormai completamente visibile.
+     *
+     * Solo ora togliamo l'overlay.
      */
 
     setTimeout(() => {
@@ -75,14 +93,14 @@ function openEnvelope() {
 
         updateScrollIndicator();
 
-    }, 1700);
+    }, 2400);
 
 }
 
 
-/* ----------------------------------------- */
+/* ========================================= */
 /* APERTURA CON TAP / CLICK */
-/* ----------------------------------------- */
+/* ========================================= */
 
 if (envelopeButton) {
 
@@ -93,8 +111,12 @@ if (envelopeButton) {
 
 
     /*
-     * Supporto tastiera:
-     * Invio o barra spaziatrice.
+     * Accessibilità tastiera.
+     *
+     * La busta può essere aperta anche con:
+     *
+     * - INVIO
+     * - BARRA SPAZIATRICE
      */
 
     envelopeButton.addEventListener(
@@ -134,8 +156,9 @@ function updateScrollIndicator() {
 
 
     /*
-     * Prima che la busta sia completamente
-     * aperta, "Scorri" non deve essere visibile.
+     * Finché la busta è visibile,
+     * l'indicatore "Scorri" deve
+     * rimanere nascosto.
      */
 
     if (
@@ -160,8 +183,9 @@ function updateScrollIndicator() {
 
 
     /*
-     * Quando siamo quasi arrivati in fondo,
-     * l'indicatore scompare.
+     * Nascondiamo l'indicatore quando
+     * ci troviamo quasi alla fine
+     * della pagina.
      */
 
     if (distanceFromBottom < 90) {
@@ -177,9 +201,14 @@ function updateScrollIndicator() {
 }
 
 
+/* ========================================= */
+/* EVENTI SCROLL / RESIZE */
+/* ========================================= */
+
 window.addEventListener(
     "scroll",
-    updateScrollIndicator
+    updateScrollIndicator,
+    { passive: true }
 );
 
 
@@ -434,5 +463,14 @@ if (copyIbanButton) {
 /* ========================================= */
 /* AVVIO */
 /* ========================================= */
+
+/*
+ * Al caricamento della pagina:
+ *
+ * - la busta è chiusa;
+ * - il sigillo è al centro;
+ * - la Hero è già presente dietro;
+ * - l'indicatore "Scorri" resta nascosto.
+ */
 
 updateScrollIndicator();

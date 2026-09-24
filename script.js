@@ -2,40 +2,46 @@
 /* BUSTA INIZIALE */
 /* ========================================= */
 
-const envelopeScreen = document.getElementById("envelopeScreen");
-const envelopeButton = document.getElementById("envelopeButton");
+const envelopeScreen =
+    document.getElementById("envelopeScreen");
+
+const envelopeButton =
+    document.getElementById("envelopeButton");
 
 if (envelopeScreen && envelopeButton) {
 
     let envelopeOpened = false;
 
-    envelopeButton.addEventListener("click", () => {
+    function openEnvelope() {
 
-        if (envelopeOpened) return;
+        if (envelopeOpened) {
+            return;
+        }
 
         envelopeOpened = true;
 
-        envelopeButton.disabled = true;
-
-        /* Fase 1:
-           il sigillo scompare e il lembo comincia ad aprirsi
-        */
         envelopeScreen.classList.add("opening");
 
-        /* Fase 2:
-           dopo che il lembo ha iniziato a ruotare,
-           facciamo scorrere via la parte inferiore
-        */
+        /*
+         * FASE 2
+         * Dopo che il lembo ha iniziato ad aprirsi,
+         * la parte inferiore comincia a scorrere
+         * verso il basso.
+         */
+
         setTimeout(() => {
 
             envelopeScreen.classList.add("reveal");
 
-        }, 500);
+        }, 450);
 
-        /* Fase 3:
-           terminata l'animazione,
-           rimuoviamo visivamente tutta la busta
-        */
+
+        /*
+         * FASE 3
+         * Al termine dell'animazione rimuoviamo
+         * completamente la schermata della busta.
+         */
+
         setTimeout(() => {
 
             envelopeScreen.classList.add("opened");
@@ -45,9 +51,45 @@ if (envelopeScreen && envelopeButton) {
                 "true"
             );
 
-        }, 1350);
+            /*
+             * Dopo l'apertura mostriamo correttamente
+             * anche l'indicatore "Scorri".
+             */
 
-    });
+            updateScrollIndicator();
+
+        }, 1500);
+
+    }
+
+
+    /* Apertura con click / tap */
+
+    envelopeButton.addEventListener(
+        "click",
+        openEnvelope
+    );
+
+
+    /* Accessibilità tastiera */
+
+    envelopeButton.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                event.preventDefault();
+
+                openEnvelope();
+
+            }
+
+        }
+    );
 
 }
 
@@ -56,11 +98,31 @@ if (envelopeScreen && envelopeButton) {
 /* INDICATORE "SCORRI" */
 /* ========================================= */
 
-const scrollIndicator = document.getElementById("scrollIndicator");
+const scrollIndicator =
+    document.getElementById("scrollIndicator");
+
 
 function updateScrollIndicator() {
 
-    if (!scrollIndicator) return;
+    if (!scrollIndicator) {
+        return;
+    }
+
+    /*
+     * Finché la busta non è completamente aperta
+     * nascondiamo l'indicatore.
+     */
+
+    if (
+        envelopeScreen &&
+        !envelopeScreen.classList.contains("opened")
+    ) {
+
+        scrollIndicator.classList.add("hidden");
+
+        return;
+    }
+
 
     const scrollPosition =
         window.scrollY + window.innerHeight;
@@ -70,6 +132,12 @@ function updateScrollIndicator() {
 
     const distanceFromBottom =
         pageHeight - scrollPosition;
+
+
+    /*
+     * Lo nascondiamo solo quando siamo quasi
+     * arrivati in fondo alla pagina.
+     */
 
     if (distanceFromBottom < 90) {
 
@@ -83,17 +151,17 @@ function updateScrollIndicator() {
 
 }
 
+
 window.addEventListener(
     "scroll",
     updateScrollIndicator
 );
 
+
 window.addEventListener(
     "resize",
     updateScrollIndicator
 );
-
-updateScrollIndicator();
 
 
 /* ========================================= */
@@ -109,50 +177,70 @@ const copyMessage =
 const accessCode =
     document.getElementById("accessCode");
 
+
 async function copyAccessCode() {
 
-    if (!accessCode) return;
+    if (!accessCode) {
+        return;
+    }
 
     const code =
         accessCode.textContent.trim();
+
 
     try {
 
         await navigator.clipboard.writeText(code);
 
+
         if (copyMessage) {
+
             copyMessage.textContent =
                 "Codice copiato";
+
         }
 
+
         if (copyCodeButton) {
+
             copyCodeButton.textContent =
                 "Copiato ✓";
+
         }
+
 
         setTimeout(() => {
 
             if (copyMessage) {
+
                 copyMessage.textContent = "";
+
             }
 
+
             if (copyCodeButton) {
+
                 copyCodeButton.textContent =
                     "Copia codice";
+
             }
 
         }, 1800);
 
+
     } catch (error) {
 
         if (copyMessage) {
+
             copyMessage.textContent =
                 "Tieni premuto sul codice per copiarlo";
+
         }
 
     }
 
 }
+
 
 if (copyCodeButton) {
 
@@ -174,12 +262,17 @@ const giftToggle =
 const giftDetails =
     document.getElementById("giftDetails");
 
+
 function toggleGiftDetails() {
 
-    if (!giftToggle || !giftDetails) return;
+    if (!giftToggle || !giftDetails) {
+        return;
+    }
+
 
     const isHidden =
         giftDetails.hasAttribute("hidden");
+
 
     if (isHidden) {
 
@@ -192,6 +285,7 @@ function toggleGiftDetails() {
 
         giftToggle.textContent =
             "Nascondi";
+
 
     } else {
 
@@ -211,6 +305,7 @@ function toggleGiftDetails() {
     }
 
 }
+
 
 if (giftToggle) {
 
@@ -235,50 +330,71 @@ const copyIbanMessage =
 const ibanCode =
     document.getElementById("ibanCode");
 
+
 async function copyIban() {
 
-    if (!ibanCode) return;
+    if (!ibanCode) {
+        return;
+    }
+
 
     const iban =
         ibanCode.textContent.trim();
+
 
     try {
 
         await navigator.clipboard.writeText(iban);
 
+
         if (copyIbanMessage) {
+
             copyIbanMessage.textContent =
                 "IBAN copiato";
+
         }
 
+
         if (copyIbanButton) {
+
             copyIbanButton.textContent =
                 "Copiato ✓";
+
         }
+
 
         setTimeout(() => {
 
             if (copyIbanMessage) {
+
                 copyIbanMessage.textContent = "";
+
             }
 
+
             if (copyIbanButton) {
+
                 copyIbanButton.textContent =
                     "Copia IBAN";
+
             }
 
         }, 1800);
 
+
     } catch (error) {
 
         if (copyIbanMessage) {
+
             copyIbanMessage.textContent =
                 "Tieni premuto sull'IBAN per copiarlo";
+
         }
 
     }
 
 }
+
 
 if (copyIbanButton) {
 
@@ -288,3 +404,10 @@ if (copyIbanButton) {
     );
 
 }
+
+
+/* ========================================= */
+/* AVVIO */
+/* ========================================= */
+
+updateScrollIndicator();

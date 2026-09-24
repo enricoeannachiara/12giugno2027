@@ -1,33 +1,46 @@
+/* ========================================= */
+/* BUSTA INIZIALE */
+/* ========================================= */
+
+const envelopeScreen = document.getElementById("envelopeScreen");
+const envelopeButton = document.getElementById("envelopeButton");
+
+if (envelopeButton && envelopeScreen) {
+
+    envelopeButton.addEventListener("click", () => {
+
+        envelopeButton.disabled = true;
+
+        envelopeScreen.classList.add("opening");
+
+        setTimeout(() => {
+
+            envelopeScreen.classList.add("opened");
+
+        }, 900);
+
+    });
+
+}
+
+
+/* ========================================= */
+/* SCORRI */
+/* ========================================= */
+
 const scrollIndicator = document.getElementById("scrollIndicator");
-
-const copyCodeButton = document.getElementById("copyCodeButton");
-const copyMessage = document.getElementById("copyMessage");
-const accessCode = document.getElementById("accessCode");
-
-const giftToggle = document.getElementById("giftToggle");
-const giftDetails = document.getElementById("giftDetails");
-
-const copyIbanButton = document.getElementById("copyIbanButton");
-const copyIbanMessage = document.getElementById("copyIbanMessage");
-const ibanCode = document.getElementById("ibanCode");
-
-
-/* -------------------------------- */
-/* INDICATORE "SCORRI" */
-/* -------------------------------- */
 
 function updateScrollIndicator() {
 
-    const scrollPosition =
-        window.scrollY + window.innerHeight;
+    if (!scrollIndicator) return;
+
+    const scrollBottom =
+        window.innerHeight + window.scrollY;
 
     const pageHeight =
         document.documentElement.scrollHeight;
 
-    const distanceFromBottom =
-        pageHeight - scrollPosition;
-
-    if (distanceFromBottom < 90) {
+    if (window.scrollY > 40 || scrollBottom >= pageHeight - 20) {
 
         scrollIndicator.classList.add("hidden");
 
@@ -39,156 +52,128 @@ function updateScrollIndicator() {
 
 }
 
-
-/* -------------------------------- */
-/* COPIA CODICE WEDSHOOTS */
-/* -------------------------------- */
-
-async function copyAccessCode() {
-
-    const code =
-        accessCode.textContent.trim();
-
-    try {
-
-        await navigator.clipboard.writeText(code);
-
-        copyMessage.textContent =
-            "Codice copiato";
-
-        copyCodeButton.textContent =
-            "Copiato ✓";
-
-        setTimeout(() => {
-
-            copyMessage.textContent = "";
-
-            copyCodeButton.textContent =
-                "Copia codice";
-
-        }, 1800);
-
-    } catch (error) {
-
-        copyMessage.textContent =
-            "Tieni premuto sul codice per copiarlo";
-
-    }
-
-}
-
-
-/* -------------------------------- */
-/* APERTURA / CHIUSURA DATI BONIFICO */
-/* -------------------------------- */
-
-function toggleGiftDetails() {
-
-    const isHidden =
-        giftDetails.hasAttribute("hidden");
-
-    if (isHidden) {
-
-        giftDetails.removeAttribute("hidden");
-
-        giftToggle.setAttribute(
-            "aria-expanded",
-            "true"
-        );
-
-        giftToggle.textContent =
-            "Nascondi";
-
-    } else {
-
-        giftDetails.setAttribute(
-            "hidden",
-            ""
-        );
-
-        giftToggle.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-        giftToggle.textContent =
-            "Scopri di più";
-
-    }
-
-}
-
-
-/* -------------------------------- */
-/* COPIA IBAN */
-/* -------------------------------- */
-
-async function copyIban() {
-
-    const iban =
-        ibanCode.textContent.trim();
-
-    try {
-
-        await navigator.clipboard.writeText(iban);
-
-        copyIbanMessage.textContent =
-            "IBAN copiato";
-
-        copyIbanButton.textContent =
-            "Copiato ✓";
-
-        setTimeout(() => {
-
-            copyIbanMessage.textContent = "";
-
-            copyIbanButton.textContent =
-                "Copia IBAN";
-
-        }, 1800);
-
-    } catch (error) {
-
-        copyIbanMessage.textContent =
-            "Tieni premuto sull'IBAN per copiarlo";
-
-    }
-
-}
-
-
-/* -------------------------------- */
-/* EVENTI */
-/* -------------------------------- */
-
-window.addEventListener(
-    "scroll",
-    updateScrollIndicator
-);
-
-window.addEventListener(
-    "resize",
-    updateScrollIndicator
-);
-
-copyCodeButton.addEventListener(
-    "click",
-    copyAccessCode
-);
-
-giftToggle.addEventListener(
-    "click",
-    toggleGiftDetails
-);
-
-copyIbanButton.addEventListener(
-    "click",
-    copyIban
-);
-
-
-/* -------------------------------- */
-/* AVVIO */
-/* -------------------------------- */
+window.addEventListener("scroll", updateScrollIndicator);
 
 updateScrollIndicator();
+
+
+/* ========================================= */
+/* WEDSHOOTS */
+/* ========================================= */
+
+const copyCodeButton = document.getElementById("copyCodeButton");
+const accessCode = document.getElementById("accessCode");
+const copyMessage = document.getElementById("copyMessage");
+
+if (copyCodeButton && accessCode) {
+
+    copyCodeButton.addEventListener("click", async () => {
+
+        try {
+
+            await navigator.clipboard.writeText(accessCode.textContent.trim());
+
+            if (copyMessage) {
+
+                copyMessage.textContent = "Codice copiato!";
+
+                setTimeout(() => {
+
+                    copyMessage.textContent = "";
+
+                }, 2000);
+
+            }
+
+        } catch {
+
+            if (copyMessage) {
+
+                copyMessage.textContent = "Impossibile copiare.";
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* ========================================= */
+/* IL NOSTRO SOGNO */
+/* ========================================= */
+
+const giftToggle = document.getElementById("giftToggle");
+const giftDetails = document.getElementById("giftDetails");
+
+if (giftToggle && giftDetails) {
+
+    giftToggle.addEventListener("click", () => {
+
+        const hidden = giftDetails.hasAttribute("hidden");
+
+        if (hidden) {
+
+            giftDetails.removeAttribute("hidden");
+
+            giftToggle.textContent = "Nascondi";
+
+            giftToggle.setAttribute("aria-expanded", "true");
+
+        } else {
+
+            giftDetails.setAttribute("hidden", "");
+
+            giftToggle.textContent = "Scopri di più";
+
+            giftToggle.setAttribute("aria-expanded", "false");
+
+        }
+
+    });
+
+}
+
+
+/* ========================================= */
+/* COPIA IBAN */
+/* ========================================= */
+
+const copyIbanButton = document.getElementById("copyIbanButton");
+const ibanCode = document.getElementById("ibanCode");
+const copyIbanMessage = document.getElementById("copyIbanMessage");
+
+if (copyIbanButton && ibanCode) {
+
+    copyIbanButton.addEventListener("click", async () => {
+
+        try {
+
+            await navigator.clipboard.writeText(ibanCode.textContent.trim());
+
+            if (copyIbanMessage) {
+
+                copyIbanMessage.textContent = "IBAN copiato!";
+
+                setTimeout(() => {
+
+                    copyIbanMessage.textContent = "";
+
+                }, 2000);
+
+            }
+
+        } catch {
+
+            if (copyIbanMessage) {
+
+                copyIbanMessage.textContent = "Impossibile copiare.";
+
+            }
+
+        }
+
+    });
+
+}

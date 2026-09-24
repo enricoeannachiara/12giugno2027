@@ -1,5 +1,5 @@
 /* ========================================= */
-/* BUSTA INIZIALE */
+/* BUSTA INIZIALE - PAGE CURL */
 /* ========================================= */
 
 const envelopeScreen =
@@ -28,13 +28,13 @@ function openEnvelope() {
     envelopeOpened = true;
 
     /*
-     * Un'unica azione:
+     * Unica azione JavaScript:
      *
      * aggiungiamo la classe "opening".
      *
-     * Il CSS si occupa interamente
-     * della rotazione lenta e continua
-     * del lembo.
+     * Da questo momento è il CSS
+     * a gestire la rotazione progressiva
+     * delle 10 fasce del lembo.
      */
 
     envelopeScreen.classList.add("opening");
@@ -54,7 +54,13 @@ if (envelopeButton) {
     );
 
 
-    /* ACCESSIBILITÀ TASTIERA */
+    /*
+     * ACCESSIBILITÀ TASTIERA
+     *
+     * Apertura tramite:
+     * - Invio
+     * - Barra spaziatrice
+     */
 
     envelopeButton.addEventListener(
         "keydown",
@@ -93,9 +99,12 @@ function updateScrollIndicator() {
 
 
     /*
-     * Durante questa fase di test
-     * l'overlay non viene ancora rimosso,
-     * quindi "Scorri" resta nascosto.
+     * In questa fase stiamo ancora testando
+     * esclusivamente il lembo.
+     *
+     * L'overlay non viene rimosso,
+     * quindi l'indicatore "Scorri"
+     * deve rimanere nascosto.
      */
 
     if (

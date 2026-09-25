@@ -1,5 +1,5 @@
 /* ========================================= */
-/* BUSTA INIZIALE - PAGE CURL */
+/* ELEMENTI PRINCIPALI */
 /* ========================================= */
 
 const envelopeScreen =
@@ -8,36 +8,210 @@ const envelopeScreen =
 const envelopeButton =
     document.getElementById("envelopeButton");
 
+const flapBook =
+    document.getElementById("flapBook");
+
+const scrollIndicator =
+    document.getElementById("scrollIndicator");
+
+let pageFlip = null;
 let envelopeOpened = false;
 
 
 /* ========================================= */
-/* APERTURA DEL LEMBO */
+/* INIZIALIZZAZIONE PAGEFLIP */
+/* ========================================= */
+
+function initEnvelopeFlip() {
+
+    if (!flapBook) {
+        return;
+    }
+
+    /*
+     * Verifica che la libreria sia stata
+     * caricata correttamente.
+     */
+
+    if (
+        typeof St === "undefined" ||
+        typeof St.PageFlip === "undefined"
+    ) {
+
+        console.error(
+            "StPageFlip non è stato caricato."
+        );
+
+        return;
+    }
+
+
+    /*
+     * Dimensioni logiche del viewer.
+     *
+     * Il CSS ruota il viewer di 90°,
+     * quindi queste dimensioni non
+     * corrispondono direttamente a quelle
+     * visibili sullo schermo.
+     */
+
+    pageFlip = new St.PageFlip(
+        flapBook,
+        {
+            width: 500,
+            height: 900,
+
+            size: "stretch",
+
+            minWidth: 250,
+            maxWidth: 1000,
+
+            minHeight: 450,
+            maxHeight: 1800,
+
+            /*
+             * IMPORTANTISSIMO:
+             *
+             * niente copertina rigida.
+             * La prima pagina deve comportarsi
+             * come un vero foglio morbido.
+             */
+
+            showCover: false,
+
+
+            /*
+             * Evitiamo il comportamento
+             * automatico da libro su desktop.
+             */
+
+            usePortrait: true,
+
+
+            /*
+             * L'utente NON deve sfogliare
+             * manualmente.
+             *
+             * Lo sfoglio viene avviato
+             * esclusivamente dal nostro click.
+             */
+
+            useMouseEvents: false,
+
+            mobileScrollSupport: false,
+
+
+            /*
+             * Nessun angolino che suggerisca
+             * la presenza di un libro.
+             */
+
+            showPageCorners: false,
+
+
+            /*
+             * Durata del movimento.
+             *
+             * StPageFlip usa millisecondi.
+             */
+
+            flippingTime: 3400,
+
+
+            /*
+             * Ombre generate dal motore.
+             *
+             * Le teniamo attive perché sono
+             * una parte importante dell'effetto
+             * di pagina che si incurva.
+             */
+
+            drawShadow: true,
+
+
+            /*
+             * Ombra piuttosto delicata.
+             */
+
+            maxShadowOpacity: 0.22,
+
+
+            /*
+             * Nessuna modalità rigida.
+             */
+
+            disableFlipByClick: true
+        }
+    );
+
+
+    /*
+     * Carichiamo le due pagine HTML
+     * presenti nell'index.
+     */
+
+    pageFlip.loadFromHTML(
+        document.querySelectorAll(".flap-page")
+    );
+
+
+    /*
+     * Per sicurezza partiamo dalla
+     * prima pagina.
+     */
+
+    try {
+
+        pageFlip.turnToPage(0);
+
+    } catch (error) {
+
+        /*
+         * Alcune versioni della libreria
+         * non richiedono questo passaggio.
+         */
+
+    }
+
+}
+
+
+/* ========================================= */
+/* APERTURA DELLA BUSTA */
 /* ========================================= */
 
 function openEnvelope() {
-
-    if (!envelopeScreen || !envelopeButton) {
-        return;
-    }
 
     if (envelopeOpened) {
         return;
     }
 
+    if (!pageFlip) {
+        return;
+    }
+
     envelopeOpened = true;
 
+
     /*
-     * Unica azione JavaScript:
-     *
-     * aggiungiamo la classe "opening".
-     *
-     * Da questo momento è il CSS
-     * a gestire la rotazione progressiva
-     * delle 10 fasce del lembo.
+     * Avviamo programmaticamente
+     * lo sfoglio.
      */
 
-    envelopeScreen.classList.add("opening");
+    try {
+
+        pageFlip.flipNext();
+
+    } catch (error) {
+
+        console.error(
+            "Errore durante l'apertura del lembo:",
+            error
+        );
+
+        envelopeOpened = false;
+
+    }
 
 }
 
@@ -53,14 +227,6 @@ if (envelopeButton) {
         openEnvelope
     );
 
-
-    /*
-     * ACCESSIBILITÀ TASTIERA
-     *
-     * Apertura tramite:
-     * - Invio
-     * - Barra spaziatrice
-     */
 
     envelopeButton.addEventListener(
         "keydown",
@@ -84,12 +250,75 @@ if (envelopeButton) {
 
 
 /* ========================================= */
-/* INDICATORE "SCORRI" */
+/* EVENTI PAGEFLIP */
 /* ========================================= */
 
-const scrollIndicator =
-    document.getElementById("scrollIndicator");
+/*
+ * StPageFlip emette l'evento "flip"
+ * quando cambia pagina.
+ *
+ * Per ora NON nascondiamo immediatamente
+ * l'overlay.
+ *
+ * Aspettiamo che finisca l'animazione.
+ */
 
+function connectPageFlipEvents() {
+
+    if (!pageFlip) {
+        return;
+    }
+
+
+    pageFlip.on(
+        "flip",
+        (event) => {
+
+            /*
+             * Quando siamo arrivati alla
+             * seconda pagina, significa
+             * che il lembo si è aperto.
+             */
+
+            if (event.data === 1) {
+
+                setTimeout(() => {
+
+                    if (!envelopeScreen) {
+                        return;
+                    }
+
+
+                    /*
+                     * Per ora rimuoviamo
+                     * semplicemente l'overlay
+                     * dopo la fine dello sfoglio.
+                     */
+
+                    envelopeScreen.classList.add(
+                        "opened"
+                    );
+
+                    envelopeScreen.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                    updateScrollIndicator();
+
+                }, 150);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ========================================= */
+/* INDICATORE "SCORRI" */
+/* ========================================= */
 
 function updateScrollIndicator() {
 
@@ -97,15 +326,6 @@ function updateScrollIndicator() {
         return;
     }
 
-
-    /*
-     * In questa fase stiamo ancora testando
-     * esclusivamente il lembo.
-     *
-     * L'overlay non viene rimosso,
-     * quindi l'indicatore "Scorri"
-     * deve rimanere nascosto.
-     */
 
     if (
         envelopeScreen &&
@@ -187,11 +407,14 @@ async function copyAccessCode() {
 
 
         if (copyMessage) {
-            copyMessage.textContent = "Codice copiato";
+            copyMessage.textContent =
+                "Codice copiato";
         }
 
+
         if (copyCodeButton) {
-            copyCodeButton.textContent = "Copiato ✓";
+            copyCodeButton.textContent =
+                "Copiato ✓";
         }
 
 
@@ -201,8 +424,10 @@ async function copyAccessCode() {
                 copyMessage.textContent = "";
             }
 
+
             if (copyCodeButton) {
-                copyCodeButton.textContent = "Copia codice";
+                copyCodeButton.textContent =
+                    "Copia codice";
             }
 
         }, 1800);
@@ -326,11 +551,14 @@ async function copyIban() {
 
 
         if (copyIbanMessage) {
-            copyIbanMessage.textContent = "IBAN copiato";
+            copyIbanMessage.textContent =
+                "IBAN copiato";
         }
 
+
         if (copyIbanButton) {
-            copyIbanButton.textContent = "Copiato ✓";
+            copyIbanButton.textContent =
+                "Copiato ✓";
         }
 
 
@@ -340,8 +568,10 @@ async function copyIban() {
                 copyIbanMessage.textContent = "";
             }
 
+
             if (copyIbanButton) {
-                copyIbanButton.textContent = "Copia IBAN";
+                copyIbanButton.textContent =
+                    "Copia IBAN";
             }
 
         }, 1800);
@@ -374,5 +604,9 @@ if (copyIbanButton) {
 /* ========================================= */
 /* AVVIO */
 /* ========================================= */
+
+initEnvelopeFlip();
+
+connectPageFlipEvents();
 
 updateScrollIndicator();

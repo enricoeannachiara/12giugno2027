@@ -412,16 +412,15 @@
     >
 
 
-        <!-- OMBRA -->
-
         <div
             class="flap-shadow"
             id="flapShadow"
         ></div>
 
 
+
         <!-- ================================================== -->
-        <!-- CORPO DELLA BUSTA                                  -->
+        <!-- CORPO BUSTA                                        -->
         <!-- ================================================== -->
 
         <div
@@ -431,7 +430,6 @@
 
             <svg
                 class="body-svg"
-                id="bodySvg"
                 viewBox="0 0 1000 1000"
                 preserveAspectRatio="none"
                 aria-hidden="true"
@@ -529,8 +527,6 @@
                 <defs>
 
 
-                    <!-- FRONTE -->
-
                     <linearGradient
                         id="paperFront"
                         x1="0"
@@ -560,8 +556,6 @@
                     </linearGradient>
 
 
-                    <!-- RETRO -->
-
                     <linearGradient
                         id="paperBack"
                         x1="0"
@@ -582,8 +576,6 @@
 
                     </linearGradient>
 
-
-                    <!-- OMBRA -->
 
                     <filter
                         id="paperShadow"
@@ -606,8 +598,6 @@
                 </defs>
 
 
-                <!-- BORDO -->
-
                 <path
                     id="flapEdgePath"
                     d=""
@@ -624,8 +614,6 @@
                 />
 
 
-                <!-- CARTA -->
-
                 <path
                     id="flapPath"
                     d=""
@@ -637,8 +625,6 @@
 
             </svg>
 
-
-            <!-- SIGILLO -->
 
             <div
                 class="wax-seal"
@@ -723,8 +709,6 @@
         const restartButton =
             document.getElementById("restartButton");
 
-
-        /* CORPO */
 
         const bodyLeftPath =
             document.getElementById("bodyLeftPath");
@@ -855,7 +839,7 @@
 
 
         /* ================================================== */
-        /* GEOMETRIA LEMBO SUPERIORE                        */
+        /* LEMBO SUPERIORE                                   */
         /* ================================================== */
 
         function getFlapGeometry(t) {
@@ -960,14 +944,11 @@
 
                 M 0 0
 
-
                 L 1000 0
-
 
                 L
                 1000
                 ${shoulderY - 30}
-
 
                 Q
                 1000
@@ -975,7 +956,6 @@
 
                 ${rightShoulderX}
                 ${shoulderY}
-
 
                 C
                 ${rightControl1X}
@@ -987,7 +967,6 @@
                 ${tipX}
                 ${tipY}
 
-
                 C
                 ${leftControl2X}
                 ${leftControl2Y},
@@ -998,7 +977,6 @@
                 ${leftShoulderX}
                 ${shoulderY}
 
-
                 Q
                 0
                 ${shoulderY}
@@ -1006,11 +984,9 @@
                 0
                 ${shoulderY - 30}
 
-
                 L
                 0
                 0
-
 
                 Z
             `;
@@ -1027,28 +1003,18 @@
 
 
         /* ================================================== */
-        /* GEOMETRIA CORPO BUSTA                            */
+        /* CORPO DELLA BUSTA                                 */
         /* ================================================== */
 
         function drawEnvelopeBody() {
 
             /* ---------------------------------------------- */
-            /* LEMBI LATERALI                               */
+            /* LATERALI                                      */
             /* ---------------------------------------------- */
-
-            /*
-                Partenza richiesta:
-                18,5% dell'altezza dello schermo.
-            */
 
             const sideStartY =
                 185;
 
-
-            /*
-                Manteniamo inclinazione coerente
-                con il lembo superiore.
-            */
 
             const sideMeetY =
                 480;
@@ -1061,8 +1027,6 @@
             const rightMeetX =
                 508;
 
-
-            /* SINISTRO */
 
             const leftD = `
 
@@ -1092,8 +1056,6 @@
             );
 
 
-            /* DESTRO */
-
             const rightD = `
 
                 M 1000 ${sideStartY}
@@ -1122,145 +1084,196 @@
             );
 
 
-            /* ---------------------------------------------- */
-            /* LEMBO INFERIORE                              */
-            /* ---------------------------------------------- */
+            /* ================================================== */
+            /* LEMBO INFERIORE                                    */
+            /* ================================================== */
 
             /*
-                Ora gli diamo la stessa logica
-                del lembo superiore:
+                Questa volta NON inventiamo
+                una forma nuova.
 
-                - tratto verticale sinistro;
-                - raccordo;
-                - diagonale;
-                - punta smussata;
-                - diagonale;
-                - raccordo;
-                - tratto verticale destro.
+                Copiamo letteralmente la logica
+                del lembo superiore e la ribaltiamo.
+
+                Il lembo inferiore occupa la zona:
+
+                punta: circa Y 455
+                fondo: Y 1000
+
+                Altezza utile:
+                545 unità.
             */
 
-
-            /*
-                Quanto salgono i tratti verticali
-                dal fondo.
-
-                1000 = fondo
-                760  = fine tratto verticale
-            */
-
-            const bottomVerticalEndY =
-                760;
-
-
-            /*
-                Spalle inferiori.
-            */
-
-            const bottomLeftShoulderX =
-                0;
-
-
-            const bottomRightShoulderX =
-                1000;
-
-
-            /*
-                Punto alto del lembo inferiore.
-
-                Rimane abbastanza alto da
-                chiudere bene la busta.
-            */
 
             const bottomTipY =
                 455;
 
 
-            /*
-                Controlli vicini alla punta.
-
-                Sono larghi per evitare
-                un angolo troppo appuntito.
-            */
-
-            const bottomLeftControlX =
-                365;
-
-
-            const bottomRightControlX =
-                635;
-
-
-            const bottomControlY =
-                500;
+            const bottomHeight =
+                1000 -
+                bottomTipY;
 
 
             /*
-                Controlli intermedi per mantenere
-                la diagonale morbida.
+                Nel lembo superiore il tratto verticale
+                occupa circa il 42%.
+
+                Replichiamo la stessa proporzione,
+                ma dal basso verso l'alto.
             */
 
-            const bottomLeftMidX =
-                165;
+            const bottomShoulderY =
+                1000 -
+                (
+                    bottomHeight *
+                    0.42
+                );
 
 
-            const bottomRightMidX =
+            /*
+                Controlli della diagonale.
+
+                Sono gli stessi rapporti
+                del lembo superiore,
+                semplicemente ribaltati.
+            */
+
+            const bottomRightControl1X =
                 835;
 
 
-            const bottomMidY =
-                620;
+            const bottomRightControl1Y =
+                1000 -
+                (
+                    bottomHeight *
+                    0.59
+                );
 
+
+            const bottomRightControl2X =
+                625;
+
+
+            const bottomRightControl2Y =
+                1000 -
+                (
+                    bottomHeight *
+                    0.86
+                );
+
+
+            const bottomLeftControl1X =
+                165;
+
+
+            const bottomLeftControl1Y =
+                bottomRightControl1Y;
+
+
+            const bottomLeftControl2X =
+                375;
+
+
+            const bottomLeftControl2Y =
+                bottomRightControl2Y;
+
+
+            /*
+                Invece di una punta singola,
+                creiamo una piccola zona
+                arrotondata.
+
+                         ______
+                       /        \
+                      /          \
+
+                È volutamente molto discreta.
+            */
+
+
+            const roundLeftX =
+                465;
+
+
+            const roundRightX =
+                535;
+
+
+            const roundSideY =
+                470;
+
+
+            const roundedTipY =
+                450;
+
+
+            /*
+                PARTIAMO DAL BASSO A DESTRA,
+                come se avessimo ruotato
+                il lembo superiore di 180°.
+            */
 
             const bottomD = `
 
                 M 0 1000
 
 
+                L 1000 1000
+
+
                 L
-                0
-                ${bottomVerticalEndY}
+                1000
+                ${bottomShoulderY + 18}
 
 
                 Q
-                0
-                ${bottomVerticalEndY - 25}
+                1000
+                ${bottomShoulderY}
 
-                18
-                ${bottomVerticalEndY - 25}
+                988
+                ${bottomShoulderY}
 
 
                 C
-                ${bottomLeftMidX}
-                ${bottomMidY},
+                ${bottomRightControl1X}
+                ${bottomRightControl1Y},
 
-                ${bottomLeftControlX}
-                ${bottomControlY},
+                ${bottomRightControl2X}
+                ${bottomRightControl2Y},
 
+                ${roundRightX}
+                ${roundSideY}
+
+
+                Q
                 500
-                ${bottomTipY}
+                ${roundedTipY}
+
+                ${roundLeftX}
+                ${roundSideY}
 
 
                 C
-                ${bottomRightControlX}
-                ${bottomControlY},
+                ${bottomLeftControl2X}
+                ${bottomLeftControl2Y},
 
-                ${bottomRightMidX}
-                ${bottomMidY},
+                ${bottomLeftControl1X}
+                ${bottomLeftControl1Y},
 
-                982
-                ${bottomVerticalEndY - 25}
+                12
+                ${bottomShoulderY}
 
 
                 Q
-                1000
-                ${bottomVerticalEndY - 25}
+                0
+                ${bottomShoulderY}
 
-                1000
-                ${bottomVerticalEndY}
+                0
+                ${bottomShoulderY + 18}
 
 
                 L
-                1000
+                0
                 1000
 
 
@@ -1275,53 +1288,60 @@
 
 
             /*
-                Disegniamo il solo bordo superiore
-                visibile del lembo inferiore.
+                Solo bordo superiore visibile.
             */
 
             const bottomFoldD = `
 
                 M
                 0
-                ${bottomVerticalEndY}
+                ${bottomShoulderY + 18}
 
 
                 Q
                 0
-                ${bottomVerticalEndY - 25}
+                ${bottomShoulderY}
 
-                18
-                ${bottomVerticalEndY - 25}
+                12
+                ${bottomShoulderY}
 
 
                 C
-                ${bottomLeftMidX}
-                ${bottomMidY},
+                ${bottomLeftControl1X}
+                ${bottomLeftControl1Y},
 
-                ${bottomLeftControlX}
-                ${bottomControlY},
+                ${bottomLeftControl2X}
+                ${bottomLeftControl2Y},
 
+                ${roundLeftX}
+                ${roundSideY}
+
+
+                Q
                 500
-                ${bottomTipY}
+                ${roundedTipY}
+
+                ${roundRightX}
+                ${roundSideY}
 
 
                 C
-                ${bottomRightControlX}
-                ${bottomControlY},
+                ${bottomRightControl2X}
+                ${bottomRightControl2Y},
 
-                ${bottomRightMidX}
-                ${bottomMidY},
+                ${bottomRightControl1X}
+                ${bottomRightControl1Y},
 
-                982
-                ${bottomVerticalEndY - 25}
+                988
+                ${bottomShoulderY}
 
 
                 Q
                 1000
-                ${bottomVerticalEndY - 25}
+                ${bottomShoulderY}
 
                 1000
-                ${bottomVerticalEndY}
+                ${bottomShoulderY + 18}
             `;
 
 
@@ -1334,7 +1354,7 @@
 
 
         /* ================================================== */
-        /* DISEGNO FRAME LEMBO                              */
+        /* FRAME LEMBO SUPERIORE                             */
         /* ================================================== */
 
         function drawFlapFrame(progress) {
@@ -1354,8 +1374,6 @@
             const bend =
                 geometry.bend;
 
-
-            /* ROTAZIONE */
 
             let rotation;
 
@@ -1390,8 +1408,6 @@
             }
 
 
-            /* PROFONDITÀ */
-
             const depth =
                 20 *
                 bend;
@@ -1401,8 +1417,6 @@
                 `rotateX(${rotation}deg)
                  translateZ(${depth}px)`;
 
-
-            /* PATH */
 
             flapPath.setAttribute(
                 "d",
@@ -1415,8 +1429,6 @@
                 geometry.d
             );
 
-
-            /* FRONTE / RETRO */
 
             if (rotation < 90) {
 
@@ -1435,8 +1447,6 @@
             }
 
 
-            /* SIGILLO */
-
             waxSeal.style.left =
                 "50%";
 
@@ -1450,8 +1460,6 @@
                     ? "visible"
                     : "hidden";
 
-
-            /* OMBRA */
 
             flapShadow.style.opacity =
                 `${0.23 * bend}`;
@@ -1473,8 +1481,6 @@
                 )
                 `;
 
-
-            /* LUCE */
 
             const shade =
                 Math.round(
@@ -1560,7 +1566,6 @@
                             flapFrameId =
                                 null;
 
-
                             resolve();
 
                         }
@@ -1630,7 +1635,6 @@
 
                             bodyFrameId =
                                 null;
-
 
                             resolve();
 
@@ -1949,7 +1953,7 @@
 
 
         /* ================================================== */
-        /* STATO INIZIALE                                    */
+        /* AVVIO                                             */
         /* ================================================== */
 
         drawEnvelopeBody();

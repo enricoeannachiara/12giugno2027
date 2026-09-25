@@ -19,6 +19,35 @@ let envelopeOpened = false;
 
 
 /* ========================================= */
+/* DIMENSIONI DEL MOTORE */
+/* ========================================= */
+
+function getFlipDimensions() {
+
+    /*
+     * Il viewer viene poi ruotato di 90° dal CSS.
+     *
+     * Quindi:
+     *
+     * larghezza logica  = metà altezza viewport
+     * altezza logica    = larghezza viewport
+     */
+
+    const width =
+        Math.round(window.innerHeight * 0.5);
+
+    const height =
+        Math.round(window.innerWidth);
+
+    return {
+        width,
+        height
+    };
+
+}
+
+
+/* ========================================= */
 /* INIZIALIZZAZIONE PAGEFLIP */
 /* ========================================= */
 
@@ -28,10 +57,6 @@ function initEnvelopeFlip() {
         return;
     }
 
-    /*
-     * Controlliamo che la libreria
-     * PageFlip sia stata caricata.
-     */
 
     if (
         typeof St === "undefined" ||
@@ -46,51 +71,64 @@ function initEnvelopeFlip() {
     }
 
 
+    const dimensions =
+        getFlipDimensions();
+
+
     pageFlip = new St.PageFlip(
         flapBook,
         {
 
+            /* dimensioni controllate da noi */
+
+            width: dimensions.width,
+            height: dimensions.height,
+
+
             /*
-             * Dimensioni logiche del viewer.
+             * NIENTE STRETCH.
              *
-             * Il CSS ruota poi tutto di 90°.
+             * La libreria non deve più
+             * ridimensionare autonomamente
+             * il lembo.
              */
 
-            width: 500,
-            height: 900,
-
-            size: "stretch",
-
-            minWidth: 250,
-            maxWidth: 1000,
-
-            minHeight: 450,
-            maxHeight: 1800,
+            size: "fixed",
 
 
             /*
-             * La prima pagina NON deve
-             * essere una copertina rigida.
+             * Non deve modificare le dimensioni
+             * del contenitore HTML.
+             */
+
+            autoSize: false,
+
+
+            /*
+             * NIENTE PORTRAIT MODE.
+             *
+             * Questa modalità clona gli elementi
+             * HTML e nel nostro caso può produrre
+             * il lembo duplicato.
+             */
+
+            usePortrait: false,
+
+
+            /*
+             * Il lembo è carta morbida,
+             * non una copertina rigida.
              */
 
             showCover: false,
 
 
             /*
-             * Manteniamo la modalità portrait
-             * per evitare il comportamento
-             * da libro aperto su desktop.
-             */
-
-            usePortrait: true,
-
-
-            /*
-             * Disattiviamo completamente
-             * le gesture automatiche.
+             * Nessuna interazione nativa
+             * della libreria.
              *
-             * L'utente apre il lembo
-             * esclusivamente con il nostro tap.
+             * Il tap viene gestito esclusivamente
+             * dal nostro codice.
              */
 
             useMouseEvents: false,
@@ -103,58 +141,40 @@ function initEnvelopeFlip() {
 
 
             /*
-             * Durata lenta.
+             * Durata dell'animazione.
              */
 
             flippingTime: 3400,
 
 
             /*
-             * TEST IMPORTANTE:
+             * Per ora niente ombre automatiche.
              *
-             * disattiviamo completamente
-             * le ombre generate da PageFlip.
-             *
-             * In questo modo la pagina
-             * trasparente non dovrebbe più
-             * diventare visibile attraverso
-             * le sue ombreggiature.
+             * Così non vediamo la pagina
+             * trasparente durante il flip.
              */
 
             drawShadow: false,
 
-            maxShadowOpacity: 0
+            maxShadowOpacity: 0,
+
+
+            /*
+             * Pagina iniziale.
+             */
+
+            startPage: 0
         }
     );
 
 
     /*
-     * Carichiamo le due pagine
-     * presenti nell'HTML.
+     * Carichiamo le pagine HTML.
      */
 
     pageFlip.loadFromHTML(
         document.querySelectorAll(".flap-page")
     );
-
-
-    /*
-     * Partenza dalla prima pagina.
-     */
-
-    try {
-
-        pageFlip.turnToPage(0);
-
-    } catch (error) {
-
-        /*
-         * Se la versione della libreria
-         * non richiede questo comando,
-         * ignoriamo semplicemente l'errore.
-         */
-
-    }
 
 }
 
@@ -173,16 +193,24 @@ function openEnvelope() {
         return;
     }
 
+
     envelopeOpened = true;
 
 
-    /*
-     * Avviamo lo sfoglio programmatico.
-     */
-
     try {
 
-        pageFlip.flipNext();
+        /*
+         * IMPORTANTISSIMO:
+         *
+         * ora scegliamo esplicitamente
+         * l'angolo di partenza.
+         *
+         * Dopo la rotazione CSS di 90°
+         * questo dovrebbe corrispondere
+         * all'apertura verso l'alto.
+         */
+
+        pageFlip.flipNext("top");
 
     } catch (error) {
 
@@ -242,50 +270,77 @@ function connectPageFlipEvents() {
     }
 
 
+    /*
+     * Ci interessa soprattutto sapere
+     * quando il motore torna nello stato
+     * "read", cioè quando l'animazione
+     * è terminata.
+     */
+
     pageFlip.on(
-        "flip",
+        "changeState",
         (event) => {
 
-            /*
-             * Quando PageFlip segnala
-             * il passaggio alla pagina 1,
-             * il lembo ha completato
-             * lo sfoglio.
-             */
+            if (
+                event.data === "read" &&
+                envelopeOpened
+            ) {
 
-            if (event.data === 1) {
-
-                setTimeout(() => {
-
-                    if (!envelopeScreen) {
-                        return;
-                    }
+                const currentPage =
+                    pageFlip.getCurrentPageIndex();
 
 
-                    /*
-                     * Nascondiamo l'overlay.
-                     *
-                     * A questo punto resta
-                     * soltanto la Hero reale.
-                     */
+                /*
+                 * Se siamo arrivati alla
+                 * seconda pagina, il flip
+                 * è realmente terminato.
+                 */
 
-                    envelopeScreen.classList.add(
-                        "opened"
-                    );
+                if (currentPage === 1) {
 
-                    envelopeScreen.setAttribute(
-                        "aria-hidden",
-                        "true"
-                    );
+                    finishEnvelopeOpening();
 
-                    updateScrollIndicator();
-
-                }, 120);
+                }
 
             }
 
         }
     );
+
+}
+
+
+/* ========================================= */
+/* FINE APERTURA */
+/* ========================================= */
+
+function finishEnvelopeOpening() {
+
+    if (!envelopeScreen) {
+        return;
+    }
+
+
+    /*
+     * Piccolissima pausa per evitare
+     * che l'overlay sparisca nello stesso
+     * identico frame in cui PageFlip termina.
+     */
+
+    setTimeout(() => {
+
+        envelopeScreen.classList.add(
+            "opened"
+        );
+
+        envelopeScreen.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        updateScrollIndicator();
+
+    }, 80);
 
 }
 
@@ -300,11 +355,6 @@ function updateScrollIndicator() {
         return;
     }
 
-
-    /*
-     * Finché la busta non è aperta,
-     * l'indicatore resta nascosto.
-     */
 
     if (
         envelopeScreen &&
@@ -341,18 +391,13 @@ function updateScrollIndicator() {
 
 
 /* ========================================= */
-/* EVENTI SCROLL / RESIZE */
+/* EVENTI SCROLL */
 /* ========================================= */
 
 window.addEventListener(
     "scroll",
     updateScrollIndicator,
     { passive: true }
-);
-
-window.addEventListener(
-    "resize",
-    updateScrollIndicator
 );
 
 
@@ -376,6 +421,7 @@ async function copyAccessCode() {
         return;
     }
 
+
     const code =
         accessCode.textContent.trim();
 
@@ -386,27 +432,35 @@ async function copyAccessCode() {
 
 
         if (copyMessage) {
+
             copyMessage.textContent =
                 "Codice copiato";
+
         }
 
 
         if (copyCodeButton) {
+
             copyCodeButton.textContent =
                 "Copiato ✓";
+
         }
 
 
         setTimeout(() => {
 
             if (copyMessage) {
+
                 copyMessage.textContent = "";
+
             }
 
 
             if (copyCodeButton) {
+
                 copyCodeButton.textContent =
                     "Copia codice";
+
             }
 
         }, 1800);
@@ -520,6 +574,7 @@ async function copyIban() {
         return;
     }
 
+
     const iban =
         ibanCode.textContent.trim();
 
@@ -530,27 +585,35 @@ async function copyIban() {
 
 
         if (copyIbanMessage) {
+
             copyIbanMessage.textContent =
                 "IBAN copiato";
+
         }
 
 
         if (copyIbanButton) {
+
             copyIbanButton.textContent =
                 "Copiato ✓";
+
         }
 
 
         setTimeout(() => {
 
             if (copyIbanMessage) {
+
                 copyIbanMessage.textContent = "";
+
             }
 
 
             if (copyIbanButton) {
+
                 copyIbanButton.textContent =
                     "Copia IBAN";
+
             }
 
         }, 1800);

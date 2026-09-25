@@ -9,7 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Test lembo SVG</title>
+    <title>Test busta SVG</title>
 
     <style>
 
@@ -18,7 +18,10 @@
             --text: #3E3A39;
 
             --paper-front: #EADCC8;
-            --paper-back: #E5D4BD;
+            --paper-back: #E4D2BA;
+            --paper-edge: #C9B494;
+
+            --pocket-paper: #EADCC8;
         }
 
 
@@ -46,9 +49,9 @@
         }
 
 
-        /* ========================================= */
-        /* HERO FINTIZIA                             */
-        /* ========================================= */
+        /* ================================================== */
+        /* HERO DI SFONDO                                     */
+        /* ================================================== */
 
         .hero {
             position: fixed;
@@ -96,9 +99,9 @@
         }
 
 
-        /* ========================================= */
-        /* AREA DI TEST                              */
-        /* ========================================= */
+        /* ================================================== */
+        /* SCENA                                             */
+        /* ================================================== */
 
         .envelope-test {
             position: fixed;
@@ -107,7 +110,7 @@
 
             z-index: 100;
 
-            perspective: 1600px;
+            perspective: 1700px;
 
             perspective-origin: 50% 15%;
 
@@ -117,9 +120,116 @@
         }
 
 
-        /* ========================================= */
-        /* LEMBO                                     */
-        /* ========================================= */
+        /* ================================================== */
+        /* CORPO DELLA BUSTA                                 */
+        /* ================================================== */
+
+        .envelope-body {
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 15;
+
+            pointer-events: none;
+
+            transform: translateY(0);
+
+            will-change: transform;
+        }
+
+
+        .envelope-pocket {
+            position: absolute;
+
+            inset: 0;
+
+            background: transparent;
+        }
+
+
+        .pocket-left,
+        .pocket-right,
+        .pocket-bottom {
+            position: absolute;
+
+            inset: 0;
+
+            background: var(--pocket-paper);
+        }
+
+
+        .pocket-left {
+            clip-path: polygon(
+                0 0,
+                50% 50%,
+                0 100%
+            );
+        }
+
+
+        .pocket-right {
+            clip-path: polygon(
+                100% 0,
+                100% 100%,
+                50% 50%
+            );
+        }
+
+
+        .pocket-bottom {
+            clip-path: polygon(
+                0 100%,
+                50% 50%,
+                100% 100%
+            );
+        }
+
+
+        /* ================================================== */
+        /* OMBRA DEL LEMBO SULLA HERO                        */
+        /* ================================================== */
+
+        .flap-shadow {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            width: 70%;
+            height: 18%;
+
+            z-index: 12;
+
+            transform:
+                translate(-50%, -50%)
+                scaleY(0.05);
+
+            transform-origin: center;
+
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    rgba(66, 45, 28, 0.25) 0%,
+                    rgba(66, 45, 28, 0.12) 45%,
+                    rgba(66, 45, 28, 0) 78%
+                );
+
+            filter: blur(14px);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            will-change:
+                opacity,
+                transform;
+        }
+
+
+        /* ================================================== */
+        /* LEMBO                                             */
+        /* ================================================== */
 
         .flap {
             position: absolute;
@@ -130,6 +240,8 @@
             width: 100vw;
             height: 50vh;
 
+            z-index: 20;
+
             transform-origin: 50% 0;
 
             transform-style: preserve-3d;
@@ -138,9 +250,9 @@
         }
 
 
-        /* ========================================= */
-        /* SVG                                       */
-        /* ========================================= */
+        /* ================================================== */
+        /* SVG                                               */
+        /* ================================================== */
 
         .flap-svg {
             position: absolute;
@@ -158,9 +270,55 @@
         }
 
 
-        /* ========================================= */
-        /* SIGILLO                                   */
-        /* ========================================= */
+        /* ================================================== */
+        /* SPESSORE DEL BORDO                                */
+        /* ================================================== */
+
+        .paper-edge {
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 100%;
+            height: 100%;
+
+            z-index: -1;
+
+            pointer-events: none;
+
+            opacity: 0;
+
+            will-change:
+                opacity,
+                transform;
+        }
+
+
+        .paper-edge::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background: var(--paper-edge);
+
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                50% 100%
+            );
+
+            transform:
+                translateY(1.5px)
+                translateZ(-1px);
+        }
+
+
+        /* ================================================== */
+        /* SIGILLO                                           */
+        /* ================================================== */
 
         .wax-seal {
             position: absolute;
@@ -171,16 +329,20 @@
             width: 108px;
             height: 108px;
 
+            z-index: 30;
+
             transform:
                 translate(-50%, -50%)
-                translateZ(4px);
+                translateZ(5px);
 
             transform-origin: center center;
 
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
 
-            will-change: top, transform;
+            will-change:
+                top,
+                transform;
 
             pointer-events: none;
         }
@@ -196,15 +358,15 @@
 
             filter:
                 drop-shadow(
-                    0 6px 6px
-                    rgba(70, 25, 20, 0.24)
+                    0 7px 7px
+                    rgba(70, 25, 20, 0.25)
                 );
         }
 
 
-        /* ========================================= */
-        /* TESTO IN BASSO                            */
-        /* ========================================= */
+        /* ================================================== */
+        /* UI DI TEST                                        */
+        /* ================================================== */
 
         .hint {
             position: fixed;
@@ -240,10 +402,6 @@
             opacity: 0;
         }
 
-
-        /* ========================================= */
-        /* PULSANTE RIAVVIA                          */
-        /* ========================================= */
 
         .restart {
             position: fixed;
@@ -285,15 +443,6 @@
 
         }
 
-
-        @media (prefers-reduced-motion: reduce) {
-
-            .hint {
-                display: none;
-            }
-
-        }
-
     </style>
 </head>
 
@@ -301,9 +450,9 @@
 <body>
 
 
-    <!-- ========================================= -->
-    <!-- HERO DI SFONDO                            -->
-    <!-- ========================================= -->
+    <!-- ================================================== -->
+    <!-- HERO                                              -->
+    <!-- ================================================== -->
 
     <main class="hero">
 
@@ -323,22 +472,65 @@
     </main>
 
 
-    <!-- ========================================= -->
-    <!-- LEMBO SVG                                 -->
-    <!-- ========================================= -->
+    <!-- ================================================== -->
+    <!-- SCENA BUSTA                                        -->
+    <!-- ================================================== -->
 
     <div
         class="envelope-test"
         id="envelopeTest"
         role="button"
         tabindex="0"
-        aria-label="Apri il lembo"
+        aria-label="Apri la busta"
     >
+
+
+        <!-- =============================================== -->
+        <!-- OMBRA DEL LEMBO                                -->
+        <!-- =============================================== -->
+
+        <div
+            class="flap-shadow"
+            id="flapShadow"
+        ></div>
+
+
+        <!-- =============================================== -->
+        <!-- CORPO BUSTA                                    -->
+        <!-- =============================================== -->
+
+        <div
+            class="envelope-body"
+            id="envelopeBody"
+        >
+
+            <div class="envelope-pocket">
+
+                <div class="pocket-left"></div>
+
+                <div class="pocket-right"></div>
+
+                <div class="pocket-bottom"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =============================================== -->
+        <!-- LEMBO                                          -->
+        <!-- =============================================== -->
 
         <div
             class="flap"
             id="flap"
         >
+
+            <div
+                class="paper-edge"
+                id="paperEdge"
+            ></div>
+
 
             <svg
                 class="flap-svg"
@@ -349,7 +541,10 @@
 
                 <defs>
 
-                    <!-- FRONTE -->
+
+                    <!-- =================================== -->
+                    <!-- FRONTE                             -->
+                    <!-- =================================== -->
 
                     <linearGradient
                         id="paperFront"
@@ -367,20 +562,22 @@
 
                         <stop
                             id="frontStop2"
-                            offset="58%"
+                            offset="55%"
                             stop-color="#EADCC8"
                         />
 
                         <stop
                             id="frontStop3"
                             offset="100%"
-                            stop-color="#DFCBB1"
+                            stop-color="#DFCAB0"
                         />
 
                     </linearGradient>
 
 
-                    <!-- RETRO -->
+                    <!-- =================================== -->
+                    <!-- RETRO                              -->
+                    <!-- =================================== -->
 
                     <linearGradient
                         id="paperBack"
@@ -391,19 +588,23 @@
                     >
 
                         <stop
+                            id="backStop1"
                             offset="0%"
-                            stop-color="#E7D8C4"
+                            stop-color="#E6D6C1"
                         />
 
                         <stop
+                            id="backStop2"
                             offset="100%"
-                            stop-color="#DDC8AC"
+                            stop-color="#DCC6AA"
                         />
 
                     </linearGradient>
 
 
-                    <!-- OMBRA MOLTO LEGGERA -->
+                    <!-- =================================== -->
+                    <!-- OMBRA CARTA                        -->
+                    <!-- =================================== -->
 
                     <filter
                         id="paperShadow"
@@ -415,23 +616,16 @@
 
                         <feDropShadow
                             dx="0"
-                            dy="7"
-                            stdDeviation="7"
+                            dy="5"
+                            stdDeviation="6"
                             flood-color="#654B35"
-                            flood-opacity="0.12"
+                            flood-opacity="0.10"
                         />
 
                     </filter>
 
                 </defs>
 
-
-                <!--
-                    Un'unica superficie.
-
-                    È questo path che deformiamo
-                    continuamente durante l'animazione.
-                -->
 
                 <path
                     id="flapPath"
@@ -449,9 +643,9 @@
             </svg>
 
 
-            <!-- ================================= -->
-            <!-- SIGILLO                           -->
-            <!-- ================================= -->
+            <!-- ========================================== -->
+            <!-- SIGILLO                                   -->
+            <!-- ========================================== -->
 
             <div
                 class="wax-seal"
@@ -491,12 +685,15 @@
 
     <script>
 
-        /* ========================================= */
-        /* ELEMENTI                                  */
-        /* ========================================= */
+        /* ================================================== */
+        /* ELEMENTI                                          */
+        /* ================================================== */
 
         const envelopeTest =
             document.getElementById("envelopeTest");
+
+        const envelopeBody =
+            document.getElementById("envelopeBody");
 
         const flap =
             document.getElementById("flap");
@@ -507,12 +704,37 @@
         const waxSeal =
             document.getElementById("waxSeal");
 
+        const flapShadow =
+            document.getElementById("flapShadow");
+
+        const paperEdge =
+            document.getElementById("paperEdge");
+
+        const frontStop1 =
+            document.getElementById("frontStop1");
+
+        const frontStop2 =
+            document.getElementById("frontStop2");
+
+        const frontStop3 =
+            document.getElementById("frontStop3");
+
+        const backStop1 =
+            document.getElementById("backStop1");
+
+        const backStop2 =
+            document.getElementById("backStop2");
+
         const hint =
             document.getElementById("hint");
 
         const restartButton =
             document.getElementById("restartButton");
 
+
+        /* ================================================== */
+        /* STATO                                             */
+        /* ================================================== */
 
         let animationFrame = null;
 
@@ -521,21 +743,35 @@
         let opened = false;
 
 
-        /* ========================================= */
-        /* DURATA                                    */
-        /* ========================================= */
-
         /*
-            Manteniamo circa la durata
-            che ti era piaciuta.
+            FASE 1:
+            apertura lembo
         */
 
-        const duration = 3400;
+        const flapDuration =
+            3400;
 
 
-        /* ========================================= */
-        /* FUNZIONI MATEMATICHE                     */
-        /* ========================================= */
+        /*
+            FASE 2:
+            busta che scivola verso il basso
+        */
+
+        const bodyDuration =
+            1500;
+
+
+        /*
+            piccola pausa tra le due fasi
+        */
+
+        const bodyDelay =
+            180;
+
+
+        /* ================================================== */
+        /* UTILITY                                           */
+        /* ================================================== */
 
         function clamp(value, min, max) {
 
@@ -547,13 +783,7 @@
         }
 
 
-        /*
-            Easing molto morbido.
-
-            Nessuno scatto.
-        */
-
-        function easeInOut(t) {
+        function easeInOutCubic(t) {
 
             return (
                 t < 0.5
@@ -568,59 +798,128 @@
         }
 
 
-        /*
-            La flessione è massima
-            a metà del movimento.
+        function easeOutCubic(t) {
 
-            0 all'inizio
-            1 a metà
-            0 alla fine
-        */
-
-        function bendAmount(t) {
-
-            return Math.sin(
-                Math.PI * t
+            return (
+                1 -
+                Math.pow(
+                    1 - t,
+                    3
+                )
             );
 
         }
 
 
-        /* ========================================= */
-        /* DISEGNO DEL FOGLIO                       */
-        /* ========================================= */
+        /*
+            Curvatura.
 
-        function drawFrame(progress) {
+            Cresce molto tra 20° e 90°,
+            poi si riduce.
+        */
+
+        function bendCurve(t) {
+
+            const raw =
+                Math.sin(
+                    Math.PI * t
+                );
+
+            return Math.pow(
+                raw,
+                0.72
+            );
+
+        }
+
+
+        /*
+            Piccolo "tiro" iniziale.
+
+            Nei primi 150 ms circa
+            la punta reagisce appena.
+        */
+
+        function pullCurve(t) {
+
+            if (t >= 0.055) {
+                return 1;
+            }
+
+            return (
+                t / 0.055
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* FRAME DEL LEMBO                                   */
+        /* ================================================== */
+
+        function drawFlapFrame(progress) {
 
             const t =
-                clamp(progress, 0, 1);
+                clamp(
+                    progress,
+                    0,
+                    1
+                );
+
 
             const e =
-                easeInOut(t);
+                easeInOutCubic(t);
+
 
             const bend =
-                bendAmount(t);
+                bendCurve(t);
+
+
+            const pull =
+                pullCurve(t);
 
 
             /*
-             * ROTAZIONE GENERALE
+             * ROTAZIONE
              *
-             * Il foglio continua comunque
-             * a ruotare nello spazio.
+             * Arriviamo a 182° e poi
+             * rientriamo leggermente
+             * negli ultimissimi frame.
              */
 
-            const rotation =
-                180 * e;
+            let rotation;
+
+
+            if (t < 0.92) {
+
+                rotation =
+                    182 *
+                    easeInOutCubic(
+                        t / 0.92
+                    );
+
+            } else {
+
+                const settle =
+                    (t - 0.92) / 0.08;
+
+
+                rotation =
+                    182 -
+                    (2 *
+                     easeOutCubic(
+                         settle
+                     ));
+
+            }
 
 
             /*
-             * LEGGERISSIMO AVANZAMENTO
-             * nello spazio al centro
-             * dell'animazione.
+             * PROFONDITÀ
              */
 
             const depth =
-                18 * bend;
+                22 * bend;
 
 
             flap.style.transform =
@@ -628,94 +927,89 @@
                  translateZ(${depth}px)`;
 
 
-            /*
-             * -------------------------------------
-             * DEFORMAZIONE DELLA CARTA
-             * -------------------------------------
-             *
-             * Se fosse un pannello rigido:
-             *
-             * tipY sarebbe sempre 1000.
-             *
-             * Qui invece la punta viene
-             * progressivamente richiamata
-             * verso la piega durante la rotazione.
-             */
-
+            /* ================================================== */
+            /* DEFORMAZIONE DELLA CARTA                           */
+            /* ================================================== */
 
             /*
-                Movimento principale della punta.
-
-                All'inizio:
-                    1000
-
-                A metà:
-                    circa 760
-
-                Alla fine:
-                    torna a 1000
-                    perché il foglio si distende
-                    sul lato opposto.
+                La punta viene "richiamata"
+                verso la piega quando
+                la carta è maggiormente curva.
             */
 
             const tipY =
                 1000 -
-                (235 * bend);
+                (
+                    255 *
+                    bend *
+                    pull
+                );
 
 
             /*
-                La punta viene anche leggermente
-                trascinata lateralmente.
-
-                Il movimento è minuscolo:
-                serve solo a togliere
-                la perfetta simmetria meccanica.
+                Piccolissimo movimento laterale
+                organico.
             */
 
             const tipX =
                 500 +
-                (12 *
-                 Math.sin(
-                     Math.PI * t * 2
-                 ) *
-                 bend);
+                (
+                    9 *
+                    Math.sin(
+                        Math.PI *
+                        t *
+                        2
+                    ) *
+                    bend
+                );
 
 
-            /*
-                Controlli Bézier.
-
-                Questi determinano quanto
-                "morbidi" sono i lati del foglio.
-            */
-
-            const controlTopY =
-                250 +
-                (105 * bend);
+            const upperY =
+                275 +
+                (
+                    120 *
+                    bend
+                );
 
 
-            const controlBottomY =
-                720 -
-                (165 * bend);
+            const lowerY =
+                735 -
+                (
+                    180 *
+                    bend
+                );
 
 
-            const rightControl1X =
+            const rightUpperX =
                 930 -
-                (30 * bend);
+                (
+                    38 *
+                    bend
+                );
 
 
-            const rightControl2X =
-                715 +
-                (45 * bend);
+            const rightLowerX =
+                720 +
+                (
+                    55 *
+                    bend
+                );
 
 
-            const leftControl1X =
+            const leftUpperX =
                 70 +
-                (30 * bend);
+                (
+                    38 *
+                    bend
+                );
 
 
-            const leftControl2X =
-                285 -
-                (45 * bend);
+            const leftLowerX =
+                280 -
+                (
+                    55 *
+                    bend
+                );
 
 
             const d = `
@@ -724,13 +1018,13 @@
                 L 1000 0
 
                 C
-                ${rightControl1X} ${controlTopY},
-                ${rightControl2X} ${controlBottomY},
+                ${rightUpperX} ${upperY},
+                ${rightLowerX} ${lowerY},
                 ${tipX} ${tipY}
 
                 C
-                ${leftControl2X} ${controlBottomY},
-                ${leftControl1X} ${controlTopY},
+                ${leftLowerX} ${lowerY},
+                ${leftUpperX} ${upperY},
                 0 0
 
                 Z
@@ -743,11 +1037,9 @@
             );
 
 
-            /*
-             * -------------------------------------
-             * FRONTE / RETRO DELLA CARTA
-             * -------------------------------------
-             */
+            /* ================================================== */
+            /* FRONTE / RETRO                                    */
+            /* ================================================== */
 
             if (rotation < 90) {
 
@@ -766,14 +1058,75 @@
             }
 
 
+            /* ================================================== */
+            /* LUCE DINAMICA                                     */
+            /* ================================================== */
+
             /*
-             * -------------------------------------
-             * SIGILLO
-             * -------------------------------------
-             *
-             * La posizione verticale segue
-             * davvero la punta del path.
-             */
+                Quando la carta si inclina,
+                aumentiamo leggermente
+                il contrasto del gradiente.
+            */
+
+            const shade =
+                Math.round(
+                    12 * bend
+                );
+
+
+            frontStop1.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${234 - shade},
+                    ${220 - shade},
+                    ${200 - shade}
+                )`
+            );
+
+
+            frontStop2.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${234 - shade / 2},
+                    ${220 - shade / 2},
+                    ${200 - shade / 2}
+                )`
+            );
+
+
+            frontStop3.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${223 - shade},
+                    ${202 - shade},
+                    ${176 - shade}
+                )`
+            );
+
+
+            backStop1.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${230 - shade / 2},
+                    ${214 - shade / 2},
+                    ${193 - shade / 2}
+                )`
+            );
+
+
+            backStop2.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${220 - shade},
+                    ${198 - shade},
+                    ${170 - shade}
+                )`
+            );
+
+
+            /* ================================================== */
+            /* SIGILLO                                           */
+            /* ================================================== */
 
             const tipPercentage =
                 tipY / 10;
@@ -784,22 +1137,239 @@
 
 
             /*
-                Il sigillo è sul fronte.
+                Fino ai 90° il sigillo
+                resta sulla faccia visibile.
 
-                Quando passiamo oltre i 90°
-                viene nascosto dalla faccia
-                della carta tramite
-                backface-visibility.
+                Oltre i 90° lo nascondiamo:
+                ora è fisicamente dietro
+                alla carta.
             */
+
+            if (rotation < 90) {
+
+                waxSeal.style.visibility =
+                    "visible";
+
+            } else {
+
+                waxSeal.style.visibility =
+                    "hidden";
+
+            }
+
+
+            /* ================================================== */
+            /* SPESSORE CARTA                                    */
+            /* ================================================== */
+
+            /*
+                È più visibile quando il foglio
+                è quasi perpendicolare.
+            */
+
+            const edgeAmount =
+                Math.sin(
+                    Math.PI * t
+                );
+
+
+            paperEdge.style.opacity =
+                `${0.55 * edgeAmount}`;
+
+
+            /* ================================================== */
+            /* OMBRA DEL LEMBO                                   */
+            /* ================================================== */
+
+            flapShadow.style.opacity =
+                `${0.28 * bend}`;
+
+
+            const shadowScaleY =
+                0.12 +
+                (0.95 * bend);
+
+
+            const shadowY =
+                -50 +
+                (22 * e);
+
+
+            flapShadow.style.transform =
+                `translate(
+                    -50%,
+                    ${shadowY}%
+                )
+                scaleX(
+                    ${0.9 - 0.18 * bend}
+                )
+                scaleY(
+                    ${shadowScaleY}
+                )`;
 
         }
 
 
-        /* ========================================= */
-        /* APERTURA                                  */
-        /* ========================================= */
+        /* ================================================== */
+        /* ANIMAZIONE LEMBO                                  */
+        /* ================================================== */
 
-        function openFlap() {
+        function animateFlap() {
+
+            return new Promise(
+                (resolve) => {
+
+
+                    const start =
+                        performance.now();
+
+
+                    function frame(now) {
+
+                        const elapsed =
+                            now - start;
+
+
+                        const progress =
+                            clamp(
+                                elapsed /
+                                flapDuration,
+                                0,
+                                1
+                            );
+
+
+                        drawFlapFrame(
+                            progress
+                        );
+
+
+                        if (progress < 1) {
+
+                            animationFrame =
+                                requestAnimationFrame(
+                                    frame
+                                );
+
+                        } else {
+
+                            animationFrame = null;
+
+                            resolve();
+
+                        }
+
+                    }
+
+
+                    animationFrame =
+                        requestAnimationFrame(
+                            frame
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* DISCESA DELLA BUSTA                               */
+        /* ================================================== */
+
+        function animateEnvelopeDown() {
+
+            return new Promise(
+                (resolve) => {
+
+
+                    const start =
+                        performance.now();
+
+
+                    function frame(now) {
+
+                        const elapsed =
+                            now - start;
+
+
+                        const progress =
+                            clamp(
+                                elapsed /
+                                bodyDuration,
+                                0,
+                                1
+                            );
+
+
+                        const e =
+                            easeInOutCubic(
+                                progress
+                            );
+
+
+                        /*
+                            Il corpo scende oltre
+                            il fondo del viewport.
+                        */
+
+                        envelopeBody.style.transform =
+                            `translateY(
+                                ${110 * e}%
+                            )`;
+
+
+                        /*
+                            Anche il lembo aperto
+                            accompagna leggermente
+                            il movimento verso il basso.
+
+                            Così sembra appartenere
+                            alla stessa busta.
+                        */
+
+                        flap.style.marginTop =
+                            `${18 * e}vh`;
+
+
+                        flapShadow.style.opacity =
+                            `${0.12 * (1 - e)}`;
+
+
+                        if (progress < 1) {
+
+                            animationFrame =
+                                requestAnimationFrame(
+                                    frame
+                                );
+
+                        } else {
+
+                            animationFrame = null;
+
+                            resolve();
+
+                        }
+
+                    }
+
+
+                    animationFrame =
+                        requestAnimationFrame(
+                            frame
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* APERTURA COMPLETA                                 */
+        /* ================================================== */
+
+        async function openEnvelope() {
 
             if (opening || opened) {
                 return;
@@ -808,63 +1378,55 @@
 
             opening = true;
 
-            hint.classList.add("hidden");
+            hint.classList.add(
+                "hidden"
+            );
 
 
-            const start =
-                performance.now();
+            /*
+                FASE 1:
+                apertura lembo
+            */
+
+            await animateFlap();
 
 
-            function animate(now) {
+            /*
+                piccola pausa naturale
+            */
 
-                const elapsed =
-                    now - start;
+            await new Promise(
+                (resolve) => {
 
-
-                const progress =
-                    clamp(
-                        elapsed / duration,
-                        0,
-                        1
+                    setTimeout(
+                        resolve,
+                        bodyDelay
                     );
 
-
-                drawFrame(progress);
-
-
-                if (progress < 1) {
-
-                    animationFrame =
-                        requestAnimationFrame(
-                            animate
-                        );
-
-                } else {
-
-                    opening = false;
-
-                    opened = true;
-
-                    animationFrame = null;
-
                 }
+            );
 
-            }
+
+            /*
+                FASE 2:
+                busta che viene sfilata
+            */
+
+            await animateEnvelopeDown();
 
 
-            animationFrame =
-                requestAnimationFrame(
-                    animate
-                );
+            opening = false;
+
+            opened = true;
 
         }
 
 
-        /* ========================================= */
-        /* RESET                                     */
-        /* ========================================= */
+        /* ================================================== */
+        /* RESET                                             */
+        /* ================================================== */
 
-        function resetFlap(event) {
+        function resetEnvelope(event) {
 
             event.stopPropagation();
 
@@ -885,12 +1447,36 @@
             opened = false;
 
 
+            envelopeBody.style.transform =
+                "translateY(0)";
+
+
             flap.style.transform =
                 "rotateX(0deg) translateZ(0px)";
 
 
+            flap.style.marginTop =
+                "0";
+
+
+            flapShadow.style.opacity =
+                "0";
+
+
+            flapShadow.style.transform =
+                "translate(-50%, -50%) scaleY(0.05)";
+
+
+            paperEdge.style.opacity =
+                "0";
+
+
             waxSeal.style.top =
                 "100%";
+
+
+            waxSeal.style.visibility =
+                "visible";
 
 
             flapPath.setAttribute(
@@ -921,18 +1507,36 @@
             );
 
 
-            hint.classList.remove("hidden");
+            frontStop1.setAttribute(
+                "stop-color",
+                "#EADCC8"
+            );
+
+            frontStop2.setAttribute(
+                "stop-color",
+                "#EADCC8"
+            );
+
+            frontStop3.setAttribute(
+                "stop-color",
+                "#DFCAB0"
+            );
+
+
+            hint.classList.remove(
+                "hidden"
+            );
 
         }
 
 
-        /* ========================================= */
-        /* EVENTI                                    */
-        /* ========================================= */
+        /* ================================================== */
+        /* EVENTI                                            */
+        /* ================================================== */
 
         envelopeTest.addEventListener(
             "click",
-            openFlap
+            openEnvelope
         );
 
 
@@ -947,7 +1551,7 @@
 
                     event.preventDefault();
 
-                    openFlap();
+                    openEnvelope();
 
                 }
 
@@ -957,15 +1561,15 @@
 
         restartButton.addEventListener(
             "click",
-            resetFlap
+            resetEnvelope
         );
 
 
-        /* ========================================= */
-        /* STATO INIZIALE                           */
-        /* ========================================= */
+        /* ================================================== */
+        /* STATO INIZIALE                                    */
+        /* ================================================== */
 
-        drawFrame(0);
+        drawFlapFrame(0);
 
     </script>
 

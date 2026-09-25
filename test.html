@@ -37,7 +37,6 @@
         html,
         body {
             margin: 0;
-
             width: 100%;
             min-height: 100%;
         }
@@ -126,7 +125,7 @@
 
 
         /* ================================================== */
-        /* CORPO DELLA BUSTA                                  */
+        /* CORPO BUSTA                                        */
         /* ================================================== */
 
         .envelope-body {
@@ -250,8 +249,10 @@
             position: absolute;
 
             /*
-                Centro esatto dello schermo:
-                50vw / 50vh.
+                50% larghezza
+                + 100% di un elemento alto 50vh
+
+                = centro esatto dello schermo.
             */
 
             left: 50%;
@@ -427,7 +428,7 @@
 
 
         <!-- ================================================== -->
-        <!-- CORPO DELLA BUSTA                                  -->
+        <!-- CORPO BUSTA                                        -->
         <!-- ================================================== -->
 
         <div
@@ -496,8 +497,9 @@
                 <!-- ======================================== -->
 
                 <!--
-                    È disegnato DOPO i laterali,
-                    quindi rimane sovrapposto.
+                    È disegnato per ultimo,
+                    quindi rimane SOPRA
+                    ai due lembi laterali.
                 -->
 
                 <path
@@ -545,6 +547,8 @@
                 <defs>
 
 
+                    <!-- FRONTE -->
+
                     <linearGradient
                         id="paperFront"
                         x1="0"
@@ -574,6 +578,8 @@
                     </linearGradient>
 
 
+                    <!-- RETRO -->
+
                     <linearGradient
                         id="paperBack"
                         x1="0"
@@ -594,6 +600,8 @@
 
                     </linearGradient>
 
+
+                    <!-- OMBRA -->
 
                     <filter
                         id="paperShadow"
@@ -616,6 +624,8 @@
                 </defs>
 
 
+                <!-- BORDO -->
+
                 <path
                     id="flapEdgePath"
                     d=""
@@ -632,6 +642,8 @@
                 />
 
 
+                <!-- CARTA -->
+
                 <path
                     id="flapPath"
                     d=""
@@ -643,6 +655,8 @@
 
             </svg>
 
+
+            <!-- SIGILLO -->
 
             <div
                 class="wax-seal"
@@ -727,6 +741,8 @@
         const restartButton =
             document.getElementById("restartButton");
 
+
+        /* CORPO */
 
         const bodyLeftPath =
             document.getElementById("bodyLeftPath");
@@ -857,8 +873,12 @@
 
 
         /* ================================================== */
-        /* LEMBO SUPERIORE                                   */
+        /* GEOMETRIA LEMBO SUPERIORE                        */
         /* ================================================== */
+
+        /*
+            Questa parte rimane quella approvata.
+        */
 
         function getFlapGeometry(t) {
 
@@ -962,6 +982,7 @@
 
                 M 0 0
 
+
                 L 1000 0
 
 
@@ -1028,14 +1049,19 @@
 
 
         /* ================================================== */
-        /* CORPO DELLA BUSTA                                 */
+        /* GEOMETRIA CORPO BUSTA                            */
         /* ================================================== */
 
         function drawEnvelopeBody() {
 
-            /* ---------------------------------------------- */
+            /* ============================================== */
             /* LEMBI LATERALI                               */
-            /* ---------------------------------------------- */
+            /* ============================================== */
+
+            /*
+                Partono esattamente dal 18,5%
+                della schermata.
+            */
 
             const sideStartY =
                 185;
@@ -1052,6 +1078,10 @@
             const rightMeetX =
                 508;
 
+
+            /* ---------------------------------------------- */
+            /* SINISTRO                                      */
+            /* ---------------------------------------------- */
 
             bodyLeftPath.setAttribute(
                 "d",
@@ -1077,6 +1107,10 @@
             );
 
 
+            /* ---------------------------------------------- */
+            /* DESTRO                                        */
+            /* ---------------------------------------------- */
+
             bodyRightPath.setAttribute(
                 "d",
                 `
@@ -1101,142 +1135,124 @@
             );
 
 
-            /* ================================================== */
-            /* LEMBO INFERIORE                                    */
-            /* ================================================== */
+            /* ============================================== */
+            /* LEMBO INFERIORE                              */
+            /* ============================================== */
 
             /*
-                Manteniamo l'idea del lembo superiore
-                capovolto, ma accorciamo soltanto
-                i tratti verticali.
+                COSTRUZIONE DA ZERO
+                secondo lo schema:
 
-                Prima, con la rotazione letterale,
-                i tratti verticali occupavano circa
-                il 42% dello schermo.
+                         /\
+                        /  \
+                       /    \
+                      /      \
+                     |        |
+                     |        |
+                     |        |
 
-                Ora ne occupano solo circa il 10%.
+
+                coordinate:
+
+                punta = 49% dello schermo
+                fine diagonali = 75%
+                fondo = 100%
+
+                quindi:
+
+                punta: y = 490
+
+                tratto verticale:
+                750 -> 1000
+                = esattamente 25%.
             */
 
 
             /*
-                Fondo schermata.
-            */
+                PUNTA.
 
-            const bottomY =
-                1000;
-
-
-            /*
-                Fine del tratto verticale.
-
-                1000 -> 900 = solo 10%.
-            */
-
-            const shoulderY =
-                900;
-
-
-            /*
-                Punta arrotondata superiore.
-
-                Circa 43% della schermata.
+                Il valore centrale più alto
+                arriva al 49%.
             */
 
             const tipY =
-                430;
+                490;
 
 
             /*
-                La diagonale mantiene una pendenza
-                molto simile a quella del lembo
-                superiore, che nell'ultimo test
-                risultava corretta.
-            */
+                Per arrotondare appena la punta
+                utilizziamo due punti laterali.
 
-            const rightControl1X =
-                835;
+                La punta non è quindi:
 
+                       /\
 
-            const rightControl1Y =
-                745;
+                ma qualcosa di leggermente
+                più morbido:
 
-
-            const rightControl2X =
-                625;
-
-
-            const rightControl2Y =
-                520;
-
-
-            const leftControl1X =
-                165;
-
-
-            const leftControl1Y =
-                rightControl1Y;
-
-
-            const leftControl2X =
-                375;
-
-
-            const leftControl2Y =
-                rightControl2Y;
-
-
-            /*
-                Piccolo raccordo arrotondato
-                al centro.
-
-                Niente vertice appuntito.
+                       __
+                      /  \
             */
 
             const tipLeftX =
-                460;
+                465;
 
 
             const tipRightX =
-                540;
+                535;
 
 
             const tipSideY =
-                447;
+                505;
 
 
-            /* ---------------------------------------------- */
-            /* PATH COMPLETO                                 */
-            /* ---------------------------------------------- */
+            /*
+                FINE DELLA DIAGONALE /
+                INIZIO DEL TRATTO VERTICALE.
+
+                75% esatto.
+            */
+
+            const verticalStartY =
+                750;
+
+
+            /*
+                Nessuna curva strana.
+
+                La geometria è volutamente
+                molto semplice:
+
+                fondo sinistro
+                ↑
+                tratto verticale
+                ↑
+                diagonale
+                ↑
+                punta
+                ↓
+                diagonale
+                ↓
+                tratto verticale
+                ↓
+                fondo destro
+            */
+
 
             const bottomD = `
 
-                M 0 ${bottomY}
-
-
-                L 1000 ${bottomY}
+                M
+                0
+                1000
 
 
                 L
-                1000
-                ${shoulderY + 22}
+                0
+                ${verticalStartY}
 
 
-                Q
-                1000
-                ${shoulderY}
-
-                988
-                ${shoulderY}
-
-
-                C
-                ${rightControl1X}
-                ${rightControl1Y},
-
-                ${rightControl2X}
-                ${rightControl2Y},
-
-                ${tipRightX}
+                L
+                ${tipLeftX}
                 ${tipSideY}
 
 
@@ -1244,32 +1260,18 @@
                 500
                 ${tipY}
 
-                ${tipLeftX}
+                ${tipRightX}
                 ${tipSideY}
 
 
-                C
-                ${leftControl2X}
-                ${leftControl2Y},
-
-                ${leftControl1X}
-                ${leftControl1Y},
-
-                12
-                ${shoulderY}
-
-
-                Q
-                0
-                ${shoulderY}
-
-                0
-                ${shoulderY + 22}
+                L
+                1000
+                ${verticalStartY}
 
 
                 L
-                0
-                ${bottomY}
+                1000
+                1000
 
 
                 Z
@@ -1282,32 +1284,24 @@
             );
 
 
-            /* ---------------------------------------------- */
-            /* SOLO BORDO SUPERIORE                         */
-            /* ---------------------------------------------- */
+            /*
+                Disegniamo soltanto
+                il bordo superiore visibile.
+
+                I lati verticali esterni non
+                hanno bisogno di una piega,
+                perché coincidono con i margini
+                dello schermo.
+            */
 
             const bottomFoldD = `
 
                 M
                 0
-                ${shoulderY + 22}
+                ${verticalStartY}
 
 
-                Q
-                0
-                ${shoulderY}
-
-                12
-                ${shoulderY}
-
-
-                C
-                ${leftControl1X}
-                ${leftControl1Y},
-
-                ${leftControl2X}
-                ${leftControl2Y},
-
+                L
                 ${tipLeftX}
                 ${tipSideY}
 
@@ -1320,23 +1314,9 @@
                 ${tipSideY}
 
 
-                C
-                ${rightControl2X}
-                ${rightControl2Y},
-
-                ${rightControl1X}
-                ${rightControl1Y},
-
-                988
-                ${shoulderY}
-
-
-                Q
+                L
                 1000
-                ${shoulderY}
-
-                1000
-                ${shoulderY + 22}
+                ${verticalStartY}
             `;
 
 
@@ -1349,7 +1329,7 @@
 
 
         /* ================================================== */
-        /* FRAME LEMBO SUPERIORE                             */
+        /* DISEGNO FRAME LEMBO                              */
         /* ================================================== */
 
         function drawFlapFrame(progress) {
@@ -1369,6 +1349,10 @@
             const bend =
                 geometry.bend;
 
+
+            /* ---------------------------------------------- */
+            /* ROTAZIONE                                     */
+            /* ---------------------------------------------- */
 
             let rotation;
 
@@ -1403,6 +1387,10 @@
             }
 
 
+            /* ---------------------------------------------- */
+            /* PROFONDITÀ                                    */
+            /* ---------------------------------------------- */
+
             const depth =
                 20 *
                 bend;
@@ -1412,6 +1400,10 @@
                 `rotateX(${rotation}deg)
                  translateZ(${depth}px)`;
 
+
+            /* ---------------------------------------------- */
+            /* PATH                                          */
+            /* ---------------------------------------------- */
 
             flapPath.setAttribute(
                 "d",
@@ -1424,6 +1416,10 @@
                 geometry.d
             );
 
+
+            /* ---------------------------------------------- */
+            /* FRONTE / RETRO                                */
+            /* ---------------------------------------------- */
 
             if (rotation < 90) {
 
@@ -1442,6 +1438,10 @@
             }
 
 
+            /* ---------------------------------------------- */
+            /* SIGILLO                                       */
+            /* ---------------------------------------------- */
+
             waxSeal.style.left =
                 "50%";
 
@@ -1455,6 +1455,10 @@
                     ? "visible"
                     : "hidden";
 
+
+            /* ---------------------------------------------- */
+            /* OMBRA                                         */
+            /* ---------------------------------------------- */
 
             flapShadow.style.opacity =
                 `${0.23 * bend}`;
@@ -1476,6 +1480,10 @@
                 )
                 `;
 
+
+            /* ---------------------------------------------- */
+            /* LUCE                                          */
+            /* ---------------------------------------------- */
 
             const shade =
                 Math.round(
@@ -1561,7 +1569,6 @@
                             flapFrameId =
                                 null;
 
-
                             resolve();
 
                         }
@@ -1631,7 +1638,6 @@
 
                             bodyFrameId =
                                 null;
-
 
                             resolve();
 
@@ -1754,9 +1760,18 @@
             );
 
 
+            /*
+                Parte immediatamente il lembo.
+            */
+
             const flapPromise =
                 animateFlap();
 
+
+            /*
+                Dopo 1600 ms parte
+                la discesa della busta.
+            */
 
             await wait(
                 bodyStart
@@ -1767,8 +1782,18 @@
                 animateEnvelopeDown();
 
 
+            /*
+                Nel frattempo il lembo
+                continua ad aprirsi.
+            */
+
             await flapPromise;
 
+
+            /*
+                Una volta aperto,
+                sparisce rapidamente.
+            */
 
             const fadePromise =
                 fadeOutFlap();
@@ -1933,7 +1958,6 @@
                 ) {
 
                     event.preventDefault();
-
 
                     openEnvelope();
 

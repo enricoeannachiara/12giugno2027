@@ -44,7 +44,8 @@ const BODY_START = 1600;
 const BODY_DURATION = 1450;
 const FLAP_FADE_DURATION = 280;
 
-const WEDDING_DATE = new Date("2027-06-12T11:00:00+02:00");
+const WEDDING_DATE =
+    new Date("2027-06-12T11:00:00+02:00");
 
 let flapFrameId = null;
 let bodyFrameId = null;
@@ -93,7 +94,8 @@ function wait(milliseconds) {
 }
 
 function getFlapGeometry(t) {
-    const bend = bendCurve(t);
+    const bend =
+        bendCurve(t);
 
     const tipY =
         1000 -
@@ -368,12 +370,15 @@ function drawFlapFrame(progress) {
     let rotation;
 
     if (t < 0.94) {
+
         rotation =
             181.5 *
             easeInOutCubic(
                 t / 0.94
             );
+
     } else {
+
         const settle =
             (t - 0.94) /
             0.06;
@@ -583,7 +588,8 @@ async function openEnvelope() {
         return;
     }
 
-    opening = true;
+    opening =
+        true;
 
     const flapPromise =
         animateFlap();
@@ -605,8 +611,11 @@ async function openEnvelope() {
         fadePromise
     ]);
 
-    opening = false;
-    opened = true;
+    opening =
+        false;
+
+    opened =
+        true;
 
     envelopeScreen.classList.add(
         "opened"
@@ -678,6 +687,7 @@ function updateCountdown() {
         Date.now();
 
     if (remaining <= 0) {
+
         countdown.innerHTML =
             `
                 <img
@@ -780,14 +790,18 @@ async function copyText(
         button.innerHTML;
 
     try {
+
         if (
             navigator.clipboard &&
             window.isSecureContext
         ) {
+
             await navigator.clipboard.writeText(
                 text
             );
+
         } else {
+
             const textarea =
                 document.createElement(
                     "textarea"
@@ -823,14 +837,17 @@ async function copyText(
             successLabel;
 
     } catch {
+
         button.textContent =
             "Seleziona e copia";
     }
 
     window.setTimeout(
         () => {
+
             button.innerHTML =
                 originalLabel;
+
         },
         1600
     );
@@ -861,13 +878,31 @@ function updateScrollIndicator() {
         window.innerHeight + 40;
 
     if (
+        window.scrollY > 25
+    ) {
+
+        scrollIndicator.classList.add(
+            "compact"
+        );
+
+    } else {
+
+        scrollIndicator.classList.remove(
+            "compact"
+        );
+    }
+
+    if (
         canScroll &&
         distanceFromBottom > 100
     ) {
+
         scrollIndicator.classList.add(
             "visible"
         );
+
     } else {
+
         scrollIndicator.classList.remove(
             "visible"
         );
@@ -882,11 +917,14 @@ envelopeStage.addEventListener(
 envelopeStage.addEventListener(
     "keydown",
     event => {
+
         if (
             event.key === "Enter" ||
             event.key === " "
         ) {
+
             event.preventDefault();
+
             openEnvelope();
         }
     }
@@ -896,9 +934,11 @@ if (
     copyWedshootsCode &&
     wedshootsCode
 ) {
+
     copyWedshootsCode.addEventListener(
         "click",
         () => {
+
             copyText(
                 wedshootsCode.textContent.trim(),
                 copyWedshootsCode,
@@ -912,9 +952,11 @@ if (
     copyIban &&
     ibanCode
 ) {
+
     copyIban.addEventListener(
         "click",
         () => {
+
             copyText(
                 ibanCode.textContent
                     .replace(/\s/g, "")
@@ -932,9 +974,11 @@ if (
     giftToggle &&
     giftDetails
 ) {
+
     giftToggle.addEventListener(
         "click",
         () => {
+
             const isOpen =
                 giftToggle.getAttribute(
                     "aria-expanded"
@@ -969,6 +1013,7 @@ if (
 window.addEventListener(
     "scroll",
     () => {
+
         if (
             scrollFramePending
         ) {
@@ -980,6 +1025,7 @@ window.addEventListener(
 
         requestAnimationFrame(
             () => {
+
                 updateScrollIndicator();
 
                 scrollFramePending =

@@ -18,8 +18,9 @@
             --text: #3E3A39;
 
             --paper-front: #EADCC8;
-            --paper-back: #E5D5BF;
-            --paper-edge: #C9B28F;
+            --paper-back: #E4D3BC;
+
+            --paper-edge: #C8B18F;
 
             --body-paper: #EADCC8;
         }
@@ -122,21 +123,19 @@
 
 
         /* ================================================== */
-        /* CORPO BUSTA - TEMPORANEO                           */
+        /* CORPO BUSTA - SOLO TEMPORANEO                      */
         /* ================================================== */
 
         /*
-            Per adesso NON cerchiamo di renderlo definitivo.
+            Per ora questa parte serve solamente
+            a creare la tasca della busta.
 
-            Serve soltanto a:
+            Il centro superiore è volutamente
+            trasparente, così quando il lembo
+            si apre compare la Hero.
 
-            - coprire lo schermo inizialmente;
-            - lasciare una zona trasparente quando
-              il lembo comincia ad aprirsi;
-            - scendere dopo 1600 ms.
-
-            Una volta approvato il lembo superiore,
-            rifaremo questa parte seriamente.
+            NON è ancora il disegno definitivo
+            della parte inferiore.
         */
 
         .envelope-body {
@@ -154,8 +153,8 @@
         }
 
 
-        .body-side-left,
-        .body-side-right,
+        .body-left,
+        .body-right,
         .body-bottom {
             position: absolute;
 
@@ -165,20 +164,20 @@
         }
 
 
-        .body-side-left {
+        .body-left {
             clip-path: polygon(
                 0 0,
-                50% 50%,
+                50% 58%,
                 0 100%
             );
         }
 
 
-        .body-side-right {
+        .body-right {
             clip-path: polygon(
                 100% 0,
                 100% 100%,
-                50% 50%
+                50% 58%
             );
         }
 
@@ -186,7 +185,7 @@
         .body-bottom {
             clip-path: polygon(
                 0 100%,
-                50% 50%,
+                50% 58%,
                 100% 100%
             );
         }
@@ -284,16 +283,17 @@
             position: absolute;
 
             /*
-                La punta iniziale è:
-                x = 50%
-                y = 100% del lembo.
+                Il centro del sigillo è:
 
-                Il lembo è alto 50vh.
+                50% larghezza del lembo
+                100% altezza del lembo
 
-                Quindi il centro del sigillo è:
+                e il lembo è alto 50vh.
+
+                Quindi:
                 50vw / 50vh
 
-                cioè CENTRO ESATTO dello schermo.
+                CENTRO ESATTO DELLO SCHERMO.
             */
 
             left: 50%;
@@ -476,9 +476,9 @@
             id="envelopeBody"
         >
 
-            <div class="body-side-left"></div>
+            <div class="body-left"></div>
 
-            <div class="body-side-right"></div>
+            <div class="body-right"></div>
 
             <div class="body-bottom"></div>
 
@@ -522,7 +522,7 @@
 
                         <stop
                             id="frontStop2"
-                            offset="62%"
+                            offset="65%"
                             stop-color="#EADCC8"
                         />
 
@@ -558,7 +558,7 @@
                     </linearGradient>
 
 
-                    <!-- OMBRA CARTA -->
+                    <!-- OMBRA -->
 
                     <filter
                         id="paperShadow"
@@ -589,7 +589,7 @@
 
                     fill="none"
 
-                    stroke="#C9B28F"
+                    stroke="#C8B18F"
 
                     stroke-width="3"
 
@@ -719,10 +719,6 @@
             3400;
 
 
-        /*
-            Manteniamo il compromesso approvato.
-        */
-
         const bodyStart =
             1600;
 
@@ -823,33 +819,49 @@
 
 
             /*
-                Questa volta la forma iniziale
-                è volutamente semplice e molto
-                simile a un vero lembo.
+                =================================================
+                GEOMETRIA BASE COMPLETAMENTE NUOVA
+                =================================================
 
-                PROFILO:
+                Il lembo chiuso è costruito così:
 
-                ───────────────────────
-                │                    │
-                )                    (
-                 \                  /
-                  \                /
-                   \              /
-                    \            /
-                     \          /
-                      \        /
-                       \      /
-                        \____/
-                          ●
 
-                I primi tratti laterali sono quasi
-                verticali.
+                (0,0) -------------------- (1000,0)
 
-                La maggior parte del profilo è poi
-                una vera diagonale.
+                |                              |
+                |                              |
+                |                              |
 
-                La punta è solo leggermente
-                arrotondata.
+                \                              /
+                 \                            /
+                  \                          /
+                   \                        /
+                    \                      /
+                     \                    /
+                      \                  /
+                       \                /
+                        \              /
+                         \            /
+                          \          /
+                           \        /
+                            \      /
+                             \    /
+                              \  /
+                               \/
+                            (500,1000)
+
+
+                Il tratto verticale arriva circa
+                al 22% dell'altezza.
+
+                Da lì parte una diagonale quasi
+                completamente rettilinea.
+
+                SOLO:
+                - raccordo alto;
+                - punta;
+
+                hanno un leggero arrotondamento.
             */
 
 
@@ -861,13 +873,6 @@
                 500;
 
 
-            /*
-                A riposo = 1000.
-
-                Quindi sigillo al centro
-                esatto dello schermo.
-            */
-
             const tipY =
                 1000 -
                 (
@@ -877,26 +882,11 @@
 
 
             /* ---------------------------------------------- */
-            /* RACCORDI SUPERIORI                             */
+            /* FINE TRATTI VERTICALI                         */
             /* ---------------------------------------------- */
 
-            /*
-                Lato destro:
-
-                prima scende quasi verticalmente
-                fino a circa 21% dell'altezza.
-            */
-
-            const rightSideEndX =
-                970 -
-                (
-                    12 *
-                    bend
-                );
-
-
-            const rightSideEndY =
-                215 +
+            const shoulderY =
+                220 +
                 (
                     45 *
                     bend
@@ -904,39 +894,64 @@
 
 
             /*
-                Punto da cui parte la vera
-                diagonale lunga.
+                A riposo:
+
+                lato sinistro = x 0
+                lato destro   = x 1000
+
+                Durante la curvatura li facciamo
+                rientrare appena.
             */
 
-            const rightDiagonalStartX =
-                885 -
+            const leftShoulderX =
+                0 +
                 (
-                    22 *
+                    14 *
                     bend
                 );
 
 
-            const rightDiagonalStartY =
-                300 +
+            const rightShoulderX =
+                1000 -
                 (
-                    65 *
+                    14 *
                     bend
                 );
 
 
             /* ---------------------------------------------- */
-            /* CONTROLLO VICINO ALLA PUNTA                   */
+            /* CONTROLLO DELLE DIAGONALI                     */
             /* ---------------------------------------------- */
 
             /*
-                Questo punto controlla
-                quanto è acuto il lembo.
+                Questi punti sono messi quasi
+                esattamente sulla retta che va
+                dalla spalla alla punta.
 
-                Più resta laterale,
-                più la punta appare larga.
+                Quindi NON producono pance strane.
+
+                Servono solamente a permettere
+                la deformazione mentre il foglio
+                si sfoglia.
             */
 
-            const rightTipX =
+            const rightControl1X =
+                820 -
+                (
+                    20 *
+                    bend
+                );
+
+
+            const rightControl1Y =
+                500 +
+                (
+                    20 *
+                    bend
+                );
+
+
+            const rightControl2X =
                 610 -
                 (
                     12 *
@@ -944,43 +959,27 @@
                 );
 
 
-            const rightTipY =
-                950 -
+            const rightControl2Y =
+                860 -
                 (
-                    65 *
+                    55 *
                     bend
                 );
 
 
-            /*
-                Sinistra speculare.
-            */
-
-            const leftSideEndX =
-                30 +
+            const leftControl1X =
+                180 +
                 (
-                    12 *
+                    20 *
                     bend
                 );
 
 
-            const leftSideEndY =
-                rightSideEndY;
+            const leftControl1Y =
+                rightControl1Y;
 
 
-            const leftDiagonalStartX =
-                115 +
-                (
-                    22 *
-                    bend
-                );
-
-
-            const leftDiagonalStartY =
-                rightDiagonalStartY;
-
-
-            const leftTipX =
+            const leftControl2X =
                 390 +
                 (
                     12 *
@@ -988,89 +987,70 @@
                 );
 
 
-            const leftTipY =
-                rightTipY;
+            const leftControl2Y =
+                rightControl2Y;
 
 
             /*
-                PATH.
-
-                I raccordi superiori sono curvi.
-
-                Le diagonali invece sono quasi
-                rettilinee perché i due punti
-                di controllo seguono la stessa
-                direzione geometrica.
+                =================================================
+                PATH
+                =================================================
             */
 
             const d = `
 
                 M 0 0
 
+
                 L 1000 0
 
 
                 L
                 1000
-                ${145 + 25 * bend}
+                ${shoulderY - 35}
 
 
                 Q
                 1000
-                ${190 + 35 * bend}
+                ${shoulderY}
 
-                ${rightSideEndX}
-                ${rightSideEndY}
-
-
-                Q
-                ${940 - 15 * bend}
-                ${265 + 45 * bend}
-
-                ${rightDiagonalStartX}
-                ${rightDiagonalStartY}
+                ${rightShoulderX}
+                ${shoulderY}
 
 
-                L
-                ${rightTipX}
-                ${rightTipY}
+                C
+                ${rightControl1X}
+                ${rightControl1Y},
 
-
-                Q
-                ${560 - 5 * bend}
-                ${995 - 20 * bend}
+                ${rightControl2X}
+                ${rightControl2Y},
 
                 ${tipX}
                 ${tipY}
 
 
-                Q
-                ${440 + 5 * bend}
-                ${995 - 20 * bend}
+                C
+                ${leftControl2X}
+                ${leftControl2Y},
 
-                ${leftTipX}
-                ${leftTipY}
+                ${leftControl1X}
+                ${leftControl1Y},
+
+                ${leftShoulderX}
+                ${shoulderY}
+
+
+                Q
+                0
+                ${shoulderY}
+
+                0
+                ${shoulderY - 35}
 
 
                 L
-                ${leftDiagonalStartX}
-                ${leftDiagonalStartY}
-
-
-                Q
-                ${60 + 15 * bend}
-                ${265 + 45 * bend}
-
-                ${leftSideEndX}
-                ${leftSideEndY}
-
-
-                Q
                 0
-                ${190 + 35 * bend}
-
                 0
-                ${145 + 25 * bend}
 
 
                 Z
@@ -1208,10 +1188,6 @@
             waxSeal.style.top =
                 `${geometry.tipY / 10}%`;
 
-
-            /*
-                Dopo 90° è dietro la carta.
-            */
 
             waxSeal.style.visibility =
                 rotation < 90

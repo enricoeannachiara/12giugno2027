@@ -46,6 +46,8 @@ body {
 }
 
 body {
+    position: relative;
+
     margin: 0;
 
     background: var(--background);
@@ -77,11 +79,44 @@ button {
     font: inherit;
 }
 
+.corner-flowers {
+    position: absolute;
+
+    top: -180px;
+    left: -220px;
+
+    z-index: 0;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+.corner-flowers img {
+    display: block;
+
+    width: 760px;
+    height: auto;
+}
+
 .site {
     position: relative;
+
     z-index: 1;
 
     width: 100%;
+}
+
+@media (max-width: 760px) {
+
+    .corner-flowers {
+        top: -110px;
+        left: -140px;
+    }
+
+    .corner-flowers img {
+        width: 470px;
+    }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

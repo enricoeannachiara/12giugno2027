@@ -44,8 +44,7 @@ const BODY_START = 1600;
 const BODY_DURATION = 1450;
 const FLAP_FADE_DURATION = 280;
 
-const WEDDING_DATE =
-    new Date("2027-06-12T11:00:00+02:00");
+const WEDDING_DATE = new Date("2027-06-12T11:00:00+02:00");
 
 let flapFrameId = null;
 let bodyFrameId = null;
@@ -94,57 +93,27 @@ function wait(milliseconds) {
 }
 
 function getFlapGeometry(t) {
+    const bend = bendCurve(t);
 
-    const bend =
-        bendCurve(t);
+    const tipX = 500;
+    const tipY = 1000 - 190 * bend;
 
-    const tipX =
-        500;
+    const shoulderY = 420 + 35 * bend;
 
-    const tipY =
-        1000 -
-        190 * bend;
+    const leftShoulderX = 12 * bend;
+    const rightShoulderX = 1000 - 12 * bend;
 
-    const shoulderY =
-        420 +
-        35 * bend;
+    const rightControl1X = 835 - 18 * bend;
+    const rightControl1Y = 590 + 15 * bend;
 
-    const leftShoulderX =
-        12 * bend;
+    const rightControl2X = 625 - 10 * bend;
+    const rightControl2Y = 860 - 50 * bend;
 
-    const rightShoulderX =
-        1000 -
-        12 * bend;
+    const leftControl1X = 165 + 18 * bend;
+    const leftControl1Y = rightControl1Y;
 
-    const rightControl1X =
-        835 -
-        18 * bend;
-
-    const rightControl1Y =
-        590 +
-        15 * bend;
-
-    const rightControl2X =
-        625 -
-        10 * bend;
-
-    const rightControl2Y =
-        860 -
-        50 * bend;
-
-    const leftControl1X =
-        165 +
-        18 * bend;
-
-    const leftControl1Y =
-        rightControl1Y;
-
-    const leftControl2X =
-        375 +
-        10 * bend;
-
-    const leftControl2Y =
-        rightControl2Y;
+    const leftControl2X = 375 + 10 * bend;
+    const leftControl2Y = rightControl2Y;
 
     const d = `
         M 0 0
@@ -204,18 +173,11 @@ function getFlapGeometry(t) {
 }
 
 function drawEnvelopeBody() {
+    const sideStartY = 192.5;
+    const sideMeetY = 500;
 
-    const sideStartY =
-        192.5;
-
-    const sideMeetY =
-        500;
-
-    const leftMeetX =
-        492;
-
-    const rightMeetX =
-        508;
+    const leftMeetX = 492;
+    const rightMeetX = 508;
 
     bodyLeftPath.setAttribute(
         "d",
@@ -269,20 +231,12 @@ function drawEnvelopeBody() {
         `
     );
 
-    const tipY =
-        490;
+    const tipY = 490;
+    const tipLeftX = 468;
+    const tipRightX = 532;
+    const tipSideY = 505;
 
-    const tipLeftX =
-        468;
-
-    const tipRightX =
-        532;
-
-    const tipSideY =
-        505;
-
-    const verticalStartY =
-        750;
+    const verticalStartY = 750;
 
     bodyBottomPath.setAttribute(
         "d",
@@ -342,32 +296,24 @@ function drawEnvelopeBody() {
 }
 
 function drawFlapFrame(progress) {
+    const t = clamp(
+        progress,
+        0,
+        1
+    );
 
-    const t =
-        clamp(
-            progress,
-            0,
-            1
-        );
-
-    const geometry =
-        getFlapGeometry(t);
-
-    const bend =
-        geometry.bend;
+    const geometry = getFlapGeometry(t);
+    const bend = geometry.bend;
 
     let rotation;
 
     if (t < 0.94) {
-
         rotation =
             181.5 *
             easeInOutCubic(
                 t / 0.94
             );
-
     } else {
-
         const settle =
             (t - 0.94) /
             0.06;
@@ -472,14 +418,11 @@ function animate(
     draw,
     setFrameId
 ) {
-
     return new Promise(resolve => {
-
         const start =
             performance.now();
 
         function frame(now) {
-
             const progress =
                 clamp(
                     (now - start) /
@@ -491,17 +434,13 @@ function animate(
             draw(progress);
 
             if (progress < 1) {
-
                 setFrameId(
                     requestAnimationFrame(
                         frame
                     )
                 );
-
             } else {
-
                 setFrameId(null);
-
                 resolve();
             }
         }
@@ -515,13 +454,9 @@ function animate(
 }
 
 function animateFlap() {
-
     return animate(
-
         FLAP_DURATION,
-
         drawFlapFrame,
-
         id => {
             flapFrameId = id;
         }
@@ -529,13 +464,10 @@ function animateFlap() {
 }
 
 function animateEnvelopeDown() {
-
     return animate(
-
         BODY_DURATION,
 
         progress => {
-
             const e =
                 easeInOutCubic(
                     progress
@@ -554,13 +486,10 @@ function animateEnvelopeDown() {
 }
 
 function fadeOutFlap() {
-
     return animate(
-
         FLAP_FADE_DURATION,
 
         progress => {
-
             const e =
                 easeOutCubic(
                     progress
@@ -578,7 +507,6 @@ function fadeOutFlap() {
         }
 
     ).then(() => {
-
         flap.style.opacity =
             "0";
 
@@ -588,7 +516,6 @@ function fadeOutFlap() {
 }
 
 async function openEnvelope() {
-
     if (
         opening ||
         opened
@@ -596,8 +523,7 @@ async function openEnvelope() {
         return;
     }
 
-    opening =
-        true;
+    opening = true;
 
     const flapPromise =
         animateFlap();
@@ -619,11 +545,8 @@ async function openEnvelope() {
         fadePromise
     ]);
 
-    opening =
-        false;
-
-    opened =
-        true;
+    opening = false;
+    opened = true;
 
     envelopeScreen.classList.add(
         "opened"
@@ -645,7 +568,6 @@ async function openEnvelope() {
 }
 
 function initialiseEnvelope() {
-
     document.body.classList.add(
         "envelope-locked"
     );
@@ -678,7 +600,6 @@ function initialiseEnvelope() {
 }
 
 function updateCountdown() {
-
     if (
         !countdown ||
         !countdownDays ||
@@ -689,25 +610,27 @@ function updateCountdown() {
         return;
     }
 
-    const now =
-        Date.now();
-
     const remaining =
         WEDDING_DATE.getTime() -
-        now;
+        Date.now();
 
     if (remaining <= 0) {
-
         countdown.innerHTML =
             `
-                <p class="countdown-title">
-                    È arrivato il nostro giorno ❤️
-                </p>
+                <div class="countdown-paper-content">
+                    <p class="countdown-title">
+                        È arrivato il nostro giorno ❤️
+                    </p>
+                </div>
             `;
 
         if (countdownTimer) {
-            clearInterval(countdownTimer);
-            countdownTimer = null;
+            clearInterval(
+                countdownTimer
+            );
+
+            countdownTimer =
+                null;
         }
 
         return;
@@ -763,14 +686,12 @@ function updateCountdown() {
 }
 
 function startCountdown() {
-
     updateCountdown();
 
     if (
         WEDDING_DATE.getTime() >
         Date.now()
     ) {
-
         countdownTimer =
             setInterval(
                 updateCountdown,
@@ -784,23 +705,18 @@ async function copyText(
     button,
     successLabel
 ) {
-
     const originalLabel =
         button.innerHTML;
 
     try {
-
         if (
             navigator.clipboard &&
             window.isSecureContext
         ) {
-
             await navigator.clipboard.writeText(
                 text
             );
-
         } else {
-
             const textarea =
                 document.createElement(
                     "textarea"
@@ -823,7 +739,6 @@ async function copyText(
             );
 
             textarea.focus();
-
             textarea.select();
 
             document.execCommand(
@@ -837,24 +752,20 @@ async function copyText(
             successLabel;
 
     } catch {
-
         button.textContent =
             "Seleziona e copia";
     }
 
     window.setTimeout(
         () => {
-
             button.innerHTML =
                 originalLabel;
-
         },
         1600
     );
 }
 
 function updateScrollIndicator() {
-
     if (
         !opened ||
         !scrollIndicator
@@ -882,13 +793,10 @@ function updateScrollIndicator() {
         canScroll &&
         distanceFromBottom > 100
     ) {
-
         scrollIndicator.classList.add(
             "visible"
         );
-
     } else {
-
         scrollIndicator.classList.remove(
             "visible"
         );
@@ -903,14 +811,11 @@ envelopeStage.addEventListener(
 envelopeStage.addEventListener(
     "keydown",
     event => {
-
         if (
             event.key === "Enter" ||
             event.key === " "
         ) {
-
             event.preventDefault();
-
             openEnvelope();
         }
     }
@@ -920,11 +825,9 @@ if (
     copyWedshootsCode &&
     wedshootsCode
 ) {
-
     copyWedshootsCode.addEventListener(
         "click",
         () => {
-
             copyText(
                 wedshootsCode.textContent.trim(),
                 copyWedshootsCode,
@@ -938,11 +841,9 @@ if (
     copyIban &&
     ibanCode
 ) {
-
     copyIban.addEventListener(
         "click",
         () => {
-
             copyText(
                 ibanCode.textContent
                     .replace(/\s/g, "")
@@ -960,11 +861,9 @@ if (
     giftToggle &&
     giftDetails
 ) {
-
     giftToggle.addEventListener(
         "click",
         () => {
-
             const isOpen =
                 giftToggle.getAttribute(
                     "aria-expanded"
@@ -999,7 +898,6 @@ if (
 window.addEventListener(
     "scroll",
     () => {
-
         if (
             scrollFramePending
         ) {
@@ -1011,7 +909,6 @@ window.addEventListener(
 
         requestAnimationFrame(
             () => {
-
                 updateScrollIndicator();
 
                 scrollFramePending =

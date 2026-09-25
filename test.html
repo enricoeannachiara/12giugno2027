@@ -250,11 +250,8 @@
             position: absolute;
 
             /*
-                Il sigillo resta esattamente
-                al centro dello schermo:
-
-                X = 50vw
-                Y = 50vh
+                Centro esatto dello schermo:
+                50vw / 50vh.
             */
 
             left: 50%;
@@ -428,6 +425,7 @@
         ></div>
 
 
+
         <!-- ================================================== -->
         <!-- CORPO DELLA BUSTA                                  -->
         <!-- ================================================== -->
@@ -498,41 +496,28 @@
                 <!-- ======================================== -->
 
                 <!--
-                    ATTENZIONE:
-
-                    questi due path riceveranno
-                    ESATTAMENTE lo stesso "d"
-                    del lembo superiore.
-
-                    L'intero gruppo viene poi
-                    ruotato di 180°.
+                    È disegnato DOPO i laterali,
+                    quindi rimane sovrapposto.
                 -->
 
-                <g
-                    id="bottomFlapGroup"
-                    transform="rotate(180 500 500)"
-                >
-
-                    <path
-                        id="bodyBottomPath"
-                        d=""
-                        fill="#EBDCC6"
-                    />
+                <path
+                    id="bodyBottomPath"
+                    d=""
+                    fill="#EBDCC6"
+                />
 
 
-                    <path
-                        id="bodyBottomFold"
-                        d=""
-                        fill="none"
+                <path
+                    id="bodyBottomFold"
+                    d=""
+                    fill="none"
 
-                        stroke="rgba(105,82,58,0.24)"
+                    stroke="rgba(105,82,58,0.24)"
 
-                        stroke-width="2"
+                    stroke-width="2"
 
-                        vector-effect="non-scaling-stroke"
-                    />
-
-                </g>
+                    vector-effect="non-scaling-stroke"
+                />
 
 
             </svg>
@@ -559,8 +544,6 @@
 
                 <defs>
 
-
-                    <!-- FRONTE -->
 
                     <linearGradient
                         id="paperFront"
@@ -591,8 +574,6 @@
                     </linearGradient>
 
 
-                    <!-- RETRO -->
-
                     <linearGradient
                         id="paperBack"
                         x1="0"
@@ -613,8 +594,6 @@
 
                     </linearGradient>
 
-
-                    <!-- OMBRA -->
 
                     <filter
                         id="paperShadow"
@@ -637,8 +616,6 @@
                 </defs>
 
 
-                <!-- BORDO -->
-
                 <path
                     id="flapEdgePath"
                     d=""
@@ -655,8 +632,6 @@
                 />
 
 
-                <!-- CARTA -->
-
                 <path
                     id="flapPath"
                     d=""
@@ -668,8 +643,6 @@
 
             </svg>
 
-
-            <!-- SIGILLO -->
 
             <div
                 class="wax-seal"
@@ -754,8 +727,6 @@
         const restartButton =
             document.getElementById("restartButton");
 
-
-        /* CORPO */
 
         const bodyLeftPath =
             document.getElementById("bodyLeftPath");
@@ -886,7 +857,7 @@
 
 
         /* ================================================== */
-        /* GEOMETRIA DEL LEMBO SUPERIORE                    */
+        /* LEMBO SUPERIORE                                   */
         /* ================================================== */
 
         function getFlapGeometry(t) {
@@ -906,11 +877,6 @@
                     bend
                 );
 
-
-            /*
-                Tratti verticali lunghi
-                approvati nell'ultima versione.
-            */
 
             const shoulderY =
                 420 +
@@ -1068,13 +1034,8 @@
         function drawEnvelopeBody() {
 
             /* ---------------------------------------------- */
-            /* LATERALI                                      */
+            /* LEMBI LATERALI                               */
             /* ---------------------------------------------- */
-
-            /*
-                Partenza al 18,5%
-                della schermata.
-            */
 
             const sideStartY =
                 185;
@@ -1091,8 +1052,6 @@
             const rightMeetX =
                 508;
 
-
-            /* SINISTRO */
 
             bodyLeftPath.setAttribute(
                 "d",
@@ -1117,8 +1076,6 @@
                 `
             );
 
-
-            /* DESTRO */
 
             bodyRightPath.setAttribute(
                 "d",
@@ -1149,58 +1106,244 @@
             /* ================================================== */
 
             /*
-                QUESTA È LA PARTE IMPORTANTE.
+                Manteniamo l'idea del lembo superiore
+                capovolto, ma accorciamo soltanto
+                i tratti verticali.
 
-                Non calcoliamo un'altra forma.
+                Prima, con la rotazione letterale,
+                i tratti verticali occupavano circa
+                il 42% dello schermo.
 
-                Prendiamo ESATTAMENTE
-                la geometria iniziale del
-                lembo superiore.
+                Ora ne occupano solo circa il 10%.
             */
-
-            const upperFlapAtRest =
-                getFlapGeometry(0);
 
 
             /*
-                Stesso identico "d".
+                Fondo schermata.
             */
+
+            const bottomY =
+                1000;
+
+
+            /*
+                Fine del tratto verticale.
+
+                1000 -> 900 = solo 10%.
+            */
+
+            const shoulderY =
+                900;
+
+
+            /*
+                Punta arrotondata superiore.
+
+                Circa 43% della schermata.
+            */
+
+            const tipY =
+                430;
+
+
+            /*
+                La diagonale mantiene una pendenza
+                molto simile a quella del lembo
+                superiore, che nell'ultimo test
+                risultava corretta.
+            */
+
+            const rightControl1X =
+                835;
+
+
+            const rightControl1Y =
+                745;
+
+
+            const rightControl2X =
+                625;
+
+
+            const rightControl2Y =
+                520;
+
+
+            const leftControl1X =
+                165;
+
+
+            const leftControl1Y =
+                rightControl1Y;
+
+
+            const leftControl2X =
+                375;
+
+
+            const leftControl2Y =
+                rightControl2Y;
+
+
+            /*
+                Piccolo raccordo arrotondato
+                al centro.
+
+                Niente vertice appuntito.
+            */
+
+            const tipLeftX =
+                460;
+
+
+            const tipRightX =
+                540;
+
+
+            const tipSideY =
+                447;
+
+
+            /* ---------------------------------------------- */
+            /* PATH COMPLETO                                 */
+            /* ---------------------------------------------- */
+
+            const bottomD = `
+
+                M 0 ${bottomY}
+
+
+                L 1000 ${bottomY}
+
+
+                L
+                1000
+                ${shoulderY + 22}
+
+
+                Q
+                1000
+                ${shoulderY}
+
+                988
+                ${shoulderY}
+
+
+                C
+                ${rightControl1X}
+                ${rightControl1Y},
+
+                ${rightControl2X}
+                ${rightControl2Y},
+
+                ${tipRightX}
+                ${tipSideY}
+
+
+                Q
+                500
+                ${tipY}
+
+                ${tipLeftX}
+                ${tipSideY}
+
+
+                C
+                ${leftControl2X}
+                ${leftControl2Y},
+
+                ${leftControl1X}
+                ${leftControl1Y},
+
+                12
+                ${shoulderY}
+
+
+                Q
+                0
+                ${shoulderY}
+
+                0
+                ${shoulderY + 22}
+
+
+                L
+                0
+                ${bottomY}
+
+
+                Z
+            `;
+
 
             bodyBottomPath.setAttribute(
                 "d",
-                upperFlapAtRest.d
+                bottomD
             );
 
 
-            /*
-                Anche il bordo usa
-                ESATTAMENTE lo stesso path.
-            */
+            /* ---------------------------------------------- */
+            /* SOLO BORDO SUPERIORE                         */
+            /* ---------------------------------------------- */
+
+            const bottomFoldD = `
+
+                M
+                0
+                ${shoulderY + 22}
+
+
+                Q
+                0
+                ${shoulderY}
+
+                12
+                ${shoulderY}
+
+
+                C
+                ${leftControl1X}
+                ${leftControl1Y},
+
+                ${leftControl2X}
+                ${leftControl2Y},
+
+                ${tipLeftX}
+                ${tipSideY}
+
+
+                Q
+                500
+                ${tipY}
+
+                ${tipRightX}
+                ${tipSideY}
+
+
+                C
+                ${rightControl2X}
+                ${rightControl2Y},
+
+                ${rightControl1X}
+                ${rightControl1Y},
+
+                988
+                ${shoulderY}
+
+
+                Q
+                1000
+                ${shoulderY}
+
+                1000
+                ${shoulderY + 22}
+            `;
+
 
             bodyBottomFold.setAttribute(
                 "d",
-                upperFlapAtRest.d
+                bottomFoldD
             );
-
-
-            /*
-                Non serve nessun altro calcolo.
-
-                Il gruppo SVG che contiene
-                entrambi è già ruotato:
-
-                rotate(180 500 500)
-
-                quindi otteniamo davvero:
-
-                lembo superiore
-                ↓
-                copia identica
-                ↓
-                rotazione 180°
-                ↓
-                lembo inferiore
-            */
 
         }
 
@@ -1226,8 +1369,6 @@
             const bend =
                 geometry.bend;
 
-
-            /* ROTAZIONE */
 
             let rotation;
 
@@ -1272,8 +1413,6 @@
                  translateZ(${depth}px)`;
 
 
-            /* PATH */
-
             flapPath.setAttribute(
                 "d",
                 geometry.d
@@ -1285,8 +1424,6 @@
                 geometry.d
             );
 
-
-            /* FRONTE / RETRO */
 
             if (rotation < 90) {
 
@@ -1305,8 +1442,6 @@
             }
 
 
-            /* SIGILLO */
-
             waxSeal.style.left =
                 "50%";
 
@@ -1320,8 +1455,6 @@
                     ? "visible"
                     : "hidden";
 
-
-            /* OMBRA */
 
             flapShadow.style.opacity =
                 `${0.23 * bend}`;
@@ -1343,8 +1476,6 @@
                 )
                 `;
 
-
-            /* LUCE */
 
             const shade =
                 Math.round(

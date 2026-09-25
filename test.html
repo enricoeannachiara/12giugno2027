@@ -412,15 +412,12 @@
     >
 
 
-        <!-- ================================================== -->
-        <!-- OMBRA                                             -->
-        <!-- ================================================== -->
+        <!-- OMBRA -->
 
         <div
             class="flap-shadow"
             id="flapShadow"
         ></div>
-
 
 
         <!-- ================================================== -->
@@ -441,9 +438,7 @@
             >
 
 
-                <!-- ======================================== -->
-                <!-- LATERALE SINISTRO                       -->
-                <!-- ======================================== -->
+                <!-- LATERALE SINISTRO -->
 
                 <path
                     id="bodyLeftPath"
@@ -465,9 +460,7 @@
                 />
 
 
-                <!-- ======================================== -->
-                <!-- LATERALE DESTRO                         -->
-                <!-- ======================================== -->
+                <!-- LATERALE DESTRO -->
 
                 <path
                     id="bodyRightPath"
@@ -489,9 +482,7 @@
                 />
 
 
-                <!-- ======================================== -->
-                <!-- LEMBO INFERIORE                         -->
-                <!-- ======================================== -->
+                <!-- LEMBO INFERIORE -->
 
                 <path
                     id="bodyBottomPath"
@@ -1041,30 +1032,26 @@
 
         function drawEnvelopeBody() {
 
+            /* ---------------------------------------------- */
+            /* LEMBI LATERALI                               */
+            /* ---------------------------------------------- */
+
             /*
-                CORREZIONE 1
-
-                Prima partivamo da circa 10,5%.
-
-                Ora partiamo da circa 15%
-                dell'altezza dello schermo.
+                Partenza richiesta:
+                18,5% dell'altezza dello schermo.
             */
 
             const sideStartY =
-                150;
+                185;
 
 
             /*
-                Manteniamo una diagonale coerente
+                Manteniamo inclinazione coerente
                 con il lembo superiore.
-
-                Siccome partiamo più in basso,
-                anche il punto interno viene
-                leggermente abbassato.
             */
 
             const sideMeetY =
-                445;
+                480;
 
 
             const leftMeetX =
@@ -1075,9 +1062,7 @@
                 508;
 
 
-            /* ---------------------------------------------- */
-            /* LATERALE SINISTRO                             */
-            /* ---------------------------------------------- */
+            /* SINISTRO */
 
             const leftD = `
 
@@ -1107,9 +1092,7 @@
             );
 
 
-            /* ---------------------------------------------- */
-            /* LATERALE DESTRO                               */
-            /* ---------------------------------------------- */
+            /* DESTRO */
 
             const rightD = `
 
@@ -1144,17 +1127,48 @@
             /* ---------------------------------------------- */
 
             /*
-                CORREZIONE 2
+                Ora gli diamo la stessa logica
+                del lembo superiore:
 
-                Prima la punta del lembo inferiore
-                arrivava troppo in basso.
+                - tratto verticale sinistro;
+                - raccordo;
+                - diagonale;
+                - punta smussata;
+                - diagonale;
+                - raccordo;
+                - tratto verticale destro.
+            */
 
-                Ora sale molto di più.
 
-                In questo modo, a busta chiusa,
-                il lembo inferiore copre il vuoto
-                centrale e non lascia intravedere
-                la Hero.
+            /*
+                Quanto salgono i tratti verticali
+                dal fondo.
+
+                1000 = fondo
+                760  = fine tratto verticale
+            */
+
+            const bottomVerticalEndY =
+                760;
+
+
+            /*
+                Spalle inferiori.
+            */
+
+            const bottomLeftShoulderX =
+                0;
+
+
+            const bottomRightShoulderX =
+                1000;
+
+
+            /*
+                Punto alto del lembo inferiore.
+
+                Rimane abbastanza alto da
+                chiudere bene la busta.
             */
 
             const bottomTipY =
@@ -1162,26 +1176,40 @@
 
 
             /*
-                Zona smussata della punta.
+                Controlli vicini alla punta.
+
+                Sono larghi per evitare
+                un angolo troppo appuntito.
             */
 
-            const bottomRoundLeftX =
-                445;
+            const bottomLeftControlX =
+                365;
 
 
-            const bottomRoundRightX =
-                555;
+            const bottomRightControlX =
+                635;
 
 
-            const bottomRoundY =
-                485;
+            const bottomControlY =
+                500;
 
 
             /*
-                Il pezzo inferiore continua a essere
-                DISEGNATO DOPO i laterali,
-                quindi rimane sopra.
+                Controlli intermedi per mantenere
+                la diagonale morbida.
             */
+
+            const bottomLeftMidX =
+                165;
+
+
+            const bottomRightMidX =
+                835;
+
+
+            const bottomMidY =
+                620;
+
 
             const bottomD = `
 
@@ -1189,19 +1217,51 @@
 
 
                 L
-                ${bottomRoundLeftX}
-                ${bottomRoundY}
+                0
+                ${bottomVerticalEndY}
 
 
                 Q
+                0
+                ${bottomVerticalEndY - 25}
+
+                18
+                ${bottomVerticalEndY - 25}
+
+
+                C
+                ${bottomLeftMidX}
+                ${bottomMidY},
+
+                ${bottomLeftControlX}
+                ${bottomControlY},
+
                 500
                 ${bottomTipY}
 
-                ${bottomRoundRightX}
-                ${bottomRoundY}
+
+                C
+                ${bottomRightControlX}
+                ${bottomControlY},
+
+                ${bottomRightMidX}
+                ${bottomMidY},
+
+                982
+                ${bottomVerticalEndY - 25}
 
 
-                L 1000 1000
+                Q
+                1000
+                ${bottomVerticalEndY - 25}
+
+                1000
+                ${bottomVerticalEndY}
+
+
+                L
+                1000
+                1000
 
 
                 Z
@@ -1214,25 +1274,54 @@
             );
 
 
+            /*
+                Disegniamo il solo bordo superiore
+                visibile del lembo inferiore.
+            */
+
             const bottomFoldD = `
 
-                M 0 1000
-
-
-                L
-                ${bottomRoundLeftX}
-                ${bottomRoundY}
+                M
+                0
+                ${bottomVerticalEndY}
 
 
                 Q
+                0
+                ${bottomVerticalEndY - 25}
+
+                18
+                ${bottomVerticalEndY - 25}
+
+
+                C
+                ${bottomLeftMidX}
+                ${bottomMidY},
+
+                ${bottomLeftControlX}
+                ${bottomControlY},
+
                 500
                 ${bottomTipY}
 
-                ${bottomRoundRightX}
-                ${bottomRoundY}
+
+                C
+                ${bottomRightControlX}
+                ${bottomControlY},
+
+                ${bottomRightMidX}
+                ${bottomMidY},
+
+                982
+                ${bottomVerticalEndY - 25}
 
 
-                L 1000 1000
+                Q
+                1000
+                ${bottomVerticalEndY - 25}
+
+                1000
+                ${bottomVerticalEndY}
             `;
 
 
@@ -1266,9 +1355,7 @@
                 geometry.bend;
 
 
-            /* ---------------------------------------------- */
-            /* ROTAZIONE                                     */
-            /* ---------------------------------------------- */
+            /* ROTAZIONE */
 
             let rotation;
 
@@ -1303,9 +1390,7 @@
             }
 
 
-            /* ---------------------------------------------- */
-            /* PROFONDITÀ                                    */
-            /* ---------------------------------------------- */
+            /* PROFONDITÀ */
 
             const depth =
                 20 *
@@ -1317,9 +1402,7 @@
                  translateZ(${depth}px)`;
 
 
-            /* ---------------------------------------------- */
-            /* PATH                                          */
-            /* ---------------------------------------------- */
+            /* PATH */
 
             flapPath.setAttribute(
                 "d",
@@ -1333,9 +1416,7 @@
             );
 
 
-            /* ---------------------------------------------- */
-            /* FRONTE / RETRO                                */
-            /* ---------------------------------------------- */
+            /* FRONTE / RETRO */
 
             if (rotation < 90) {
 
@@ -1354,9 +1435,7 @@
             }
 
 
-            /* ---------------------------------------------- */
-            /* SIGILLO                                       */
-            /* ---------------------------------------------- */
+            /* SIGILLO */
 
             waxSeal.style.left =
                 "50%";
@@ -1372,9 +1451,7 @@
                     : "hidden";
 
 
-            /* ---------------------------------------------- */
-            /* OMBRA                                         */
-            /* ---------------------------------------------- */
+            /* OMBRA */
 
             flapShadow.style.opacity =
                 `${0.23 * bend}`;
@@ -1397,9 +1474,7 @@
                 `;
 
 
-            /* ---------------------------------------------- */
-            /* LUCE                                          */
-            /* ---------------------------------------------- */
+            /* LUCE */
 
             const shade =
                 Math.round(

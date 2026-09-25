@@ -15,17 +15,9 @@
     --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
 
-    /*
-        CARTA DELLA BUSTA
-
-        Fronte e retro sono volutamente
-        molto simili: deve sembrare lo stesso
-        foglio di carta visto dai due lati.
-    */
-
+    /* CARTA */
     --envelope-paper: #EADCC8;
-    --envelope-paper-back: #E7D8C4;
-    --envelope-edge: rgba(125, 101, 74, 0.34);
+    --envelope-edge: rgba(125, 101, 74, 0.30);
 }
 
 
@@ -55,7 +47,7 @@ body {
 
 
 /* ================================================== */
-/* OVERLAY DELLA BUSTA                                */
+/* OVERLAY INIZIALE                                   */
 /* ================================================== */
 
 .envelope-screen {
@@ -68,11 +60,10 @@ body {
     overflow: hidden;
 
     /*
-        Fondamentale:
-        nessun colore di fondo.
+        Nessun fondo.
 
-        Dietro PageFlip deve esserci direttamente
-        la vera Hero del sito.
+        La vera Hero del sito rimane
+        direttamente sotto all'animazione.
     */
 
     background: transparent;
@@ -104,34 +95,19 @@ body {
 
 
 /* ================================================== */
-/* ROTAZIONE DEL MOTORE PAGEFLIP                      */
+/* VIEWER PAGEFLIP RUOTATO                            */
 /* ================================================== */
 
 /*
-    StPageFlip sfoglia normalmente le pagine
-    da destra verso sinistra.
+    PageFlip nasce per sfogliare
+    orizzontalmente.
 
-    Noi ruotiamo il viewer di 90°.
+    Ruotiamo quindi il viewer di 90°,
+    ottenendo lo sfoglio dal basso
+    verso l'alto.
 
-    In questo modo il movimento orizzontale
-    prodotto dalla libreria diventa un
-    movimento verticale:
-
-                    ↑
-             apertura della busta
-
-    PRIMA DELLA ROTAZIONE:
-
-        larghezza = 50vh
-        altezza   = 100vw
-
-    DOPO LA ROTAZIONE:
-
-        larghezza visibile = 100vw
-        altezza visibile   = 50vh
-
-    cioè esattamente lo spazio occupato
-    dal lembo superiore.
+    Le dimensioni vengono invertite
+    intenzionalmente.
 */
 
 .flap-flip-rotation {
@@ -150,11 +126,13 @@ body {
     transform-origin: center center;
 
     overflow: visible;
+
+    background: transparent;
 }
 
 
 /* ================================================== */
-/* CONTENITORE STPAGEFLIP                             */
+/* CONTENITORE PAGEFLIP                               */
 /* ================================================== */
 
 .flap-book {
@@ -170,7 +148,7 @@ body {
 
 
 /* ================================================== */
-/* PAGINE PASSATE A STPAGEFLIP                        */
+/* PAGINE STPAGEFLIP                                  */
 /* ================================================== */
 
 .flap-page {
@@ -179,22 +157,13 @@ body {
     width: 100%;
     height: 100%;
 
-    /*
-        Mai dare uno sfondo alla pagina rettangolare.
-
-        Se lo facessimo vedremmo il rettangolo usato
-        internamente da StPageFlip.
-
-        Noi vogliamo vedere soltanto il triangolo.
-    */
+    overflow: visible;
 
     background: transparent !important;
 
     border: 0 !important;
 
     box-shadow: none !important;
-
-    overflow: visible;
 }
 
 
@@ -203,16 +172,11 @@ body {
 /* ================================================== */
 
 /*
-    Poiché abbiamo ruotato tutto il motore
-    di +90°, ruotiamo il contenuto di -90°.
+    Il motore è ruotato di +90°.
 
-    Così:
-
-    - PageFlip continua a calcolare correttamente
-      lo sfoglio;
-
-    - il nostro triangolo appare diritto
-      sullo schermo.
+    Il contenuto viene contro-ruotato
+    di -90°, in modo che il lembo
+    risulti diritto.
 */
 
 .flap-page-content {
@@ -230,79 +194,33 @@ body {
 
     transform-origin: center center;
 
-    overflow: visible;
+    overflow: visible !important;
 
-    background: transparent;
+    background: transparent !important;
 }
 
 
 /* ================================================== */
-/* FRONTE DEL LEMBO                                   */
+/* LEMBO DI CARTA                                     */
 /* ================================================== */
 
-.flap-page-front .flap-page-content {
-    z-index: 2;
-}
+/*
+    SOLO flap-paper viene ritagliato.
 
-
-/* ================================================== */
-/* TRIANGOLO DI CARTA                                 */
-/* ================================================== */
+    Il sigillo non è figlio di questo
+    elemento e quindi non può più essere
+    troncato dalla clip-path.
+*/
 
 .flap-paper {
     position: absolute;
 
     inset: 0;
 
-    /*
-        Questo è finalmente il nostro lembo.
-
-        StPageFlip continua a deformare la PAGINA
-        rettangolare, ma tutto ciò che si trova
-        fuori da questo triangolo è trasparente.
-    */
-
-    clip-path: polygon(
-        0 0,
-        100% 0,
-        50% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        0 0,
-        100% 0,
-        50% 100%
-    );
+    z-index: 1;
 
     background: var(--envelope-paper);
 
-    /*
-        Ombra molto leggera.
-
-        Non viene animata da noi:
-        la vera ombra durante lo sfoglio
-        sarà prodotta da PageFlip.
-    */
-
-    filter:
-        drop-shadow(
-            0 2px 2px
-            rgba(70, 48, 30, 0.10)
-        );
-}
-
-
-/* ================================================== */
-/* BORDO DEL LEMBO                                    */
-/* ================================================== */
-
-.flap-paper::before {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
     clip-path: polygon(
         0 0,
         100% 0,
@@ -316,38 +234,47 @@ body {
     );
 
     /*
-        Sottilissima linea interna.
+        Niente drop-shadow qui.
 
-        Non crea la vecchia X:
-        segue soltanto il perimetro del triangolo.
+        È importante perché un filtro
+        applicato al triangolo durante
+        la deformazione può produrre
+        strani artefatti.
     */
 
-    border:
-        1px solid
-        var(--envelope-edge);
-
-    pointer-events: none;
+    filter: none;
 }
 
 
 /* ================================================== */
-/* RETRO DEL LEMBO                                    */
+/* BORDO LEGGERO DEL LEMBO                            */
 /* ================================================== */
 
 /*
-    Nel tuo HTML la seconda pagina è vuota.
+    Creiamo un secondo triangolo
+    leggermente più grande DIETRO
+    quello principale.
 
-    La utilizziamo come retro della carta.
+    In questo modo il bordo segue
+    realmente i lati diagonali.
 
-    Generiamo quindi il triangolo con ::before.
+    Nessun border sul rettangolo.
 */
 
-.flap-page-back .flap-page-content::before {
+.flap-page-front .flap-page-content::before {
     content: "";
 
     position: absolute;
 
-    inset: 0;
+    left: -1px;
+    top: -1px;
+
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+
+    z-index: 0;
+
+    background: var(--envelope-edge);
 
     clip-path: polygon(
         0 0,
@@ -360,54 +287,8 @@ body {
         100% 0,
         50% 100%
     );
-
-    background: var(--envelope-paper-back);
-
-    filter:
-        drop-shadow(
-            0 2px 2px
-            rgba(70, 48, 30, 0.08)
-        );
-}
-
-
-/* ================================================== */
-/* BORDO DEL RETRO                                    */
-/* ================================================== */
-
-.flap-page-back .flap-page-content::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    clip-path: polygon(
-        0 0,
-        100% 0,
-        50% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        0 0,
-        100% 0,
-        50% 100%
-    );
-
-    border:
-        1px solid
-        rgba(125, 101, 74, 0.22);
 
     pointer-events: none;
-}
-
-
-/* ================================================== */
-/* PAGINA TRASPARENTE                                 */
-/* ================================================== */
-
-.flap-page-transparent {
-    background: transparent !important;
 }
 
 
@@ -419,16 +300,18 @@ body {
     position: absolute;
 
     /*
-        La punta del triangolo è:
-        X = 50%
-        Y = 100%
+        Punta del lembo:
+        50% / 100%
 
         Il centro del sigillo coincide
-        esattamente con quella punta.
+        con la punta, ma il sigillo
+        rimane completamente visibile.
     */
 
     left: 50%;
     bottom: 0;
+
+    z-index: 20;
 
     width: 116px;
     height: 116px;
@@ -436,12 +319,20 @@ body {
     transform:
         translate(-50%, 50%);
 
-    z-index: 10;
-
     display: flex;
 
     justify-content: center;
     align-items: center;
+
+    /*
+        Fondamentale:
+        nessuna clip.
+    */
+
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+
+    overflow: visible !important;
 
     pointer-events: none;
 }
@@ -459,26 +350,92 @@ body {
 
     object-fit: contain;
 
+    overflow: visible;
+
     user-select: none;
 
     -webkit-user-drag: none;
 
+    /*
+        Questa ombra riguarda soltanto
+        la ceralacca, non la pagina.
+    */
+
     filter:
         drop-shadow(
-            0 6px 6px
-            rgba(65, 24, 20, 0.23)
+            0 5px 5px
+            rgba(65, 24, 20, 0.20)
         );
 }
 
 
 /* ================================================== */
-/* PULIZIA DEGLI ELEMENTI GENERATI DA PAGEFLIP        */
+/* SECONDA PAGINA                                     */
 /* ================================================== */
 
 /*
-    PageFlip crea internamente alcuni contenitori.
+    Questa è la correzione fondamentale.
 
-    Evitiamo che abbiano colori di fondo propri.
+    La seconda pagina esiste soltanto
+    perché PageFlip necessita di qualcosa
+    verso cui completare lo sfoglio.
+
+    Non disegniamo NIENTE al suo interno.
+*/
+
+.flap-page-back {
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+}
+
+.flap-page-back .flap-page-content {
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+}
+
+
+/*
+    Importantissimo:
+
+    nessun ::before
+    nessun ::after
+    nessun secondo triangolo.
+*/
+
+.flap-page-back .flap-page-content::before,
+.flap-page-back .flap-page-content::after {
+    content: none !important;
+
+    display: none !important;
+}
+
+
+/* ================================================== */
+/* CONTENUTO TRASPARENTE                              */
+/* ================================================== */
+
+.flap-page-transparent {
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* ================================================== */
+/* ELEMENTI GENERATI DA STPAGEFLIP                    */
+/* ================================================== */
+
+/*
+    Togliamo qualsiasi fondo impostato
+    sui contenitori strutturali.
 */
 
 .flap-book .stf__parent,
@@ -490,27 +447,37 @@ body {
 
 
 /*
-    Evitiamo eventuali bordi o ombre rettangolari
-    aggiunti dal browser alle pagine HTML.
+    Niente bordi rettangolari visibili.
 */
 
 .flap-book .stf__item {
     border: 0 !important;
+
     box-shadow: none !important;
 }
 
 
 /* ================================================== */
-/* STATO FINALE                                       */
+/* EVENTUALI CANVAS / OMBRE DELLA LIBRERIA            */
 /* ================================================== */
 
 /*
-    Più avanti lo script aggiungerà "opened"
-    dopo che PageFlip avrà completato lo sfoglio.
+    Non nascondiamo il canvas di PageFlip:
+    altrimenti perderemmo proprio l'effetto
+    di curvatura.
 
-    A quel punto l'overlay viene eliminato
-    e rimane soltanto la Hero reale.
+    Qui ci limitiamo a evitare che riceva
+    un background.
 */
+
+.flap-book canvas {
+    background: transparent !important;
+}
+
+
+/* ================================================== */
+/* STATO APERTO                                       */
+/* ================================================== */
 
 .envelope-screen.opened {
     visibility: hidden;

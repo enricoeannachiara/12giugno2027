@@ -9,7 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Test lembo busta</title>
+    <title>Test busta matrimonio</title>
 
     <style>
 
@@ -20,9 +20,12 @@
             --paper-front: #EADCC8;
             --paper-back: #E4D3BC;
 
+            --paper-side: #E8D7C0;
+            --paper-bottom: #EBDCC6;
+
             --paper-edge: #C8B18F;
 
-            --body-paper: #EADCC8;
+            --fold-line: rgba(105, 82, 58, 0.22);
         }
 
 
@@ -123,7 +126,7 @@
 
 
         /* ================================================== */
-        /* CORPO BUSTA - TEMPORANEO                           */
+        /* CORPO DELLA BUSTA                                  */
         /* ================================================== */
 
         .envelope-body {
@@ -141,41 +144,17 @@
         }
 
 
-        .body-left,
-        .body-right,
-        .body-bottom {
+        .body-svg {
             position: absolute;
 
             inset: 0;
 
-            background: var(--body-paper);
-        }
+            width: 100%;
+            height: 100%;
 
+            display: block;
 
-        .body-left {
-            clip-path: polygon(
-                0 0,
-                50% 58%,
-                0 100%
-            );
-        }
-
-
-        .body-right {
-            clip-path: polygon(
-                100% 0,
-                100% 100%,
-                50% 58%
-            );
-        }
-
-
-        .body-bottom {
-            clip-path: polygon(
-                0 100%,
-                50% 58%,
-                100% 100%
-            );
+            overflow: visible;
         }
 
 
@@ -221,7 +200,7 @@
 
 
         /* ================================================== */
-        /* LEMBO                                              */
+        /* LEMBO SUPERIORE                                    */
         /* ================================================== */
 
         .flap {
@@ -269,6 +248,15 @@
 
         .wax-seal {
             position: absolute;
+
+            /*
+                50% della larghezza
+                + 100% di un lembo alto 50vh.
+
+                = 50vw / 50vh
+
+                quindi centro esatto dello schermo.
+            */
 
             left: 50%;
             top: 100%;
@@ -433,7 +421,9 @@
     >
 
 
-        <!-- OMBRA -->
+        <!-- ================================================== -->
+        <!-- OMBRA                                             -->
+        <!-- ================================================== -->
 
         <div
             class="flap-shadow"
@@ -441,8 +431,9 @@
         ></div>
 
 
+
         <!-- ================================================== -->
-        <!-- CORPO TEMPORANEO                                   -->
+        <!-- CORPO DELLA BUSTA                                  -->
         <!-- ================================================== -->
 
         <div
@@ -450,17 +441,114 @@
             id="envelopeBody"
         >
 
-            <div class="body-left"></div>
+            <svg
+                class="body-svg"
+                id="bodySvg"
+                viewBox="0 0 1000 1000"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+            >
 
-            <div class="body-right"></div>
 
-            <div class="body-bottom"></div>
+                <!--
+                    ORDINE DEGLI ELEMENTI:
+
+                    1. lembo laterale sinistro
+                    2. lembo laterale destro
+                    3. lembo inferiore
+
+                    Essendo l'ultimo disegnato,
+                    il lembo inferiore si trova
+                    SOPRA ai due laterali.
+                -->
+
+
+                <!-- ======================================== -->
+                <!-- LATERALE SINISTRO                       -->
+                <!-- ======================================== -->
+
+                <path
+                    id="bodyLeftPath"
+                    d=""
+                    fill="#E8D7C0"
+                />
+
+
+                <!-- PIEGA SINISTRA -->
+
+                <path
+                    id="bodyLeftFold"
+                    d=""
+                    fill="none"
+
+                    stroke="rgba(105,82,58,0.22)"
+
+                    stroke-width="2"
+
+                    vector-effect="non-scaling-stroke"
+                />
+
+
+                <!-- ======================================== -->
+                <!-- LATERALE DESTRO                         -->
+                <!-- ======================================== -->
+
+                <path
+                    id="bodyRightPath"
+                    d=""
+                    fill="#E8D7C0"
+                />
+
+
+                <!-- PIEGA DESTRA -->
+
+                <path
+                    id="bodyRightFold"
+                    d=""
+                    fill="none"
+
+                    stroke="rgba(105,82,58,0.22)"
+
+                    stroke-width="2"
+
+                    vector-effect="non-scaling-stroke"
+                />
+
+
+                <!-- ======================================== -->
+                <!-- LEMBO INFERIORE                         -->
+                <!-- ======================================== -->
+
+                <path
+                    id="bodyBottomPath"
+                    d=""
+                    fill="#EBDCC6"
+                />
+
+
+                <!-- BORDO SUPERIORE DEL LEMBO INFERIORE -->
+
+                <path
+                    id="bodyBottomFold"
+                    d=""
+                    fill="none"
+
+                    stroke="rgba(105,82,58,0.24)"
+
+                    stroke-width="2"
+
+                    vector-effect="non-scaling-stroke"
+                />
+
+
+            </svg>
 
         </div>
 
 
+
         <!-- ================================================== -->
-        <!-- LEMBO                                             -->
+        <!-- LEMBO SUPERIORE                                    -->
         <!-- ================================================== -->
 
         <div
@@ -673,6 +761,27 @@
             document.getElementById("restartButton");
 
 
+        /* CORPO */
+
+        const bodyLeftPath =
+            document.getElementById("bodyLeftPath");
+
+        const bodyRightPath =
+            document.getElementById("bodyRightPath");
+
+        const bodyBottomPath =
+            document.getElementById("bodyBottomPath");
+
+        const bodyLeftFold =
+            document.getElementById("bodyLeftFold");
+
+        const bodyRightFold =
+            document.getElementById("bodyRightFold");
+
+        const bodyBottomFold =
+            document.getElementById("bodyBottomFold");
+
+
         /* ================================================== */
         /* STATO                                             */
         /* ================================================== */
@@ -783,37 +892,21 @@
 
 
         /* ================================================== */
-        /* GEOMETRIA DEL LEMBO                               */
+        /* GEOMETRIA DEL LEMBO SUPERIORE                    */
         /* ================================================== */
+
+        /*
+            QUESTA È LA VERSIONE APPROVATA.
+
+            NON modifichiamo la proporzione
+            rispetto all'ultimo test.
+        */
 
         function getFlapGeometry(t) {
 
             const bend =
                 bendCurve(t);
 
-
-            /*
-                =================================================
-                NUOVA PROPORZIONE
-                =================================================
-
-                Prima il tratto verticale terminava
-                circa al 22%.
-
-                Ora lo portiamo circa al 42%.
-
-                Quindi quasi il doppio.
-
-                Questo rende la parte inferiore
-                del lembo molto più larga e
-                riduce parecchio l'acutezza
-                dell'angolo vicino al sigillo.
-            */
-
-
-            /* ---------------------------------------------- */
-            /* PUNTA                                         */
-            /* ---------------------------------------------- */
 
             const tipX =
                 500;
@@ -827,13 +920,9 @@
                 );
 
 
-            /* ---------------------------------------------- */
-            /* FINE TRATTI VERTICALI                         */
-            /* ---------------------------------------------- */
-
             /*
-                A riposo:
-                420 / 1000 = 42%.
+                Tratti verticali lunghi:
+                circa 42% del lembo.
             */
 
             const shoulderY =
@@ -859,17 +948,6 @@
                     bend
                 );
 
-
-            /* ---------------------------------------------- */
-            /* CONTROLLO DIAGONALE DESTRA                    */
-            /* ---------------------------------------------- */
-
-            /*
-                Poiché la diagonale ora parte
-                molto più in basso, i controlli
-                vengono spostati per mantenere
-                il lato quasi rettilineo.
-            */
 
             const rightControl1X =
                 835 -
@@ -903,10 +981,6 @@
                 );
 
 
-            /* ---------------------------------------------- */
-            /* CONTROLLO DIAGONALE SINISTRA                  */
-            /* ---------------------------------------------- */
-
             const leftControl1X =
                 165 +
                 (
@@ -930,10 +1004,6 @@
             const leftControl2Y =
                 rightControl2Y;
 
-
-            /* ================================================== */
-            /* PATH                                               */
-            /* ================================================== */
 
             const d = `
 
@@ -1006,7 +1076,256 @@
 
 
         /* ================================================== */
-        /* DISEGNO FRAME                                     */
+        /* GEOMETRIA DEL CORPO DELLA BUSTA                  */
+        /* ================================================== */
+
+        function drawEnvelopeBody() {
+
+            /*
+                Il tratto dritto del lembo superiore
+                arriva, a riposo, a circa:
+
+                420 / 1000 del lembo.
+
+                Siccome il lembo è alto 50vh:
+
+                420 / 1000 × 50vh = 21vh.
+
+                La metà di quel tratto è quindi
+                circa 10,5vh.
+
+                Nel nostro SVG del corpo,
+                alto 100% della viewport,
+                equivale a circa Y = 105.
+            */
+
+            const sideStartY =
+                105;
+
+
+            /*
+                La diagonale del lembo superiore,
+                sullo schermo, percorre circa:
+
+                50vw in orizzontale
+                29vh in verticale.
+
+                Manteniamo praticamente
+                la stessa inclinazione.
+
+                Partendo da Y = 105,
+                arriviamo quindi intorno a Y = 395.
+            */
+
+            const sideMeetY =
+                395;
+
+
+            /*
+                I due lembi laterali
+                NON devono necessariamente
+                incontrarsi esattamente.
+
+                Lasciamo un piccolissimo spazio
+                centrale, che verrà poi coperto
+                dal lembo inferiore.
+
+                Questo aiuta a dare la sensazione
+                di pezzi di carta realmente
+                sovrapposti.
+            */
+
+            const leftMeetX =
+                492;
+
+
+            const rightMeetX =
+                508;
+
+
+            /* ---------------------------------------------- */
+            /* LATERALE SINISTRO                             */
+            /* ---------------------------------------------- */
+
+            const leftD = `
+
+                M 0 ${sideStartY}
+
+                L ${leftMeetX} ${sideMeetY}
+
+                L 0 1000
+
+                Z
+            `;
+
+
+            bodyLeftPath.setAttribute(
+                "d",
+                leftD
+            );
+
+
+            bodyLeftFold.setAttribute(
+                "d",
+                `
+                    M 0 ${sideStartY}
+
+                    L ${leftMeetX} ${sideMeetY}
+                `
+            );
+
+
+            /* ---------------------------------------------- */
+            /* LATERALE DESTRO                               */
+            /* ---------------------------------------------- */
+
+            const rightD = `
+
+                M 1000 ${sideStartY}
+
+                L 1000 1000
+
+                L ${rightMeetX} ${sideMeetY}
+
+                Z
+            `;
+
+
+            bodyRightPath.setAttribute(
+                "d",
+                rightD
+            );
+
+
+            bodyRightFold.setAttribute(
+                "d",
+                `
+                    M 1000 ${sideStartY}
+
+                    L ${rightMeetX} ${sideMeetY}
+                `
+            );
+
+
+            /* ---------------------------------------------- */
+            /* LEMBO INFERIORE                              */
+            /* ---------------------------------------------- */
+
+            /*
+                Il lembo inferiore viene disegnato
+                SOPRA ai laterali.
+
+                La sua punta arriva leggermente
+                sotto il sigillo.
+
+                Il vertice non è geometrico:
+                utilizziamo una curva Q per
+                smussarlo.
+            */
+
+
+            const bottomTipY =
+                535;
+
+
+            /*
+                Questi due punti definiscono
+                la zona arrotondata della punta.
+            */
+
+            const bottomRoundLeftX =
+                452;
+
+
+            const bottomRoundRightX =
+                548;
+
+
+            const bottomRoundY =
+                555;
+
+
+            /*
+                I lati inferiori partono
+                dagli angoli bassi dello schermo
+                e salgono verso la punta.
+
+                In questo modo il pezzo inferiore
+                copre chiaramente i due laterali,
+                come su una busta reale.
+            */
+
+            const bottomD = `
+
+                M 0 1000
+
+
+                L
+                ${bottomRoundLeftX}
+                ${bottomRoundY}
+
+
+                Q
+                500
+                ${bottomTipY}
+
+                ${bottomRoundRightX}
+                ${bottomRoundY}
+
+
+                L 1000 1000
+
+
+                Z
+            `;
+
+
+            bodyBottomPath.setAttribute(
+                "d",
+                bottomD
+            );
+
+
+            /*
+                Disegniamo soltanto il bordo
+                superiore visibile del lembo
+                inferiore.
+
+                Anche qui la punta è arrotondata.
+            */
+
+            const bottomFoldD = `
+
+                M 0 1000
+
+
+                L
+                ${bottomRoundLeftX}
+                ${bottomRoundY}
+
+
+                Q
+                500
+                ${bottomTipY}
+
+                ${bottomRoundRightX}
+                ${bottomRoundY}
+
+
+                L 1000 1000
+            `;
+
+
+            bodyBottomFold.setAttribute(
+                "d",
+                bottomFoldD
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* DISEGNO FRAME LEMBO                              */
         /* ================================================== */
 
         function drawFlapFrame(progress) {
@@ -1637,6 +1956,9 @@
         /* ================================================== */
         /* STATO INIZIALE                                    */
         /* ================================================== */
+
+        drawEnvelopeBody();
+
 
         const initialGeometry =
             getFlapGeometry(0);

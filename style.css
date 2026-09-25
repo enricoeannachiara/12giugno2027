@@ -77,7 +77,6 @@ button {
 }
 
 
-
 /* BUSTA */
 
 .envelope-screen {
@@ -298,7 +297,6 @@ button {
 }
 
 
-
 /* SITO */
 
 .site {
@@ -308,7 +306,6 @@ button {
 
     width: 100%;
 }
-
 
 
 /* HERO */
@@ -386,7 +383,6 @@ button {
 
     text-transform: uppercase;
 }
-
 
 
 /* COUNTDOWN SU CARTONCINO */
@@ -557,7 +553,6 @@ button {
 }
 
 
-
 /* SEZIONI */
 
 .section {
@@ -668,7 +663,6 @@ button {
 
     line-height: 1.75;
 }
-
 
 
 /* PULSANTI */
@@ -807,7 +801,6 @@ button {
 }
 
 
-
 /* LUOGHI */
 
 .places-grid {
@@ -888,7 +881,6 @@ button {
 
     gap: 10px;
 }
-
 
 
 /* ALBUM */
@@ -1003,7 +995,6 @@ button {
 }
 
 
-
 /* REGALO */
 
 .gift-details {
@@ -1090,7 +1081,6 @@ button {
 }
 
 
-
 /* INDICATORE SCROLL */
 
 .scroll-indicator {
@@ -1108,14 +1098,14 @@ button {
 
     align-items: center;
 
-    gap: 3px;
+    gap: 4px;
 
     color:
         rgba(
             62,
             58,
             57,
-            0.62
+            0.68
         );
 
     font-family:
@@ -1141,16 +1131,82 @@ button {
     opacity: 1;
 }
 
+.scroll-label {
+    display: block;
+
+    max-height: 20px;
+
+    opacity: 1;
+
+    overflow: hidden;
+
+    transition:
+        opacity 0.28s ease,
+        max-height 0.28s ease,
+        transform 0.28s ease;
+}
+
+.scroll-indicator.compact .scroll-label {
+    max-height: 0;
+
+    opacity: 0;
+
+    transform: translateY(6px);
+}
+
 .scroll-arrow {
-    font-size: 1.05rem;
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    font-size: 1.25rem;
 
     line-height: 1;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    transition:
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        backdrop-filter 0.3s ease,
+        -webkit-backdrop-filter 0.3s ease;
 
     animation:
         scrollBounce
         1.7s
         ease-in-out
         infinite;
+}
+
+.scroll-indicator.compact .scroll-arrow {
+    background:
+        rgba(
+            250,
+            247,
+            242,
+            0.82
+        );
+
+    box-shadow:
+        0 5px 18px
+        rgba(
+            62,
+            48,
+            40,
+            0.14
+        );
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
 }
 
 @keyframes scrollBounce {
@@ -1163,9 +1219,7 @@ button {
     50% {
         transform: translateY(5px);
     }
-
 }
-
 
 
 /* FONDO PAGINA */
@@ -1173,7 +1227,6 @@ button {
 #sogno {
     padding-bottom: 160px;
 }
-
 
 
 /* MOBILE */
@@ -1385,8 +1438,14 @@ button {
         font-size: 0.54rem;
     }
 
-}
+    .scroll-arrow {
+        width: 40px;
+        height: 40px;
 
+        font-size: 1.2rem;
+    }
+
+}
 
 
 /* RIDUZIONE MOVIMENTO */

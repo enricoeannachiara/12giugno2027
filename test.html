@@ -123,20 +123,8 @@
 
 
         /* ================================================== */
-        /* CORPO BUSTA - SOLO TEMPORANEO                      */
+        /* CORPO BUSTA - TEMPORANEO                           */
         /* ================================================== */
-
-        /*
-            Per ora questa parte serve solamente
-            a creare la tasca della busta.
-
-            Il centro superiore è volutamente
-            trasparente, così quando il lembo
-            si apre compare la Hero.
-
-            NON è ancora il disegno definitivo
-            della parte inferiore.
-        */
 
         .envelope-body {
             position: absolute;
@@ -281,20 +269,6 @@
 
         .wax-seal {
             position: absolute;
-
-            /*
-                Il centro del sigillo è:
-
-                50% larghezza del lembo
-                100% altezza del lembo
-
-                e il lembo è alto 50vh.
-
-                Quindi:
-                50vw / 50vh
-
-                CENTRO ESATTO DELLO SCHERMO.
-            */
 
             left: 50%;
             top: 100%;
@@ -820,48 +794,20 @@
 
             /*
                 =================================================
-                GEOMETRIA BASE COMPLETAMENTE NUOVA
+                NUOVA PROPORZIONE
                 =================================================
 
-                Il lembo chiuso è costruito così:
+                Prima il tratto verticale terminava
+                circa al 22%.
 
+                Ora lo portiamo circa al 42%.
 
-                (0,0) -------------------- (1000,0)
+                Quindi quasi il doppio.
 
-                |                              |
-                |                              |
-                |                              |
-
-                \                              /
-                 \                            /
-                  \                          /
-                   \                        /
-                    \                      /
-                     \                    /
-                      \                  /
-                       \                /
-                        \              /
-                         \            /
-                          \          /
-                           \        /
-                            \      /
-                             \    /
-                              \  /
-                               \/
-                            (500,1000)
-
-
-                Il tratto verticale arriva circa
-                al 22% dell'altezza.
-
-                Da lì parte una diagonale quasi
-                completamente rettilinea.
-
-                SOLO:
-                - raccordo alto;
-                - punta;
-
-                hanno un leggero arrotondamento.
+                Questo rende la parte inferiore
+                del lembo molto più larga e
+                riduce parecchio l'acutezza
+                dell'angolo vicino al sigillo.
             */
 
 
@@ -876,7 +822,7 @@
             const tipY =
                 1000 -
                 (
-                    205 *
+                    190 *
                     bend
                 );
 
@@ -885,28 +831,23 @@
             /* FINE TRATTI VERTICALI                         */
             /* ---------------------------------------------- */
 
+            /*
+                A riposo:
+                420 / 1000 = 42%.
+            */
+
             const shoulderY =
-                220 +
+                420 +
                 (
-                    45 *
+                    35 *
                     bend
                 );
 
 
-            /*
-                A riposo:
-
-                lato sinistro = x 0
-                lato destro   = x 1000
-
-                Durante la curvatura li facciamo
-                rientrare appena.
-            */
-
             const leftShoulderX =
                 0 +
                 (
-                    14 *
+                    12 *
                     bend
                 );
 
@@ -914,47 +855,42 @@
             const rightShoulderX =
                 1000 -
                 (
-                    14 *
+                    12 *
                     bend
                 );
 
 
             /* ---------------------------------------------- */
-            /* CONTROLLO DELLE DIAGONALI                     */
+            /* CONTROLLO DIAGONALE DESTRA                    */
             /* ---------------------------------------------- */
 
             /*
-                Questi punti sono messi quasi
-                esattamente sulla retta che va
-                dalla spalla alla punta.
-
-                Quindi NON producono pance strane.
-
-                Servono solamente a permettere
-                la deformazione mentre il foglio
-                si sfoglia.
+                Poiché la diagonale ora parte
+                molto più in basso, i controlli
+                vengono spostati per mantenere
+                il lato quasi rettilineo.
             */
 
             const rightControl1X =
-                820 -
+                835 -
                 (
-                    20 *
+                    18 *
                     bend
                 );
 
 
             const rightControl1Y =
-                500 +
+                590 +
                 (
-                    20 *
+                    15 *
                     bend
                 );
 
 
             const rightControl2X =
-                610 -
+                625 -
                 (
-                    12 *
+                    10 *
                     bend
                 );
 
@@ -962,15 +898,19 @@
             const rightControl2Y =
                 860 -
                 (
-                    55 *
+                    50 *
                     bend
                 );
 
 
+            /* ---------------------------------------------- */
+            /* CONTROLLO DIAGONALE SINISTRA                  */
+            /* ---------------------------------------------- */
+
             const leftControl1X =
-                180 +
+                165 +
                 (
-                    20 *
+                    18 *
                     bend
                 );
 
@@ -980,9 +920,9 @@
 
 
             const leftControl2X =
-                390 +
+                375 +
                 (
-                    12 *
+                    10 *
                     bend
                 );
 
@@ -991,11 +931,9 @@
                 rightControl2Y;
 
 
-            /*
-                =================================================
-                PATH
-                =================================================
-            */
+            /* ================================================== */
+            /* PATH                                               */
+            /* ================================================== */
 
             const d = `
 
@@ -1007,7 +945,7 @@
 
                 L
                 1000
-                ${shoulderY - 35}
+                ${shoulderY - 30}
 
 
                 Q
@@ -1045,7 +983,7 @@
                 ${shoulderY}
 
                 0
-                ${shoulderY - 35}
+                ${shoulderY - 30}
 
 
                 L

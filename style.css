@@ -28,16 +28,13 @@
         rgba(74, 61, 53, 0.08);
 }
 
-
 * {
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
 }
-
 
 html,
 body {
@@ -45,7 +42,6 @@ body {
     width: 100%;
     min-height: 100%;
 }
-
 
 body {
     margin: 0;
@@ -62,23 +58,19 @@ body {
     overflow-x: hidden;
 }
 
-
 body.envelope-locked {
     overflow: hidden;
 }
-
 
 a {
     color: inherit;
     text-decoration: none;
 }
 
-
 button,
 a {
     -webkit-tap-highlight-color: transparent;
 }
-
 
 button {
     font: inherit;
@@ -87,7 +79,6 @@ button {
 
 
 /* BUSTA */
-
 
 .envelope-screen {
     position: fixed;
@@ -101,11 +92,9 @@ button {
     pointer-events: auto;
 }
 
-
 .envelope-screen.opened {
     pointer-events: none;
 }
-
 
 .envelope-stage {
     position: absolute;
@@ -123,7 +112,6 @@ button {
     -webkit-tap-highlight-color: transparent;
 }
 
-
 .envelope-body {
     position: absolute;
 
@@ -138,7 +126,6 @@ button {
     will-change: transform;
 }
 
-
 .body-svg {
     position: absolute;
 
@@ -152,16 +139,13 @@ button {
     overflow: visible;
 }
 
-
 .body-side {
     fill: var(--paper-side);
 }
 
-
 .body-bottom {
     fill: var(--paper-bottom);
 }
-
 
 .body-fold {
     fill: none;
@@ -173,7 +157,6 @@ button {
     vector-effect: non-scaling-stroke;
 }
 
-
 .body-bottom-fold {
     fill: none;
 
@@ -183,7 +166,6 @@ button {
 
     vector-effect: non-scaling-stroke;
 }
-
 
 .flap-shadow {
     position: absolute;
@@ -221,7 +203,6 @@ button {
         transform;
 }
 
-
 .envelope-flap {
     position: absolute;
 
@@ -244,7 +225,6 @@ button {
         opacity;
 }
 
-
 .flap-svg {
     position: absolute;
 
@@ -260,7 +240,6 @@ button {
     pointer-events: none;
 }
 
-
 .flap-edge {
     fill: none;
 
@@ -273,13 +252,11 @@ button {
     opacity: 0.55;
 }
 
-
 .flap-paper {
     fill: url(#paperFront);
 
     filter: url(#paperShadow);
 }
-
 
 .wax-seal {
     position: absolute;
@@ -305,7 +282,6 @@ button {
         top;
 }
 
-
 .wax-seal img {
     display: block;
 
@@ -325,7 +301,6 @@ button {
 
 /* SITO */
 
-
 .site {
     position: relative;
 
@@ -337,7 +312,6 @@ button {
 
 
 /* HERO */
-
 
 .hero {
     position: relative;
@@ -358,7 +332,6 @@ button {
     background: var(--background);
 }
 
-
 .hero-content {
     width: 100%;
     max-width: 720px;
@@ -369,7 +342,6 @@ button {
     align-items: center;
 }
 
-
 .hero-portrait {
     display: block;
 
@@ -379,7 +351,6 @@ button {
 
     margin-bottom: 28px;
 }
-
 
 .hero h1 {
     margin: 0;
@@ -395,7 +366,6 @@ button {
 
     line-height: 1.05;
 }
-
 
 .hero-date {
     margin:
@@ -419,65 +389,73 @@ button {
 
 
 
-/* COUNTDOWN */
+/* COUNTDOWN SU CARTONCINO */
 
+.countdown-paper {
+    position: relative;
 
-.countdown-card {
-    width: min(92vw, 520px);
+    width: min(94vw, 560px);
 
-    margin-top: 32px;
-
-    padding:
-        21px
-        22px
-        23px;
-
-    border:
-        1px solid
-        rgba(180, 160, 135, 0.22);
-
-    border-radius: 22px;
-
-    background:
-        rgba(
-            255,
-            253,
-            248,
-            0.72
-        );
-
-    box-shadow:
-        0 13px 32px
-        rgba(74, 61, 53, 0.07);
-
-    backdrop-filter: blur(8px);
-
-    -webkit-backdrop-filter: blur(8px);
+    margin-top: 26px;
 }
 
+.countdown-paper-image {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    pointer-events: none;
+
+    user-select: none;
+}
+
+.countdown-paper-content {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 78%;
+
+    transform:
+        translate(-50%, -47%);
+
+    text-align: center;
+}
 
 .countdown-title {
     margin:
         0
         0
-        17px;
+        14px;
 
-    color: var(--lilac-dark);
+    color:
+        rgba(
+            92,
+            64,
+            45,
+            0.82
+        );
 
     font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+        Georgia,
+        "Times New Roman",
+        serif;
 
-    font-size: 0.72rem;
+    font-size:
+        clamp(
+            0.78rem,
+            2.2vw,
+            0.96rem
+        );
 
-    font-weight: 600;
+    font-weight: 400;
 
-    letter-spacing: 0.19em;
+    letter-spacing: 0.18em;
 
     text-transform: uppercase;
 }
-
 
 .countdown-grid {
     display: grid;
@@ -490,7 +468,6 @@ button {
     width: 100%;
 }
 
-
 .countdown-item {
     position: relative;
 
@@ -501,45 +478,49 @@ button {
 
     align-items: center;
 
-    gap: 6px;
+    gap: 5px;
 
     padding:
         0
         6px;
 }
 
-
 .countdown-item:not(:last-child)::after {
     content: "";
 
     position: absolute;
 
-    top: 3px;
+    top: 2px;
     right: 0;
 
     width: 1px;
-    height: 42px;
+    height: 39px;
 
     background:
         rgba(
-            138,
-            129,
-            120,
-            0.18
+            100,
+            72,
+            52,
+            0.22
         );
 }
-
 
 .countdown-item strong {
     display: block;
 
     min-width: 2ch;
 
-    color: var(--text);
+    color:
+        rgba(
+            67,
+            46,
+            33,
+            0.92
+        );
 
     font-size:
         clamp(
-            1.55rem,
+            1.5rem,
             5vw,
             2.15rem
         );
@@ -552,26 +533,32 @@ button {
         tabular-nums;
 }
 
-
 .countdown-item span {
-    color: var(--muted);
+    color:
+        rgba(
+            92,
+            64,
+            45,
+            0.78
+        );
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    font-size: 0.66rem;
+    font-size: 0.64rem;
 
     line-height: 1;
 
     letter-spacing: 0.04em;
+
+    text-transform: lowercase;
 }
 
 
 
 /* SEZIONI */
-
 
 .section {
     position: relative;
@@ -583,11 +570,9 @@ button {
         24px;
 }
 
-
 .section-alt {
     background: var(--background-alt);
 }
-
 
 .section-inner {
     width: 100%;
@@ -598,7 +583,6 @@ button {
 
     text-align: center;
 }
-
 
 .eyebrow {
     margin:
@@ -621,7 +605,6 @@ button {
 
     text-transform: uppercase;
 }
-
 
 .section-title {
     margin:
@@ -649,7 +632,6 @@ button {
     line-height: 1.1;
 }
 
-
 .section-emoji {
     display: block;
 
@@ -657,7 +639,6 @@ button {
 
     line-height: 1;
 }
-
 
 .section-title-image {
     display: block;
@@ -667,7 +648,6 @@ button {
 
     object-fit: contain;
 }
-
 
 .section-text {
     max-width: 700px;
@@ -692,7 +672,6 @@ button {
 
 
 /* PULSANTI */
-
 
 .button {
     display: inline-flex;
@@ -739,7 +718,6 @@ button {
         box-shadow 0.2s ease;
 }
 
-
 .button:hover {
     background: var(--lilac-dark);
 
@@ -750,16 +728,13 @@ button {
         rgba(145, 129, 187, 0.22);
 }
 
-
 .button:active {
     transform: translateY(0);
 }
 
-
 .button-primary {
     background: var(--lilac);
 }
-
 
 .button-secondary {
     background: transparent;
@@ -773,7 +748,6 @@ button {
     box-shadow: none;
 }
 
-
 .button-secondary:hover {
     background:
         rgba(168, 156, 200, 0.1);
@@ -782,7 +756,6 @@ button {
 
     box-shadow: none;
 }
-
 
 .button-small {
     min-height: 42px;
@@ -794,11 +767,9 @@ button {
     font-size: 0.8rem;
 }
 
-
 .map-button {
     gap: 7px;
 }
-
 
 .navigation-logo {
     display: block;
@@ -810,7 +781,6 @@ button {
 
     flex: 0 0 auto;
 }
-
 
 .ceremony-button {
     margin-top: 20px;
@@ -824,7 +794,6 @@ button {
         rgba(189, 169, 120, 0.2);
 }
 
-
 .ceremony-button:hover {
     background: var(--gold-dark);
 
@@ -833,7 +802,6 @@ button {
         rgba(189, 169, 120, 0.25);
 }
 
-
 .ceremony-button:active {
     background: var(--gold-active);
 }
@@ -841,7 +809,6 @@ button {
 
 
 /* LUOGHI */
-
 
 .places-grid {
     display: grid;
@@ -856,7 +823,6 @@ button {
 
     margin-top: 46px;
 }
-
 
 .place-card {
     display: flex;
@@ -886,7 +852,6 @@ button {
     -webkit-backdrop-filter: blur(8px);
 }
 
-
 .place-card h3 {
     margin:
         0
@@ -914,7 +879,6 @@ button {
     text-align: center;
 }
 
-
 .navigation-buttons {
     display: flex;
 
@@ -928,7 +892,6 @@ button {
 
 
 /* ALBUM */
-
 
 .album-card {
     max-width: 600px;
@@ -953,7 +916,6 @@ button {
     box-shadow: var(--shadow-soft);
 }
 
-
 .access-code {
     margin-top: 28px;
 
@@ -974,7 +936,6 @@ button {
     color: var(--muted);
 }
 
-
 .access-code-label {
     display: inline-flex;
 
@@ -985,7 +946,6 @@ button {
     font-size: 0.82rem;
 }
 
-
 .access-code strong {
     color: var(--text);
 
@@ -993,7 +953,6 @@ button {
 
     letter-spacing: 0.04em;
 }
-
 
 .copy-button {
     display: inline-flex;
@@ -1035,7 +994,6 @@ button {
         border-color 0.2s ease;
 }
 
-
 .copy-button:hover {
     background:
         rgba(168, 156, 200, 0.1);
@@ -1047,7 +1005,6 @@ button {
 
 
 /* REGALO */
-
 
 .gift-details {
     max-width: 620px;
@@ -1071,11 +1028,9 @@ button {
     box-shadow: var(--shadow-soft);
 }
 
-
 .gift-details[hidden] {
     display: none;
 }
-
 
 .gift-row {
     display: flex;
@@ -1101,11 +1056,9 @@ button {
         sans-serif;
 }
 
-
 .gift-row:last-child {
     border-bottom: 0;
 }
-
 
 .gift-row span {
     flex: 0 0 auto;
@@ -1114,7 +1067,6 @@ button {
 
     font-size: 0.8rem;
 }
-
 
 .gift-row strong {
     text-align: right;
@@ -1126,11 +1078,9 @@ button {
     overflow-wrap: anywhere;
 }
 
-
 .gift-iban {
     margin-bottom: 12px;
 }
-
 
 .gift-details > .copy-button {
     margin:
@@ -1142,7 +1092,6 @@ button {
 
 
 /* INDICATORE SCROLL */
-
 
 .scroll-indicator {
     position: fixed;
@@ -1188,11 +1137,9 @@ button {
         opacity 0.35s ease;
 }
 
-
 .scroll-indicator.visible {
     opacity: 1;
 }
-
 
 .scroll-arrow {
     font-size: 1.05rem;
@@ -1205,7 +1152,6 @@ button {
         ease-in-out
         infinite;
 }
-
 
 @keyframes scrollBounce {
 
@@ -1224,7 +1170,6 @@ button {
 
 /* FONDO PAGINA */
 
-
 #sogno {
     padding-bottom: 160px;
 }
@@ -1233,7 +1178,6 @@ button {
 
 /* MOBILE */
 
-
 @media (max-width: 760px) {
 
     .wax-seal {
@@ -1241,13 +1185,11 @@ button {
         height: 96px;
     }
 
-
     .hero {
         padding:
             42px
             20px;
     }
-
 
     .hero-portrait {
         width:
@@ -1259,7 +1201,6 @@ button {
         margin-bottom: 24px;
     }
 
-
     .hero h1 {
         font-size:
             clamp(
@@ -1269,7 +1210,6 @@ button {
             );
     }
 
-
     .hero-date {
         margin-top: 18px;
 
@@ -1278,54 +1218,55 @@ button {
         letter-spacing: 0.26em;
     }
 
+    .countdown-paper {
+        width:
+            min(
+                96vw,
+                560px
+            );
 
-    .countdown-card {
-        margin-top: 28px;
-
-        padding:
-            19px
-            14px
-            21px;
-
-        border-radius: 20px;
+        margin-top: 22px;
     }
 
+    .countdown-paper-content {
+        width: 80%;
+
+        transform:
+            translate(-50%, -47%);
+    }
 
     .countdown-title {
-        margin-bottom: 15px;
+        margin-bottom: 11px;
+
+        font-size: 0.72rem;
     }
 
-
     .countdown-item {
+        gap: 4px;
+
         padding:
             0
             4px;
-
-        gap: 6px;
     }
-
 
     .countdown-item strong {
         font-size:
             clamp(
-                1.4rem,
+                1.28rem,
                 7vw,
-                1.8rem
+                1.75rem
             );
     }
 
-
     .countdown-item span {
-        font-size: 0.62rem;
+        font-size: 0.58rem;
     }
-
 
     .countdown-item:not(:last-child)::after {
-        top: 2px;
+        top: 1px;
 
-        height: 38px;
+        height: 34px;
     }
-
 
     .section {
         padding:
@@ -1333,22 +1274,18 @@ button {
             20px;
     }
 
-
     .section-title {
         gap: 9px;
     }
-
 
     .section-emoji {
         font-size: 1.85rem;
     }
 
-
     .section-title-image {
         width: 42px;
         height: 42px;
     }
-
 
     .places-grid {
         grid-template-columns: 1fr;
@@ -1357,7 +1294,6 @@ button {
 
         margin-top: 36px;
     }
-
 
     .place-card {
         min-height: 0;
@@ -1369,16 +1305,13 @@ button {
         border-radius: 24px;
     }
 
-
     .place-card h3 {
         gap: 7px;
     }
 
-
     .navigation-buttons {
         width: 100%;
     }
-
 
     .navigation-buttons .button {
         flex:
@@ -1387,12 +1320,10 @@ button {
             120px;
     }
 
-
     .navigation-logo {
         width: 19px;
         height: 19px;
     }
-
 
     .album-card,
     .gift-details {
@@ -1403,13 +1334,11 @@ button {
         border-radius: 24px;
     }
 
-
     .access-code {
         flex-direction: column;
 
         gap: 8px;
     }
-
 
     .gift-row {
         flex-direction: column;
@@ -1419,13 +1348,11 @@ button {
         gap: 6px;
     }
 
-
     .gift-row strong {
         width: 100%;
 
         text-align: left;
     }
-
 
     #sogno {
         padding-bottom: 180px;
@@ -1436,23 +1363,26 @@ button {
 
 @media (max-width: 420px) {
 
-    .countdown-card {
-        width: 94vw;
-
-        padding:
-            18px
-            10px
-            20px;
+    .countdown-paper {
+        width: 98vw;
     }
 
+    .countdown-paper-content {
+        width: 82%;
+    }
+
+    .countdown-title {
+        margin-bottom: 9px;
+
+        font-size: 0.66rem;
+    }
 
     .countdown-item strong {
-        font-size: 1.42rem;
+        font-size: 1.26rem;
     }
 
-
     .countdown-item span {
-        font-size: 0.58rem;
+        font-size: 0.54rem;
     }
 
 }
@@ -1461,13 +1391,11 @@ button {
 
 /* RIDUZIONE MOVIMENTO */
 
-
 @media (prefers-reduced-motion: reduce) {
 
     html {
         scroll-behavior: auto;
     }
-
 
     *,
     *::before,

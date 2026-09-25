@@ -1,1879 +1,980 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Test busta matrimonio</title>
-
-    <style>
-
-        :root {
-            --background: #FAF7F2;
-            --text: #3E3A39;
-
-            --paper-front: #EADCC8;
-            --paper-back: #E4D3BC;
-
-            --paper-side: #E8D7C0;
-            --paper-bottom: #EBDCC6;
-
-            --paper-edge: #C8B18F;
-
-            --fold-line: rgba(105, 82, 58, 0.22);
-        }
-
-
-        * {
-            box-sizing: border-box;
-        }
-
-
-        html,
-        body {
-            margin: 0;
-            width: 100%;
-            min-height: 100%;
-        }
-
-
-        body {
-            overflow: hidden;
-
-            background: var(--background);
-
-            color: var(--text);
-
-            font-family: Georgia, serif;
-        }
-
-
-        /* ================================================== */
-        /* HERO                                               */
-        /* ================================================== */
-
-        .hero {
-            position: fixed;
-
-            inset: 0;
-
-            display: flex;
-            flex-direction: column;
-
-            justify-content: center;
-            align-items: center;
-
-            padding: 30px 20px;
-
-            text-align: center;
-        }
-
-
-        .hero img {
-            display: block;
-
-            width: min(72vw, 340px);
-
-            height: auto;
-
-            margin-bottom: 20px;
-        }
-
-
-        .hero h1 {
-            margin: 0;
-
-            font-size: clamp(2.2rem, 8vw, 4rem);
-
-            font-weight: 400;
-        }
-
-
-        .hero p {
-            margin: 18px 0 0;
-
-            font-size: 1rem;
-
-            letter-spacing: 4px;
-        }
-
-
-        /* ================================================== */
-        /* SCENA                                              */
-        /* ================================================== */
-
-        .envelope-test {
-            position: fixed;
-
-            inset: 0;
-
-            z-index: 100;
-
-            perspective: 1800px;
-
-            perspective-origin: 50% 10%;
-
-            cursor: pointer;
-
-            -webkit-tap-highlight-color: transparent;
-        }
-
-
-        /* ================================================== */
-        /* CORPO BUSTA                                        */
-        /* ================================================== */
-
-        .envelope-body {
-            position: absolute;
-
-            inset: 0;
-
-            z-index: 10;
-
-            pointer-events: none;
-
-            transform: translateY(0);
-
-            will-change: transform;
-        }
-
-
-        .body-svg {
-            position: absolute;
-
-            inset: 0;
-
-            display: block;
-
-            width: 100%;
-            height: 100%;
-
-            overflow: visible;
-        }
-
-
-        /* ================================================== */
-        /* OMBRA DEL LEMBO                                    */
-        /* ================================================== */
-
-        .flap-shadow {
-            position: absolute;
-
-            left: 50%;
-            top: 50%;
-
-            z-index: 12;
-
-            width: 65%;
-            height: 13%;
-
-            transform:
-                translate(-50%, -50%)
-                scaleY(0.04);
-
-            transform-origin: center;
-
-            background:
-                radial-gradient(
-                    ellipse at center,
-                    rgba(70, 48, 30, 0.22) 0%,
-                    rgba(70, 48, 30, 0.09) 48%,
-                    rgba(70, 48, 30, 0) 80%
-                );
-
-            filter: blur(12px);
-
-            opacity: 0;
-
-            pointer-events: none;
-
-            will-change:
-                opacity,
-                transform;
-        }
-
-
-        /* ================================================== */
-        /* LEMBO SUPERIORE                                    */
-        /* ================================================== */
-
-        .flap {
-            position: absolute;
-
-            left: 0;
-            top: 0;
-
-            z-index: 20;
-
-            width: 100vw;
-            height: 50vh;
-
-            transform-origin: 50% 0;
-
-            transform-style: preserve-3d;
-
-            opacity: 1;
-
-            will-change:
-                transform,
-                opacity;
-        }
-
-
-        .flap-svg {
-            position: absolute;
-
-            inset: 0;
-
-            display: block;
-
-            width: 100%;
-            height: 100%;
-
-            overflow: visible;
-
-            pointer-events: none;
-        }
-
-
-        /* ================================================== */
-        /* SIGILLO                                            */
-        /* ================================================== */
-
-        .wax-seal {
-            position: absolute;
-
-            /*
-                50% larghezza
-                + 100% di un elemento alto 50vh
-
-                = centro esatto dello schermo.
-            */
-
-            left: 50%;
-            top: 100%;
-
-            z-index: 30;
-
-            width: 108px;
-            height: 108px;
-
-            transform:
-                translate(-50%, -50%)
-                translateZ(5px);
-
-            transform-origin: center;
-
-            pointer-events: none;
-
-            will-change:
-                left,
-                top;
-        }
-
-
-        .wax-seal img {
-            display: block;
-
-            width: 100%;
-            height: 100%;
-
-            object-fit: contain;
-
-            filter:
-                drop-shadow(
-                    0 6px 7px
-                    rgba(70, 25, 20, 0.24)
-                );
-        }
-
-
-        /* ================================================== */
-        /* UI TEST                                            */
-        /* ================================================== */
-
-        .hint {
-            position: fixed;
-
-            left: 50%;
-            bottom: 24px;
-
-            z-index: 200;
-
-            transform: translateX(-50%);
-
-            padding: 9px 15px;
-
-            border-radius: 999px;
-
-            background:
-                rgba(250, 247, 242, 0.87);
-
-            color: #77706A;
-
-            font-family: Arial, sans-serif;
-
-            font-size: 0.78rem;
-
-            letter-spacing: 1px;
-
-            pointer-events: none;
-
-            transition:
-                opacity 0.3s ease;
-        }
-
-
-        .hint.hidden {
-            opacity: 0;
-        }
-
-
-        .restart {
-            position: fixed;
-
-            top: 18px;
-            right: 18px;
-
-            z-index: 300;
-
-            min-width: 44px;
-            min-height: 44px;
-
-            padding: 10px 15px;
-
-            border: 0;
-
-            border-radius: 999px;
-
-            background:
-                rgba(255, 255, 255, 0.93);
-
-            color: #4C4743;
-
-            font-size: 0.85rem;
-
-            cursor: pointer;
-
-            box-shadow:
-                0 4px 15px
-                rgba(0, 0, 0, 0.08);
-        }
-
-
-        @media (max-width: 600px) {
-
-            .wax-seal {
-                width: 96px;
-                height: 96px;
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test busta matrimonio</title>
+
+<style>
+:root{
+  --bg:#FAF7F2;
+  --text:#3E3A39;
+  --paper-front:#EADCC8;
+  --paper-back:#E4D3BC;
+  --paper-side:#E8D7C0;
+  --paper-bottom:#EBDCC6;
+  --paper-edge:#C8B18F;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+}
+
+body{
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Georgia,serif;
+}
+
+.hero{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:30px 20px;
+  text-align:center;
+}
+
+.hero img{
+  display:block;
+  width:min(72vw,340px);
+  height:auto;
+  margin-bottom:20px;
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(2.2rem,8vw,4rem);
+  font-weight:400;
+}
+
+.hero p{
+  margin:18px 0 0;
+  font-size:1rem;
+  letter-spacing:4px;
+}
+
+.envelope-test{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  perspective:1800px;
+  perspective-origin:50% 10%;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.envelope-body{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  pointer-events:none;
+  transform:translateY(0);
+  will-change:transform;
+}
+
+.body-svg,
+.flap-svg{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+.flap-shadow{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:12;
+  width:65%;
+  height:13%;
+  transform:translate(-50%,-50%) scaleY(.04);
+  transform-origin:center;
+  background:radial-gradient(
+    ellipse at center,
+    rgba(70,48,30,.22) 0%,
+    rgba(70,48,30,.09) 48%,
+    rgba(70,48,30,0) 80%
+  );
+  filter:blur(12px);
+  opacity:0;
+  pointer-events:none;
+  will-change:opacity,transform;
+}
+
+.flap{
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:20;
+  width:100vw;
+  height:50vh;
+  transform-origin:50% 0;
+  transform-style:preserve-3d;
+  opacity:1;
+  will-change:transform,opacity;
+}
+
+.wax-seal{
+  position:absolute;
+  left:50%;
+  top:100%;
+  z-index:30;
+  width:108px;
+  height:108px;
+  transform:translate(-50%,-50%) translateZ(5px);
+  transform-origin:center;
+  pointer-events:none;
+  will-change:left,top;
+}
+
+.wax-seal img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 6px 7px rgba(70,25,20,.24));
+}
+
+.hint{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  z-index:200;
+  transform:translateX(-50%);
+  padding:9px 15px;
+  border-radius:999px;
+  background:rgba(250,247,242,.87);
+  color:#77706A;
+  font-family:Arial,sans-serif;
+  font-size:.78rem;
+  letter-spacing:1px;
+  pointer-events:none;
+  transition:opacity .3s ease;
+}
+
+.hint.hidden{opacity:0}
+
+.restart{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:300;
+  min-width:44px;
+  min-height:44px;
+  padding:10px 15px;
+  border:0;
+  border-radius:999px;
+  background:rgba(255,255,255,.93);
+  color:#4C4743;
+  font-size:.85rem;
+  cursor:pointer;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+@media(max-width:600px){
+  .wax-seal{
+    width:96px;
+    height:96px;
+  }
+}
+</style>
 </head>
-
 
 <body>
 
+<main class="hero">
+  <img src="images/ritratto.png" alt="Enrico e Annachiara">
+  <h1>Enrico &amp; Annachiara</h1>
+  <p>12 giugno 2027</p>
+</main>
 
-    <!-- ================================================== -->
-    <!-- HERO                                               -->
-    <!-- ================================================== -->
+<div
+  class="envelope-test"
+  id="envelopeTest"
+  role="button"
+  tabindex="0"
+  aria-label="Apri la busta"
+>
 
-    <main class="hero">
+  <div class="flap-shadow" id="flapShadow"></div>
 
-        <img
-            src="images/ritratto.png"
-            alt="Enrico e Annachiara"
+  <div class="envelope-body" id="envelopeBody">
+    <svg
+      class="body-svg"
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        id="bodyLeftPath"
+        fill="#E8D7C0"
+      ></path>
+
+      <path
+        id="bodyLeftFold"
+        fill="none"
+        stroke="rgba(105,82,58,.22)"
+        stroke-width="2"
+        vector-effect="non-scaling-stroke"
+      ></path>
+
+      <path
+        id="bodyRightPath"
+        fill="#E8D7C0"
+      ></path>
+
+      <path
+        id="bodyRightFold"
+        fill="none"
+        stroke="rgba(105,82,58,.22)"
+        stroke-width="2"
+        vector-effect="non-scaling-stroke"
+      ></path>
+
+      <path
+        id="bodyBottomPath"
+        fill="#EBDCC6"
+      ></path>
+
+      <path
+        id="bodyBottomFold"
+        fill="none"
+        stroke="rgba(105,82,58,.24)"
+        stroke-width="2"
+        vector-effect="non-scaling-stroke"
+      ></path>
+    </svg>
+  </div>
+
+  <div class="flap" id="flap">
+
+    <svg
+      class="flap-svg"
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+
+      <defs>
+
+        <linearGradient
+          id="paperFront"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="1"
         >
+          <stop
+            id="frontStop1"
+            offset="0%"
+            stop-color="#EADCC8"
+          ></stop>
 
-        <h1>
-            Enrico & Annachiara
-        </h1>
+          <stop
+            id="frontStop2"
+            offset="65%"
+            stop-color="#EADCC8"
+          ></stop>
 
-        <p>
-            12 giugno 2027
-        </p>
+          <stop
+            id="frontStop3"
+            offset="100%"
+            stop-color="#DEC8AD"
+          ></stop>
+        </linearGradient>
 
-    </main>
+        <linearGradient
+          id="paperBack"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="1"
+        >
+          <stop
+            offset="0%"
+            stop-color="#E6D6C0"
+          ></stop>
 
+          <stop
+            offset="100%"
+            stop-color="#DCC5A8"
+          ></stop>
+        </linearGradient>
 
+        <filter
+          id="paperShadow"
+          x="-20%"
+          y="-20%"
+          width="140%"
+          height="160%"
+        >
+          <feDropShadow
+            dx="0"
+            dy="4"
+            stdDeviation="5"
+            flood-color="#654B35"
+            flood-opacity=".08"
+          ></feDropShadow>
+        </filter>
 
-    <!-- ================================================== -->
-    <!-- BUSTA                                              -->
-    <!-- ================================================== -->
+      </defs>
+
+      <path
+        id="flapEdgePath"
+        fill="none"
+        stroke="#C8B18F"
+        stroke-width="3"
+        vector-effect="non-scaling-stroke"
+        opacity=".55"
+      ></path>
+
+      <path
+        id="flapPath"
+        fill="url(#paperFront)"
+        filter="url(#paperShadow)"
+      ></path>
+
+    </svg>
 
     <div
-        class="envelope-test"
-        id="envelopeTest"
-        role="button"
-        tabindex="0"
-        aria-label="Apri la busta"
+      class="wax-seal"
+      id="waxSeal"
     >
-
-
-        <!-- OMBRA -->
-
-        <div
-            class="flap-shadow"
-            id="flapShadow"
-        ></div>
-
-
-
-        <!-- ================================================== -->
-        <!-- CORPO BUSTA                                        -->
-        <!-- ================================================== -->
-
-        <div
-            class="envelope-body"
-            id="envelopeBody"
-        >
-
-            <svg
-                class="body-svg"
-                viewBox="0 0 1000 1000"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-            >
-
-
-                <!-- ======================================== -->
-                <!-- LATERALE SINISTRO                       -->
-                <!-- ======================================== -->
-
-                <path
-                    id="bodyLeftPath"
-                    d=""
-                    fill="#E8D7C0"
-                />
-
-
-                <path
-                    id="bodyLeftFold"
-                    d=""
-                    fill="none"
-
-                    stroke="rgba(105,82,58,0.22)"
-
-                    stroke-width="2"
-
-                    vector-effect="non-scaling-stroke"
-                />
-
-
-                <!-- ======================================== -->
-                <!-- LATERALE DESTRO                         -->
-                <!-- ======================================== -->
-
-                <path
-                    id="bodyRightPath"
-                    d=""
-                    fill="#E8D7C0"
-                />
-
-
-                <path
-                    id="bodyRightFold"
-                    d=""
-                    fill="none"
-
-                    stroke="rgba(105,82,58,0.22)"
-
-                    stroke-width="2"
-
-                    vector-effect="non-scaling-stroke"
-                />
-
-
-                <!-- ======================================== -->
-                <!-- LEMBO INFERIORE                         -->
-                <!-- ======================================== -->
-
-                <!--
-                    È disegnato per ultimo,
-                    quindi rimane SOPRA
-                    ai due lembi laterali.
-                -->
-
-                <path
-                    id="bodyBottomPath"
-                    d=""
-                    fill="#EBDCC6"
-                />
-
-
-                <path
-                    id="bodyBottomFold"
-                    d=""
-                    fill="none"
-
-                    stroke="rgba(105,82,58,0.24)"
-
-                    stroke-width="2"
-
-                    vector-effect="non-scaling-stroke"
-                />
-
-
-            </svg>
-
-        </div>
-
-
-
-        <!-- ================================================== -->
-        <!-- LEMBO SUPERIORE                                    -->
-        <!-- ================================================== -->
-
-        <div
-            class="flap"
-            id="flap"
-        >
-
-            <svg
-                class="flap-svg"
-                viewBox="0 0 1000 1000"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-            >
-
-                <defs>
-
-
-                    <!-- FRONTE -->
-
-                    <linearGradient
-                        id="paperFront"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                    >
-
-                        <stop
-                            id="frontStop1"
-                            offset="0%"
-                            stop-color="#EADCC8"
-                        />
-
-                        <stop
-                            id="frontStop2"
-                            offset="65%"
-                            stop-color="#EADCC8"
-                        />
-
-                        <stop
-                            id="frontStop3"
-                            offset="100%"
-                            stop-color="#DEC8AD"
-                        />
-
-                    </linearGradient>
-
-
-                    <!-- RETRO -->
-
-                    <linearGradient
-                        id="paperBack"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                    >
-
-                        <stop
-                            offset="0%"
-                            stop-color="#E6D6C0"
-                        />
-
-                        <stop
-                            offset="100%"
-                            stop-color="#DCC5A8"
-                        />
-
-                    </linearGradient>
-
-
-                    <!-- OMBRA -->
-
-                    <filter
-                        id="paperShadow"
-                        x="-20%"
-                        y="-20%"
-                        width="140%"
-                        height="160%"
-                    >
-
-                        <feDropShadow
-                            dx="0"
-                            dy="4"
-                            stdDeviation="5"
-                            flood-color="#654B35"
-                            flood-opacity="0.08"
-                        />
-
-                    </filter>
-
-                </defs>
-
-
-                <!-- BORDO -->
-
-                <path
-                    id="flapEdgePath"
-                    d=""
-
-                    fill="none"
-
-                    stroke="#C8B18F"
-
-                    stroke-width="3"
-
-                    vector-effect="non-scaling-stroke"
-
-                    opacity="0.55"
-                />
-
-
-                <!-- CARTA -->
-
-                <path
-                    id="flapPath"
-                    d=""
-
-                    fill="url(#paperFront)"
-
-                    filter="url(#paperShadow)"
-                />
-
-            </svg>
-
-
-            <!-- SIGILLO -->
-
-            <div
-                class="wax-seal"
-                id="waxSeal"
-            >
-
-                <img
-                    src="images/sigillo-AE.png"
-                    alt=""
-                    draggable="false"
-                >
-
-            </div>
-
-        </div>
-
+      <img
+        src="images/sigillo-AE.png"
+        alt=""
+        draggable="false"
+      >
     </div>
 
+  </div>
 
+</div>
 
-    <!-- ================================================== -->
-    <!-- CONTROLLI TEST                                     -->
-    <!-- ================================================== -->
+<div class="hint" id="hint">
+  Tocca per aprire
+</div>
 
-    <div
-        class="hint"
-        id="hint"
-    >
-        Tocca per aprire
-    </div>
+<button
+  type="button"
+  class="restart"
+  id="restartButton"
+>
+  Riavvia
+</button>
 
+<script>
+const $ = id => document.getElementById(id);
 
-    <button
-        type="button"
-        class="restart"
-        id="restartButton"
-    >
-        Riavvia
-    </button>
+const envelopeTest = $("envelopeTest");
+const envelopeBody = $("envelopeBody");
 
+const flap = $("flap");
+const flapPath = $("flapPath");
+const flapEdgePath = $("flapEdgePath");
+const flapShadow = $("flapShadow");
 
+const waxSeal = $("waxSeal");
 
-    <script>
+const frontStop1 = $("frontStop1");
+const frontStop2 = $("frontStop2");
+const frontStop3 = $("frontStop3");
 
-        /* ================================================== */
-        /* ELEMENTI                                          */
-        /* ================================================== */
+const bodyLeftPath = $("bodyLeftPath");
+const bodyRightPath = $("bodyRightPath");
+const bodyBottomPath = $("bodyBottomPath");
 
-        const envelopeTest =
-            document.getElementById("envelopeTest");
+const bodyLeftFold = $("bodyLeftFold");
+const bodyRightFold = $("bodyRightFold");
+const bodyBottomFold = $("bodyBottomFold");
 
-        const envelopeBody =
-            document.getElementById("envelopeBody");
+const hint = $("hint");
+const restartButton = $("restartButton");
 
-        const flap =
-            document.getElementById("flap");
+const FLAP_DURATION = 3400;
+const BODY_START = 1600;
+const BODY_DURATION = 1450;
+const FLAP_FADE_DURATION = 280;
 
-        const flapPath =
-            document.getElementById("flapPath");
+let flapFrameId = null;
+let bodyFrameId = null;
+let fadeFrameId = null;
 
-        const flapEdgePath =
-            document.getElementById("flapEdgePath");
+let opening = false;
+let opened = false;
 
-        const waxSeal =
-            document.getElementById("waxSeal");
-
-        const flapShadow =
-            document.getElementById("flapShadow");
-
-        const frontStop1 =
-            document.getElementById("frontStop1");
-
-        const frontStop2 =
-            document.getElementById("frontStop2");
-
-        const frontStop3 =
-            document.getElementById("frontStop3");
-
-        const hint =
-            document.getElementById("hint");
-
-        const restartButton =
-            document.getElementById("restartButton");
-
-
-        /* CORPO */
-
-        const bodyLeftPath =
-            document.getElementById("bodyLeftPath");
-
-        const bodyRightPath =
-            document.getElementById("bodyRightPath");
-
-        const bodyBottomPath =
-            document.getElementById("bodyBottomPath");
-
-        const bodyLeftFold =
-            document.getElementById("bodyLeftFold");
-
-        const bodyRightFold =
-            document.getElementById("bodyRightFold");
-
-        const bodyBottomFold =
-            document.getElementById("bodyBottomFold");
-
-
-        /* ================================================== */
-        /* STATO                                             */
-        /* ================================================== */
-
-        let flapFrameId = null;
-        let bodyFrameId = null;
-        let fadeFrameId = null;
-
-        let opening = false;
-        let opened = false;
-
-
-        /* ================================================== */
-        /* TEMPI                                             */
-        /* ================================================== */
-
-        const flapDuration =
-            3400;
-
-
-        const bodyStart =
-            1600;
-
-
-        const bodyDuration =
-            1450;
-
-
-        const flapFadeDuration =
-            280;
-
-
-        /* ================================================== */
-        /* UTILITY                                           */
-        /* ================================================== */
-
-        function clamp(value, min, max) {
-
-            return Math.min(
-                Math.max(value, min),
-                max
-            );
-
-        }
-
-
-        function easeInOutCubic(t) {
-
-            return (
-                t < 0.5
-                    ? 4 * t * t * t
-                    : 1 -
-                      Math.pow(
-                          -2 * t + 2,
-                          3
-                      ) / 2
-            );
-
-        }
-
-
-        function easeOutCubic(t) {
-
-            return (
-                1 -
-                Math.pow(
-                    1 - t,
-                    3
-                )
-            );
-
-        }
-
-
-        function bendCurve(t) {
-
-            const raw =
-                Math.sin(
-                    Math.PI * t
-                );
-
-
-            return Math.pow(
-                Math.max(
-                    0,
-                    raw
-                ),
-                0.72
-            );
-
-        }
-
-
-        function wait(milliseconds) {
-
-            return new Promise(
-                (resolve) => {
-
-                    setTimeout(
-                        resolve,
-                        milliseconds
-                    );
-
-                }
-            );
-
-        }
-
-
-        /* ================================================== */
-        /* GEOMETRIA LEMBO SUPERIORE                        */
-        /* ================================================== */
-
-        /*
-            Questa parte rimane quella approvata.
-        */
-
-        function getFlapGeometry(t) {
-
-            const bend =
-                bendCurve(t);
-
-
-            const tipX =
-                500;
-
-
-            const tipY =
-                1000 -
-                (
-                    190 *
-                    bend
-                );
-
-
-            const shoulderY =
-                420 +
-                (
-                    35 *
-                    bend
-                );
-
-
-            const leftShoulderX =
-                0 +
-                (
-                    12 *
-                    bend
-                );
-
-
-            const rightShoulderX =
-                1000 -
-                (
-                    12 *
-                    bend
-                );
-
-
-            const rightControl1X =
-                835 -
-                (
-                    18 *
-                    bend
-                );
-
-
-            const rightControl1Y =
-                590 +
-                (
-                    15 *
-                    bend
-                );
-
-
-            const rightControl2X =
-                625 -
-                (
-                    10 *
-                    bend
-                );
-
-
-            const rightControl2Y =
-                860 -
-                (
-                    50 *
-                    bend
-                );
-
-
-            const leftControl1X =
-                165 +
-                (
-                    18 *
-                    bend
-                );
-
-
-            const leftControl1Y =
-                rightControl1Y;
-
-
-            const leftControl2X =
-                375 +
-                (
-                    10 *
-                    bend
-                );
-
-
-            const leftControl2Y =
-                rightControl2Y;
-
-
-            const d = `
-
-                M 0 0
-
-
-                L 1000 0
-
-
-                L
-                1000
-                ${shoulderY - 30}
-
-
-                Q
-                1000
-                ${shoulderY}
-
-                ${rightShoulderX}
-                ${shoulderY}
-
-
-                C
-                ${rightControl1X}
-                ${rightControl1Y},
-
-                ${rightControl2X}
-                ${rightControl2Y},
-
-                ${tipX}
-                ${tipY}
-
-
-                C
-                ${leftControl2X}
-                ${leftControl2Y},
-
-                ${leftControl1X}
-                ${leftControl1Y},
-
-                ${leftShoulderX}
-                ${shoulderY}
-
-
-                Q
-                0
-                ${shoulderY}
-
-                0
-                ${shoulderY - 30}
-
-
-                L
-                0
-                0
-
-
-                Z
-            `;
-
-
-            return {
-                d,
-                tipX,
-                tipY,
-                bend
-            };
-
-        }
-
-
-        /* ================================================== */
-        /* GEOMETRIA CORPO BUSTA                            */
-        /* ================================================== */
-
-        function drawEnvelopeBody() {
-
-    /* =======================================================
-       LEMBI LATERALI
-       ======================================================= */
-
-    /*
-        Partenza:
-        19,25% dello schermo
-
-        Arrivo:
-        50% dello schermo
-    */
-
-    const sideStartY = 192.5;
-    const sideMeetY  = 500;
-
-    const leftMeetX  = 492;
-    const rightMeetX = 508;
-
-
-    /* ---------- SINISTRO ---------- */
-
-    bodyLeftPath.setAttribute(
-        "d",
-        `
-            M 0 ${sideStartY}
-
-            L ${leftMeetX} ${sideMeetY}
-
-            L 0 1000
-
-            Z
-        `
-    );
-
-
-    bodyLeftFold.setAttribute(
-        "d",
-        `
-            M 0 ${sideStartY}
-
-            L ${leftMeetX} ${sideMeetY}
-        `
-    );
-
-
-    /* ---------- DESTRO ---------- */
-
-    bodyRightPath.setAttribute(
-        "d",
-        `
-            M 1000 ${sideStartY}
-
-            L 1000 1000
-
-            L ${rightMeetX} ${sideMeetY}
-
-            Z
-        `
-    );
-
-
-    bodyRightFold.setAttribute(
-        "d",
-        `
-            M 1000 ${sideStartY}
-
-            L ${rightMeetX} ${sideMeetY}
-        `
-    );
-
-
-    /* =======================================================
-       LEMBO INFERIORE
-       ======================================================= */
-
-    /*
-            /\
-           /  \
-          /    \
-         /      \
-        |        |
-        |        |
-        |        |
-
-        punta = 49%
-        verticale = 25%
-    */
-
-    const tipY = 490;
-
-    const tipLeftX  = 468;
-    const tipRightX = 532;
-
-    const tipSideY = 505;
-
-    /*
-        tratto verticale:
-        75% → 100%
-    */
-
-    const verticalStartY = 750;
-
-
-    bodyBottomPath.setAttribute(
-        "d",
-        `
-            M 0 1000
-
-            L 0 ${verticalStartY}
-
-            L ${tipLeftX} ${tipSideY}
-
-            Q
-                500 ${tipY}
-                ${tipRightX} ${tipSideY}
-
-            L 1000 ${verticalStartY}
-
-            L 1000 1000
-
-            Z
-        `
-    );
-
-
-    bodyBottomFold.setAttribute(
-        "d",
-        `
-            M 0 ${verticalStartY}
-
-            L ${tipLeftX} ${tipSideY}
-
-            Q
-                500 ${tipY}
-                ${tipRightX} ${tipSideY}
-
-            L 1000 ${verticalStartY}
-        `
-    );
-
+function clamp(value,min,max){
+  return Math.min(Math.max(value,min),max);
 }
 
-        /* ================================================== */
-        /* DISEGNO FRAME LEMBO                              */
-        /* ================================================== */
+function easeInOutCubic(t){
+  return t < .5
+    ? 4*t*t*t
+    : 1 - Math.pow(-2*t+2,3)/2;
+}
 
-        function drawFlapFrame(progress) {
+function easeOutCubic(t){
+  return 1 - Math.pow(1-t,3);
+}
+
+function bendCurve(t){
+  return Math.pow(
+    Math.max(0,Math.sin(Math.PI*t)),
+    .72
+  );
+}
+
+function wait(ms){
+  return new Promise(resolve=>{
+    setTimeout(resolve,ms);
+  });
+}
+
+function getFlapGeometry(t){
+
+  const bend = bendCurve(t);
+
+  const tipX = 500;
+  const tipY = 1000 - 190*bend;
+
+  const shoulderY = 420 + 35*bend;
+
+  const leftShoulderX = 12*bend;
+  const rightShoulderX = 1000 - 12*bend;
+
+  const rightControl1X = 835 - 18*bend;
+  const rightControl1Y = 590 + 15*bend;
+
+  const rightControl2X = 625 - 10*bend;
+  const rightControl2Y = 860 - 50*bend;
+
+  const leftControl1X = 165 + 18*bend;
+  const leftControl1Y = rightControl1Y;
+
+  const leftControl2X = 375 + 10*bend;
+  const leftControl2Y = rightControl2Y;
 
-            const t =
-                clamp(
-                    progress,
-                    0,
-                    1
-                );
+  const d = `
+    M 0 0
+
+    L 1000 0
 
+    L 1000 ${shoulderY-30}
 
-            const geometry =
-                getFlapGeometry(t);
+    Q
+      1000 ${shoulderY}
+      ${rightShoulderX} ${shoulderY}
 
+    C
+      ${rightControl1X} ${rightControl1Y},
+      ${rightControl2X} ${rightControl2Y},
+      ${tipX} ${tipY}
 
-            const bend =
-                geometry.bend;
+    C
+      ${leftControl2X} ${leftControl2Y},
+      ${leftControl1X} ${leftControl1Y},
+      ${leftShoulderX} ${shoulderY}
 
+    Q
+      0 ${shoulderY}
+      0 ${shoulderY-30}
 
-            /* ---------------------------------------------- */
-            /* ROTAZIONE                                     */
-            /* ---------------------------------------------- */
+    L 0 0
 
-            let rotation;
+    Z
+  `;
 
+  return{
+    d,
+    tipY,
+    bend
+  };
+}
 
-            if (t < 0.94) {
+function drawEnvelopeBody(){
 
-                rotation =
-                    181.5 *
-                    easeInOutCubic(
-                        t / 0.94
-                    );
+  const sideStartY = 192.5;
+  const sideMeetY = 500;
 
-            } else {
+  const leftMeetX = 492;
+  const rightMeetX = 508;
 
-                const settle =
-                    (
-                        t -
-                        0.94
-                    ) /
-                    0.06;
+  bodyLeftPath.setAttribute(
+    "d",
+    `
+      M 0 ${sideStartY}
+      L ${leftMeetX} ${sideMeetY}
+      L 0 1000
+      Z
+    `
+  );
 
+  bodyLeftFold.setAttribute(
+    "d",
+    `
+      M 0 ${sideStartY}
+      L ${leftMeetX} ${sideMeetY}
+    `
+  );
 
-                rotation =
-                    181.5 -
-                    (
-                        1.5 *
-                        easeOutCubic(
-                            settle
-                        )
-                    );
+  bodyRightPath.setAttribute(
+    "d",
+    `
+      M 1000 ${sideStartY}
+      L 1000 1000
+      L ${rightMeetX} ${sideMeetY}
+      Z
+    `
+  );
 
-            }
+  bodyRightFold.setAttribute(
+    "d",
+    `
+      M 1000 ${sideStartY}
+      L ${rightMeetX} ${sideMeetY}
+    `
+  );
 
+  const tipY = 490;
 
-            /* ---------------------------------------------- */
-            /* PROFONDITÀ                                    */
-            /* ---------------------------------------------- */
+  const tipLeftX = 468;
+  const tipRightX = 532;
 
-            const depth =
-                20 *
-                bend;
+  const tipSideY = 505;
 
+  const verticalStartY = 750;
 
-            flap.style.transform =
-                `rotateX(${rotation}deg)
-                 translateZ(${depth}px)`;
+  bodyBottomPath.setAttribute(
+    "d",
+    `
+      M 0 1000
 
+      L 0 ${verticalStartY}
 
-            /* ---------------------------------------------- */
-            /* PATH                                          */
-            /* ---------------------------------------------- */
+      L ${tipLeftX} ${tipSideY}
 
-            flapPath.setAttribute(
-                "d",
-                geometry.d
-            );
+      Q
+        500 ${tipY}
+        ${tipRightX} ${tipSideY}
 
+      L 1000 ${verticalStartY}
 
-            flapEdgePath.setAttribute(
-                "d",
-                geometry.d
-            );
+      L 1000 1000
 
+      Z
+    `
+  );
 
-            /* ---------------------------------------------- */
-            /* FRONTE / RETRO                                */
-            /* ---------------------------------------------- */
+  bodyBottomFold.setAttribute(
+    "d",
+    `
+      M 0 ${verticalStartY}
 
-            if (rotation < 90) {
+      L ${tipLeftX} ${tipSideY}
 
-                flapPath.setAttribute(
-                    "fill",
-                    "url(#paperFront)"
-                );
+      Q
+        500 ${tipY}
+        ${tipRightX} ${tipSideY}
 
-            } else {
-
-                flapPath.setAttribute(
-                    "fill",
-                    "url(#paperBack)"
-                );
-
-            }
-
-
-            /* ---------------------------------------------- */
-            /* SIGILLO                                       */
-            /* ---------------------------------------------- */
-
-            waxSeal.style.left =
-                "50%";
-
-
-            waxSeal.style.top =
-                `${geometry.tipY / 10}%`;
-
-
-            waxSeal.style.visibility =
-                rotation < 90
-                    ? "visible"
-                    : "hidden";
-
-
-            /* ---------------------------------------------- */
-            /* OMBRA                                         */
-            /* ---------------------------------------------- */
-
-            flapShadow.style.opacity =
-                `${0.23 * bend}`;
-
-
-            flapShadow.style.transform =
-                `
-                translate(
-                    -50%,
-                    ${-50 + 17 * t}%
-                )
-
-                scaleX(
-                    ${0.93 - 0.15 * bend}
-                )
-
-                scaleY(
-                    ${0.08 + 0.74 * bend}
-                )
-                `;
-
-
-            /* ---------------------------------------------- */
-            /* LUCE                                          */
-            /* ---------------------------------------------- */
-
-            const shade =
-                Math.round(
-                    8 *
-                    bend
-                );
-
-
-            frontStop1.setAttribute(
-                "stop-color",
-                `rgb(
-                    ${234 - shade},
-                    ${220 - shade},
-                    ${200 - shade}
-                )`
-            );
-
-
-            frontStop2.setAttribute(
-                "stop-color",
-                `rgb(
-                    ${234 - shade / 2},
-                    ${220 - shade / 2},
-                    ${200 - shade / 2}
-                )`
-            );
-
-
-            frontStop3.setAttribute(
-                "stop-color",
-                `rgb(
-                    ${222 - shade},
-                    ${200 - shade},
-                    ${173 - shade}
-                )`
-            );
-
-        }
-
-
-        /* ================================================== */
-        /* ANIMAZIONE LEMBO                                  */
-        /* ================================================== */
-
-        function animateFlap() {
-
-            return new Promise(
-                (resolve) => {
-
-
-                    const start =
-                        performance.now();
-
-
-                    function frame(now) {
-
-                        const progress =
-                            clamp(
-                                (
-                                    now -
-                                    start
-                                ) /
-                                flapDuration,
-                                0,
-                                1
-                            );
-
-
-                        drawFlapFrame(
-                            progress
-                        );
-
-
-                        if (progress < 1) {
-
-                            flapFrameId =
-                                requestAnimationFrame(
-                                    frame
-                                );
-
-                        } else {
-
-                            flapFrameId =
-                                null;
-
-                            resolve();
-
-                        }
-
-                    }
-
-
-                    flapFrameId =
-                        requestAnimationFrame(
-                            frame
-                        );
-
-                }
-            );
-
-        }
-
-
-        /* ================================================== */
-        /* DISCESA BUSTA                                     */
-        /* ================================================== */
-
-        function animateEnvelopeDown() {
-
-            return new Promise(
-                (resolve) => {
-
-
-                    const start =
-                        performance.now();
-
-
-                    function frame(now) {
-
-                        const progress =
-                            clamp(
-                                (
-                                    now -
-                                    start
-                                ) /
-                                bodyDuration,
-                                0,
-                                1
-                            );
-
-
-                        const e =
-                            easeInOutCubic(
-                                progress
-                            );
-
-
-                        envelopeBody.style.transform =
-                            `translateY(
-                                ${112 * e}vh
-                            )`;
-
-
-                        if (progress < 1) {
-
-                            bodyFrameId =
-                                requestAnimationFrame(
-                                    frame
-                                );
-
-                        } else {
-
-                            bodyFrameId =
-                                null;
-
-                            resolve();
-
-                        }
-
-                    }
-
-
-                    bodyFrameId =
-                        requestAnimationFrame(
-                            frame
-                        );
-
-                }
-            );
-
-        }
-
-
-        /* ================================================== */
-        /* DISSOLVENZA LEMBO                                 */
-        /* ================================================== */
-
-        function fadeOutFlap() {
-
-            return new Promise(
-                (resolve) => {
-
-
-                    const start =
-                        performance.now();
-
-
-                    function frame(now) {
-
-                        const progress =
-                            clamp(
-                                (
-                                    now -
-                                    start
-                                ) /
-                                flapFadeDuration,
-                                0,
-                                1
-                            );
-
-
-                        const e =
-                            easeOutCubic(
-                                progress
-                            );
-
-
-                        flap.style.opacity =
-                            `${1 - e}`;
-
-
-                        flapShadow.style.opacity =
-                            `${0.06 * (1 - e)}`;
-
-
-                        if (progress < 1) {
-
-                            fadeFrameId =
-                                requestAnimationFrame(
-                                    frame
-                                );
-
-                        } else {
-
-                            flap.style.opacity =
-                                "0";
-
-
-                            flapShadow.style.opacity =
-                                "0";
-
-
-                            fadeFrameId =
-                                null;
-
-
-                            resolve();
-
-                        }
-
-                    }
-
-
-                    fadeFrameId =
-                        requestAnimationFrame(
-                            frame
-                        );
-
-                }
-            );
-
-        }
-
-
-        /* ================================================== */
-        /* APERTURA COMPLETA                                 */
-        /* ================================================== */
-
-        async function openEnvelope() {
-
-            if (
-                opening ||
-                opened
-            ) {
-                return;
-            }
-
-
-            opening = true;
-
-
-            hint.classList.add(
-                "hidden"
-            );
-
-
-            /*
-                Parte immediatamente il lembo.
-            */
-
-            const flapPromise =
-                animateFlap();
-
-
-            /*
-                Dopo 1600 ms parte
-                la discesa della busta.
-            */
-
-            await wait(
-                bodyStart
-            );
-
-
-            const bodyPromise =
-                animateEnvelopeDown();
-
-
-            /*
-                Nel frattempo il lembo
-                continua ad aprirsi.
-            */
-
-            await flapPromise;
-
-
-            /*
-                Una volta aperto,
-                sparisce rapidamente.
-            */
-
-            const fadePromise =
-                fadeOutFlap();
-
-
-            await Promise.all([
-                bodyPromise,
-                fadePromise
-            ]);
-
-
-            opening = false;
-
-            opened = true;
-
-        }
-
-
-        /* ================================================== */
-        /* RESET                                             */
-        /* ================================================== */
-
-        function resetEnvelope(event) {
-
-            event.stopPropagation();
-
-
-            if (flapFrameId) {
-
-                cancelAnimationFrame(
-                    flapFrameId
-                );
-
-                flapFrameId = null;
-
-            }
-
-
-            if (bodyFrameId) {
-
-                cancelAnimationFrame(
-                    bodyFrameId
-                );
-
-                bodyFrameId = null;
-
-            }
-
-
-            if (fadeFrameId) {
-
-                cancelAnimationFrame(
-                    fadeFrameId
-                );
-
-                fadeFrameId = null;
-
-            }
-
-
-            opening = false;
-
-            opened = false;
-
-
-            envelopeBody.style.transform =
-                "translateY(0)";
-
-
-            flap.style.transform =
-                "rotateX(0deg) translateZ(0px)";
-
-
-            flap.style.opacity =
-                "1";
-
-
-            waxSeal.style.visibility =
-                "visible";
-
-
-            flapShadow.style.opacity =
-                "0";
-
-
-            flapShadow.style.transform =
-                "translate(-50%, -50%) scaleY(0.04)";
-
-
-            const initial =
-                getFlapGeometry(0);
-
-
-            flapPath.setAttribute(
-                "d",
-                initial.d
-            );
-
-
-            flapEdgePath.setAttribute(
-                "d",
-                initial.d
-            );
-
-
-            flapPath.setAttribute(
-                "fill",
-                "url(#paperFront)"
-            );
-
-
-            waxSeal.style.left =
-                "50%";
-
-
-            waxSeal.style.top =
-                "100%";
-
-
-            frontStop1.setAttribute(
-                "stop-color",
-                "#EADCC8"
-            );
-
-
-            frontStop2.setAttribute(
-                "stop-color",
-                "#EADCC8"
-            );
-
-
-            frontStop3.setAttribute(
-                "stop-color",
-                "#DEC8AD"
-            );
-
-
-            hint.classList.remove(
-                "hidden"
-            );
-
-        }
-
-
-        /* ================================================== */
-        /* EVENTI                                            */
-        /* ================================================== */
-
-        envelopeTest.addEventListener(
-            "click",
-            openEnvelope
+      L 1000 ${verticalStartY}
+    `
+  );
+}
+
+function drawFlapFrame(progress){
+
+  const t = clamp(progress,0,1);
+
+  const geometry = getFlapGeometry(t);
+
+  const bend = geometry.bend;
+
+  let rotation;
+
+  if(t < .94){
+
+    rotation =
+      181.5 *
+      easeInOutCubic(
+        t/.94
+      );
+
+  }else{
+
+    const settle =
+      (t-.94)/.06;
+
+    rotation =
+      181.5 -
+      1.5 *
+      easeOutCubic(settle);
+  }
+
+  const depth =
+    20*bend;
+
+  flap.style.transform =
+    `rotateX(${rotation}deg)
+     translateZ(${depth}px)`;
+
+  flapPath.setAttribute(
+    "d",
+    geometry.d
+  );
+
+  flapEdgePath.setAttribute(
+    "d",
+    geometry.d
+  );
+
+  flapPath.setAttribute(
+    "fill",
+    rotation < 90
+      ? "url(#paperFront)"
+      : "url(#paperBack)"
+  );
+
+  waxSeal.style.left =
+    "50%";
+
+  waxSeal.style.top =
+    `${geometry.tipY/10}%`;
+
+  waxSeal.style.visibility =
+    rotation < 90
+      ? "visible"
+      : "hidden";
+
+  flapShadow.style.opacity =
+    `${.23*bend}`;
+
+  flapShadow.style.transform =
+    `
+      translate(
+        -50%,
+        ${-50 + 17*t}%
+      )
+
+      scaleX(
+        ${.93 - .15*bend}
+      )
+
+      scaleY(
+        ${.08 + .74*bend}
+      )
+    `;
+
+  const shade =
+    Math.round(
+      8*bend
+    );
+
+  frontStop1.setAttribute(
+    "stop-color",
+    `rgb(
+      ${234-shade},
+      ${220-shade},
+      ${200-shade}
+    )`
+  );
+
+  frontStop2.setAttribute(
+    "stop-color",
+    `rgb(
+      ${234-shade/2},
+      ${220-shade/2},
+      ${200-shade/2}
+    )`
+  );
+
+  frontStop3.setAttribute(
+    "stop-color",
+    `rgb(
+      ${222-shade},
+      ${200-shade},
+      ${173-shade}
+    )`
+  );
+}
+
+function animate(duration,draw,setFrame){
+
+  return new Promise(resolve=>{
+
+    const start =
+      performance.now();
+
+    function frame(now){
+
+      const progress =
+        clamp(
+          (now-start)/duration,
+          0,
+          1
         );
 
+      draw(progress);
 
-        envelopeTest.addEventListener(
-            "keydown",
-            (event) => {
+      if(progress < 1){
 
-                if (
-                    event.key === "Enter" ||
-                    event.key === " "
-                ) {
-
-                    event.preventDefault();
-
-                    openEnvelope();
-
-                }
-
-            }
+        setFrame(
+          requestAnimationFrame(frame)
         );
 
+      }else{
 
-        restartButton.addEventListener(
-            "click",
-            resetEnvelope
-        );
+        setFrame(null);
 
+        resolve();
+      }
+    }
 
-        /* ================================================== */
-        /* AVVIO                                             */
-        /* ================================================== */
+    setFrame(
+      requestAnimationFrame(frame)
+    );
+  });
+}
 
-        drawEnvelopeBody();
+function animateFlap(){
 
+  return animate(
+    FLAP_DURATION,
+    drawFlapFrame,
+    id=>{
+      flapFrameId=id;
+    }
+  );
+}
 
-        const initialGeometry =
-            getFlapGeometry(0);
+function animateEnvelopeDown(){
 
+  return animate(
+    BODY_DURATION,
 
-        flapPath.setAttribute(
-            "d",
-            initialGeometry.d
-        );
+    progress=>{
 
+      const e =
+        easeInOutCubic(progress);
 
-        flapEdgePath.setAttribute(
-            "d",
-            initialGeometry.d
-        );
+      envelopeBody.style.transform =
+        `translateY(${112*e}vh)`;
+    },
 
+    id=>{
+      bodyFrameId=id;
+    }
+  );
+}
 
-        waxSeal.style.left =
-            "50%";
+function fadeOutFlap(){
 
+  return animate(
+    FLAP_FADE_DURATION,
 
-        waxSeal.style.top =
-            "100%";
+    progress=>{
 
-    </script>
+      const e =
+        easeOutCubic(progress);
 
+      flap.style.opacity =
+        `${1-e}`;
+
+      flapShadow.style.opacity =
+        `${.06*(1-e)}`;
+    },
+
+    id=>{
+      fadeFrameId=id;
+    }
+
+  ).then(()=>{
+
+    flap.style.opacity="0";
+
+    flapShadow.style.opacity="0";
+  });
+}
+
+async function openEnvelope(){
+
+  if(
+    opening ||
+    opened
+  ){
+    return;
+  }
+
+  opening=true;
+
+  hint.classList.add(
+    "hidden"
+  );
+
+  const flapPromise =
+    animateFlap();
+
+  await wait(
+    BODY_START
+  );
+
+  const bodyPromise =
+    animateEnvelopeDown();
+
+  await flapPromise;
+
+  const fadePromise =
+    fadeOutFlap();
+
+  await Promise.all([
+    bodyPromise,
+    fadePromise
+  ]);
+
+  opening=false;
+  opened=true;
+}
+
+function cancelFrame(id){
+
+  if(id){
+    cancelAnimationFrame(id);
+  }
+}
+
+function resetEnvelope(event){
+
+  event.stopPropagation();
+
+  cancelFrame(flapFrameId);
+  cancelFrame(bodyFrameId);
+  cancelFrame(fadeFrameId);
+
+  flapFrameId=null;
+  bodyFrameId=null;
+  fadeFrameId=null;
+
+  opening=false;
+  opened=false;
+
+  envelopeBody.style.transform =
+    "translateY(0)";
+
+  flap.style.transform =
+    "rotateX(0deg) translateZ(0px)";
+
+  flap.style.opacity =
+    "1";
+
+  waxSeal.style.visibility =
+    "visible";
+
+  flapShadow.style.opacity =
+    "0";
+
+  flapShadow.style.transform =
+    "translate(-50%,-50%) scaleY(.04)";
+
+  const initial =
+    getFlapGeometry(0);
+
+  flapPath.setAttribute(
+    "d",
+    initial.d
+  );
+
+  flapEdgePath.setAttribute(
+    "d",
+    initial.d
+  );
+
+  flapPath.setAttribute(
+    "fill",
+    "url(#paperFront)"
+  );
+
+  waxSeal.style.left =
+    "50%";
+
+  waxSeal.style.top =
+    "100%";
+
+  frontStop1.setAttribute(
+    "stop-color",
+    "#EADCC8"
+  );
+
+  frontStop2.setAttribute(
+    "stop-color",
+    "#EADCC8"
+  );
+
+  frontStop3.setAttribute(
+    "stop-color",
+    "#DEC8AD"
+  );
+
+  hint.classList.remove(
+    "hidden"
+  );
+}
+
+envelopeTest.addEventListener(
+  "click",
+  openEnvelope
+);
+
+envelopeTest.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.key==="Enter" ||
+      event.key===" "
+    ){
+
+      event.preventDefault();
+
+      openEnvelope();
+    }
+  }
+);
+
+restartButton.addEventListener(
+  "click",
+  resetEnvelope
+);
+
+drawEnvelopeBody();
+
+const initialGeometry =
+  getFlapGeometry(0);
+
+flapPath.setAttribute(
+  "d",
+  initialGeometry.d
+);
+
+flapEdgePath.setAttribute(
+  "d",
+  initialGeometry.d
+);
+
+waxSeal.style.left =
+  "50%";
+
+waxSeal.style.top =
+  "100%";
+</script>
 
 </body>
-
 </html>

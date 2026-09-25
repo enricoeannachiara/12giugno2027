@@ -1,1 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
 
+:root {
+    --background: #FAF7F2;
+    --background-alt: #F3EEE8;
+
+    --text: #3E3A39;
+    --muted: #8A8178;
+
+    --lilac: #A89CC8;
+    --lilac-dark: #9181BB;
+
+    --card: rgba(255, 255, 255, 0.72);
+    --card-border: rgba(125, 111, 101, 0.12);
+
+    --gold: #CDBB8B;
+    --gold-dark: #BDA978;
+    --gold-active: #B19E70;
+
+    --warm-white: #FFFDF8;
+
+    --paper-front: #EADCC8;
+    --paper-back: #E4D3BC;
+    --paper-side: #E8D7C0;
+    --paper-bottom: #EBDCC6;
+    --paper-edge: #C8B18F;
+
+    --shadow-soft:
+        0 14px 40px
+        rgba(74, 61, 53, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+
+    background: var(--background);
+    color: var(--text);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    overflow-x: hidden;
+}
+
+body.envelope-locked {
+    overflow: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    font: inherit;
+}
+
+.site {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+}

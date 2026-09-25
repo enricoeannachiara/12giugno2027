@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
+
 @font-face {
     font-family: "Sisterhood";
 
@@ -7,8 +9,6 @@
     font-weight: normal;
     font-display: swap;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
 
 :root {
     --background: #FAF7F2;

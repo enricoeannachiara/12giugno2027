@@ -1,13 +1,893 @@
-<div class="countdown-paper">
+<!DOCTYPE html>
+<html lang="it">
 
-    <img
-        class="countdown-paper-image"
-        src="images/cartoncino.png"
-        alt=""
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
     >
 
-    <div class="countdown-paper-content">
-        ...
+    <meta
+        name="theme-color"
+        content="#FAF7F2"
+    >
+
+    <title>Enrico & Annachiara | 12 giugno 2027</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body>
+
+
+    <div
+        class="envelope-screen"
+        id="envelopeScreen"
+    >
+
+        <div
+            class="envelope-stage"
+            id="envelopeStage"
+            role="button"
+            tabindex="0"
+            aria-label="Apri la partecipazione"
+        >
+
+            <div
+                class="flap-shadow"
+                id="flapShadow"
+            ></div>
+
+
+            <div
+                class="envelope-body"
+                id="envelopeBody"
+            >
+
+                <svg
+                    class="body-svg"
+                    viewBox="0 0 1000 1000"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        id="bodyLeftPath"
+                        class="body-side"
+                    ></path>
+
+                    <path
+                        id="bodyLeftFold"
+                        class="body-fold"
+                    ></path>
+
+
+                    <path
+                        id="bodyRightPath"
+                        class="body-side"
+                    ></path>
+
+                    <path
+                        id="bodyRightFold"
+                        class="body-fold"
+                    ></path>
+
+
+                    <path
+                        id="bodyBottomPath"
+                        class="body-bottom"
+                    ></path>
+
+                    <path
+                        id="bodyBottomFold"
+                        class="body-bottom-fold"
+                    ></path>
+
+                </svg>
+
+            </div>
+
+
+            <div
+                class="envelope-flap"
+                id="flap"
+            >
+
+                <svg
+                    class="flap-svg"
+                    viewBox="0 0 1000 1000"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                >
+
+                    <defs>
+
+                        <linearGradient
+                            id="paperFront"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+
+                            <stop
+                                id="frontStop1"
+                                offset="0%"
+                                stop-color="#EADCC8"
+                            ></stop>
+
+                            <stop
+                                id="frontStop2"
+                                offset="65%"
+                                stop-color="#EADCC8"
+                            ></stop>
+
+                            <stop
+                                id="frontStop3"
+                                offset="100%"
+                                stop-color="#DEC8AD"
+                            ></stop>
+
+                        </linearGradient>
+
+
+                        <linearGradient
+                            id="paperBack"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+
+                            <stop
+                                offset="0%"
+                                stop-color="#E6D6C0"
+                            ></stop>
+
+                            <stop
+                                offset="100%"
+                                stop-color="#DCC5A8"
+                            ></stop>
+
+                        </linearGradient>
+
+
+                        <filter
+                            id="paperShadow"
+                            x="-20%"
+                            y="-20%"
+                            width="140%"
+                            height="160%"
+                        >
+
+                            <feDropShadow
+                                dx="0"
+                                dy="4"
+                                stdDeviation="5"
+                                flood-color="#654B35"
+                                flood-opacity=".08"
+                            ></feDropShadow>
+
+                        </filter>
+
+                    </defs>
+
+
+                    <path
+                        id="flapEdgePath"
+                        class="flap-edge"
+                    ></path>
+
+
+                    <path
+                        id="flapPath"
+                        class="flap-paper"
+                    ></path>
+
+                </svg>
+
+
+                <div
+                    class="wax-seal"
+                    id="waxSeal"
+                >
+
+                    <img
+                        src="images/sigillo-AE.png"
+                        alt=""
+                        draggable="false"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-</div>
+
+
+    <main
+        class="site"
+        id="site"
+    >
+
+
+        <section
+            class="hero"
+            id="home"
+        >
+
+            <div class="hero-content">
+
+                <img
+                    class="hero-portrait"
+                    src="images/ritratto.png"
+                    alt="Enrico e Annachiara"
+                >
+
+                <h1>
+                    Enrico & Annachiara
+                </h1>
+
+                <p class="hero-date">
+                    12 giugno 2027
+                </p>
+
+
+                <div
+                    class="countdown-paper"
+                    id="countdown"
+                    aria-label="Conto alla rovescia al matrimonio"
+                >
+
+                    <img
+                        class="countdown-paper-image"
+                        src="images/cartoncino.png"
+                        alt=""
+                    >
+
+                    <div class="countdown-paper-content">
+
+                        <p class="countdown-title">
+                            Mancano
+                        </p>
+
+                        <div class="countdown-grid">
+
+                            <div class="countdown-item">
+
+                                <strong
+                                    id="countdownDays"
+                                >
+                                    000
+                                </strong>
+
+                                <span>
+                                    giorni
+                                </span>
+
+                            </div>
+
+
+                            <div class="countdown-item">
+
+                                <strong
+                                    id="countdownHours"
+                                >
+                                    00
+                                </strong>
+
+                                <span>
+                                    ore
+                                </span>
+
+                            </div>
+
+
+                            <div class="countdown-item">
+
+                                <strong
+                                    id="countdownMinutes"
+                                >
+                                    00
+                                </strong>
+
+                                <span>
+                                    minuti
+                                </span>
+
+                            </div>
+
+
+                            <div class="countdown-item">
+
+                                <strong
+                                    id="countdownSeconds"
+                                >
+                                    00
+                                </strong>
+
+                                <span>
+                                    secondi
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section
+            class="section"
+            id="rsvp"
+        >
+
+            <div class="section-inner">
+
+                <p class="eyebrow">
+                    Ci sarete?
+                </p>
+
+                <h2 class="section-title">
+                    <span
+                        class="section-emoji"
+                        aria-hidden="true"
+                    >
+                        💌
+                    </span>
+
+                    <span>
+                        Conferma la tua presenza
+                    </span>
+                </h2>
+
+                <p class="section-text">
+                    Per aiutarci a organizzare al meglio questa giornata,
+                    vi chiediamo di confermare la vostra presenza compilando
+                    il modulo.
+                </p>
+
+                <a
+                    class="button button-primary"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfR47MLRdUuwzttRWqgoxmSrlCjPIJb15usxh1CkX8zXxw4Rw/viewform"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span aria-hidden="true">
+                        💌
+                    </span>
+
+                    Conferma la presenza
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <section
+            class="section section-alt"
+            id="luoghi"
+        >
+
+            <div class="section-inner">
+
+                <p class="eyebrow">
+                    Dove trovarci
+                </p>
+
+
+                <h2 class="section-title">
+
+                    <img
+                        class="section-title-image"
+                        src="images/pin.png"
+                        alt=""
+                    >
+
+                    <span>
+                        I luoghi della giornata
+                    </span>
+
+                </h2>
+
+
+                <div class="places-grid">
+
+
+                    <article class="place-card">
+
+                        <h3>
+                            <span aria-hidden="true">
+                                🏠
+                            </span>
+
+                            Casa dello sposo
+                        </h3>
+
+
+                        <div class="navigation-buttons">
+
+                            <a
+                                class="button button-small map-button"
+                                href="https://maps.app.goo.gl/kmqRrXZQPzqEgdiU8"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/maps.png"
+                                    alt=""
+                                >
+
+                                Google Maps
+
+                            </a>
+
+
+                            <a
+                                class="button button-small button-secondary map-button"
+                                href="https://waze.com/ul?ll=40.608131%2C14.978180&navigate=yes"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/waze.png"
+                                    alt=""
+                                >
+
+                                Waze
+
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <article class="place-card">
+
+                        <h3>
+                            <span aria-hidden="true">
+                                🏡
+                            </span>
+
+                            Casa della sposa
+                        </h3>
+
+
+                        <div class="navigation-buttons">
+
+                            <a
+                                class="button button-small map-button"
+                                href="https://maps.app.goo.gl/kNUKDeFUFzFnu2As5"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/maps.png"
+                                    alt=""
+                                >
+
+                                Google Maps
+
+                            </a>
+
+
+                            <a
+                                class="button button-small button-secondary map-button"
+                                href="https://waze.com/ul?ll=40.739052%2C14.755519&navigate=yes"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/waze.png"
+                                    alt=""
+                                >
+
+                                Waze
+
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <article class="place-card">
+
+                        <h3>
+                            <span aria-hidden="true">
+                                ⛪
+                            </span>
+
+                            Chiesa di San Martino Vescovo
+                        </h3>
+
+
+                        <div class="navigation-buttons">
+
+                            <a
+                                class="button button-small map-button"
+                                href="https://maps.app.goo.gl/6omwCTy1Atd1c3Cb7"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/maps.png"
+                                    alt=""
+                                >
+
+                                Google Maps
+
+                            </a>
+
+
+                            <a
+                                class="button button-small button-secondary map-button"
+                                href="https://waze.com/ul?ll=40.761874%2C14.785191&navigate=yes"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/waze.png"
+                                    alt=""
+                                >
+
+                                Waze
+
+                            </a>
+
+                        </div>
+
+
+                        <a
+                            class="button ceremony-button"
+                            href="documenti/libretto-messa.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+
+                            <span aria-hidden="true">
+                                📖
+                            </span>
+
+                            Segui con noi la cerimonia
+
+                        </a>
+
+                    </article>
+
+
+
+                    <article class="place-card">
+
+                        <h3>
+                            <span aria-hidden="true">
+                                🥂
+                            </span>
+
+                            Masseria La Morella
+                        </h3>
+
+
+                        <div class="navigation-buttons">
+
+                            <a
+                                class="button button-small map-button"
+                                href="https://maps.app.goo.gl/2apy9TeoYDG768eM7"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/maps.png"
+                                    alt=""
+                                >
+
+                                Google Maps
+
+                            </a>
+
+
+                            <a
+                                class="button button-small button-secondary map-button"
+                                href="https://waze.com/ul?ll=40.610224%2C14.942694&navigate=yes"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+
+                                <img
+                                    class="navigation-logo"
+                                    src="images/waze.png"
+                                    alt=""
+                                >
+
+                                Waze
+
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section
+            class="section"
+            id="album"
+        >
+
+            <div class="section-inner">
+
+                <p class="eyebrow">
+                    Le vostre foto
+                </p>
+
+
+                <h2 class="section-title">
+
+                    <span
+                        class="section-emoji"
+                        aria-hidden="true"
+                    >
+                        📸
+                    </span>
+
+                    <span>
+                        Condividi i tuoi ricordi
+                    </span>
+
+                </h2>
+
+
+                <p class="section-text">
+                    Durante la giornata potrete aggiungere le vostre foto
+                    al nostro album condiviso.
+                </p>
+
+
+                <div class="album-card">
+
+                    <a
+                        class="button button-primary"
+                        href="https://www.wedshoots.com/it?albumId=ITb2ea31c8"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+
+                        <span aria-hidden="true">
+                            📸
+                        </span>
+
+                        Apri l'album fotografico
+
+                    </a>
+
+
+                    <div class="access-code">
+
+                        <span class="access-code-label">
+
+                            <span aria-hidden="true">
+                                🔑
+                            </span>
+
+                            Codice album
+
+                        </span>
+
+
+                        <strong id="wedshootsCode">
+                            ITb2ea31c8
+                        </strong>
+
+
+                        <button
+                            class="copy-button"
+                            id="copyWedshootsCode"
+                            type="button"
+                        >
+
+                            <span aria-hidden="true">
+                                📋
+                            </span>
+
+                            Copia codice
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section
+            class="section section-alt"
+            id="sogno"
+        >
+
+            <div class="section-inner">
+
+                <p class="eyebrow">
+                    Il nostro viaggio
+                </p>
+
+
+                <h2 class="section-title">
+
+                    <span
+                        class="section-emoji"
+                        aria-hidden="true"
+                    >
+                        ❤️
+                    </span>
+
+                    <span>
+                        Il nostro sogno
+                    </span>
+
+                </h2>
+
+
+                <p class="section-text">
+                    Il nostro desiderio più grande è avervi con noi nel
+                    nostro giorno. Se desiderate contribuire alla
+                    realizzazione del nostro sogno, cliccate qui.
+                </p>
+
+
+                <button
+                    class="button button-primary"
+                    id="giftToggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="giftDetails"
+                >
+
+                    <span aria-hidden="true">
+                        💝
+                    </span>
+
+                    Scopri di più
+
+                </button>
+
+
+                <div
+                    class="gift-details"
+                    id="giftDetails"
+                    hidden
+                >
+
+
+                    <div class="gift-row">
+
+                        <span>
+                            👤 Intestatario
+                        </span>
+
+                        <strong>
+                            Enrico Forte
+                        </strong>
+
+                    </div>
+
+
+                    <div class="gift-row gift-iban">
+
+                        <span>
+                            🏦 IBAN
+                        </span>
+
+                        <strong id="ibanCode">
+                            IT95D0367401600000878189011
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        class="copy-button"
+                        id="copyIban"
+                        type="button"
+                    >
+
+                        <span aria-hidden="true">
+                            📋
+                        </span>
+
+                        Copia IBAN
+
+                    </button>
+
+
+                    <div class="gift-row">
+
+                        <span>
+                            🌍 BIC / SWIFT
+                        </span>
+
+                        <strong>
+                            TRBKITMMXXX
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <div
+        class="scroll-indicator"
+        id="scrollIndicator"
+        aria-hidden="true"
+    >
+
+        <span>
+            Scorri
+        </span>
+
+        <span class="scroll-arrow">
+            ↓
+        </span>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

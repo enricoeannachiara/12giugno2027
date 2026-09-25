@@ -9,7 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Test busta SVG</title>
+    <title>Test busta matrimonio</title>
 
     <style>
 
@@ -20,10 +20,12 @@
             --paper: #EADCC8;
             --paper-back: #E5D5BF;
 
-            --paper-side: #E8D8C2;
-            --paper-bottom: #EBDDC9;
+            --paper-side: #E8D7C0;
+            --paper-bottom: #ECDEC9;
 
-            --edge: rgba(117, 92, 66, 0.30);
+            --paper-edge: #C8B08F;
+
+            --fold-line: rgba(104, 80, 57, 0.22);
         }
 
 
@@ -42,13 +44,13 @@
 
 
         body {
+            overflow: hidden;
+
             background: var(--background);
 
             color: var(--text);
 
             font-family: Georgia, serif;
-
-            overflow: hidden;
         }
 
 
@@ -67,18 +69,18 @@
             justify-content: center;
             align-items: center;
 
-            text-align: center;
-
             padding: 30px 20px;
+
+            text-align: center;
         }
 
 
         .hero img {
+            display: block;
+
             width: min(72vw, 340px);
 
             height: auto;
-
-            display: block;
 
             margin-bottom: 20px;
         }
@@ -115,7 +117,7 @@
 
             perspective: 1700px;
 
-            perspective-origin: 50% 15%;
+            perspective-origin: 50% 12%;
 
             cursor: pointer;
 
@@ -124,7 +126,7 @@
 
 
         /* ================================================== */
-        /* CORPO BUSTA                                        */
+        /* CORPO DELLA BUSTA                                  */
         /* ================================================== */
 
         .envelope-body {
@@ -147,10 +149,10 @@
 
             inset: 0;
 
+            display: block;
+
             width: 100%;
             height: 100%;
-
-            display: block;
 
             overflow: visible;
         }
@@ -166,10 +168,10 @@
             left: 50%;
             top: 50%;
 
-            width: 70%;
-            height: 15%;
-
             z-index: 14;
+
+            width: 68%;
+            height: 14%;
 
             transform:
                 translate(-50%, -50%)
@@ -180,9 +182,9 @@
             background:
                 radial-gradient(
                     ellipse at center,
-                    rgba(68, 47, 31, 0.22) 0%,
-                    rgba(68, 47, 31, 0.10) 46%,
-                    rgba(68, 47, 31, 0) 78%
+                    rgba(63, 43, 28, 0.23) 0%,
+                    rgba(63, 43, 28, 0.10) 45%,
+                    rgba(63, 43, 28, 0) 78%
                 );
 
             filter: blur(13px);
@@ -198,7 +200,7 @@
 
 
         /* ================================================== */
-        /* LEMBO                                              */
+        /* LEMBO SUPERIORE                                    */
         /* ================================================== */
 
         .flap {
@@ -207,10 +209,10 @@
             left: 0;
             top: 0;
 
+            z-index: 20;
+
             width: 100vw;
             height: 50vh;
-
-            z-index: 20;
 
             transform-origin: 50% 0;
 
@@ -229,10 +231,10 @@
 
             inset: 0;
 
+            display: block;
+
             width: 100%;
             height: 100%;
-
-            display: block;
 
             overflow: visible;
 
@@ -247,6 +249,16 @@
         .wax-seal {
             position: absolute;
 
+            /*
+                A riposo:
+
+                left = 50vw
+                top  = 50vh
+
+                quindi centro esatto
+                dello schermo.
+            */
+
             left: 50%;
             top: 100%;
 
@@ -259,7 +271,7 @@
                 translate(-50%, -50%)
                 translateZ(5px);
 
-            transform-origin: center center;
+            transform-origin: center;
 
             pointer-events: none;
 
@@ -410,7 +422,7 @@
 
 
         <!-- ================================================== -->
-        <!-- OMBRA LEMBO                                       -->
+        <!-- OMBRA                                             -->
         <!-- ================================================== -->
 
         <div
@@ -421,7 +433,7 @@
 
 
         <!-- ================================================== -->
-        <!-- PARTE INFERIORE                                    -->
+        <!-- CORPO BUSTA                                        -->
         <!-- ================================================== -->
 
         <div
@@ -438,47 +450,50 @@
 
 
                 <!--
-                    IMPORTANTE:
+                    NON esiste uno sfondo pieno.
 
-                    NON esiste un rettangolo pieno
-                    dietro questi elementi.
-
-                    Il triangolo superiore centrale
-                    rimane quindi davvero trasparente.
+                    La zona superiore centrale è
+                    realmente trasparente.
 
                     Quando il lembo si apre,
-                    attraverso quell'area vedremo
-                    direttamente la Hero.
+                    vedremo la Hero attraverso
+                    questo spazio.
                 -->
 
 
                 <!-- ======================================== -->
-                <!-- LATO SINISTRO                           -->
+                <!-- LEMBO LATERALE SINISTRO                 -->
                 <!-- ======================================== -->
 
                 <path
                     d="
                         M 0 0
-                        L 500 500
+
+                        L 500 575
+
                         L 0 1000
+
                         Z
                     "
-                    fill="#E8D8C2"
+                    fill="#E8D7C0"
                 />
 
 
                 <!-- ======================================== -->
-                <!-- LATO DESTRO                             -->
+                <!-- LEMBO LATERALE DESTRO                   -->
                 <!-- ======================================== -->
 
                 <path
                     d="
                         M 1000 0
+
                         L 1000 1000
-                        L 500 500
+
+                        L 500 575
+
                         Z
                     "
-                    fill="#E8D8C2"
+                    fill="#E8D7C0"
                 />
 
 
@@ -489,42 +504,30 @@
                 <path
                     d="
                         M 0 1000
-                        L 500 500
+
+                        L 500 575
+
                         L 1000 1000
+
                         Z
                     "
-                    fill="#EBDDC9"
+                    fill="#ECDEC9"
                 />
 
 
                 <!-- ======================================== -->
-                <!-- PARTE CENTRALE BASSA                    -->
-                <!-- ======================================== -->
-
-                <path
-                    d="
-                        M 0 1000
-                        L 1000 1000
-                        L 1000 1000
-                        L 0 1000
-                        Z
-                    "
-                    fill="#EADCC8"
-                />
-
-
-                <!-- ======================================== -->
-                <!-- LINEA PIEGA SINISTRA                    -->
+                <!-- PIEGA SINISTRA                          -->
                 <!-- ======================================== -->
 
                 <path
                     d="
                         M 0 0
-                        L 500 500
+
+                        L 500 575
                     "
                     fill="none"
 
-                    stroke="rgba(117,92,66,0.24)"
+                    stroke="rgba(104,80,57,0.24)"
 
                     stroke-width="2"
 
@@ -533,17 +536,18 @@
 
 
                 <!-- ======================================== -->
-                <!-- LINEA PIEGA DESTRA                      -->
+                <!-- PIEGA DESTRA                            -->
                 <!-- ======================================== -->
 
                 <path
                     d="
                         M 1000 0
-                        L 500 500
+
+                        L 500 575
                     "
                     fill="none"
 
-                    stroke="rgba(117,92,66,0.24)"
+                    stroke="rgba(104,80,57,0.24)"
 
                     stroke-width="2"
 
@@ -552,17 +556,18 @@
 
 
                 <!-- ======================================== -->
-                <!-- PIEGA BASSA SINISTRA                    -->
+                <!-- PIEGA INFERIORE SINISTRA                -->
                 <!-- ======================================== -->
 
                 <path
                     d="
                         M 0 1000
-                        L 500 500
+
+                        L 500 575
                     "
                     fill="none"
 
-                    stroke="rgba(117,92,66,0.17)"
+                    stroke="rgba(104,80,57,0.17)"
 
                     stroke-width="2"
 
@@ -571,17 +576,18 @@
 
 
                 <!-- ======================================== -->
-                <!-- PIEGA BASSA DESTRA                      -->
+                <!-- PIEGA INFERIORE DESTRA                  -->
                 <!-- ======================================== -->
 
                 <path
                     d="
                         M 1000 1000
-                        L 500 500
+
+                        L 500 575
                     "
                     fill="none"
 
-                    stroke="rgba(117,92,66,0.17)"
+                    stroke="rgba(104,80,57,0.17)"
 
                     stroke-width="2"
 
@@ -614,9 +620,7 @@
                 <defs>
 
 
-                    <!-- =================================== -->
-                    <!-- FRONTE                             -->
-                    <!-- =================================== -->
+                    <!-- FRONTE -->
 
                     <linearGradient
                         id="paperFront"
@@ -634,7 +638,7 @@
 
                         <stop
                             id="frontStop2"
-                            offset="56%"
+                            offset="58%"
                             stop-color="#EADCC8"
                         />
 
@@ -647,9 +651,7 @@
                     </linearGradient>
 
 
-                    <!-- =================================== -->
-                    <!-- RETRO                              -->
-                    <!-- =================================== -->
+                    <!-- RETRO -->
 
                     <linearGradient
                         id="paperBack"
@@ -672,9 +674,7 @@
                     </linearGradient>
 
 
-                    <!-- =================================== -->
-                    <!-- OMBRA                              -->
-                    <!-- =================================== -->
+                    <!-- OMBRA -->
 
                     <filter
                         id="paperShadow"
@@ -697,16 +697,15 @@
                 </defs>
 
 
-                <!-- ======================================= -->
-                <!-- BORDO                                  -->
-                <!-- ======================================= -->
+                <!-- BORDO -->
 
                 <path
                     id="flapEdgePath"
                     d=""
+
                     fill="none"
 
-                    stroke="#C7B08F"
+                    stroke="#C8B08F"
 
                     stroke-width="3"
 
@@ -716,9 +715,7 @@
                 />
 
 
-                <!-- ======================================= -->
-                <!-- CARTA                                  -->
-                <!-- ======================================= -->
+                <!-- CARTA -->
 
                 <path
                     id="flapPath"
@@ -732,9 +729,7 @@
             </svg>
 
 
-            <!-- ========================================== -->
-            <!-- SIGILLO                                   -->
-            <!-- ========================================== -->
+            <!-- SIGILLO -->
 
             <div
                 class="wax-seal"
@@ -841,9 +836,7 @@
 
 
         /*
-            Compromesso richiesto:
-            la busta comincia a scendere
-            dopo 1600 ms.
+            Timing approvato.
         */
 
         const bodyStart =
@@ -942,15 +935,24 @@
 
 
             /*
-                La punta distesa coincide
-                esattamente con il centro
-                verticale dello schermo.
+                PUNTA.
+
+                t = 0:
+                x = 500
+                y = 1000
+
+                Poiché il contenitore è alto 50vh,
+                il sigillo si trova esattamente a:
+
+                50vw / 50vh
+
+                quindi centro dello schermo.
             */
 
             const tipX =
                 500 +
                 (
-                    4 *
+                    3.5 *
                     Math.sin(
                         Math.PI *
                         t *
@@ -963,95 +965,114 @@
             const tipY =
                 1000 -
                 (
-                    215 *
+                    205 *
                     bend
                 );
 
 
             /*
-                FORMA ISPIRATA ALLA FOTO.
+                FORMA DA BUSTA CLASSICA.
 
-                Il lembo non è un semplice
-                triangolo.
+                In alto il bordo scende quasi
+                verticalmente.
 
-                Dagli angoli scende prima
-                con una curva molto larga.
+                Poi si incurva.
 
-                Poi, intorno al 25-30%
-                dell'altezza, assume una
-                diagonale molto più netta
+                Solo dopo la "spalla"
+                inizia la lunga diagonale
                 verso il sigillo.
             */
 
 
             /*
-                "Spalla" destra.
-
-                Più questo valore è alto,
-                più il lembo rimane largo.
+                SPALLA DESTRA
             */
 
             const rightShoulderX =
-                875 -
-                (24 * bend);
+                915 -
+                (20 * bend);
 
 
             const rightShoulderY =
                 300 +
-                (75 * bend);
+                (65 * bend);
 
 
             /*
-                Controllo della diagonale
-                verso la punta.
-
-                Rimane molto esterno,
-                così l'angolo finale
-                non diventa appuntito.
+                DIAGONALE DESTRA
             */
 
-            const rightLowerX =
-                745 -
-                (30 * bend);
+            const rightDiagonalX =
+                760 -
+                (32 * bend);
 
 
-            const rightLowerY =
-                690 -
-                (75 * bend);
+            const rightDiagonalY =
+                610 -
+                (60 * bend);
 
 
             /*
-                Speculare sinistro.
+                ZONA VICINA ALLA PUNTA
+            */
+
+            const rightTipControlX =
+                650 -
+                (20 * bend);
+
+
+            const rightTipControlY =
+                885 -
+                (70 * bend);
+
+
+            /*
+                SINISTRA SPECULARE
             */
 
             const leftShoulderX =
-                125 +
-                (24 * bend);
+                85 +
+                (20 * bend);
 
 
             const leftShoulderY =
                 rightShoulderY;
 
 
-            const leftLowerX =
-                255 +
-                (30 * bend);
+            const leftDiagonalX =
+                240 +
+                (32 * bend);
 
 
-            const leftLowerY =
-                rightLowerY;
+            const leftDiagonalY =
+                rightDiagonalY;
+
+
+            const leftTipControlX =
+                350 +
+                (20 * bend);
+
+
+            const leftTipControlY =
+                rightTipControlY;
 
 
             /*
-                Il path utilizza:
+                PATH DEL LEMBO.
 
-                - una curva superiore destra;
-                - una curva diagonale destra;
-                - una curva diagonale sinistra;
-                - una curva superiore sinistra.
+                Nota importante:
 
-                Il cambio di inclinazione
-                diventa così chiaramente visibile.
+                NON utilizziamo una singola curva.
+
+                Il lato destro è composto da:
+
+                1) bordo superiore;
+                2) curva della spalla;
+                3) diagonale;
+                4) arrotondamento verso la punta.
+
+                E poi la stessa cosa
+                specchiata a sinistra.
             */
 
             const d = `
@@ -1063,26 +1084,38 @@
 
 
                 C
-                995 ${120 + 25 * bend},
-                965 ${220 + 45 * bend},
+                998 ${130 + 20 * bend},
+                980 ${245 + 35 * bend},
                 ${rightShoulderX} ${rightShoulderY}
 
 
                 C
-                ${rightLowerX} ${rightLowerY},
-                ${650 - 20 * bend} ${900 - 75 * bend},
+                ${860 - 22 * bend} ${380 + 40 * bend},
+                ${rightDiagonalX} ${rightDiagonalY},
+                ${rightTipControlX} ${rightTipControlY}
+
+
+                C
+                ${600 - 15 * bend} ${950 - 55 * bend},
+                ${550 - 8 * bend} ${985 - 20 * bend},
                 ${tipX} ${tipY}
 
 
                 C
-                ${350 + 20 * bend} ${900 - 75 * bend},
-                ${leftLowerX} ${leftLowerY},
+                ${450 + 8 * bend} ${985 - 20 * bend},
+                ${400 + 15 * bend} ${950 - 55 * bend},
+                ${leftTipControlX} ${leftTipControlY}
+
+
+                C
+                ${leftDiagonalX} ${leftDiagonalY},
+                ${140 + 22 * bend} ${380 + 40 * bend},
                 ${leftShoulderX} ${leftShoulderY}
 
 
                 C
-                35 ${220 + 45 * bend},
-                5 ${120 + 25 * bend},
+                20 ${245 + 35 * bend},
+                2 ${130 + 20 * bend},
                 0 0
 
 
@@ -1101,7 +1134,7 @@
 
 
         /* ================================================== */
-        /* DISEGNO FRAME DEL LEMBO                           */
+        /* DISEGNO LEMBO                                     */
         /* ================================================== */
 
         function drawFlapFrame(progress) {
@@ -1123,7 +1156,7 @@
 
 
             /*
-                Rotazione + piccolo assestamento.
+                Rotazione.
             */
 
             let rotation;
@@ -1140,7 +1173,10 @@
             } else {
 
                 const settle =
-                    (t - 0.94) /
+                    (
+                        t -
+                        0.94
+                    ) /
                     0.06;
 
 
@@ -1157,7 +1193,7 @@
 
 
             /*
-                Leggera profondità.
+                Profondità.
             */
 
             const depth =
@@ -1219,8 +1255,8 @@
 
 
             /*
-                Oltre 90° il sigillo
-                è dietro al lembo.
+                Superati 90° il sigillo
+                è dietro il lembo.
             */
 
             waxSeal.style.visibility =
@@ -1234,22 +1270,22 @@
             /* ---------------------------------------------- */
 
             flapShadow.style.opacity =
-                `${0.24 * bend}`;
+                `${0.23 * bend}`;
 
 
             flapShadow.style.transform =
                 `
                 translate(
                     -50%,
-                    ${-50 + 18 * t}%
+                    ${-50 + 17 * t}%
                 )
 
                 scaleX(
-                    ${0.92 - 0.16 * bend}
+                    ${0.92 - 0.15 * bend}
                 )
 
                 scaleY(
-                    ${0.08 + 0.78 * bend}
+                    ${0.08 + 0.76 * bend}
                 )
                 `;
 
@@ -1341,6 +1377,7 @@
                             flapFrameId =
                                 null;
 
+
                             resolve();
 
                         }
@@ -1395,7 +1432,7 @@
 
                         /*
                             Scende soltanto
-                            la parte inferiore.
+                            il corpo della busta.
                         */
 
                         envelopeBody.style.transform =
@@ -1415,6 +1452,7 @@
 
                             bodyFrameId =
                                 null;
+
 
                             resolve();
 
@@ -1521,7 +1559,10 @@
 
         async function openEnvelope() {
 
-            if (opening || opened) {
+            if (
+                opening ||
+                opened
+            ) {
                 return;
             }
 
@@ -1535,7 +1576,7 @@
 
 
             /*
-                Parte subito il lembo.
+                Apertura lembo.
             */
 
             const flapPromise =
@@ -1543,8 +1584,8 @@
 
 
             /*
-                Dopo 1600 ms inizia
-                già lo sfilamento.
+                Dopo 1600 ms parte
+                lo sfilamento.
             */
 
             await wait(
@@ -1557,16 +1598,15 @@
 
 
             /*
-                Nel frattempo il lembo
-                continua ad aprirsi.
+                Attendiamo che il lembo
+                finisca la rotazione.
             */
 
             await flapPromise;
 
 
             /*
-                Finita l'apertura,
-                sparisce immediatamente.
+                Poi sparisce rapidamente.
             */
 
             const fadePromise =
@@ -1580,6 +1620,7 @@
 
 
             opening = false;
+
             opened = true;
 
         }
@@ -1628,6 +1669,7 @@
 
 
             opening = false;
+
             opened = false;
 
 
@@ -1730,6 +1772,7 @@
                 ) {
 
                     event.preventDefault();
+
 
                     openEnvelope();
 

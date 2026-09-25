@@ -22,9 +22,6 @@ const bodyLeftFold = $("bodyLeftFold");
 const bodyRightFold = $("bodyRightFold");
 const bodyBottomFold = $("bodyBottomFold");
 
-const bodySvg = document.querySelector(".body-svg");
-const flapSvg = document.querySelector(".flap-svg");
-
 const FLAP_DURATION = 3400;
 const BODY_START = 1600;
 const BODY_DURATION = 1450;
@@ -42,10 +39,6 @@ window.envelopeState = {
 };
 
 
-/* =======================================================
-   FUNZIONI GENERALI
-======================================================= */
-
 function clamp(value, min, max) {
     return Math.min(
         Math.max(value, min),
@@ -53,15 +46,18 @@ function clamp(value, min, max) {
     );
 }
 
+
 function easeInOutCubic(t) {
     return t < 0.5
         ? 4 * t * t * t
         : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+
 function easeOutCubic(t) {
     return 1 - Math.pow(1 - t, 3);
 }
+
 
 function bendCurve(t) {
     return Math.pow(
@@ -73,405 +69,11 @@ function bendCurve(t) {
     );
 }
 
+
 function wait(milliseconds) {
     return new Promise(resolve => {
         setTimeout(resolve, milliseconds);
     });
-}
-
-
-/* =======================================================
-   TEXTURE CARTA
-======================================================= */
-
-function createPaperTextureFilter(
-    svg,
-    filterId,
-    includeShadow = false
-) {
-
-    if (!svg) {
-        return;
-    }
-
-    const namespace =
-        "http://www.w3.org/2000/svg";
-
-    let defs =
-        svg.querySelector("defs");
-
-    if (!defs) {
-
-        defs =
-            document.createElementNS(
-                namespace,
-                "defs"
-            );
-
-        svg.insertBefore(
-            defs,
-            svg.firstChild
-        );
-    }
-
-
-    const filter =
-        document.createElementNS(
-            namespace,
-            "filter"
-        );
-
-    filter.setAttribute(
-        "id",
-        filterId
-    );
-
-    filter.setAttribute(
-        "x",
-        "-8%"
-    );
-
-    filter.setAttribute(
-        "y",
-        "-8%"
-    );
-
-    filter.setAttribute(
-        "width",
-        "116%"
-    );
-
-    filter.setAttribute(
-        "height",
-        "116%"
-    );
-
-    filter.setAttribute(
-        "color-interpolation-filters",
-        "sRGB"
-    );
-
-
-    const turbulence =
-        document.createElementNS(
-            namespace,
-            "feTurbulence"
-        );
-
-    turbulence.setAttribute(
-        "type",
-        "fractalNoise"
-    );
-
-    turbulence.setAttribute(
-        "baseFrequency",
-        "0.72"
-    );
-
-    turbulence.setAttribute(
-        "numOctaves",
-        "3"
-    );
-
-    turbulence.setAttribute(
-        "seed",
-        "17"
-    );
-
-    turbulence.setAttribute(
-        "stitchTiles",
-        "stitch"
-    );
-
-    turbulence.setAttribute(
-        "result",
-        "paperNoise"
-    );
-
-
-    const grain =
-        document.createElementNS(
-            namespace,
-            "feColorMatrix"
-        );
-
-    grain.setAttribute(
-        "in",
-        "paperNoise"
-    );
-
-    grain.setAttribute(
-        "type",
-        "matrix"
-    );
-
-    /*
-     * Il rumore viene schiarito quasi fino al bianco.
-     * In questo modo il multiply crea soltanto
-     * piccolissime variazioni nella superficie.
-     */
-    grain.setAttribute(
-        "values",
-        `
-            0.07 0    0    0 0.93
-            0    0.07 0    0 0.93
-            0    0    0.07 0 0.93
-            0    0    0    1 0
-        `
-    );
-
-    grain.setAttribute(
-        "result",
-        "softGrain"
-    );
-
-
-    const blend =
-        document.createElementNS(
-            namespace,
-            "feBlend"
-        );
-
-    blend.setAttribute(
-        "in",
-        "SourceGraphic"
-    );
-
-    blend.setAttribute(
-        "in2",
-        "softGrain"
-    );
-
-    blend.setAttribute(
-        "mode",
-        "multiply"
-    );
-
-    blend.setAttribute(
-        "result",
-        "texturedPaper"
-    );
-
-
-    filter.appendChild(
-        turbulence
-    );
-
-    filter.appendChild(
-        grain
-    );
-
-    filter.appendChild(
-        blend
-    );
-
-
-    /*
-     * Il lembo superiore aveva già una leggerissima
-     * ombra. La ricreiamo nello stesso filtro così
-     * texture e ombra possono convivere.
-     */
-    if (includeShadow) {
-
-        const blur =
-            document.createElementNS(
-                namespace,
-                "feGaussianBlur"
-            );
-
-        blur.setAttribute(
-            "in",
-            "SourceAlpha"
-        );
-
-        blur.setAttribute(
-            "stdDeviation",
-            "5"
-        );
-
-        blur.setAttribute(
-            "result",
-            "shadowBlur"
-        );
-
-
-        const offset =
-            document.createElementNS(
-                namespace,
-                "feOffset"
-            );
-
-        offset.setAttribute(
-            "in",
-            "shadowBlur"
-        );
-
-        offset.setAttribute(
-            "dx",
-            "0"
-        );
-
-        offset.setAttribute(
-            "dy",
-            "4"
-        );
-
-        offset.setAttribute(
-            "result",
-            "shadowOffset"
-        );
-
-
-        const flood =
-            document.createElementNS(
-                namespace,
-                "feFlood"
-            );
-
-        flood.setAttribute(
-            "flood-color",
-            "#654B35"
-        );
-
-        flood.setAttribute(
-            "flood-opacity",
-            "0.08"
-        );
-
-        flood.setAttribute(
-            "result",
-            "shadowColor"
-        );
-
-
-        const composite =
-            document.createElementNS(
-                namespace,
-                "feComposite"
-            );
-
-        composite.setAttribute(
-            "in",
-            "shadowColor"
-        );
-
-        composite.setAttribute(
-            "in2",
-            "shadowOffset"
-        );
-
-        composite.setAttribute(
-            "operator",
-            "in"
-        );
-
-        composite.setAttribute(
-            "result",
-            "paperShadow"
-        );
-
-
-        const merge =
-            document.createElementNS(
-                namespace,
-                "feMerge"
-            );
-
-
-        const shadowNode =
-            document.createElementNS(
-                namespace,
-                "feMergeNode"
-            );
-
-        shadowNode.setAttribute(
-            "in",
-            "paperShadow"
-        );
-
-
-        const paperNode =
-            document.createElementNS(
-                namespace,
-                "feMergeNode"
-            );
-
-        paperNode.setAttribute(
-            "in",
-            "texturedPaper"
-        );
-
-
-        merge.appendChild(
-            shadowNode
-        );
-
-        merge.appendChild(
-            paperNode
-        );
-
-
-        filter.appendChild(
-            blur
-        );
-
-        filter.appendChild(
-            offset
-        );
-
-        filter.appendChild(
-            flood
-        );
-
-        filter.appendChild(
-            composite
-        );
-
-        filter.appendChild(
-            merge
-        );
-    }
-
-
-    defs.appendChild(
-        filter
-    );
-}
-
-
-function installPaperTexture() {
-
-    createPaperTextureFilter(
-        bodySvg,
-        "paperTextureBody",
-        false
-    );
-
-    createPaperTextureFilter(
-        flapSvg,
-        "paperTextureFlap",
-        true
-    );
-
-
-    bodyLeftPath.style.filter =
-        "url(#paperTextureBody)";
-
-    bodyRightPath.style.filter =
-        "url(#paperTextureBody)";
-
-    bodyBottomPath.style.filter =
-        "url(#paperTextureBody)";
-
-
-    /*
-     * style.filter prevale sul vecchio filtro
-     * definito in envelope.css.
-     * Il nuovo filtro comprende già anche
-     * l'ombra originale.
-     */
-    flapPath.style.filter =
-        "url(#paperTextureFlap)";
 }
 
 
@@ -481,14 +83,11 @@ function installPaperTexture() {
 
 function getFlapGeometry(t) {
 
-    const bend =
-        bendCurve(t);
-
+    const bend = bendCurve(t);
 
     const tipY =
         1000 -
         190 * bend;
-
 
     const tipLeftX =
         468;
@@ -496,67 +95,63 @@ function getFlapGeometry(t) {
     const tipRightX =
         532;
 
-
     /*
-     * Punta leggermente convessa,
-     * specchiata rispetto alla curvatura
+     * La punta è specchiata rispetto a quella
      * del lembo inferiore.
+     *
+     * Prima era:
+     *
+     * tipY + 15
+     *
+     * e produceva una piccola concavità.
+     *
+     * Ora i due estremi della curva sono 15 unità
+     * più in alto rispetto al centro, producendo
+     * una punta leggermente convessa.
      */
     const tipSideY =
         tipY - 15;
-
 
     const shoulderY =
         420 +
         35 * bend;
 
-
     const leftShoulderX =
         12 * bend;
-
 
     const rightShoulderX =
         1000 -
         12 * bend;
 
-
     const rightControl1X =
         835 -
         18 * bend;
-
 
     const rightControl1Y =
         590 +
         15 * bend;
 
-
     const rightControl2X =
         625 -
         10 * bend;
-
 
     const rightControl2Y =
         860 -
         50 * bend;
 
-
     const leftControl1X =
         165 +
         18 * bend;
 
-
     const leftControl1Y =
         rightControl1Y;
-
 
     const leftControl2X =
         375 +
         10 * bend;
 
-
     const leftControl2Y =
         rightControl2Y;
-
 
     const d = `
         M 0 0
@@ -615,7 +210,6 @@ function getFlapGeometry(t) {
         Z
     `;
 
-
     return {
         d,
         tipY,
@@ -630,18 +224,11 @@ function getFlapGeometry(t) {
 
 function drawEnvelopeBody() {
 
-    const sideStartY =
-        192.5;
+    const sideStartY = 192.5;
+    const sideMeetY = 500;
 
-    const sideMeetY =
-        500;
-
-
-    const leftMeetX =
-        492;
-
-    const rightMeetX =
-        508;
+    const leftMeetX = 492;
+    const rightMeetX = 508;
 
 
     bodyLeftPath.setAttribute(
@@ -700,21 +287,12 @@ function drawEnvelopeBody() {
     );
 
 
-    const tipY =
-        490;
+    const tipY = 490;
+    const tipLeftX = 468;
+    const tipRightX = 532;
+    const tipSideY = 505;
 
-    const tipLeftX =
-        468;
-
-    const tipRightX =
-        532;
-
-    const tipSideY =
-        505;
-
-
-    const verticalStartY =
-        750;
+    const verticalStartY = 750;
 
 
     bodyBottomPath.setAttribute(
@@ -777,7 +355,7 @@ function drawEnvelopeBody() {
 
 
 /* =======================================================
-   ANIMAZIONE DEL LEMBO
+   DISEGNO DEL LEMBO DURANTE L'ANIMAZIONE
 ======================================================= */
 
 function drawFlapFrame(progress) {
@@ -789,10 +367,8 @@ function drawFlapFrame(progress) {
             1
         );
 
-
     const geometry =
         getFlapGeometry(t);
-
 
     const bend =
         geometry.bend;
@@ -815,13 +391,13 @@ function drawFlapFrame(progress) {
             (t - 0.94) /
             0.06;
 
-
         rotation =
             181.5 -
             1.5 *
             easeOutCubic(
                 settle
             );
+
     }
 
 
@@ -923,11 +499,12 @@ function drawFlapFrame(progress) {
             ${173 - shade}
         )`
     );
+
 }
 
 
 /* =======================================================
-   MOTORE ANIMAZIONI
+   MOTORE ANIMAZIONE
 ======================================================= */
 
 function animate(
@@ -969,7 +546,9 @@ function animate(
                 setFrameId(null);
 
                 resolve();
+
             }
+
         }
 
 
@@ -978,22 +557,34 @@ function animate(
                 frame
             )
         );
+
     });
+
 }
 
+
+/* =======================================================
+   ANIMAZIONE LEMBO
+======================================================= */
 
 function animateFlap() {
 
     return animate(
         FLAP_DURATION,
+
         drawFlapFrame,
 
         id => {
             flapFrameId = id;
         }
     );
+
 }
 
+
+/* =======================================================
+   DISCESA DEL CORPO DELLA BUSTA
+======================================================= */
 
 function animateEnvelopeDown() {
 
@@ -1012,14 +603,20 @@ function animateEnvelopeDown() {
                 `translateY(
                     ${112 * e}vh
                 )`;
+
         },
 
         id => {
             bodyFrameId = id;
         }
     );
+
 }
 
+
+/* =======================================================
+   DISSOLVENZA DEL LEMBO
+======================================================= */
 
 function fadeOutFlap() {
 
@@ -1040,6 +637,7 @@ function fadeOutFlap() {
 
             flapShadow.style.opacity =
                 `${0.06 * (1 - e)}`;
+
         },
 
         id => {
@@ -1054,12 +652,14 @@ function fadeOutFlap() {
 
         flapShadow.style.opacity =
             "0";
+
     });
+
 }
 
 
 /* =======================================================
-   APERTURA
+   APERTURA DELLA BUSTA
 ======================================================= */
 
 async function openEnvelope() {
@@ -1146,6 +746,7 @@ async function openEnvelope() {
             "envelopeopened"
         )
     );
+
 }
 
 
@@ -1158,13 +759,6 @@ function initialiseEnvelope() {
     document.body.classList.add(
         "envelope-locked"
     );
-
-
-    /*
-     * Installiamo la grana prima di disegnare
-     * definitivamente la busta.
-     */
-    installPaperTexture();
 
 
     drawEnvelopeBody();
@@ -1202,6 +796,7 @@ function initialiseEnvelope() {
 
     waxSeal.style.visibility =
         "visible";
+
 }
 
 
@@ -1227,7 +822,9 @@ envelopeStage.addEventListener(
             event.preventDefault();
 
             openEnvelope();
+
         }
+
     }
 );
 

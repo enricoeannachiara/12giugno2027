@@ -19,9 +19,14 @@
 
             --paper-front: #EADCC8;
             --paper-back: #E4D2BA;
-            --paper-edge: #C7B08F;
 
-            --pocket-paper: #EADCC8;
+            --paper-edge: #C5AE8D;
+
+            --envelope-main: #EADCC8;
+            --envelope-side: #E7D7C1;
+            --envelope-bottom: #EBDDC9;
+
+            --fold-line: rgba(110, 87, 62, 0.26);
         }
 
 
@@ -122,7 +127,7 @@
 
 
         /* ================================================== */
-        /* CORPO DELLA BUSTA                                  */
+        /* CORPO COMPLETO DELLA BUSTA                         */
         /* ================================================== */
 
         .envelope-body {
@@ -132,6 +137,10 @@
 
             z-index: 15;
 
+            overflow: hidden;
+
+            background: var(--envelope-main);
+
             pointer-events: none;
 
             transform: translateY(0);
@@ -140,51 +149,33 @@
         }
 
 
-        .envelope-pocket {
+        /* ================================================== */
+        /* SVG DELLA PARTE INFERIORE                          */
+        /* ================================================== */
+
+        .envelope-body-svg {
             position: absolute;
 
             inset: 0;
 
-            background: transparent;
+            width: 100%;
+            height: 100%;
+
+            display: block;
         }
 
 
-        .pocket-left,
-        .pocket-right,
-        .pocket-bottom {
-            position: absolute;
+        /*
+            La parte bassa della busta viene ora costruita
+            come una vera busta:
 
-            inset: 0;
+            - pannello sinistro;
+            - pannello destro;
+            - pannello inferiore;
+            - linee di piega molto leggere.
 
-            background: var(--pocket-paper);
-        }
-
-
-        .pocket-left {
-            clip-path: polygon(
-                0 0,
-                50% 50%,
-                0 100%
-            );
-        }
-
-
-        .pocket-right {
-            clip-path: polygon(
-                100% 0,
-                100% 100%,
-                50% 50%
-            );
-        }
-
-
-        .pocket-bottom {
-            clip-path: polygon(
-                0 100%,
-                50% 50%,
-                100% 100%
-            );
-        }
+            Tutti i colori sono volutamente molto simili.
+        */
 
 
         /* ================================================== */
@@ -256,7 +247,7 @@
 
 
         /* ================================================== */
-        /* SVG                                                */
+        /* SVG DEL LEMBO                                      */
         /* ================================================== */
 
         .flap-svg {
@@ -444,7 +435,7 @@
     >
 
 
-        <!-- OMBRA -->
+        <!-- OMBRA DEL LEMBO -->
 
         <div
             class="flap-shadow"
@@ -452,27 +443,147 @@
         ></div>
 
 
-        <!-- CORPO BUSTA -->
+        <!-- ================================================== -->
+        <!-- PARTE INFERIORE DELLA BUSTA                        -->
+        <!-- ================================================== -->
 
         <div
             class="envelope-body"
             id="envelopeBody"
         >
 
-            <div class="envelope-pocket">
+            <svg
+                class="envelope-body-svg"
+                viewBox="0 0 1000 1000"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+            >
 
-                <div class="pocket-left"></div>
 
-                <div class="pocket-right"></div>
+                <!-- SFONDO COMPLETO -->
 
-                <div class="pocket-bottom"></div>
+                <rect
+                    x="0"
+                    y="0"
+                    width="1000"
+                    height="1000"
+                    fill="#EADCC8"
+                />
 
-            </div>
+
+                <!-- ======================================== -->
+                <!-- PANNELLO SINISTRO                       -->
+                <!-- ======================================== -->
+
+                <path
+                    d="
+                        M 0 0
+                        L 500 500
+                        L 0 1000
+                        Z
+                    "
+                    fill="#E7D7C1"
+                />
+
+
+                <!-- ======================================== -->
+                <!-- PANNELLO DESTRO                         -->
+                <!-- ======================================== -->
+
+                <path
+                    d="
+                        M 1000 0
+                        L 500 500
+                        L 1000 1000
+                        Z
+                    "
+                    fill="#E7D7C1"
+                />
+
+
+                <!-- ======================================== -->
+                <!-- PANNELLO INFERIORE                      -->
+                <!-- ======================================== -->
+
+                <path
+                    d="
+                        M 0 1000
+                        L 500 500
+                        L 1000 1000
+                        Z
+                    "
+                    fill="#EBDDC9"
+                />
+
+
+                <!-- ======================================== -->
+                <!-- PIEGA SINISTRA                          -->
+                <!-- ======================================== -->
+
+                <path
+                    d="
+                        M 0 0
+                        L 500 500
+                    "
+                    fill="none"
+                    stroke="rgba(110,87,62,0.24)"
+                    stroke-width="2"
+                    vector-effect="non-scaling-stroke"
+                />
+
+
+                <!-- ======================================== -->
+                <!-- PIEGA DESTRA                            -->
+                <!-- ======================================== -->
+
+                <path
+                    d="
+                        M 1000 0
+                        L 500 500
+                    "
+                    fill="none"
+                    stroke="rgba(110,87,62,0.24)"
+                    stroke-width="2"
+                    vector-effect="non-scaling-stroke"
+                />
+
+
+                <!-- ======================================== -->
+                <!-- PIEGHE DAL BASSO                        -->
+                <!-- ======================================== -->
+
+                <path
+                    d="
+                        M 0 1000
+                        L 500 500
+                    "
+                    fill="none"
+                    stroke="rgba(110,87,62,0.18)"
+                    stroke-width="2"
+                    vector-effect="non-scaling-stroke"
+                />
+
+
+                <path
+                    d="
+                        M 1000 1000
+                        L 500 500
+                    "
+                    fill="none"
+                    stroke="rgba(110,87,62,0.18)"
+                    stroke-width="2"
+                    vector-effect="non-scaling-stroke"
+                />
+
+
+            </svg>
 
         </div>
 
 
-        <!-- LEMBO -->
+        <!-- ================================================== -->
+        <!-- LEMBO SUPERIORE                                    -->
+        <!-- ================================================== -->
 
         <div
             class="flap"
@@ -688,39 +799,24 @@
         /* TEMPI                                             */
         /* ================================================== */
 
-        /*
-            Apertura completa del lembo.
-        */
-
         const flapDuration =
             3400;
 
 
         /*
-            GRANDE ANTICIPO DELLA BUSTA.
+            NUOVO VALORE.
 
-            La discesa parte già dopo 1,8 s.
-
-            Quindi per circa 1,6 secondi
-            apertura del lembo e sfilamento
-            avvengono contemporaneamente.
+            La parte inferiore comincia
+            a scendere già dopo 1,4 secondi.
         */
 
         const bodyStart =
-            1800;
+            1400;
 
-
-        /*
-            Durata discesa.
-        */
 
         const bodyDuration =
-            1450;
+            1500;
 
-
-        /*
-            Dissolvenza del lembo.
-        */
 
         const flapFadeDuration =
             300;
@@ -810,17 +906,8 @@
 
 
             /*
-                Il lembo torna a occupare
-                TUTTA la metà superiore.
-
-                Quindi:
-
-                sinistra = 0
-                destra   = 1000
-                punta    = 1000
-
-                La punta corrisponde esattamente
-                al centro verticale dello schermo.
+                Il lembo continua a partire
+                dagli angoli superiori.
             */
 
             const baseLeft =
@@ -831,21 +918,18 @@
                 1000;
 
 
+            /*
+                La punta rimane esattamente
+                al centro verticale dello schermo.
+            */
+
             const restingTipY =
                 1000;
 
 
-            /*
-                Durante la piega la punta
-                sale temporaneamente.
-
-                A riposo però torna sempre
-                al centro dello schermo.
-            */
-
             const tipY =
                 restingTipY -
-                (235 * bend);
+                (225 * bend);
 
 
             const tipX =
@@ -862,76 +946,141 @@
 
 
             /*
-                QUI otteniamo l'angolo
-                meno acuto.
+                NUOVA GEOMETRIA.
 
-                Non accorciamo il lembo.
+                Ogni lato è composto idealmente
+                da due zone:
 
-                Facciamo invece arrivare
-                le curve verso la punta
-                molto più orizzontalmente.
+                1. parte alta curva;
+                2. parte inferiore diagonale.
+
+                Il cambio di inclinazione avviene
+                circa a 1/4 dell'altezza
+                del lembo dalla parte superiore,
+                cioè circa ai 3/4 partendo
+                dal basso.
+
+                Questo è molto più simile
+                a una busta reale.
             */
-
-
-            const rightUpperX =
-                930 -
-                (25 * bend);
-
-
-            const rightUpperY =
-                260 +
-                (100 * bend);
 
 
             /*
-                Questo punto è volutamente
-                molto lontano dalla punta.
+                PARTE ALTA DESTRA
+            */
 
-                È ciò che rende l'angolo finale
-                molto più aperto.
+            const rightCurveX =
+                970 -
+                (15 * bend);
+
+
+            const rightCurveY =
+                120 +
+                (50 * bend);
+
+
+            /*
+                PUNTO DI CAMBIO DIREZIONE
+                sul lato destro.
+
+                È molto più esterno rispetto
+                alle versioni precedenti.
+            */
+
+            const rightShoulderX =
+                865 -
+                (30 * bend);
+
+
+            const rightShoulderY =
+                285 +
+                (75 * bend);
+
+
+            /*
+                PARTE BASSA DESTRA.
+
+                Il controllo è molto laterale:
+                questo apre parecchio
+                l'angolo finale.
             */
 
             const rightLowerX =
-                860 -
-                (40 * bend);
+                790 -
+                (35 * bend);
 
 
             const rightLowerY =
-                900 -
-                (125 * bend);
+                760 -
+                (85 * bend);
 
 
-            const leftUpperX =
-                70 +
-                (25 * bend);
+            /*
+                SINISTRA speculare.
+            */
+
+            const leftCurveX =
+                30 +
+                (15 * bend);
 
 
-            const leftUpperY =
-                rightUpperY;
+            const leftCurveY =
+                rightCurveY;
+
+
+            const leftShoulderX =
+                135 +
+                (30 * bend);
+
+
+            const leftShoulderY =
+                rightShoulderY;
 
 
             const leftLowerX =
-                140 +
-                (40 * bend);
+                210 +
+                (35 * bend);
 
 
             const leftLowerY =
                 rightLowerY;
 
 
+            /*
+                Costruiamo il path con
+                QUATTRO curve Bézier.
+
+                Non è più una sola curva
+                continua dall'angolo alla punta.
+            */
+
             const d = `
                 M ${baseLeft} 0
 
                 L ${baseRight} 0
 
-                C
-                ${rightUpperX} ${rightUpperY},
-                ${rightLowerX} ${rightLowerY},
-                ${tipX} ${tipY}
 
                 C
+                ${baseRight} ${rightCurveY},
+                ${rightCurveX} ${rightShoulderY},
+                ${rightShoulderX} ${rightShoulderY}
+
+
+                C
+                ${rightLowerX} ${rightLowerY},
+                ${665 - 25 * bend} ${930 - 80 * bend},
+                ${tipX} ${tipY}
+
+
+                C
+                ${335 + 25 * bend} ${930 - 80 * bend},
                 ${leftLowerX} ${leftLowerY},
-                ${leftUpperX} ${leftUpperY},
+                ${leftShoulderX} ${leftShoulderY}
+
+
+                C
+                ${leftCurveX} ${leftShoulderY},
+                ${baseLeft} ${leftCurveY},
                 ${baseLeft} 0
 
                 Z
@@ -949,7 +1098,7 @@
 
 
         /* ================================================== */
-        /* DISEGNO FRAME LEMBO                               */
+        /* DISEGNO DEL LEMBO                                 */
         /* ================================================== */
 
         function drawFlapFrame(progress) {
@@ -969,10 +1118,6 @@
             const bend =
                 geometry.bend;
 
-
-            /*
-                Assestamento finale.
-            */
 
             let rotation;
 
@@ -1013,10 +1158,6 @@
                  translateZ(${depth}px)`;
 
 
-            /* ---------------------------------------------- */
-            /* CARTA                                         */
-            /* ---------------------------------------------- */
-
             flapPath.setAttribute(
                 "d",
                 geometry.d
@@ -1029,9 +1170,9 @@
             );
 
 
-            /* ---------------------------------------------- */
-            /* FRONTE / RETRO                                */
-            /* ---------------------------------------------- */
+            /*
+                Fronte / retro.
+            */
 
             if (rotation < 90) {
 
@@ -1050,9 +1191,9 @@
             }
 
 
-            /* ---------------------------------------------- */
-            /* SIGILLO                                       */
-            /* ---------------------------------------------- */
+            /*
+                Sigillo.
+            */
 
             waxSeal.style.left =
                 `${geometry.tipX / 10}%`;
@@ -1068,9 +1209,9 @@
                     : "hidden";
 
 
-            /* ---------------------------------------------- */
-            /* OMBRA                                         */
-            /* ---------------------------------------------- */
+            /*
+                Ombra.
+            */
 
             flapShadow.style.opacity =
                 `${0.25 * bend}`;
@@ -1093,9 +1234,9 @@
                 `;
 
 
-            /* ---------------------------------------------- */
-            /* LUCE                                          */
-            /* ---------------------------------------------- */
+            /*
+                Luce.
+            */
 
             const shade =
                 Math.round(
@@ -1136,7 +1277,7 @@
 
 
         /* ================================================== */
-        /* ANIMAZIONE LEMBO                                  */
+        /* APERTURA LEMBO                                    */
         /* ================================================== */
 
         function animateFlap() {
@@ -1199,7 +1340,7 @@
 
 
         /* ================================================== */
-        /* DISCESA DEL CORPO BUSTA                           */
+        /* DISCESA DEL CORPO DELLA BUSTA                     */
         /* ================================================== */
 
         function animateEnvelopeDown() {
@@ -1233,10 +1374,9 @@
 
 
                         /*
-                            Scende SOLO il corpo.
+                            Scende SOLO la parte inferiore.
 
-                            Il lembo rimane in alto
-                            e verrà dissolto separatamente.
+                            Il lembo resta nella parte alta.
                         */
 
                         envelopeBody.style.transform =
@@ -1376,7 +1516,8 @@
 
 
             /*
-                Il lembo parte immediatamente.
+                0 ms:
+                il lembo comincia ad aprirsi.
             */
 
             const flapPromise =
@@ -1384,9 +1525,13 @@
 
 
             /*
-                Dopo appena 1,8 secondi
-                comincia già a sfilarsi
-                la parte inferiore della busta.
+                1400 ms:
+                la parte inferiore comincia
+                già a sfilarsi.
+
+                Quindi le due animazioni
+                si sovrappongono per circa
+                due secondi.
             */
 
             await wait(
@@ -1399,17 +1544,16 @@
 
 
             /*
-                Lasciamo che il lembo
-                completi il proprio gesto.
+                Attendiamo il completamento
+                del lembo.
             */
 
             await flapPromise;
 
 
             /*
-                Appena raggiunge la posizione
-                completamente aperta,
-                sparisce rapidamente.
+                Immediatamente dopo,
+                il lembo aperto sparisce.
             */
 
             const fadePromise =

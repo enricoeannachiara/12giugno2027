@@ -17,6 +17,19 @@
     <title>Enrico & Annachiara | 12 giugno 2027</title>
 
     <link
+        rel="preload"
+        as="image"
+        href="images/sigillo-AE.png"
+        fetchpriority="high"
+    >
+
+    <link
+        rel="preload"
+        as="image"
+        href="images/ritratto.png"
+    >
+
+    <link
         rel="stylesheet"
         href="style.css"
     >
@@ -202,6 +215,8 @@
                         src="images/sigillo-AE.png"
                         alt=""
                         draggable="false"
+                        fetchpriority="high"
+                        decoding="sync"
                     >
 
                 </div>
@@ -231,6 +246,7 @@
                     class="hero-portrait"
                     src="images/ritratto.png"
                     alt="Enrico e Annachiara"
+                    fetchpriority="high"
                 >
 
                 <h1>
@@ -264,9 +280,7 @@
 
                             <div class="countdown-item">
 
-                                <strong
-                                    id="countdownDays"
-                                >
+                                <strong id="countdownDays">
                                     000
                                 </strong>
 
@@ -279,9 +293,7 @@
 
                             <div class="countdown-item">
 
-                                <strong
-                                    id="countdownHours"
-                                >
+                                <strong id="countdownHours">
                                     00
                                 </strong>
 
@@ -294,9 +306,7 @@
 
                             <div class="countdown-item">
 
-                                <strong
-                                    id="countdownMinutes"
-                                >
+                                <strong id="countdownMinutes">
                                     00
                                 </strong>
 
@@ -309,9 +319,7 @@
 
                             <div class="countdown-item">
 
-                                <strong
-                                    id="countdownSeconds"
-                                >
+                                <strong id="countdownSeconds">
                                     00
                                 </strong>
 
@@ -345,6 +353,7 @@
                 </p>
 
                 <h2 class="section-title">
+
                     <span
                         class="section-emoji"
                         aria-hidden="true"
@@ -355,6 +364,7 @@
                     <span>
                         Conferma la tua presenza
                     </span>
+
                 </h2>
 
                 <p class="section-text">
@@ -369,11 +379,13 @@
                     target="_blank"
                     rel="noopener noreferrer"
                 >
+
                     <span aria-hidden="true">
                         💌
                     </span>
 
                     Conferma la presenza
+
                 </a>
 
             </div>

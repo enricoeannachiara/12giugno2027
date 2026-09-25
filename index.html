@@ -44,19 +44,6 @@
             <!-- MOTORE PAGE FLIP                          -->
             <!-- ========================================== -->
 
-            <!--
-                StPageFlip lavora normalmente con pagine
-                rettangolari e con movimento orizzontale.
-
-                Nel CSS ruoteremo l'intero viewer di 90°
-                per trasformare il page-flip orizzontale
-                in un'apertura verticale del lembo.
-
-                All'interno della pagina rettangolare
-                mostreremo soltanto il triangolo della
-                busta tramite una maschera CSS.
-            -->
-
             <div class="flap-flip-rotation">
 
                 <div
@@ -68,15 +55,6 @@
                     <!-- ================================== -->
                     <!-- PAGINA 1 - LEMBO                  -->
                     <!-- ================================== -->
-
-                    <!--
-                        data-density="soft"
-
-                        È fondamentale:
-                        vogliamo il comportamento di una
-                        pagina flessibile, non quello di
-                        una copertina rigida.
-                    -->
 
                     <div
                         class="flap-page flap-page-front"
@@ -90,25 +68,42 @@
                             <!-- CARTA DEL LEMBO            -->
                             <!-- ========================== -->
 
-                            <div class="flap-paper">
+                            <!--
+                                Solo questo elemento
+                                viene ritagliato a triangolo.
+                            -->
+
+                            <div class="flap-paper"></div>
 
 
-                                <!-- ====================== -->
-                                <!-- SIGILLO                -->
-                                <!-- ====================== -->
+                            <!-- ========================== -->
+                            <!-- SIGILLO                    -->
+                            <!-- ========================== -->
 
-                                <div class="wax-seal">
+                            <!--
+                                Il sigillo NON è più dentro
+                                flap-paper.
 
-                                    <img
-                                        src="images/sigillo-AE.png"
-                                        alt=""
-                                        class="wax-image"
-                                        draggable="false"
-                                    >
+                                In questo modo non viene
+                                tagliato dalla clip-path
+                                triangolare.
 
-                                </div>
+                                Resta però dentro la pagina
+                                gestita da PageFlip, quindi
+                                segue comunque lo sfoglio.
+                            -->
+
+                            <div class="wax-seal">
+
+                                <img
+                                    src="images/sigillo-AE.png"
+                                    alt=""
+                                    class="wax-image"
+                                    draggable="false"
+                                >
 
                             </div>
+
 
                         </div>
 
@@ -116,16 +111,21 @@
 
 
                     <!-- ================================== -->
-                    <!-- PAGINA 2 - RETRO / DESTINAZIONE   -->
+                    <!-- PAGINA 2 - DESTINAZIONE TRASPARENTE -->
                     <!-- ================================== -->
 
                     <!--
-                        Questa seconda pagina serve al
-                        motore per completare lo sfoglio.
+                        Questa pagina serve soltanto
+                        al motore StPageFlip per completare
+                        l'animazione.
 
-                        Visivamente resterà trasparente:
-                        dietro deve vedersi direttamente
-                        la vera Hero del sito.
+                        Non contiene:
+                        - triangoli
+                        - colori
+                        - sigilli
+                        - bordi
+
+                        Deve risultare visivamente assente.
                     -->
 
                     <div
@@ -133,8 +133,9 @@
                         data-density="soft"
                     >
 
-                        <div class="flap-page-content flap-page-transparent">
-                        </div>
+                        <div
+                            class="flap-page-content flap-page-transparent"
+                        ></div>
 
                     </div>
 
@@ -646,14 +647,6 @@
     <!-- ================================================== -->
     <!-- STPAGEFLIP                                         -->
     <!-- ================================================== -->
-
-    <!--
-        Copia il file ufficiale:
-        dist/js/page-flip.browser.js
-
-        nella cartella:
-        js/page-flip.browser.js
-    -->
 
     <script src="js/page-flip.browser.js"></script>
 

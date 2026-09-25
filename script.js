@@ -1,654 +1,1034 @@
-/* ========================================= */
-/* ELEMENTI PRINCIPALI */
-/* ========================================= */
+const $ = id => document.getElementById(id);
 
-const envelopeScreen =
-    document.getElementById("envelopeScreen");
+const envelopeScreen = $("envelopeScreen");
+const envelopeStage = $("envelopeStage");
+const envelopeBody = $("envelopeBody");
 
-const envelopeButton =
-    document.getElementById("envelopeButton");
+const flap = $("flap");
+const flapPath = $("flapPath");
+const flapEdgePath = $("flapEdgePath");
+const flapShadow = $("flapShadow");
+const waxSeal = $("waxSeal");
 
-const flapBook =
-    document.getElementById("flapBook");
+const frontStop1 = $("frontStop1");
+const frontStop2 = $("frontStop2");
+const frontStop3 = $("frontStop3");
 
-const scrollIndicator =
-    document.getElementById("scrollIndicator");
+const bodyLeftPath = $("bodyLeftPath");
+const bodyRightPath = $("bodyRightPath");
+const bodyBottomPath = $("bodyBottomPath");
 
-let pageFlip = null;
-let envelopeOpened = false;
+const bodyLeftFold = $("bodyLeftFold");
+const bodyRightFold = $("bodyRightFold");
+const bodyBottomFold = $("bodyBottomFold");
+
+const scrollIndicator = $("scrollIndicator");
+
+const copyWedshootsCode = $("copyWedshootsCode");
+const wedshootsCode = $("wedshootsCode");
+
+const giftToggle = $("giftToggle");
+const giftDetails = $("giftDetails");
+
+const copyIban = $("copyIban");
+const ibanCode = $("ibanCode");
 
 
-/* ========================================= */
-/* DIMENSIONI DEL MOTORE */
-/* ========================================= */
+const FLAP_DURATION = 3400;
+const BODY_START = 1600;
+const BODY_DURATION = 1450;
+const FLAP_FADE_DURATION = 280;
 
-function getFlipDimensions() {
 
-    /*
-     * Il viewer viene poi ruotato di 90° dal CSS.
-     *
-     * Quindi:
-     *
-     * larghezza logica  = metà altezza viewport
-     * altezza logica    = larghezza viewport
-     */
+let flapFrameId = null;
+let bodyFrameId = null;
+let fadeFrameId = null;
 
-    const width =
-        Math.round(window.innerHeight * 0.5);
+let opening = false;
+let opened = false;
 
-    const height =
-        Math.round(window.innerWidth);
+
+function clamp(value, min, max) {
+    return Math.min(
+        Math.max(value, min),
+        max
+    );
+}
+
+
+function easeInOutCubic(t) {
+    return t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+
+function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+}
+
+
+function bendCurve(t) {
+    return Math.pow(
+        Math.max(
+            0,
+            Math.sin(Math.PI * t)
+        ),
+        0.72
+    );
+}
+
+
+function wait(milliseconds) {
+    return new Promise(resolve => {
+        setTimeout(
+            resolve,
+            milliseconds
+        );
+    });
+}
+
+
+function getFlapGeometry(t) {
+
+    const bend =
+        bendCurve(t);
+
+
+    const tipX =
+        500;
+
+
+    const tipY =
+        1000 -
+        190 * bend;
+
+
+    const shoulderY =
+        420 +
+        35 * bend;
+
+
+    const leftShoulderX =
+        12 * bend;
+
+
+    const rightShoulderX =
+        1000 -
+        12 * bend;
+
+
+    const rightControl1X =
+        835 -
+        18 * bend;
+
+
+    const rightControl1Y =
+        590 +
+        15 * bend;
+
+
+    const rightControl2X =
+        625 -
+        10 * bend;
+
+
+    const rightControl2Y =
+        860 -
+        50 * bend;
+
+
+    const leftControl1X =
+        165 +
+        18 * bend;
+
+
+    const leftControl1Y =
+        rightControl1Y;
+
+
+    const leftControl2X =
+        375 +
+        10 * bend;
+
+
+    const leftControl2Y =
+        rightControl2Y;
+
+
+    const d = `
+
+        M 0 0
+
+        L 1000 0
+
+        L
+        1000
+        ${shoulderY - 30}
+
+        Q
+        1000
+        ${shoulderY}
+
+        ${rightShoulderX}
+        ${shoulderY}
+
+        C
+        ${rightControl1X}
+        ${rightControl1Y},
+
+        ${rightControl2X}
+        ${rightControl2Y},
+
+        ${tipX}
+        ${tipY}
+
+        C
+        ${leftControl2X}
+        ${leftControl2Y},
+
+        ${leftControl1X}
+        ${leftControl1Y},
+
+        ${leftShoulderX}
+        ${shoulderY}
+
+        Q
+        0
+        ${shoulderY}
+
+        0
+        ${shoulderY - 30}
+
+        L
+        0
+        0
+
+        Z
+    `;
+
 
     return {
-        width,
-        height
+        d,
+        tipY,
+        bend
     };
-
 }
 
 
-/* ========================================= */
-/* INIZIALIZZAZIONE PAGEFLIP */
-/* ========================================= */
+function drawEnvelopeBody() {
 
-function initEnvelopeFlip() {
-
-    if (!flapBook) {
-        return;
-    }
+    const sideStartY =
+        192.5;
 
 
-    if (
-        typeof St === "undefined" ||
-        typeof St.PageFlip === "undefined"
-    ) {
+    const sideMeetY =
+        500;
 
-        console.error(
-            "StPageFlip non è stato caricato."
+
+    const leftMeetX =
+        492;
+
+
+    const rightMeetX =
+        508;
+
+
+    bodyLeftPath.setAttribute(
+        "d",
+        `
+            M 0 ${sideStartY}
+
+            L
+            ${leftMeetX}
+            ${sideMeetY}
+
+            L 0 1000
+
+            Z
+        `
+    );
+
+
+    bodyLeftFold.setAttribute(
+        "d",
+        `
+            M 0 ${sideStartY}
+
+            L
+            ${leftMeetX}
+            ${sideMeetY}
+        `
+    );
+
+
+    bodyRightPath.setAttribute(
+        "d",
+        `
+            M 1000 ${sideStartY}
+
+            L 1000 1000
+
+            L
+            ${rightMeetX}
+            ${sideMeetY}
+
+            Z
+        `
+    );
+
+
+    bodyRightFold.setAttribute(
+        "d",
+        `
+            M 1000 ${sideStartY}
+
+            L
+            ${rightMeetX}
+            ${sideMeetY}
+        `
+    );
+
+
+    const tipY =
+        490;
+
+
+    const tipLeftX =
+        468;
+
+
+    const tipRightX =
+        532;
+
+
+    const tipSideY =
+        505;
+
+
+    const verticalStartY =
+        750;
+
+
+    bodyBottomPath.setAttribute(
+        "d",
+        `
+            M 0 1000
+
+            L
+            0
+            ${verticalStartY}
+
+            L
+            ${tipLeftX}
+            ${tipSideY}
+
+            Q
+            500
+            ${tipY}
+
+            ${tipRightX}
+            ${tipSideY}
+
+            L
+            1000
+            ${verticalStartY}
+
+            L
+            1000
+            1000
+
+            Z
+        `
+    );
+
+
+    bodyBottomFold.setAttribute(
+        "d",
+        `
+            M
+            0
+            ${verticalStartY}
+
+            L
+            ${tipLeftX}
+            ${tipSideY}
+
+            Q
+            500
+            ${tipY}
+
+            ${tipRightX}
+            ${tipSideY}
+
+            L
+            1000
+            ${verticalStartY}
+        `
+    );
+}
+
+
+function drawFlapFrame(progress) {
+
+    const t =
+        clamp(
+            progress,
+            0,
+            1
         );
 
-        return;
-    }
 
+    const geometry =
+        getFlapGeometry(t);
 
-    const dimensions =
-        getFlipDimensions();
 
+    const bend =
+        geometry.bend;
 
-    pageFlip = new St.PageFlip(
-        flapBook,
-        {
 
-            /* dimensioni controllate da noi */
+    let rotation;
 
-            width: dimensions.width,
-            height: dimensions.height,
 
+    if (t < 0.94) {
 
-            /*
-             * NIENTE STRETCH.
-             *
-             * La libreria non deve più
-             * ridimensionare autonomamente
-             * il lembo.
-             */
-
-            size: "fixed",
-
-
-            /*
-             * Non deve modificare le dimensioni
-             * del contenitore HTML.
-             */
-
-            autoSize: false,
-
-
-            /*
-             * NIENTE PORTRAIT MODE.
-             *
-             * Questa modalità clona gli elementi
-             * HTML e nel nostro caso può produrre
-             * il lembo duplicato.
-             */
-
-            usePortrait: false,
-
-
-            /*
-             * Il lembo è carta morbida,
-             * non una copertina rigida.
-             */
-
-            showCover: false,
-
-
-            /*
-             * Nessuna interazione nativa
-             * della libreria.
-             *
-             * Il tap viene gestito esclusivamente
-             * dal nostro codice.
-             */
-
-            useMouseEvents: false,
-
-            mobileScrollSupport: false,
-
-            disableFlipByClick: true,
-
-            showPageCorners: false,
-
-
-            /*
-             * Durata dell'animazione.
-             */
-
-            flippingTime: 3400,
-
-
-            /*
-             * Per ora niente ombre automatiche.
-             *
-             * Così non vediamo la pagina
-             * trasparente durante il flip.
-             */
-
-            drawShadow: false,
-
-            maxShadowOpacity: 0,
-
-
-            /*
-             * Pagina iniziale.
-             */
-
-            startPage: 0
-        }
-    );
-
-
-    /*
-     * Carichiamo le pagine HTML.
-     */
-
-    pageFlip.loadFromHTML(
-        document.querySelectorAll(".flap-page")
-    );
-
-}
-
-
-/* ========================================= */
-/* APERTURA DEL LEMBO */
-/* ========================================= */
-
-function openEnvelope() {
-
-    if (envelopeOpened) {
-        return;
-    }
-
-    if (!pageFlip) {
-        return;
-    }
-
-
-    envelopeOpened = true;
-
-
-    try {
-
-        /*
-         * IMPORTANTISSIMO:
-         *
-         * ora scegliamo esplicitamente
-         * l'angolo di partenza.
-         *
-         * Dopo la rotazione CSS di 90°
-         * questo dovrebbe corrispondere
-         * all'apertura verso l'alto.
-         */
-
-        pageFlip.flipNext("top");
-
-    } catch (error) {
-
-        console.error(
-            "Errore durante l'apertura del lembo:",
-            error
-        );
-
-        envelopeOpened = false;
-
-    }
-
-}
-
-
-/* ========================================= */
-/* CLICK / TAP */
-/* ========================================= */
-
-if (envelopeButton) {
-
-    envelopeButton.addEventListener(
-        "click",
-        openEnvelope
-    );
-
-
-    envelopeButton.addEventListener(
-        "keydown",
-        (event) => {
-
-            if (
-                event.key === "Enter" ||
-                event.key === " "
-            ) {
-
-                event.preventDefault();
-
-                openEnvelope();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* ========================================= */
-/* EVENTI PAGEFLIP */
-/* ========================================= */
-
-function connectPageFlipEvents() {
-
-    if (!pageFlip) {
-        return;
-    }
-
-
-    /*
-     * Ci interessa soprattutto sapere
-     * quando il motore torna nello stato
-     * "read", cioè quando l'animazione
-     * è terminata.
-     */
-
-    pageFlip.on(
-        "changeState",
-        (event) => {
-
-            if (
-                event.data === "read" &&
-                envelopeOpened
-            ) {
-
-                const currentPage =
-                    pageFlip.getCurrentPageIndex();
-
-
-                /*
-                 * Se siamo arrivati alla
-                 * seconda pagina, il flip
-                 * è realmente terminato.
-                 */
-
-                if (currentPage === 1) {
-
-                    finishEnvelopeOpening();
-
-                }
-
-            }
-
-        }
-    );
-
-}
-
-
-/* ========================================= */
-/* FINE APERTURA */
-/* ========================================= */
-
-function finishEnvelopeOpening() {
-
-    if (!envelopeScreen) {
-        return;
-    }
-
-
-    /*
-     * Piccolissima pausa per evitare
-     * che l'overlay sparisca nello stesso
-     * identico frame in cui PageFlip termina.
-     */
-
-    setTimeout(() => {
-
-        envelopeScreen.classList.add(
-            "opened"
-        );
-
-        envelopeScreen.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        updateScrollIndicator();
-
-    }, 80);
-
-}
-
-
-/* ========================================= */
-/* INDICATORE "SCORRI" */
-/* ========================================= */
-
-function updateScrollIndicator() {
-
-    if (!scrollIndicator) {
-        return;
-    }
-
-
-    if (
-        envelopeScreen &&
-        !envelopeScreen.classList.contains("opened")
-    ) {
-
-        scrollIndicator.classList.add("hidden");
-
-        return;
-    }
-
-
-    const scrollPosition =
-        window.scrollY + window.innerHeight;
-
-    const pageHeight =
-        document.documentElement.scrollHeight;
-
-    const distanceFromBottom =
-        pageHeight - scrollPosition;
-
-
-    if (distanceFromBottom < 90) {
-
-        scrollIndicator.classList.add("hidden");
+        rotation =
+            181.5 *
+            easeInOutCubic(
+                t / 0.94
+            );
 
     } else {
 
-        scrollIndicator.classList.remove("hidden");
+        const settle =
+            (t - 0.94) /
+            0.06;
 
+
+        rotation =
+            181.5 -
+            1.5 *
+            easeOutCubic(
+                settle
+            );
     }
 
+
+    const depth =
+        20 * bend;
+
+
+    flap.style.transform =
+        `rotateX(${rotation}deg)
+         translateZ(${depth}px)`;
+
+
+    flapPath.setAttribute(
+        "d",
+        geometry.d
+    );
+
+
+    flapEdgePath.setAttribute(
+        "d",
+        geometry.d
+    );
+
+
+    flapPath.setAttribute(
+        "fill",
+        rotation < 90
+            ? "url(#paperFront)"
+            : "url(#paperBack)"
+    );
+
+
+    waxSeal.style.left =
+        "50%";
+
+
+    waxSeal.style.top =
+        `${geometry.tipY / 10}%`;
+
+
+    waxSeal.style.visibility =
+        rotation < 90
+            ? "visible"
+            : "hidden";
+
+
+    flapShadow.style.opacity =
+        `${0.23 * bend}`;
+
+
+    flapShadow.style.transform =
+        `
+            translate(
+                -50%,
+                ${-50 + 17 * t}%
+            )
+
+            scaleX(
+                ${0.93 - 0.15 * bend}
+            )
+
+            scaleY(
+                ${0.08 + 0.74 * bend}
+            )
+        `;
+
+
+    const shade =
+        Math.round(
+            8 * bend
+        );
+
+
+    frontStop1.setAttribute(
+        "stop-color",
+        `rgb(
+            ${234 - shade},
+            ${220 - shade},
+            ${200 - shade}
+        )`
+    );
+
+
+    frontStop2.setAttribute(
+        "stop-color",
+        `rgb(
+            ${234 - shade / 2},
+            ${220 - shade / 2},
+            ${200 - shade / 2}
+        )`
+    );
+
+
+    frontStop3.setAttribute(
+        "stop-color",
+        `rgb(
+            ${222 - shade},
+            ${200 - shade},
+            ${173 - shade}
+        )`
+    );
 }
 
 
-/* ========================================= */
-/* EVENTI SCROLL */
-/* ========================================= */
+function animate(
+    duration,
+    draw,
+    setFrameId
+) {
 
-window.addEventListener(
-    "scroll",
-    updateScrollIndicator,
-    { passive: true }
+    return new Promise(resolve => {
+
+        const start =
+            performance.now();
+
+
+        function frame(now) {
+
+            const progress =
+                clamp(
+                    (now - start) /
+                    duration,
+                    0,
+                    1
+                );
+
+
+            draw(progress);
+
+
+            if (progress < 1) {
+
+                setFrameId(
+                    requestAnimationFrame(
+                        frame
+                    )
+                );
+
+            } else {
+
+                setFrameId(null);
+
+                resolve();
+            }
+        }
+
+
+        setFrameId(
+            requestAnimationFrame(
+                frame
+            )
+        );
+    });
+}
+
+
+function animateFlap() {
+
+    return animate(
+
+        FLAP_DURATION,
+
+        drawFlapFrame,
+
+        id => {
+            flapFrameId = id;
+        }
+    );
+}
+
+
+function animateEnvelopeDown() {
+
+    return animate(
+
+        BODY_DURATION,
+
+        progress => {
+
+            const e =
+                easeInOutCubic(
+                    progress
+                );
+
+
+            envelopeBody.style.transform =
+                `translateY(
+                    ${112 * e}vh
+                )`;
+        },
+
+        id => {
+            bodyFrameId = id;
+        }
+    );
+}
+
+
+function fadeOutFlap() {
+
+    return animate(
+
+        FLAP_FADE_DURATION,
+
+        progress => {
+
+            const e =
+                easeOutCubic(
+                    progress
+                );
+
+
+            flap.style.opacity =
+                `${1 - e}`;
+
+
+            flapShadow.style.opacity =
+                `${0.06 * (1 - e)}`;
+        },
+
+        id => {
+            fadeFrameId = id;
+        }
+
+    ).then(() => {
+
+        flap.style.opacity =
+            "0";
+
+
+        flapShadow.style.opacity =
+            "0";
+    });
+}
+
+
+async function openEnvelope() {
+
+    if (
+        opening ||
+        opened
+    ) {
+        return;
+    }
+
+
+    opening =
+        true;
+
+
+    const flapPromise =
+        animateFlap();
+
+
+    await wait(
+        BODY_START
+    );
+
+
+    const bodyPromise =
+        animateEnvelopeDown();
+
+
+    await flapPromise;
+
+
+    const fadePromise =
+        fadeOutFlap();
+
+
+    await Promise.all([
+        bodyPromise,
+        fadePromise
+    ]);
+
+
+    opening =
+        false;
+
+
+    opened =
+        true;
+
+
+    envelopeScreen.classList.add(
+        "opened"
+    );
+
+
+    envelopeScreen.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    envelopeScreen.hidden =
+        true;
+
+
+    document.body.classList.remove(
+        "envelope-locked"
+    );
+
+
+    updateScrollIndicator();
+}
+
+
+function initialiseEnvelope() {
+
+    document.body.classList.add(
+        "envelope-locked"
+    );
+
+
+    drawEnvelopeBody();
+
+
+    const initialGeometry =
+        getFlapGeometry(0);
+
+
+    flapPath.setAttribute(
+        "d",
+        initialGeometry.d
+    );
+
+
+    flapEdgePath.setAttribute(
+        "d",
+        initialGeometry.d
+    );
+
+
+    flapPath.setAttribute(
+        "fill",
+        "url(#paperFront)"
+    );
+
+
+    waxSeal.style.left =
+        "50%";
+
+
+    waxSeal.style.top =
+        "100%";
+}
+
+
+envelopeStage.addEventListener(
+    "click",
+    openEnvelope
 );
 
 
-/* ========================================= */
-/* COPIA CODICE WEDSHOOTS */
-/* ========================================= */
+envelopeStage.addEventListener(
+    "keydown",
+    event => {
 
-const copyCodeButton =
-    document.getElementById("copyCodeButton");
+        if (
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
 
-const copyMessage =
-    document.getElementById("copyMessage");
+            event.preventDefault();
 
-const accessCode =
-    document.getElementById("accessCode");
-
-
-async function copyAccessCode() {
-
-    if (!accessCode) {
-        return;
+            openEnvelope();
+        }
     }
+);
 
 
-    const code =
-        accessCode.textContent.trim();
+async function copyText(
+    text,
+    button,
+    successLabel
+) {
+
+    const originalLabel =
+        button.textContent;
 
 
     try {
 
-        await navigator.clipboard.writeText(code);
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+
+            await navigator.clipboard.writeText(
+                text
+            );
+
+        } else {
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
 
 
-        if (copyMessage) {
+            textarea.value =
+                text;
 
-            copyMessage.textContent =
-                "Codice copiato";
 
+            textarea.style.position =
+                "fixed";
+
+
+            textarea.style.opacity =
+                "0";
+
+
+            document.body.appendChild(
+                textarea
+            );
+
+
+            textarea.focus();
+
+            textarea.select();
+
+
+            document.execCommand(
+                "copy"
+            );
+
+
+            textarea.remove();
         }
 
 
-        if (copyCodeButton) {
-
-            copyCodeButton.textContent =
-                "Copiato ✓";
-
-        }
+        button.textContent =
+            successLabel;
 
 
-        setTimeout(() => {
+    } catch {
 
-            if (copyMessage) {
-
-                copyMessage.textContent = "";
-
-            }
-
-
-            if (copyCodeButton) {
-
-                copyCodeButton.textContent =
-                    "Copia codice";
-
-            }
-
-        }, 1800);
-
-
-    } catch (error) {
-
-        if (copyMessage) {
-
-            copyMessage.textContent =
-                "Tieni premuto sul codice per copiarlo";
-
-        }
-
+        button.textContent =
+            "Seleziona e copia";
     }
 
-}
 
+    window.setTimeout(
+        () => {
 
-if (copyCodeButton) {
+            button.textContent =
+                originalLabel;
 
-    copyCodeButton.addEventListener(
-        "click",
-        copyAccessCode
+        },
+        1600
     );
-
 }
 
 
-/* ========================================= */
-/* IL NOSTRO SOGNO */
-/* ========================================= */
+if (
+    copyWedshootsCode &&
+    wedshootsCode
+) {
 
-const giftToggle =
-    document.getElementById("giftToggle");
+    copyWedshootsCode.addEventListener(
+        "click",
+        () => {
 
-const giftDetails =
-    document.getElementById("giftDetails");
-
-
-function toggleGiftDetails() {
-
-    if (!giftToggle || !giftDetails) {
-        return;
-    }
-
-
-    const isHidden =
-        giftDetails.hasAttribute("hidden");
-
-
-    if (isHidden) {
-
-        giftDetails.removeAttribute("hidden");
-
-        giftToggle.setAttribute(
-            "aria-expanded",
-            "true"
-        );
-
-        giftToggle.textContent =
-            "Nascondi";
-
-    } else {
-
-        giftDetails.setAttribute(
-            "hidden",
-            ""
-        );
-
-        giftToggle.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-        giftToggle.textContent =
-            "Scopri di più";
-
-    }
-
+            copyText(
+                wedshootsCode.textContent.trim(),
+                copyWedshootsCode,
+                "Copiato!"
+            );
+        }
+    );
 }
 
 
-if (giftToggle) {
+if (
+    copyIban &&
+    ibanCode
+) {
+
+    copyIban.addEventListener(
+        "click",
+        () => {
+
+            copyText(
+                ibanCode.textContent
+                    .replace(/\s/g, "")
+                    .trim(),
+
+                copyIban,
+
+                "Copiato!"
+            );
+        }
+    );
+}
+
+
+if (
+    giftToggle &&
+    giftDetails
+) {
 
     giftToggle.addEventListener(
         "click",
-        toggleGiftDetails
-    );
+        () => {
 
+            const isOpen =
+                giftToggle.getAttribute(
+                    "aria-expanded"
+                ) === "true";
+
+
+            giftToggle.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+
+            giftDetails.hidden =
+                isOpen;
+
+
+            giftToggle.textContent =
+                isOpen
+                    ? "Scopri di più"
+                    : "Nascondi";
+        }
+    );
 }
 
 
-/* ========================================= */
-/* COPIA IBAN */
-/* ========================================= */
+function updateScrollIndicator() {
 
-const copyIbanButton =
-    document.getElementById("copyIbanButton");
-
-const copyIbanMessage =
-    document.getElementById("copyIbanMessage");
-
-const ibanCode =
-    document.getElementById("ibanCode");
-
-
-async function copyIban() {
-
-    if (!ibanCode) {
+    if (
+        !opened ||
+        !scrollIndicator
+    ) {
         return;
     }
 
 
-    const iban =
-        ibanCode.textContent.trim();
+    const documentHeight =
+        document.documentElement
+            .scrollHeight;
 
 
-    try {
-
-        await navigator.clipboard.writeText(iban);
-
-
-        if (copyIbanMessage) {
-
-            copyIbanMessage.textContent =
-                "IBAN copiato";
-
-        }
+    const viewportBottom =
+        window.scrollY +
+        window.innerHeight;
 
 
-        if (copyIbanButton) {
-
-            copyIbanButton.textContent =
-                "Copiato ✓";
-
-        }
+    const distanceFromBottom =
+        documentHeight -
+        viewportBottom;
 
 
-        setTimeout(() => {
-
-            if (copyIbanMessage) {
-
-                copyIbanMessage.textContent = "";
-
-            }
+    const canScroll =
+        documentHeight >
+        window.innerHeight + 40;
 
 
-            if (copyIbanButton) {
+    if (
+        canScroll &&
+        distanceFromBottom > 100
+    ) {
 
-                copyIbanButton.textContent =
-                    "Copia IBAN";
+        scrollIndicator.classList.add(
+            "visible"
+        );
 
-            }
+    } else {
 
-        }, 1800);
-
-
-    } catch (error) {
-
-        if (copyIbanMessage) {
-
-            copyIbanMessage.textContent =
-                "Tieni premuto sull'IBAN per copiarlo";
-
-        }
-
+        scrollIndicator.classList.remove(
+            "visible"
+        );
     }
-
 }
 
 
-if (copyIbanButton) {
-
-    copyIbanButton.addEventListener(
-        "click",
-        copyIban
-    );
-
-}
+let scrollFramePending =
+    false;
 
 
-/* ========================================= */
-/* AVVIO */
-/* ========================================= */
+window.addEventListener(
+    "scroll",
+    () => {
 
-initEnvelopeFlip();
+        if (
+            scrollFramePending
+        ) {
+            return;
+        }
 
-connectPageFlipEvents();
 
-updateScrollIndicator();
+        scrollFramePending =
+            true;
+
+
+        requestAnimationFrame(
+            () => {
+
+                updateScrollIndicator();
+
+                scrollFramePending =
+                    false;
+            }
+        );
+    },
+    {
+        passive: true
+    }
+);
+
+
+window.addEventListener(
+    "resize",
+    updateScrollIndicator
+);
+
+
+initialiseEnvelope();

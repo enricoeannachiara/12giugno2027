@@ -195,10 +195,10 @@
             position: absolute;
 
             left: 50%;
-            top: 50%;
+            top: 46%;
 
-            width: 68%;
-            height: 16%;
+            width: 66%;
+            height: 15%;
 
             z-index: 12;
 
@@ -247,9 +247,11 @@
 
             transform-style: preserve-3d;
 
+            opacity: 1;
+
             will-change:
                 transform,
-                top;
+                opacity;
         }
 
 
@@ -281,7 +283,7 @@
             position: absolute;
 
             left: 50%;
-            top: 100%;
+            top: 84%;
 
             width: 108px;
             height: 108px;
@@ -296,7 +298,9 @@
 
             pointer-events: none;
 
-            will-change: top;
+            will-change:
+                left,
+                top;
         }
 
 
@@ -317,7 +321,7 @@
 
 
         /* ================================================== */
-        /* INTERFACCIA TEST                                   */
+        /* INTERFACCIA DI TEST                                */
         /* ================================================== */
 
         .hint {
@@ -334,7 +338,8 @@
 
             border-radius: 999px;
 
-            background: rgba(250, 247, 242, 0.86);
+            background:
+                rgba(250, 247, 242, 0.86);
 
             font-family: Arial, sans-serif;
 
@@ -346,7 +351,8 @@
 
             pointer-events: none;
 
-            transition: opacity 0.3s ease;
+            transition:
+                opacity 0.3s ease;
         }
 
 
@@ -372,7 +378,8 @@
 
             border-radius: 999px;
 
-            background: rgba(255, 255, 255, 0.92);
+            background:
+                rgba(255, 255, 255, 0.92);
 
             color: #4C4743;
 
@@ -437,13 +444,15 @@
     >
 
 
+        <!-- OMBRA -->
+
         <div
             class="flap-shadow"
             id="flapShadow"
         ></div>
 
 
-        <!-- CORPO -->
+        <!-- CORPO BUSTA -->
 
         <div
             class="envelope-body"
@@ -522,19 +531,19 @@
                     >
 
                         <stop
-                            id="backStop1"
                             offset="0%"
                             stop-color="#E6D6C1"
                         />
 
                         <stop
-                            id="backStop2"
                             offset="100%"
                             stop-color="#DCC6AA"
                         />
 
                     </linearGradient>
 
+
+                    <!-- OMBRA -->
 
                     <filter
                         id="paperShadow"
@@ -557,11 +566,7 @@
                 </defs>
 
 
-                <!--
-                    Bordo sottilissimo.
-                    È lo STESSO path del foglio:
-                    non esiste più un secondo triangolo.
-                -->
+                <!-- BORDO -->
 
                 <path
                     id="flapEdgePath"
@@ -624,923 +629,1021 @@
 
 
 
-   <script>
+    <script>
 
-    /* ================================================== */
-    /* ELEMENTI                                          */
-    /* ================================================== */
+        /* ================================================== */
+        /* ELEMENTI                                          */
+        /* ================================================== */
 
-    const envelopeTest =
-        document.getElementById("envelopeTest");
+        const envelopeTest =
+            document.getElementById("envelopeTest");
 
-    const envelopeBody =
-        document.getElementById("envelopeBody");
+        const envelopeBody =
+            document.getElementById("envelopeBody");
 
-    const flap =
-        document.getElementById("flap");
+        const flap =
+            document.getElementById("flap");
 
-    const flapPath =
-        document.getElementById("flapPath");
+        const flapPath =
+            document.getElementById("flapPath");
 
-    const flapEdgePath =
-        document.getElementById("flapEdgePath");
+        const flapEdgePath =
+            document.getElementById("flapEdgePath");
 
-    const waxSeal =
-        document.getElementById("waxSeal");
+        const waxSeal =
+            document.getElementById("waxSeal");
 
-    const flapShadow =
-        document.getElementById("flapShadow");
+        const flapShadow =
+            document.getElementById("flapShadow");
 
-    const frontStop1 =
-        document.getElementById("frontStop1");
+        const frontStop1 =
+            document.getElementById("frontStop1");
 
-    const frontStop2 =
-        document.getElementById("frontStop2");
+        const frontStop2 =
+            document.getElementById("frontStop2");
 
-    const frontStop3 =
-        document.getElementById("frontStop3");
+        const frontStop3 =
+            document.getElementById("frontStop3");
 
-    const hint =
-        document.getElementById("hint");
+        const hint =
+            document.getElementById("hint");
 
-    const restartButton =
-        document.getElementById("restartButton");
+        const restartButton =
+            document.getElementById("restartButton");
 
 
-    /* ================================================== */
-    /* STATO                                             */
-    /* ================================================== */
+        /* ================================================== */
+        /* STATO                                             */
+        /* ================================================== */
 
-    let flapFrameId = null;
-    let bodyFrameId = null;
+        let flapFrameId = null;
+        let bodyFrameId = null;
+        let fadeFrameId = null;
 
-    let opening = false;
-    let opened = false;
+        let opening = false;
+        let opened = false;
 
 
-    /* ================================================== */
-    /* TEMPI                                             */
-    /* ================================================== */
+        /* ================================================== */
+        /* TEMPI                                             */
+        /* ================================================== */
 
-    /*
-        Durata apertura lembo.
-    */
+        /*
+            Apertura del lembo:
+            manteniamo i 3,4 secondi.
+        */
 
-    const flapDuration = 3400;
-
-
-    /*
-        La busta inizia a scendere
-        molto prima rispetto a prima.
-
-        Parte circa 150 ms prima
-        della fine dell'apertura.
-    */
-
-    const bodyStart = 3250;
-
-
-    /*
-        Discesa corpo busta.
-    */
-
-    const bodyDuration = 1200;
-
-
-    /*
-        Dissolvenza finale del lembo.
-    */
-
-    const flapFadeDuration = 420;
-
-
-    /*
-        Quanto aspettiamo dopo l'inizio
-        della discesa prima di far
-        svanire il lembo.
-    */
-
-    const flapFadeDelay = 180;
-
-
-    /* ================================================== */
-    /* UTILITY                                           */
-    /* ================================================== */
-
-    function clamp(value, min, max) {
-
-        return Math.min(
-            Math.max(value, min),
-            max
-        );
-
-    }
-
-
-    function easeInOutCubic(t) {
-
-        return (
-            t < 0.5
-                ? 4 * t * t * t
-                : 1 -
-                  Math.pow(
-                      -2 * t + 2,
-                      3
-                  ) / 2
-        );
-
-    }
-
-
-    function easeOutCubic(t) {
-
-        return (
-            1 -
-            Math.pow(
-                1 - t,
-                3
-            )
-        );
-
-    }
-
-
-    function bendCurve(t) {
-
-        const value =
-            Math.sin(
-                Math.PI * t
-            );
-
-        return Math.pow(
-            Math.max(0, value),
-            0.72
-        );
-
-    }
-
-
-    function wait(milliseconds) {
-
-        return new Promise(
-            (resolve) => {
-
-                setTimeout(
-                    resolve,
-                    milliseconds
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ================================================== */
-    /* GEOMETRIA DEL LEMBO                               */
-    /* ================================================== */
-
-    function getFlapGeometry(t) {
-
-        const bend =
-            bendCurve(t);
-
-
-        const tipY =
-            1000 -
-            (245 * bend);
-
-
-        const tipX =
-            500 +
-            (
-                7 *
-                Math.sin(
-                    Math.PI *
-                    t *
-                    2
-                ) *
-                bend
-            );
-
-
-        const rightUpperX =
-            925 -
-            (28 * bend);
-
-        const rightUpperY =
-            275 +
-            (105 * bend);
-
-
-        const rightLowerX =
-            820 -
-            (35 * bend);
-
-        const rightLowerY =
-            845 -
-            (100 * bend);
-
-
-        const leftUpperX =
-            75 +
-            (28 * bend);
-
-        const leftUpperY =
-            rightUpperY;
-
-
-        const leftLowerX =
-            180 +
-            (35 * bend);
-
-        const leftLowerY =
-            rightLowerY;
-
-
-        const d = `
-            M 0 0
-
-            L 1000 0
-
-            C
-            ${rightUpperX} ${rightUpperY},
-            ${rightLowerX} ${rightLowerY},
-            ${tipX} ${tipY}
-
-            C
-            ${leftLowerX} ${leftLowerY},
-            ${leftUpperX} ${leftUpperY},
-            0 0
-
-            Z
-        `;
-
-
-        return {
-            d,
-            tipX,
-            tipY,
-            bend
-        };
-
-    }
-
-
-    /* ================================================== */
-    /* DISEGNO FRAME LEMBO                               */
-    /* ================================================== */
-
-    function drawFlapFrame(progress) {
-
-        const t =
-            clamp(
-                progress,
-                0,
-                1
-            );
-
-
-        const geometry =
-            getFlapGeometry(t);
-
-
-        const bend =
-            geometry.bend;
+        const flapDuration =
+            3400;
 
 
         /*
-            Piccolissimo assestamento finale.
+            CAMBIAMENTO IMPORTANTE:
+
+            il corpo della busta inizia
+            a scendere molto prima.
+
+            Prima: 3250 ms
+            Ora:   2450 ms
+
+            Quindi la discesa comincia
+            mentre il lembo sta ancora
+            completando l'apertura.
         */
 
-        let rotation;
+        const bodyStart =
+            2450;
 
 
-        if (t < 0.94) {
+        /*
+            Durata sfilamento.
+        */
 
-            rotation =
-                181.5 *
-                easeInOutCubic(
-                    t / 0.94
-                );
-
-        } else {
-
-            const settle =
-                (t - 0.94) /
-                0.06;
+        const bodyDuration =
+            1250;
 
 
-            rotation =
-                181.5 -
-                (
-                    1.5 *
-                    easeOutCubic(
-                        settle
-                    )
-                );
+        /*
+            Il lembo scompare solo quando
+            ha praticamente completato
+            la propria apertura.
+        */
+
+        const flapFadeDuration =
+            320;
+
+
+        /* ================================================== */
+        /* UTILITY                                           */
+        /* ================================================== */
+
+        function clamp(value, min, max) {
+
+            return Math.min(
+                Math.max(value, min),
+                max
+            );
 
         }
 
 
-        const depth =
-            20 * bend;
+        function easeInOutCubic(t) {
+
+            return (
+                t < 0.5
+                    ? 4 * t * t * t
+                    : 1 -
+                      Math.pow(
+                          -2 * t + 2,
+                          3
+                      ) / 2
+            );
+
+        }
 
 
-        flap.style.transform =
-            `rotateX(${rotation}deg)
-             translateZ(${depth}px)`;
+        function easeOutCubic(t) {
+
+            return (
+                1 -
+                Math.pow(
+                    1 - t,
+                    3
+                )
+            );
+
+        }
 
 
-        /*
-            Path carta.
-        */
+        function bendCurve(t) {
 
-        flapPath.setAttribute(
-            "d",
-            geometry.d
-        );
+            const value =
+                Math.sin(
+                    Math.PI * t
+                );
+
+            return Math.pow(
+                Math.max(0, value),
+                0.72
+            );
+
+        }
 
 
-        flapEdgePath.setAttribute(
-            "d",
-            geometry.d
-        );
+        function wait(milliseconds) {
+
+            return new Promise(
+                (resolve) => {
+
+                    setTimeout(
+                        resolve,
+                        milliseconds
+                    );
+
+                }
+            );
+
+        }
 
 
-        /*
-            Fronte / retro.
-        */
+        /* ================================================== */
+        /* GEOMETRIA DEL LEMBO                               */
+        /* ================================================== */
 
-        if (rotation < 90) {
+        function getFlapGeometry(t) {
+
+            const bend =
+                bendCurve(t);
+
+
+            /*
+                NUOVA FORMA.
+
+                La base non occupa più
+                esattamente tutta la larghezza.
+
+                Prima:
+                0 ---------------- 1000
+
+                Ora:
+                65 -------------- 935
+
+                Inoltre la punta è più alta.
+
+                Risultato:
+                angolo decisamente meno acuto.
+            */
+
+
+            const baseLeft =
+                65;
+
+
+            const baseRight =
+                935;
+
+
+            /*
+                Punta iniziale a 840 invece
+                di 1000.
+
+                Questo rende il triangolo
+                sensibilmente più largo
+                rispetto alla sua altezza.
+            */
+
+            const restingTipY =
+                840;
+
+
+            /*
+                Durante la curvatura la punta
+                viene richiamata verso la piega.
+            */
+
+            const tipY =
+                restingTipY -
+                (185 * bend);
+
+
+            const tipX =
+                500 +
+                (
+                    6 *
+                    Math.sin(
+                        Math.PI *
+                        t *
+                        2
+                    ) *
+                    bend
+                );
+
+
+            /*
+                Controlli Bézier molto larghi.
+
+                Evitiamo che gli ultimi centimetri
+                convergano troppo rapidamente
+                verso la punta.
+            */
+
+            const rightUpperX =
+                880 -
+                (25 * bend);
+
+
+            const rightUpperY =
+                235 +
+                (95 * bend);
+
+
+            const rightLowerX =
+                765 -
+                (30 * bend);
+
+
+            const rightLowerY =
+                710 -
+                (80 * bend);
+
+
+            const leftUpperX =
+                120 +
+                (25 * bend);
+
+
+            const leftUpperY =
+                rightUpperY;
+
+
+            const leftLowerX =
+                235 +
+                (30 * bend);
+
+
+            const leftLowerY =
+                rightLowerY;
+
+
+            const d = `
+                M ${baseLeft} 0
+
+                L ${baseRight} 0
+
+                C
+                ${rightUpperX} ${rightUpperY},
+                ${rightLowerX} ${rightLowerY},
+                ${tipX} ${tipY}
+
+                C
+                ${leftLowerX} ${leftLowerY},
+                ${leftUpperX} ${leftUpperY},
+                ${baseLeft} 0
+
+                Z
+            `;
+
+
+            return {
+                d,
+                tipX,
+                tipY,
+                bend
+            };
+
+        }
+
+
+        /* ================================================== */
+        /* DISEGNO FRAME LEMBO                               */
+        /* ================================================== */
+
+        function drawFlapFrame(progress) {
+
+            const t =
+                clamp(
+                    progress,
+                    0,
+                    1
+                );
+
+
+            const geometry =
+                getFlapGeometry(t);
+
+
+            const bend =
+                geometry.bend;
+
+
+            /*
+                Assestamento finale molto piccolo.
+            */
+
+            let rotation;
+
+
+            if (t < 0.94) {
+
+                rotation =
+                    181.5 *
+                    easeInOutCubic(
+                        t / 0.94
+                    );
+
+            } else {
+
+                const settle =
+                    (t - 0.94) /
+                    0.06;
+
+
+                rotation =
+                    181.5 -
+                    (
+                        1.5 *
+                        easeOutCubic(
+                            settle
+                        )
+                    );
+
+            }
+
+
+            const depth =
+                20 * bend;
+
+
+            flap.style.transform =
+                `rotateX(${rotation}deg)
+                 translateZ(${depth}px)`;
+
+
+            /* ---------------------------------------------- */
+            /* CARTA                                         */
+            /* ---------------------------------------------- */
+
+            flapPath.setAttribute(
+                "d",
+                geometry.d
+            );
+
+
+            flapEdgePath.setAttribute(
+                "d",
+                geometry.d
+            );
+
+
+            /* ---------------------------------------------- */
+            /* FRONTE / RETRO                                */
+            /* ---------------------------------------------- */
+
+            if (rotation < 90) {
+
+                flapPath.setAttribute(
+                    "fill",
+                    "url(#paperFront)"
+                );
+
+            } else {
+
+                flapPath.setAttribute(
+                    "fill",
+                    "url(#paperBack)"
+                );
+
+            }
+
+
+            /* ---------------------------------------------- */
+            /* SIGILLO                                       */
+            /* ---------------------------------------------- */
+
+            waxSeal.style.left =
+                `${geometry.tipX / 10}%`;
+
+
+            waxSeal.style.top =
+                `${geometry.tipY / 10}%`;
+
+
+            /*
+                Quando il foglio passa
+                oltre i 90°, il sigillo è
+                dietro la carta.
+            */
+
+            waxSeal.style.visibility =
+                rotation < 90
+                    ? "visible"
+                    : "hidden";
+
+
+            /* ---------------------------------------------- */
+            /* OMBRA                                         */
+            /* ---------------------------------------------- */
+
+            flapShadow.style.opacity =
+                `${0.25 * bend}`;
+
+
+            flapShadow.style.transform =
+                `
+                translate(
+                    -50%,
+                    ${-50 + 18 * t}%
+                )
+
+                scaleX(
+                    ${0.90 - 0.16 * bend}
+                )
+
+                scaleY(
+                    ${0.10 + 0.80 * bend}
+                )
+                `;
+
+
+            /* ---------------------------------------------- */
+            /* LUCE                                          */
+            /* ---------------------------------------------- */
+
+            const shade =
+                Math.round(
+                    9 * bend
+                );
+
+
+            frontStop1.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${234 - shade},
+                    ${220 - shade},
+                    ${200 - shade}
+                )`
+            );
+
+
+            frontStop2.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${234 - shade / 2},
+                    ${220 - shade / 2},
+                    ${200 - shade / 2}
+                )`
+            );
+
+
+            frontStop3.setAttribute(
+                "stop-color",
+                `rgb(
+                    ${223 - shade},
+                    ${202 - shade},
+                    ${176 - shade}
+                )`
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* ANIMAZIONE LEMBO                                  */
+        /* ================================================== */
+
+        function animateFlap() {
+
+            return new Promise(
+                (resolve) => {
+
+
+                    const start =
+                        performance.now();
+
+
+                    function frame(now) {
+
+                        const progress =
+                            clamp(
+                                (
+                                    now -
+                                    start
+                                ) /
+                                flapDuration,
+                                0,
+                                1
+                            );
+
+
+                        drawFlapFrame(
+                            progress
+                        );
+
+
+                        if (progress < 1) {
+
+                            flapFrameId =
+                                requestAnimationFrame(
+                                    frame
+                                );
+
+                        } else {
+
+                            flapFrameId =
+                                null;
+
+                            resolve();
+
+                        }
+
+                    }
+
+
+                    flapFrameId =
+                        requestAnimationFrame(
+                            frame
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* DISCESA DELLA SOLA BUSTA                          */
+        /* ================================================== */
+
+        function animateEnvelopeDown() {
+
+            return new Promise(
+                (resolve) => {
+
+
+                    const start =
+                        performance.now();
+
+
+                    function frame(now) {
+
+                        const progress =
+                            clamp(
+                                (
+                                    now -
+                                    start
+                                ) /
+                                bodyDuration,
+                                0,
+                                1
+                            );
+
+
+                        const e =
+                            easeInOutCubic(
+                                progress
+                            );
+
+
+                        /*
+                            Scende SOLO la parte inferiore.
+
+                            Il lembo resta in alto.
+                        */
+
+                        envelopeBody.style.transform =
+                            `translateY(
+                                ${112 * e}vh
+                            )`;
+
+
+                        if (progress < 1) {
+
+                            bodyFrameId =
+                                requestAnimationFrame(
+                                    frame
+                                );
+
+                        } else {
+
+                            bodyFrameId =
+                                null;
+
+                            resolve();
+
+                        }
+
+                    }
+
+
+                    bodyFrameId =
+                        requestAnimationFrame(
+                            frame
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* DISSOLVENZA DEL LEMBO                             */
+        /* ================================================== */
+
+        function fadeOutFlap() {
+
+            return new Promise(
+                (resolve) => {
+
+
+                    const start =
+                        performance.now();
+
+
+                    function frame(now) {
+
+                        const progress =
+                            clamp(
+                                (
+                                    now -
+                                    start
+                                ) /
+                                flapFadeDuration,
+                                0,
+                                1
+                            );
+
+
+                        const e =
+                            easeOutCubic(
+                                progress
+                            );
+
+
+                        flap.style.opacity =
+                            `${1 - e}`;
+
+
+                        flapShadow.style.opacity =
+                            `${0.08 * (1 - e)}`;
+
+
+                        if (progress < 1) {
+
+                            fadeFrameId =
+                                requestAnimationFrame(
+                                    frame
+                                );
+
+                        } else {
+
+                            flap.style.opacity =
+                                "0";
+
+
+                            flapShadow.style.opacity =
+                                "0";
+
+
+                            fadeFrameId =
+                                null;
+
+
+                            resolve();
+
+                        }
+
+                    }
+
+
+                    fadeFrameId =
+                        requestAnimationFrame(
+                            frame
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* ================================================== */
+        /* APERTURA COMPLETA                                 */
+        /* ================================================== */
+
+        async function openEnvelope() {
+
+            if (opening || opened) {
+                return;
+            }
+
+
+            opening = true;
+
+
+            hint.classList.add(
+                "hidden"
+            );
+
+
+            /*
+                0 ms:
+                parte l'apertura del lembo.
+            */
+
+            const flapPromise =
+                animateFlap();
+
+
+            /*
+                2450 ms:
+                la busta inizia GIÀ a scendere.
+
+                Il lembo sta ancora completando
+                il movimento.
+            */
+
+            await wait(
+                bodyStart
+            );
+
+
+            const bodyPromise =
+                animateEnvelopeDown();
+
+
+            /*
+                Attendiamo che il lembo
+                completi fisicamente
+                la sua apertura.
+
+                Nel frattempo la busta
+                sta già scendendo.
+            */
+
+            await flapPromise;
+
+
+            /*
+                Nessuna pausa.
+
+                Appena il lembo termina,
+                inizia immediatamente
+                a dissolversi.
+            */
+
+            const fadePromise =
+                fadeOutFlap();
+
+
+            /*
+                Attendiamo solo che
+                busta e lembo abbiano
+                terminato.
+            */
+
+            await Promise.all([
+                bodyPromise,
+                fadePromise
+            ]);
+
+
+            opening = false;
+
+            opened = true;
+
+        }
+
+
+        /* ================================================== */
+        /* RESET                                             */
+        /* ================================================== */
+
+        function resetEnvelope(event) {
+
+            event.stopPropagation();
+
+
+            if (flapFrameId) {
+
+                cancelAnimationFrame(
+                    flapFrameId
+                );
+
+                flapFrameId = null;
+
+            }
+
+
+            if (bodyFrameId) {
+
+                cancelAnimationFrame(
+                    bodyFrameId
+                );
+
+                bodyFrameId = null;
+
+            }
+
+
+            if (fadeFrameId) {
+
+                cancelAnimationFrame(
+                    fadeFrameId
+                );
+
+                fadeFrameId = null;
+
+            }
+
+
+            opening = false;
+            opened = false;
+
+
+            envelopeBody.style.transform =
+                "translateY(0)";
+
+
+            flap.style.transform =
+                "rotateX(0deg) translateZ(0px)";
+
+
+            flap.style.opacity =
+                "1";
+
+
+            waxSeal.style.visibility =
+                "visible";
+
+
+            flapShadow.style.opacity =
+                "0";
+
+
+            flapShadow.style.transform =
+                "translate(-50%, -50%) scaleY(0.05)";
+
+
+            const initial =
+                getFlapGeometry(0);
+
+
+            flapPath.setAttribute(
+                "d",
+                initial.d
+            );
+
+
+            flapEdgePath.setAttribute(
+                "d",
+                initial.d
+            );
+
 
             flapPath.setAttribute(
                 "fill",
                 "url(#paperFront)"
             );
 
-        } else {
 
-            flapPath.setAttribute(
-                "fill",
-                "url(#paperBack)"
+            waxSeal.style.left =
+                `${initial.tipX / 10}%`;
+
+
+            waxSeal.style.top =
+                `${initial.tipY / 10}%`;
+
+
+            frontStop1.setAttribute(
+                "stop-color",
+                "#EADCC8"
+            );
+
+
+            frontStop2.setAttribute(
+                "stop-color",
+                "#EADCC8"
+            );
+
+
+            frontStop3.setAttribute(
+                "stop-color",
+                "#DFCAB0"
+            );
+
+
+            hint.classList.remove(
+                "hidden"
             );
 
         }
 
 
-        /*
-            Sigillo.
-        */
+        /* ================================================== */
+        /* EVENTI                                            */
+        /* ================================================== */
 
-        waxSeal.style.left =
-            `${geometry.tipX / 10}%`;
-
-
-        waxSeal.style.top =
-            `${geometry.tipY / 10}%`;
-
-
-        waxSeal.style.visibility =
-            rotation < 90
-                ? "visible"
-                : "hidden";
-
-
-        /*
-            Ombra.
-        */
-
-        flapShadow.style.opacity =
-            `${0.25 * bend}`;
-
-
-        flapShadow.style.transform =
-            `
-            translate(
-                -50%,
-                ${-50 + 20 * t}%
-            )
-
-            scaleX(
-                ${0.90 - 0.18 * bend}
-            )
-
-            scaleY(
-                ${0.10 + 0.85 * bend}
-            )
-            `;
-
-
-        /*
-            Luce.
-        */
-
-        const shade =
-            Math.round(
-                9 * bend
-            );
-
-
-        frontStop1.setAttribute(
-            "stop-color",
-            `rgb(
-                ${234 - shade},
-                ${220 - shade},
-                ${200 - shade}
-            )`
+        envelopeTest.addEventListener(
+            "click",
+            openEnvelope
         );
 
 
-        frontStop2.setAttribute(
-            "stop-color",
-            `rgb(
-                ${234 - shade / 2},
-                ${220 - shade / 2},
-                ${200 - shade / 2}
-            )`
-        );
+        envelopeTest.addEventListener(
+            "keydown",
+            (event) => {
 
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
 
-        frontStop3.setAttribute(
-            "stop-color",
-            `rgb(
-                ${223 - shade},
-                ${202 - shade},
-                ${176 - shade}
-            )`
-        );
+                    event.preventDefault();
 
-    }
-
-
-    /* ================================================== */
-    /* APERTURA LEMBO                                    */
-    /* ================================================== */
-
-    function animateFlap() {
-
-        return new Promise(
-            (resolve) => {
-
-
-                const start =
-                    performance.now();
-
-
-                function frame(now) {
-
-                    const progress =
-                        clamp(
-                            (
-                                now -
-                                start
-                            ) /
-                            flapDuration,
-                            0,
-                            1
-                        );
-
-
-                    drawFlapFrame(
-                        progress
-                    );
-
-
-                    if (progress < 1) {
-
-                        flapFrameId =
-                            requestAnimationFrame(
-                                frame
-                            );
-
-                    } else {
-
-                        flapFrameId =
-                            null;
-
-                        resolve();
-
-                    }
+                    openEnvelope();
 
                 }
-
-
-                flapFrameId =
-                    requestAnimationFrame(
-                        frame
-                    );
 
             }
         );
 
-    }
 
-
-    /* ================================================== */
-    /* DISCESA DELLA BUSTA                               */
-    /* ================================================== */
-
-    function animateEnvelopeDown() {
-
-        return new Promise(
-            (resolve) => {
-
-
-                const start =
-                    performance.now();
-
-
-                function frame(now) {
-
-                    const progress =
-                        clamp(
-                            (
-                                now -
-                                start
-                            ) /
-                            bodyDuration,
-                            0,
-                            1
-                        );
-
-
-                    const e =
-                        easeInOutCubic(
-                            progress
-                        );
-
-
-                    /*
-                        SCENDE SOLO IL CORPO.
-
-                        Il lembo resta fermo in alto.
-                    */
-
-                    envelopeBody.style.transform =
-                        `translateY(
-                            ${112 * e}vh
-                        )`;
-
-
-                    /*
-                        Ombra del lembo
-                        quasi completamente spenta.
-                    */
-
-                    flapShadow.style.opacity =
-                        `${0.08 * (1 - e)}`;
-
-
-                    if (progress < 1) {
-
-                        bodyFrameId =
-                            requestAnimationFrame(
-                                frame
-                            );
-
-                    } else {
-
-                        bodyFrameId =
-                            null;
-
-                        resolve();
-
-                    }
-
-                }
-
-
-                bodyFrameId =
-                    requestAnimationFrame(
-                        frame
-                    );
-
-            }
-        );
-
-    }
-
-
-    /* ================================================== */
-    /* DISSOLVENZA DEL LEMBO                             */
-    /* ================================================== */
-
-    function fadeOutFlap() {
-
-        return new Promise(
-            (resolve) => {
-
-
-                const start =
-                    performance.now();
-
-
-                function frame(now) {
-
-                    const progress =
-                        clamp(
-                            (
-                                now -
-                                start
-                            ) /
-                            flapFadeDuration,
-                            0,
-                            1
-                        );
-
-
-                    const e =
-                        easeOutCubic(
-                            progress
-                        );
-
-
-                    flap.style.opacity =
-                        `${1 - e}`;
-
-
-                    flapShadow.style.opacity =
-                        `${0.06 * (1 - e)}`;
-
-
-                    if (progress < 1) {
-
-                        requestAnimationFrame(
-                            frame
-                        );
-
-                    } else {
-
-                        flap.style.opacity =
-                            "0";
-
-                        flapShadow.style.opacity =
-                            "0";
-
-                        resolve();
-
-                    }
-
-                }
-
-
-                requestAnimationFrame(
-                    frame
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ================================================== */
-    /* APERTURA COMPLETA                                 */
-    /* ================================================== */
-
-    async function openEnvelope() {
-
-        if (opening || opened) {
-            return;
-        }
-
-
-        opening = true;
-
-
-        hint.classList.add(
-            "hidden"
+        restartButton.addEventListener(
+            "click",
+            resetEnvelope
         );
 
 
-        /*
-            Parte il lembo.
-        */
+        /* ================================================== */
+        /* STATO INIZIALE                                    */
+        /* ================================================== */
 
-        const flapPromise =
-            animateFlap();
-
-
-        /*
-            Aspettiamo quasi fino alla fine,
-            ma non tutta l'animazione.
-        */
-
-        await wait(
-            bodyStart
-        );
-
-
-        /*
-            Parte subito la discesa della busta.
-        */
-
-        const bodyPromise =
-            animateEnvelopeDown();
-
-
-        /*
-            Poco dopo l'inizio della discesa
-            il lembo inizia a sparire.
-        */
-
-        await wait(
-            flapFadeDelay
-        );
-
-
-        const fadePromise =
-            fadeOutFlap();
-
-
-        /*
-            Attendiamo tutte le animazioni.
-        */
-
-        await Promise.all([
-            flapPromise,
-            bodyPromise,
-            fadePromise
-        ]);
-
-
-        opening = false;
-
-        opened = true;
-
-    }
-
-
-    /* ================================================== */
-    /* RESET                                             */
-    /* ================================================== */
-
-    function resetEnvelope(event) {
-
-        event.stopPropagation();
-
-
-        if (flapFrameId) {
-
-            cancelAnimationFrame(
-                flapFrameId
-            );
-
-            flapFrameId = null;
-
-        }
-
-
-        if (bodyFrameId) {
-
-            cancelAnimationFrame(
-                bodyFrameId
-            );
-
-            bodyFrameId = null;
-
-        }
-
-
-        opening = false;
-        opened = false;
-
-
-        envelopeBody.style.transform =
-            "translateY(0)";
-
-
-        flap.style.transform =
-            "rotateX(0deg) translateZ(0px)";
-
-
-        flap.style.opacity =
-            "1";
-
-
-        waxSeal.style.left =
-            "50%";
-
-
-        waxSeal.style.top =
-            "100%";
-
-
-        waxSeal.style.visibility =
-            "visible";
-
-
-        flapShadow.style.opacity =
-            "0";
-
-
-        flapShadow.style.transform =
-            "translate(-50%, -50%) scaleY(0.05)";
-
-
-        const initial =
+        const initialGeometry =
             getFlapGeometry(0);
 
 
         flapPath.setAttribute(
             "d",
-            initial.d
+            initialGeometry.d
         );
 
 
         flapEdgePath.setAttribute(
             "d",
-            initial.d
+            initialGeometry.d
         );
 
 
-        flapPath.setAttribute(
-            "fill",
-            "url(#paperFront)"
-        );
+        waxSeal.style.left =
+            `${initialGeometry.tipX / 10}%`;
 
 
-        frontStop1.setAttribute(
-            "stop-color",
-            "#EADCC8"
-        );
+        waxSeal.style.top =
+            `${initialGeometry.tipY / 10}%`;
 
+    </script>
 
-        frontStop2.setAttribute(
-            "stop-color",
-            "#EADCC8"
-        );
-
-
-        frontStop3.setAttribute(
-            "stop-color",
-            "#DFCAB0"
-        );
-
-
-        hint.classList.remove(
-            "hidden"
-        );
-
-    }
-
-
-    /* ================================================== */
-    /* EVENTI                                            */
-    /* ================================================== */
-
-    envelopeTest.addEventListener(
-        "click",
-        openEnvelope
-    );
-
-
-    envelopeTest.addEventListener(
-        "keydown",
-        (event) => {
-
-            if (
-                event.key === "Enter" ||
-                event.key === " "
-            ) {
-
-                event.preventDefault();
-
-                openEnvelope();
-
-            }
-
-        }
-    );
-
-
-    restartButton.addEventListener(
-        "click",
-        resetEnvelope
-    );
-
-
-    /* ================================================== */
-    /* AVVIO                                             */
-    /* ================================================== */
-
-    const initialGeometry =
-        getFlapGeometry(0);
-
-
-    flapPath.setAttribute(
-        "d",
-        initialGeometry.d
-    );
-
-
-    flapEdgePath.setAttribute(
-        "d",
-        initialGeometry.d
-    );
-
-</script>
 
 </body>
 

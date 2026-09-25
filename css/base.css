@@ -1,15 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
 
-@font-face {
-    font-family: "Sisterhood";
-
-    src: url("../fonts/sisterhood.ttf") format("truetype");
-
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-}
-
 :root {
     --background: #FAF7F2;
     --background-alt: #F3EEE8;
@@ -89,6 +79,7 @@ button {
     font: inherit;
 }
 
+
 /* =======================================================
    DECORAZIONE FLOREALE
 ======================================================= */
@@ -112,6 +103,7 @@ button {
     height: auto;
 }
 
+
 /* =======================================================
    CONTENUTO SITO
 ======================================================= */
@@ -120,6 +112,7 @@ button {
     position: relative;
     width: 100%;
 }
+
 
 /* =======================================================
    MOBILE
@@ -137,6 +130,7 @@ button {
     }
 
 }
+
 
 /* =======================================================
    ACCESSIBILITÀ

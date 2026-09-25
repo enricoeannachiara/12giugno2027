@@ -3,72 +3,467 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Test PageFlip</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Test lembo SVG</title>
 
     <style>
+
+        :root {
+            --background: #FAF7F2;
+            --text: #3E3A39;
+
+            --paper-front: #EADCC8;
+            --paper-back: #E5D4BD;
+        }
+
+
         * {
             box-sizing: border-box;
         }
 
+
+        html,
         body {
             margin: 0;
-            min-height: 100vh;
+            width: 100%;
+            min-height: 100%;
+        }
+
+
+        body {
+            background: var(--background);
+
+            color: var(--text);
+
+            font-family: Georgia, serif;
+
+            overflow: hidden;
+        }
+
+
+        /* ========================================= */
+        /* HERO FINTIZIA                             */
+        /* ========================================= */
+
+        .hero {
+            position: fixed;
+
+            inset: 0;
 
             display: flex;
+            flex-direction: column;
+
             justify-content: center;
             align-items: center;
 
-            background: #f5f1eb;
+            text-align: center;
+
+            padding: 30px 20px;
+        }
+
+
+        .hero img {
+            width: min(72vw, 340px);
+
+            height: auto;
+
+            display: block;
+
+            margin-bottom: 20px;
+        }
+
+
+        .hero h1 {
+            margin: 0;
+
+            font-size: clamp(2.2rem, 8vw, 4rem);
+
+            font-weight: 400;
+        }
+
+
+        .hero p {
+            margin: 18px 0 0;
+
+            letter-spacing: 4px;
+
+            font-size: 1rem;
+        }
+
+
+        /* ========================================= */
+        /* AREA DI TEST                              */
+        /* ========================================= */
+
+        .envelope-test {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 100;
+
+            perspective: 1600px;
+
+            perspective-origin: 50% 15%;
+
+            cursor: pointer;
+
+            -webkit-tap-highlight-color: transparent;
+        }
+
+
+        /* ========================================= */
+        /* LEMBO                                     */
+        /* ========================================= */
+
+        .flap {
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 100vw;
+            height: 50vh;
+
+            transform-origin: 50% 0;
+
+            transform-style: preserve-3d;
+
+            will-change: transform;
+        }
+
+
+        /* ========================================= */
+        /* SVG                                       */
+        /* ========================================= */
+
+        .flap-svg {
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: visible;
+
+            display: block;
+
+            pointer-events: none;
+        }
+
+
+        /* ========================================= */
+        /* SIGILLO                                   */
+        /* ========================================= */
+
+        .wax-seal {
+            position: absolute;
+
+            left: 50%;
+            top: 100%;
+
+            width: 108px;
+            height: 108px;
+
+            transform:
+                translate(-50%, -50%)
+                translateZ(4px);
+
+            transform-origin: center center;
+
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+
+            will-change: top, transform;
+
+            pointer-events: none;
+        }
+
+
+        .wax-seal img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            filter:
+                drop-shadow(
+                    0 6px 6px
+                    rgba(70, 25, 20, 0.24)
+                );
+        }
+
+
+        /* ========================================= */
+        /* TESTO IN BASSO                            */
+        /* ========================================= */
+
+        .hint {
+            position: fixed;
+
+            left: 50%;
+            bottom: 24px;
+
+            z-index: 200;
+
+            transform: translateX(-50%);
+
+            padding: 9px 15px;
+
+            border-radius: 999px;
+
+            background: rgba(250, 247, 242, 0.86);
 
             font-family: Arial, sans-serif;
+
+            font-size: 0.78rem;
+
+            letter-spacing: 1px;
+
+            color: #77706A;
+
+            pointer-events: none;
+
+            transition: opacity 0.3s ease;
         }
 
-        .test-wrapper {
-            width: min(90vw, 700px);
+
+        .hint.hidden {
+            opacity: 0;
         }
 
-        #book {
-            width: 100%;
-            height: 420px;
+
+        /* ========================================= */
+        /* PULSANTE RIAVVIA                          */
+        /* ========================================= */
+
+        .restart {
+            position: fixed;
+
+            top: 18px;
+            right: 18px;
+
+            z-index: 300;
+
+            min-width: 44px;
+            min-height: 44px;
+
+            padding: 10px 15px;
+
+            border: 0;
+
+            border-radius: 999px;
+
+            background: rgba(255, 255, 255, 0.92);
+
+            color: #4C4743;
+
+            font-size: 0.85rem;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.08);
         }
 
-        .page {
-            background: white;
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        @media (max-width: 600px) {
 
-            font-size: 2rem;
+            .wax-seal {
+                width: 96px;
+                height: 96px;
+            }
 
-            border: 1px solid #ddd;
         }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .hint {
+                display: none;
+            }
+
+        }
+
     </style>
 </head>
 
 
 <body>
 
-    <div class="test-wrapper">
 
-        <div id="book">
+    <!-- ========================================= -->
+    <!-- HERO DI SFONDO                            -->
+    <!-- ========================================= -->
 
-            <div class="page">
-                Pagina 1
-            </div>
+    <main class="hero">
 
-            <div class="page">
-                Pagina 2
-            </div>
+        <img
+            src="images/ritratto.png"
+            alt="Enrico e Annachiara"
+        >
 
-            <div class="page">
-                Pagina 3
-            </div>
+        <h1>
+            Enrico & Annachiara
+        </h1>
 
-            <div class="page">
-                Pagina 4
+        <p>
+            12 giugno 2027
+        </p>
+
+    </main>
+
+
+    <!-- ========================================= -->
+    <!-- LEMBO SVG                                 -->
+    <!-- ========================================= -->
+
+    <div
+        class="envelope-test"
+        id="envelopeTest"
+        role="button"
+        tabindex="0"
+        aria-label="Apri il lembo"
+    >
+
+        <div
+            class="flap"
+            id="flap"
+        >
+
+            <svg
+                class="flap-svg"
+                viewBox="0 0 1000 1000"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+            >
+
+                <defs>
+
+                    <!-- FRONTE -->
+
+                    <linearGradient
+                        id="paperFront"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+
+                        <stop
+                            id="frontStop1"
+                            offset="0%"
+                            stop-color="#EADCC8"
+                        />
+
+                        <stop
+                            id="frontStop2"
+                            offset="58%"
+                            stop-color="#EADCC8"
+                        />
+
+                        <stop
+                            id="frontStop3"
+                            offset="100%"
+                            stop-color="#DFCBB1"
+                        />
+
+                    </linearGradient>
+
+
+                    <!-- RETRO -->
+
+                    <linearGradient
+                        id="paperBack"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+
+                        <stop
+                            offset="0%"
+                            stop-color="#E7D8C4"
+                        />
+
+                        <stop
+                            offset="100%"
+                            stop-color="#DDC8AC"
+                        />
+
+                    </linearGradient>
+
+
+                    <!-- OMBRA MOLTO LEGGERA -->
+
+                    <filter
+                        id="paperShadow"
+                        x="-20%"
+                        y="-20%"
+                        width="140%"
+                        height="160%"
+                    >
+
+                        <feDropShadow
+                            dx="0"
+                            dy="7"
+                            stdDeviation="7"
+                            flood-color="#654B35"
+                            flood-opacity="0.12"
+                        />
+
+                    </filter>
+
+                </defs>
+
+
+                <!--
+                    Un'unica superficie.
+
+                    È questo path che deformiamo
+                    continuamente durante l'animazione.
+                -->
+
+                <path
+                    id="flapPath"
+                    d="
+                        M 0 0
+                        L 1000 0
+                        C 920 300, 720 730, 500 1000
+                        C 280 730, 80 300, 0 0
+                        Z
+                    "
+                    fill="url(#paperFront)"
+                    filter="url(#paperShadow)"
+                />
+
+            </svg>
+
+
+            <!-- ================================= -->
+            <!-- SIGILLO                           -->
+            <!-- ================================= -->
+
+            <div
+                class="wax-seal"
+                id="waxSeal"
+            >
+
+                <img
+                    src="images/sigillo-AE.png"
+                    alt=""
+                    draggable="false"
+                >
+
             </div>
 
         </div>
@@ -76,50 +471,504 @@
     </div>
 
 
-    <script src="js/page-flip.browser.js"></script>
+    <div
+        class="hint"
+        id="hint"
+    >
+        Tocca per aprire
+    </div>
+
+
+    <button
+        type="button"
+        class="restart"
+        id="restartButton"
+    >
+        Riavvia
+    </button>
+
+
 
     <script>
 
-        const pageFlip = new St.PageFlip(
-            document.getElementById("book"),
-            {
-                width: 300,
-                height: 420,
+        /* ========================================= */
+        /* ELEMENTI                                  */
+        /* ========================================= */
 
-                size: "stretch",
+        const envelopeTest =
+            document.getElementById("envelopeTest");
 
-                minWidth: 250,
-                maxWidth: 500,
+        const flap =
+            document.getElementById("flap");
 
-                minHeight: 350,
-                maxHeight: 700,
+        const flapPath =
+            document.getElementById("flapPath");
 
-                showCover: true,
+        const waxSeal =
+            document.getElementById("waxSeal");
 
-                mobileScrollSupport: false,
+        const hint =
+            document.getElementById("hint");
 
-                usePortrait: true,
+        const restartButton =
+            document.getElementById("restartButton");
 
-                flippingTime: 1400
+
+        let animationFrame = null;
+
+        let opening = false;
+
+        let opened = false;
+
+
+        /* ========================================= */
+        /* DURATA                                    */
+        /* ========================================= */
+
+        /*
+            Manteniamo circa la durata
+            che ti era piaciuta.
+        */
+
+        const duration = 3400;
+
+
+        /* ========================================= */
+        /* FUNZIONI MATEMATICHE                     */
+        /* ========================================= */
+
+        function clamp(value, min, max) {
+
+            return Math.min(
+                Math.max(value, min),
+                max
+            );
+
+        }
+
+
+        /*
+            Easing molto morbido.
+
+            Nessuno scatto.
+        */
+
+        function easeInOut(t) {
+
+            return (
+                t < 0.5
+                    ? 4 * t * t * t
+                    : 1 -
+                      Math.pow(
+                          -2 * t + 2,
+                          3
+                      ) / 2
+            );
+
+        }
+
+
+        /*
+            La flessione è massima
+            a metà del movimento.
+
+            0 all'inizio
+            1 a metà
+            0 alla fine
+        */
+
+        function bendAmount(t) {
+
+            return Math.sin(
+                Math.PI * t
+            );
+
+        }
+
+
+        /* ========================================= */
+        /* DISEGNO DEL FOGLIO                       */
+        /* ========================================= */
+
+        function drawFrame(progress) {
+
+            const t =
+                clamp(progress, 0, 1);
+
+            const e =
+                easeInOut(t);
+
+            const bend =
+                bendAmount(t);
+
+
+            /*
+             * ROTAZIONE GENERALE
+             *
+             * Il foglio continua comunque
+             * a ruotare nello spazio.
+             */
+
+            const rotation =
+                180 * e;
+
+
+            /*
+             * LEGGERISSIMO AVANZAMENTO
+             * nello spazio al centro
+             * dell'animazione.
+             */
+
+            const depth =
+                18 * bend;
+
+
+            flap.style.transform =
+                `rotateX(${rotation}deg)
+                 translateZ(${depth}px)`;
+
+
+            /*
+             * -------------------------------------
+             * DEFORMAZIONE DELLA CARTA
+             * -------------------------------------
+             *
+             * Se fosse un pannello rigido:
+             *
+             * tipY sarebbe sempre 1000.
+             *
+             * Qui invece la punta viene
+             * progressivamente richiamata
+             * verso la piega durante la rotazione.
+             */
+
+
+            /*
+                Movimento principale della punta.
+
+                All'inizio:
+                    1000
+
+                A metà:
+                    circa 760
+
+                Alla fine:
+                    torna a 1000
+                    perché il foglio si distende
+                    sul lato opposto.
+            */
+
+            const tipY =
+                1000 -
+                (235 * bend);
+
+
+            /*
+                La punta viene anche leggermente
+                trascinata lateralmente.
+
+                Il movimento è minuscolo:
+                serve solo a togliere
+                la perfetta simmetria meccanica.
+            */
+
+            const tipX =
+                500 +
+                (12 *
+                 Math.sin(
+                     Math.PI * t * 2
+                 ) *
+                 bend);
+
+
+            /*
+                Controlli Bézier.
+
+                Questi determinano quanto
+                "morbidi" sono i lati del foglio.
+            */
+
+            const controlTopY =
+                250 +
+                (105 * bend);
+
+
+            const controlBottomY =
+                720 -
+                (165 * bend);
+
+
+            const rightControl1X =
+                930 -
+                (30 * bend);
+
+
+            const rightControl2X =
+                715 +
+                (45 * bend);
+
+
+            const leftControl1X =
+                70 +
+                (30 * bend);
+
+
+            const leftControl2X =
+                285 -
+                (45 * bend);
+
+
+            const d = `
+                M 0 0
+
+                L 1000 0
+
+                C
+                ${rightControl1X} ${controlTopY},
+                ${rightControl2X} ${controlBottomY},
+                ${tipX} ${tipY}
+
+                C
+                ${leftControl2X} ${controlBottomY},
+                ${leftControl1X} ${controlTopY},
+                0 0
+
+                Z
+            `;
+
+
+            flapPath.setAttribute(
+                "d",
+                d
+            );
+
+
+            /*
+             * -------------------------------------
+             * FRONTE / RETRO DELLA CARTA
+             * -------------------------------------
+             */
+
+            if (rotation < 90) {
+
+                flapPath.setAttribute(
+                    "fill",
+                    "url(#paperFront)"
+                );
+
+            } else {
+
+                flapPath.setAttribute(
+                    "fill",
+                    "url(#paperBack)"
+                );
+
             }
-        );
 
 
-        pageFlip.loadFromHTML(
-            document.querySelectorAll(".page")
-        );
+            /*
+             * -------------------------------------
+             * SIGILLO
+             * -------------------------------------
+             *
+             * La posizione verticale segue
+             * davvero la punta del path.
+             */
+
+            const tipPercentage =
+                tipY / 10;
 
 
-        document.body.addEventListener(
+            waxSeal.style.top =
+                `${tipPercentage}%`;
+
+
+            /*
+                Il sigillo è sul fronte.
+
+                Quando passiamo oltre i 90°
+                viene nascosto dalla faccia
+                della carta tramite
+                backface-visibility.
+            */
+
+        }
+
+
+        /* ========================================= */
+        /* APERTURA                                  */
+        /* ========================================= */
+
+        function openFlap() {
+
+            if (opening || opened) {
+                return;
+            }
+
+
+            opening = true;
+
+            hint.classList.add("hidden");
+
+
+            const start =
+                performance.now();
+
+
+            function animate(now) {
+
+                const elapsed =
+                    now - start;
+
+
+                const progress =
+                    clamp(
+                        elapsed / duration,
+                        0,
+                        1
+                    );
+
+
+                drawFrame(progress);
+
+
+                if (progress < 1) {
+
+                    animationFrame =
+                        requestAnimationFrame(
+                            animate
+                        );
+
+                } else {
+
+                    opening = false;
+
+                    opened = true;
+
+                    animationFrame = null;
+
+                }
+
+            }
+
+
+            animationFrame =
+                requestAnimationFrame(
+                    animate
+                );
+
+        }
+
+
+        /* ========================================= */
+        /* RESET                                     */
+        /* ========================================= */
+
+        function resetFlap(event) {
+
+            event.stopPropagation();
+
+
+            if (animationFrame) {
+
+                cancelAnimationFrame(
+                    animationFrame
+                );
+
+                animationFrame = null;
+
+            }
+
+
+            opening = false;
+
+            opened = false;
+
+
+            flap.style.transform =
+                "rotateX(0deg) translateZ(0px)";
+
+
+            waxSeal.style.top =
+                "100%";
+
+
+            flapPath.setAttribute(
+                "fill",
+                "url(#paperFront)"
+            );
+
+
+            flapPath.setAttribute(
+                "d",
+                `
+                    M 0 0
+
+                    L 1000 0
+
+                    C
+                    920 300,
+                    720 730,
+                    500 1000
+
+                    C
+                    280 730,
+                    80 300,
+                    0 0
+
+                    Z
+                `
+            );
+
+
+            hint.classList.remove("hidden");
+
+        }
+
+
+        /* ========================================= */
+        /* EVENTI                                    */
+        /* ========================================= */
+
+        envelopeTest.addEventListener(
             "click",
-            () => {
+            openFlap
+        );
 
-                pageFlip.flipNext();
+
+        envelopeTest.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
+
+                    event.preventDefault();
+
+                    openFlap();
+
+                }
 
             }
         );
+
+
+        restartButton.addEventListener(
+            "click",
+            resetFlap
+        );
+
+
+        /* ========================================= */
+        /* STATO INIZIALE                           */
+        /* ========================================= */
+
+        drawFrame(0);
 
     </script>
+
 
 </body>
 

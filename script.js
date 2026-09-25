@@ -95,25 +95,59 @@ function wait(milliseconds) {
 function getFlapGeometry(t) {
     const bend = bendCurve(t);
 
-    const tipX = 500;
-    const tipY = 1000 - 190 * bend;
+    const tipY =
+        1000 -
+        190 * bend;
 
-    const shoulderY = 420 + 35 * bend;
+    const tipLeftX =
+        468;
 
-    const leftShoulderX = 12 * bend;
-    const rightShoulderX = 1000 - 12 * bend;
+    const tipRightX =
+        532;
 
-    const rightControl1X = 835 - 18 * bend;
-    const rightControl1Y = 590 + 15 * bend;
+    const tipSideY =
+        tipY + 15;
 
-    const rightControl2X = 625 - 10 * bend;
-    const rightControl2Y = 860 - 50 * bend;
+    const shoulderY =
+        420 +
+        35 * bend;
 
-    const leftControl1X = 165 + 18 * bend;
-    const leftControl1Y = rightControl1Y;
+    const leftShoulderX =
+        12 * bend;
 
-    const leftControl2X = 375 + 10 * bend;
-    const leftControl2Y = rightControl2Y;
+    const rightShoulderX =
+        1000 -
+        12 * bend;
+
+    const rightControl1X =
+        835 -
+        18 * bend;
+
+    const rightControl1Y =
+        590 +
+        15 * bend;
+
+    const rightControl2X =
+        625 -
+        10 * bend;
+
+    const rightControl2Y =
+        860 -
+        50 * bend;
+
+    const leftControl1X =
+        165 +
+        18 * bend;
+
+    const leftControl1Y =
+        rightControl1Y;
+
+    const leftControl2X =
+        375 +
+        10 * bend;
+
+    const leftControl2Y =
+        rightControl2Y;
 
     const d = `
         M 0 0
@@ -138,8 +172,15 @@ function getFlapGeometry(t) {
         ${rightControl2X}
         ${rightControl2Y},
 
-        ${tipX}
+        ${tipRightX}
+        ${tipSideY}
+
+        Q
+        500
         ${tipY}
+
+        ${tipLeftX}
+        ${tipSideY}
 
         C
         ${leftControl2X}
@@ -168,16 +209,23 @@ function getFlapGeometry(t) {
     return {
         d,
         tipY,
+        tipSideY,
         bend
     };
 }
 
 function drawEnvelopeBody() {
-    const sideStartY = 192.5;
-    const sideMeetY = 500;
+    const sideStartY =
+        192.5;
 
-    const leftMeetX = 492;
-    const rightMeetX = 508;
+    const sideMeetY =
+        500;
+
+    const leftMeetX =
+        492;
+
+    const rightMeetX =
+        508;
 
     bodyLeftPath.setAttribute(
         "d",
@@ -231,12 +279,20 @@ function drawEnvelopeBody() {
         `
     );
 
-    const tipY = 490;
-    const tipLeftX = 468;
-    const tipRightX = 532;
-    const tipSideY = 505;
+    const tipY =
+        490;
 
-    const verticalStartY = 750;
+    const tipLeftX =
+        468;
+
+    const tipRightX =
+        532;
+
+    const tipSideY =
+        505;
+
+    const verticalStartY =
+        750;
 
     bodyBottomPath.setAttribute(
         "d",
@@ -296,14 +352,18 @@ function drawEnvelopeBody() {
 }
 
 function drawFlapFrame(progress) {
-    const t = clamp(
-        progress,
-        0,
-        1
-    );
+    const t =
+        clamp(
+            progress,
+            0,
+            1
+        );
 
-    const geometry = getFlapGeometry(t);
-    const bend = geometry.bend;
+    const geometry =
+        getFlapGeometry(t);
+
+    const bend =
+        geometry.bend;
 
     let rotation;
 
@@ -596,7 +656,10 @@ function initialiseEnvelope() {
         "50%";
 
     waxSeal.style.top =
-        "100%";
+        `${initialGeometry.tipY / 10}%`;
+
+    waxSeal.style.visibility =
+        "visible";
 }
 
 function updateCountdown() {
@@ -617,10 +680,18 @@ function updateCountdown() {
     if (remaining <= 0) {
         countdown.innerHTML =
             `
+                <img
+                    class="countdown-paper-image"
+                    src="images/cartoncino.png"
+                    alt=""
+                >
+
                 <div class="countdown-paper-content">
+
                     <p class="countdown-title">
                         È arrivato il nostro giorno ❤️
                     </p>
+
                 </div>
             `;
 

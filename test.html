@@ -1054,279 +1054,147 @@
 
         function drawEnvelopeBody() {
 
-            /* ============================================== */
-            /* LEMBI LATERALI                               */
-            /* ============================================== */
+    /* =======================================================
+       LEMBI LATERALI
+       ======================================================= */
 
-            /*
-                Partono esattamente dal 18,5%
-                della schermata.
-            */
+    /*
+        Partenza:
+        19,25% dello schermo
 
-            const sideStartY =
-                185;
+        Arrivo:
+        50% dello schermo
+    */
 
+    const sideStartY = 192.5;
+    const sideMeetY  = 500;
 
-            const sideMeetY =
-                480;
+    const leftMeetX  = 492;
+    const rightMeetX = 508;
 
 
-            const leftMeetX =
-                492;
+    /* ---------- SINISTRO ---------- */
 
+    bodyLeftPath.setAttribute(
+        "d",
+        `
+            M 0 ${sideStartY}
 
-            const rightMeetX =
-                508;
+            L ${leftMeetX} ${sideMeetY}
 
+            L 0 1000
 
-            /* ---------------------------------------------- */
-            /* SINISTRO                                      */
-            /* ---------------------------------------------- */
+            Z
+        `
+    );
 
-            bodyLeftPath.setAttribute(
-                "d",
-                `
-                    M 0 ${sideStartY}
 
-                    L ${leftMeetX} ${sideMeetY}
+    bodyLeftFold.setAttribute(
+        "d",
+        `
+            M 0 ${sideStartY}
 
-                    L 0 1000
+            L ${leftMeetX} ${sideMeetY}
+        `
+    );
 
-                    Z
-                `
-            );
 
+    /* ---------- DESTRO ---------- */
 
-            bodyLeftFold.setAttribute(
-                "d",
-                `
-                    M 0 ${sideStartY}
+    bodyRightPath.setAttribute(
+        "d",
+        `
+            M 1000 ${sideStartY}
 
-                    L ${leftMeetX} ${sideMeetY}
-                `
-            );
+            L 1000 1000
 
+            L ${rightMeetX} ${sideMeetY}
 
-            /* ---------------------------------------------- */
-            /* DESTRO                                        */
-            /* ---------------------------------------------- */
+            Z
+        `
+    );
 
-            bodyRightPath.setAttribute(
-                "d",
-                `
-                    M 1000 ${sideStartY}
 
-                    L 1000 1000
+    bodyRightFold.setAttribute(
+        "d",
+        `
+            M 1000 ${sideStartY}
 
-                    L ${rightMeetX} ${sideMeetY}
+            L ${rightMeetX} ${sideMeetY}
+        `
+    );
 
-                    Z
-                `
-            );
 
+    /* =======================================================
+       LEMBO INFERIORE
+       ======================================================= */
 
-            bodyRightFold.setAttribute(
-                "d",
-                `
-                    M 1000 ${sideStartY}
+    /*
+            /\
+           /  \
+          /    \
+         /      \
+        |        |
+        |        |
+        |        |
 
-                    L ${rightMeetX} ${sideMeetY}
-                `
-            );
+        punta = 49%
+        verticale = 25%
+    */
 
+    const tipY = 490;
 
-            /* ============================================== */
-            /* LEMBO INFERIORE                              */
-            /* ============================================== */
+    const tipLeftX  = 468;
+    const tipRightX = 532;
 
-            /*
-                COSTRUZIONE DA ZERO
-                secondo lo schema:
+    const tipSideY = 505;
 
-                         /\
-                        /  \
-                       /    \
-                      /      \
-                     |        |
-                     |        |
-                     |        |
+    /*
+        tratto verticale:
+        75% → 100%
+    */
 
+    const verticalStartY = 750;
 
-                coordinate:
 
-                punta = 49% dello schermo
-                fine diagonali = 75%
-                fondo = 100%
+    bodyBottomPath.setAttribute(
+        "d",
+        `
+            M 0 1000
 
-                quindi:
+            L 0 ${verticalStartY}
 
-                punta: y = 490
+            L ${tipLeftX} ${tipSideY}
 
-                tratto verticale:
-                750 -> 1000
-                = esattamente 25%.
-            */
+            Q
+                500 ${tipY}
+                ${tipRightX} ${tipSideY}
 
+            L 1000 ${verticalStartY}
 
-            /*
-                PUNTA.
+            L 1000 1000
 
-                Il valore centrale più alto
-                arriva al 49%.
-            */
+            Z
+        `
+    );
 
-            const tipY =
-                490;
 
+    bodyBottomFold.setAttribute(
+        "d",
+        `
+            M 0 ${verticalStartY}
 
-            /*
-                Per arrotondare appena la punta
-                utilizziamo due punti laterali.
+            L ${tipLeftX} ${tipSideY}
 
-                La punta non è quindi:
+            Q
+                500 ${tipY}
+                ${tipRightX} ${tipSideY}
 
-                       /\
+            L 1000 ${verticalStartY}
+        `
+    );
 
-                ma qualcosa di leggermente
-                più morbido:
-
-                       __
-                      /  \
-            */
-
-            const tipLeftX =
-                465;
-
-
-            const tipRightX =
-                535;
-
-
-            const tipSideY =
-                505;
-
-
-            /*
-                FINE DELLA DIAGONALE /
-                INIZIO DEL TRATTO VERTICALE.
-
-                75% esatto.
-            */
-
-            const verticalStartY =
-                750;
-
-
-            /*
-                Nessuna curva strana.
-
-                La geometria è volutamente
-                molto semplice:
-
-                fondo sinistro
-                ↑
-                tratto verticale
-                ↑
-                diagonale
-                ↑
-                punta
-                ↓
-                diagonale
-                ↓
-                tratto verticale
-                ↓
-                fondo destro
-            */
-
-
-            const bottomD = `
-
-                M
-                0
-                1000
-
-
-                L
-                0
-                ${verticalStartY}
-
-
-                L
-                ${tipLeftX}
-                ${tipSideY}
-
-
-                Q
-                500
-                ${tipY}
-
-                ${tipRightX}
-                ${tipSideY}
-
-
-                L
-                1000
-                ${verticalStartY}
-
-
-                L
-                1000
-                1000
-
-
-                Z
-            `;
-
-
-            bodyBottomPath.setAttribute(
-                "d",
-                bottomD
-            );
-
-
-            /*
-                Disegniamo soltanto
-                il bordo superiore visibile.
-
-                I lati verticali esterni non
-                hanno bisogno di una piega,
-                perché coincidono con i margini
-                dello schermo.
-            */
-
-            const bottomFoldD = `
-
-                M
-                0
-                ${verticalStartY}
-
-
-                L
-                ${tipLeftX}
-                ${tipSideY}
-
-
-                Q
-                500
-                ${tipY}
-
-                ${tipRightX}
-                ${tipSideY}
-
-
-                L
-                1000
-                ${verticalStartY}
-            `;
-
-
-            bodyBottomFold.setAttribute(
-                "d",
-                bottomFoldD
-            );
-
-        }
-
+}
 
         /* ================================================== */
         /* DISEGNO FRAME LEMBO                              */

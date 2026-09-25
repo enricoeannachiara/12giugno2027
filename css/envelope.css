@@ -26,23 +26,11 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-
-/* =======================================================
-   CORPO DELLA BUSTA
-======================================================= */
-
 .envelope-body {
     position: absolute;
     inset: 0;
 
     z-index: 10;
-
-    /*
-     * Fondo di sicurezza:
-     * impedisce che eventuali micro-fessure degli SVG
-     * lascino intravedere il contenuto sottostante.
-     */
-    background: var(--paper-side);
 
     pointer-events: none;
 
@@ -89,11 +77,6 @@
     vector-effect: non-scaling-stroke;
 }
 
-
-/* =======================================================
-   OMBRA DEL LEMBO
-======================================================= */
-
 .flap-shadow {
     position: absolute;
 
@@ -129,11 +112,6 @@
         opacity,
         transform;
 }
-
-
-/* =======================================================
-   LEMBO SUPERIORE
-======================================================= */
 
 .envelope-flap {
     position: absolute;
@@ -187,11 +165,6 @@
     filter: url(#paperShadow);
 }
 
-
-/* =======================================================
-   SIGILLO
-======================================================= */
-
 .wax-seal {
     position: absolute;
 
@@ -230,11 +203,6 @@
             rgba(70, 25, 20, 0.24)
         );
 }
-
-
-/* =======================================================
-   MOBILE
-======================================================= */
 
 @media (max-width: 760px) {
 

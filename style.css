@@ -15,15 +15,23 @@
     --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
 
-    /* CARTA */
+    /*
+        CARTA DELLA BUSTA
+
+        Fronte e retro sono volutamente
+        molto simili: deve sembrare lo stesso
+        foglio di carta visto dai due lati.
+    */
+
     --envelope-paper: #EADCC8;
     --envelope-paper-back: #E7D8C4;
+    --envelope-edge: rgba(125, 101, 74, 0.34);
 }
 
 
-/* ================================= */
-/* GENERALE */
-/* ================================= */
+/* ================================================== */
+/* GENERALE                                           */
+/* ================================================== */
 
 * {
     box-sizing: border-box;
@@ -46,9 +54,9 @@ body {
 }
 
 
-/* ================================= */
-/* OVERLAY */
-/* ================================= */
+/* ================================================== */
+/* OVERLAY DELLA BUSTA                                */
+/* ================================================== */
 
 .envelope-screen {
     position: fixed;
@@ -59,17 +67,25 @@ body {
 
     overflow: hidden;
 
+    /*
+        Fondamentale:
+        nessun colore di fondo.
+
+        Dietro PageFlip deve esserci direttamente
+        la vera Hero del sito.
+    */
+
     background: transparent;
 
     pointer-events: auto;
 }
 
 
-/* ================================= */
-/* SCENA 3D */
-/* ================================= */
+/* ================================================== */
+/* AREA INTERATTIVA                                   */
+/* ================================================== */
 
-.envelope-scene {
+.envelope-stage {
     position: absolute;
 
     inset: 0;
@@ -83,535 +99,344 @@ body {
 
     outline: none;
 
-    perspective: 1800px;
-
-    perspective-origin: 50% 35%;
-
-    transform-style: preserve-3d;
-
-    -webkit-transform-style: preserve-3d;
-
     -webkit-tap-highlight-color: transparent;
 }
 
 
-/* ================================= */
-/* CONTENITORE DEL LEMBO */
-/* ================================= */
+/* ================================================== */
+/* ROTAZIONE DEL MOTORE PAGEFLIP                      */
+/* ================================================== */
 
-.pagecurl-flap {
+/*
+    StPageFlip sfoglia normalmente le pagine
+    da destra verso sinistra.
+
+    Noi ruotiamo il viewer di 90°.
+
+    In questo modo il movimento orizzontale
+    prodotto dalla libreria diventa un
+    movimento verticale:
+
+                    ↑
+             apertura della busta
+
+    PRIMA DELLA ROTAZIONE:
+
+        larghezza = 50vh
+        altezza   = 100vw
+
+    DOPO LA ROTAZIONE:
+
+        larghezza visibile = 100vw
+        altezza visibile   = 50vh
+
+    cioè esattamente lo spazio occupato
+    dal lembo superiore.
+*/
+
+.flap-flip-rotation {
     position: absolute;
 
-    top: 0;
-    left: 0;
+    left: 50%;
+    top: 25%;
 
-    z-index: 10;
+    width: 50vh;
+    height: 100vw;
 
-    width: 100%;
-    height: 50%;
+    transform:
+        translate(-50%, -50%)
+        rotate(90deg);
 
-    pointer-events: none;
+    transform-origin: center center;
 
-    transform-style: preserve-3d;
-
-    -webkit-transform-style: preserve-3d;
+    overflow: visible;
 }
 
 
-/* ================================= */
-/* SINGOLA FASCIA */
-/* ================================= */
+/* ================================================== */
+/* CONTENITORE STPAGEFLIP                             */
+/* ================================================== */
 
-.flap-strip {
+.flap-book {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible !important;
+
+    background: transparent !important;
+}
+
+
+/* ================================================== */
+/* PAGINE PASSATE A STPAGEFLIP                        */
+/* ================================================== */
+
+.flap-page {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    /*
+        Mai dare uno sfondo alla pagina rettangolare.
+
+        Se lo facessimo vedremmo il rettangolo usato
+        internamente da StPageFlip.
+
+        Noi vogliamo vedere soltanto il triangolo.
+    */
+
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+
+    overflow: visible;
+}
+
+
+/* ================================================== */
+/* CONTENUTO DELLA PAGINA                             */
+/* ================================================== */
+
+/*
+    Poiché abbiamo ruotato tutto il motore
+    di +90°, ruotiamo il contenuto di -90°.
+
+    Così:
+
+    - PageFlip continua a calcolare correttamente
+      lo sfoglio;
+
+    - il nostro triangolo appare diritto
+      sullo schermo.
+*/
+
+.flap-page-content {
     position: absolute;
 
-    left: 0;
-
-    width: 100%;
-    height: 10%;
-
-    transform-origin: 50% 0;
-
-    transform-style: preserve-3d;
-
-    -webkit-transform-style: preserve-3d;
-
-    transform: rotateX(0deg);
-
-    will-change: transform;
-}
-
-
-/* ================================= */
-/* POSIZIONE DELLE 10 FASCE */
-/* ================================= */
-
-.strip-1 {
-    top: 0%;
-}
-
-.strip-2 {
-    top: 10%;
-}
-
-.strip-3 {
-    top: 20%;
-}
-
-.strip-4 {
-    top: 30%;
-}
-
-.strip-5 {
-    top: 40%;
-}
-
-.strip-6 {
+    left: 50%;
     top: 50%;
-}
 
-.strip-7 {
-    top: 60%;
-}
+    width: 100vw;
+    height: 50vh;
 
-.strip-8 {
-    top: 70%;
-}
+    transform:
+        translate(-50%, -50%)
+        rotate(-90deg);
 
-.strip-9 {
-    top: 80%;
-}
+    transform-origin: center center;
 
-.strip-10 {
-    top: 90%;
+    overflow: visible;
+
+    background: transparent;
 }
 
 
-/* ================================= */
-/* FACCE DELLE FASCE */
-/* ================================= */
+/* ================================================== */
+/* FRONTE DEL LEMBO                                   */
+/* ================================================== */
 
-.strip-face {
+.flap-page-front .flap-page-content {
+    z-index: 2;
+}
+
+
+/* ================================================== */
+/* TRIANGOLO DI CARTA                                 */
+/* ================================================== */
+
+.flap-paper {
     position: absolute;
 
     inset: 0;
 
-    transform-style: preserve-3d;
+    /*
+        Questo è finalmente il nostro lembo.
 
-    -webkit-transform-style: preserve-3d;
+        StPageFlip continua a deformare la PAGINA
+        rettangolare, ma tutto ciò che si trova
+        fuori da questo triangolo è trasparente.
+    */
 
-    backface-visibility: hidden;
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
 
-    -webkit-backface-visibility: hidden;
-}
-
-
-/* ================================= */
-/* FRONTE */
-/* ================================= */
-
-.strip-front {
-    z-index: 2;
+    -webkit-clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
 
     background: var(--envelope-paper);
 
-    transform: translateZ(0.3px);
+    /*
+        Ombra molto leggera.
+
+        Non viene animata da noi:
+        la vera ombra durante lo sfoglio
+        sarà prodotta da PageFlip.
+    */
+
+    filter:
+        drop-shadow(
+            0 2px 2px
+            rgba(70, 48, 30, 0.10)
+        );
 }
 
 
-/* ================================= */
-/* RETRO */
-/* ================================= */
+/* ================================================== */
+/* BORDO DEL LEMBO                                    */
+/* ================================================== */
 
-.strip-back {
-    z-index: 1;
+.flap-paper::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    -webkit-clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    /*
+        Sottilissima linea interna.
+
+        Non crea la vecchia X:
+        segue soltanto il perimetro del triangolo.
+    */
+
+    border:
+        1px solid
+        var(--envelope-edge);
+
+    pointer-events: none;
+}
+
+
+/* ================================================== */
+/* RETRO DEL LEMBO                                    */
+/* ================================================== */
+
+/*
+    Nel tuo HTML la seconda pagina è vuota.
+
+    La utilizziamo come retro della carta.
+
+    Generiamo quindi il triangolo con ::before.
+*/
+
+.flap-page-back .flap-page-content::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
+
+    -webkit-clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 100%
+    );
 
     background: var(--envelope-paper-back);
 
-    transform:
-        rotateX(180deg)
-        translateZ(0.3px);
+    filter:
+        drop-shadow(
+            0 2px 2px
+            rgba(70, 48, 30, 0.08)
+        );
 }
 
 
-/* ================================= */
-/* FORMA DEL TRIANGOLO */
-/* ================================= */
+/* ================================================== */
+/* BORDO DEL RETRO                                    */
+/* ================================================== */
 
-/*
-    Ogni fascia è un trapezio.
+.flap-page-back .flap-page-content::after {
+    content: "";
 
-    Tutti i trapezi insieme ricostruiscono
-    un unico triangolo perfettamente continuo.
-*/
+    position: absolute;
 
+    inset: 0;
 
-/* FASCIA 1 */
-
-.strip-1 .strip-face {
     clip-path: polygon(
-        0% 0%,
-        100% 0%,
-        95% 100%,
-        5% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        0% 0%,
-        100% 0%,
-        95% 100%,
-        5% 100%
-    );
-}
-
-
-/* FASCIA 2 */
-
-.strip-2 .strip-face {
-    clip-path: polygon(
-        5% 0%,
-        95% 0%,
-        90% 100%,
-        10% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        5% 0%,
-        95% 0%,
-        90% 100%,
-        10% 100%
-    );
-}
-
-
-/* FASCIA 3 */
-
-.strip-3 .strip-face {
-    clip-path: polygon(
-        10% 0%,
-        90% 0%,
-        85% 100%,
-        15% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        10% 0%,
-        90% 0%,
-        85% 100%,
-        15% 100%
-    );
-}
-
-
-/* FASCIA 4 */
-
-.strip-4 .strip-face {
-    clip-path: polygon(
-        15% 0%,
-        85% 0%,
-        80% 100%,
-        20% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        15% 0%,
-        85% 0%,
-        80% 100%,
-        20% 100%
-    );
-}
-
-
-/* FASCIA 5 */
-
-.strip-5 .strip-face {
-    clip-path: polygon(
-        20% 0%,
-        80% 0%,
-        75% 100%,
-        25% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        20% 0%,
-        80% 0%,
-        75% 100%,
-        25% 100%
-    );
-}
-
-
-/* FASCIA 6 */
-
-.strip-6 .strip-face {
-    clip-path: polygon(
-        25% 0%,
-        75% 0%,
-        70% 100%,
-        30% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        25% 0%,
-        75% 0%,
-        70% 100%,
-        30% 100%
-    );
-}
-
-
-/* FASCIA 7 */
-
-.strip-7 .strip-face {
-    clip-path: polygon(
-        30% 0%,
-        70% 0%,
-        65% 100%,
-        35% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        30% 0%,
-        70% 0%,
-        65% 100%,
-        35% 100%
-    );
-}
-
-
-/* FASCIA 8 */
-
-.strip-8 .strip-face {
-    clip-path: polygon(
-        35% 0%,
-        65% 0%,
-        60% 100%,
-        40% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        35% 0%,
-        65% 0%,
-        60% 100%,
-        40% 100%
-    );
-}
-
-
-/* FASCIA 9 */
-
-.strip-9 .strip-face {
-    clip-path: polygon(
-        40% 0%,
-        60% 0%,
-        55% 100%,
-        45% 100%
-    );
-
-    -webkit-clip-path: polygon(
-        40% 0%,
-        60% 0%,
-        55% 100%,
-        45% 100%
-    );
-}
-
-
-/* FASCIA 10 */
-
-.strip-10 .strip-face {
-    clip-path: polygon(
-        45% 0%,
-        55% 0%,
+        0 0,
+        100% 0,
         50% 100%
     );
 
     -webkit-clip-path: polygon(
-        45% 0%,
-        55% 0%,
+        0 0,
+        100% 0,
         50% 100%
     );
+
+    border:
+        1px solid
+        rgba(125, 101, 74, 0.22);
+
+    pointer-events: none;
 }
 
 
-/* ================================= */
-/* ANIMAZIONE PAGE CURL */
-/* ================================= */
+/* ================================================== */
+/* PAGINA TRASPARENTE                                 */
+/* ================================================== */
 
-/*
-    Tutte le fasce impiegano circa
-    lo stesso tempo.
-
-    Cambia soltanto leggermente
-    il momento in cui iniziano.
-
-    Questo crea un'onda molto morbida
-    dalla piega superiore verso la punta.
-*/
-
-
-.envelope-screen.opening .strip-1 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0s
-        forwards;
+.flap-page-transparent {
+    background: transparent !important;
 }
 
 
-.envelope-screen.opening .strip-2 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.025s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-3 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.05s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-4 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.075s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-5 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.10s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-6 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.125s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-7 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.15s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-8 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.175s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-9 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.20s
-        forwards;
-}
-
-
-.envelope-screen.opening .strip-10 {
-    animation:
-        curlStrip
-        3.4s
-        cubic-bezier(0.37, 0, 0.63, 1)
-        0.225s
-        forwards;
-}
-
-
-/* ================================= */
-/* ROTAZIONE DELLE FASCE */
-/* ================================= */
-
-@keyframes curlStrip {
-
-    0% {
-        transform: rotateX(0deg);
-    }
-
-    100% {
-        transform: rotateX(180deg);
-    }
-
-}
-
-
-/* ================================= */
-/* PICCOLISSIMA OMBRA TRA LE FASCE */
-/* ================================= */
-
-/*
-    È volutamente quasi invisibile.
-
-    Serve soltanto a far percepire
-    la curvatura quando il foglio
-    non è più perfettamente piatto.
-*/
-
-.strip-front {
-    box-shadow:
-        0 1px 1px
-        rgba(80, 60, 40, 0.035);
-}
-
-
-/* ================================= */
-/* SIGILLO */
-/* ================================= */
+/* ================================================== */
+/* SIGILLO                                            */
+/* ================================================== */
 
 .wax-seal {
     position: absolute;
 
+    /*
+        La punta del triangolo è:
+        X = 50%
+        Y = 100%
+
+        Il centro del sigillo coincide
+        esattamente con quella punta.
+    */
+
     left: 50%;
     bottom: 0;
-
-    z-index: 10;
 
     width: 116px;
     height: 116px;
 
-    /*
-        La decima fascia termina
-        esattamente sulla punta.
-
-        Il centro del sigillo viene quindi
-        posto sulla punta del lembo.
-    */
-
     transform:
-        translate(-50%, 50%)
-        translateZ(2px);
+        translate(-50%, 50%);
+
+    z-index: 10;
 
     display: flex;
 
@@ -619,16 +444,12 @@ body {
     align-items: center;
 
     pointer-events: none;
-
-    backface-visibility: hidden;
-
-    -webkit-backface-visibility: hidden;
 }
 
 
-/* ================================= */
-/* IMMAGINE DEL SIGILLO */
-/* ================================= */
+/* ================================================== */
+/* IMMAGINE DEL SIGILLO                               */
+/* ================================================== */
 
 .wax-image {
     display: block;
@@ -644,15 +465,63 @@ body {
 
     filter:
         drop-shadow(
-            0 5px 5px
-            rgba(65, 24, 20, 0.20)
+            0 6px 6px
+            rgba(65, 24, 20, 0.23)
         );
 }
 
 
-/* ================================= */
-/* HERO */
-/* ================================= */
+/* ================================================== */
+/* PULIZIA DEGLI ELEMENTI GENERATI DA PAGEFLIP        */
+/* ================================================== */
+
+/*
+    PageFlip crea internamente alcuni contenitori.
+
+    Evitiamo che abbiano colori di fondo propri.
+*/
+
+.flap-book .stf__parent,
+.flap-book .stf__wrapper,
+.flap-book .stf__block,
+.flap-book .stf__item {
+    background: transparent !important;
+}
+
+
+/*
+    Evitiamo eventuali bordi o ombre rettangolari
+    aggiunti dal browser alle pagine HTML.
+*/
+
+.flap-book .stf__item {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+
+/* ================================================== */
+/* STATO FINALE                                       */
+/* ================================================== */
+
+/*
+    Più avanti lo script aggiungerà "opened"
+    dopo che PageFlip avrà completato lo sfoglio.
+
+    A quel punto l'overlay viene eliminato
+    e rimane soltanto la Hero reale.
+*/
+
+.envelope-screen.opened {
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* ================================================== */
+/* HERO                                               */
+/* ================================================== */
 
 .hero {
     position: relative;
@@ -704,9 +573,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* SEZIONI */
-/* ================================= */
+/* ================================================== */
+/* SEZIONI                                            */
+/* ================================================== */
 
 .section {
     width: min(100% - 32px, 700px);
@@ -754,9 +623,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* CARD */
-/* ================================= */
+/* ================================================== */
+/* CARD                                               */
+/* ================================================== */
 
 .card {
     margin: 0 0 28px;
@@ -809,9 +678,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* PULSANTI */
-/* ================================= */
+/* ================================================== */
+/* PULSANTI                                           */
+/* ================================================== */
 
 .button-row {
     display: flex;
@@ -888,9 +757,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* PULSANTE CHAMPAGNE */
-/* ================================= */
+/* ================================================== */
+/* PULSANTE CHAMPAGNE                                 */
+/* ================================================== */
 
 .button-gold {
     background: var(--gold);
@@ -909,9 +778,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* LIBRETTO CERIMONIA */
-/* ================================= */
+/* ================================================== */
+/* LIBRETTO CERIMONIA                                 */
+/* ================================================== */
 
 .ceremony-booklet {
     margin-top: 16px;
@@ -927,9 +796,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* RSVP */
-/* ================================= */
+/* ================================================== */
+/* RSVP                                               */
+/* ================================================== */
 
 .rsvp-section .button-row {
     justify-content: center;
@@ -942,9 +811,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* FOTO / WEDSHOOTS */
-/* ================================= */
+/* ================================================== */
+/* FOTO / WEDSHOOTS                                   */
+/* ================================================== */
 
 .photos-section .button-row {
     justify-content: center;
@@ -957,7 +826,8 @@ h1 {
 
     padding: 20px;
 
-    background: rgba(250, 247, 242, 0.9);
+    background:
+        rgba(250, 247, 242, 0.9);
 
     border-radius: 20px;
 
@@ -1001,9 +871,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* IL NOSTRO SOGNO */
-/* ================================= */
+/* ================================================== */
+/* IL NOSTRO SOGNO                                    */
+/* ================================================== */
 
 .gift-card {
     overflow: hidden;
@@ -1090,9 +960,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* INDICATORE SCORRI */
-/* ================================= */
+/* ================================================== */
+/* INDICATORE SCORRI                                  */
+/* ================================================== */
 
 .scroll-indicator {
     position: fixed;
@@ -1175,18 +1045,18 @@ h1 {
 }
 
 
-/* ================================= */
-/* SPAZIO FINALE */
-/* ================================= */
+/* ================================================== */
+/* SPAZIO FINALE                                      */
+/* ================================================== */
 
 .page-end {
     height: 160px;
 }
 
 
-/* ================================= */
-/* SMARTPHONE */
-/* ================================= */
+/* ================================================== */
+/* SMARTPHONE                                         */
+/* ================================================== */
 
 @media (max-width: 600px) {
 
@@ -1296,9 +1166,9 @@ h1 {
 }
 
 
-/* ================================= */
-/* SCHERMI MOLTO PICCOLI */
-/* ================================= */
+/* ================================================== */
+/* SCHERMI MOLTO PICCOLI                              */
+/* ================================================== */
 
 @media (max-width: 370px) {
 
@@ -1320,20 +1190,6 @@ h1 {
         min-width: 0;
 
         width: 100%;
-    }
-
-}
-
-
-/* ================================= */
-/* RIDUZIONE MOVIMENTO */
-/* ================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .flap-strip {
-        animation-duration: 0.01ms !important;
-        animation-delay: 0ms !important;
     }
 
 }

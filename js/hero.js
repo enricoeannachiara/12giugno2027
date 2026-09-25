@@ -37,16 +37,17 @@ window.addEventListener(
 
         /*
          * La discesa del corpo della busta
-         * inizia dopo circa 1600 ms.
+         * inizia a circa 1600 ms.
          *
-         * Facciamo partire il movimento della Hero
-         * poco prima, così i due movimenti
-         * si sovrappongono naturalmente.
+         * Il reveal parte 350 ms prima,
+         * così il movimento comincia mentre
+         * il lembo superiore sta ancora
+         * completando l'apertura.
          */
         heroRevealTimer =
             setTimeout(
                 revealHero,
-                1450
+                1250
             );
     }
 );
@@ -56,11 +57,6 @@ window.addEventListener(
    SICUREZZA
 ======================================================= */
 
-/*
- * Se per qualsiasi motivo la busta risulta
- * già aperta, mostriamo subito la Hero
- * nello stato finale.
- */
 if (
     window.envelopeState &&
     window.envelopeState.opened

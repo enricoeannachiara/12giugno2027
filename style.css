@@ -15,9 +15,8 @@
     --card: rgba(255, 255, 255, 0.86);
     --border: rgba(60, 55, 50, 0.08);
 
-    /* CARTA */
     --envelope-paper: #EADCC8;
-    --envelope-edge: rgba(125, 101, 74, 0.30);
+    --envelope-edge: rgba(120, 96, 70, 0.28);
 }
 
 
@@ -37,7 +36,6 @@ body {
     margin: 0;
 
     background: var(--background);
-
     color: var(--text);
 
     font-family: Georgia, serif;
@@ -47,7 +45,7 @@ body {
 
 
 /* ================================================== */
-/* OVERLAY INIZIALE                                   */
+/* OVERLAY                                            */
 /* ================================================== */
 
 .envelope-screen {
@@ -58,13 +56,6 @@ body {
     z-index: 5000;
 
     overflow: hidden;
-
-    /*
-        Nessun fondo.
-
-        La vera Hero del sito rimane
-        direttamente sotto all'animazione.
-    */
 
     background: transparent;
 
@@ -81,9 +72,6 @@ body {
 
     inset: 0;
 
-    width: 100%;
-    height: 100%;
-
     overflow: hidden;
 
     cursor: pointer;
@@ -95,19 +83,24 @@ body {
 
 
 /* ================================================== */
-/* VIEWER PAGEFLIP RUOTATO                            */
+/* CONTENITORE DEL MOTORE PAGEFLIP                    */
 /* ================================================== */
 
 /*
-    PageFlip nasce per sfogliare
-    orizzontalmente.
+    PageFlip lavorerà in un rettangolo verticale:
 
-    Ruotiamo quindi il viewer di 90°,
-    ottenendo lo sfoglio dal basso
-    verso l'alto.
+        larghezza  = metà altezza viewport
+        altezza    = larghezza viewport
 
-    Le dimensioni vengono invertite
-    intenzionalmente.
+    Poi ruotiamo tutto di 90°.
+
+    Dopo la rotazione otteniamo visivamente:
+
+        larghezza = 100vw
+        altezza   = 50vh
+
+    quindi esattamente la metà superiore
+    dello schermo.
 */
 
 .flap-flip-rotation {
@@ -123,7 +116,7 @@ body {
         translate(-50%, -50%)
         rotate(90deg);
 
-    transform-origin: center center;
+    transform-origin: 50% 50%;
 
     overflow: visible;
 
@@ -132,14 +125,18 @@ body {
 
 
 /* ================================================== */
-/* CONTENITORE PAGEFLIP                               */
+/* LIBRO PAGEFLIP                                     */
 /* ================================================== */
 
 .flap-book {
-    position: relative;
+    position: absolute;
+
+    inset: 0;
 
     width: 100%;
     height: 100%;
+
+    margin: 0;
 
     overflow: visible !important;
 
@@ -148,7 +145,7 @@ body {
 
 
 /* ================================================== */
-/* PAGINE STPAGEFLIP                                  */
+/* PAGINE                                             */
 /* ================================================== */
 
 .flap-page {
@@ -156,6 +153,8 @@ body {
 
     width: 100%;
     height: 100%;
+
+    margin: 0;
 
     overflow: visible;
 
@@ -168,15 +167,14 @@ body {
 
 
 /* ================================================== */
-/* CONTENUTO DELLA PAGINA                             */
+/* CONTENUTO CONTRO-RUOTATO                           */
 /* ================================================== */
 
 /*
-    Il motore è ruotato di +90°.
+    Il motore viene ruotato di +90°.
 
-    Il contenuto viene contro-ruotato
-    di -90°, in modo che il lembo
-    risulti diritto.
+    Il contenuto viene ruotato di -90°
+    per apparire normalmente orientato.
 */
 
 .flap-page-content {
@@ -192,32 +190,28 @@ body {
         translate(-50%, -50%)
         rotate(-90deg);
 
-    transform-origin: center center;
+    transform-origin: 50% 50%;
 
     overflow: visible !important;
 
     background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
 }
 
 
 /* ================================================== */
-/* LEMBO DI CARTA                                     */
+/* UNICO LEMBO VISIBILE                               */
 /* ================================================== */
-
-/*
-    SOLO flap-paper viene ritagliato.
-
-    Il sigillo non è figlio di questo
-    elemento e quindi non può più essere
-    troncato dalla clip-path.
-*/
 
 .flap-paper {
     position: absolute;
 
     inset: 0;
 
-    z-index: 1;
+    z-index: 2;
 
     background: var(--envelope-paper);
 
@@ -233,32 +227,21 @@ body {
         50% 100%
     );
 
-    /*
-        Niente drop-shadow qui.
-
-        È importante perché un filtro
-        applicato al triangolo durante
-        la deformazione può produrre
-        strani artefatti.
-    */
-
     filter: none;
+
+    box-shadow: none;
 }
 
 
 /* ================================================== */
-/* BORDO LEGGERO DEL LEMBO                            */
+/* LEGGERO BORDO DELLA CARTA                          */
 /* ================================================== */
 
 /*
-    Creiamo un secondo triangolo
-    leggermente più grande DIETRO
+    Il bordo è un secondo triangolo dietro
     quello principale.
 
-    In questo modo il bordo segue
-    realmente i lati diagonali.
-
-    Nessun border sul rettangolo.
+    Non usiamo border sul rettangolo PageFlip.
 */
 
 .flap-page-front .flap-page-content::before {
@@ -272,7 +255,7 @@ body {
     width: calc(100% + 2px);
     height: calc(100% + 2px);
 
-    z-index: 0;
+    z-index: 1;
 
     background: var(--envelope-edge);
 
@@ -299,15 +282,6 @@ body {
 .wax-seal {
     position: absolute;
 
-    /*
-        Punta del lembo:
-        50% / 100%
-
-        Il centro del sigillo coincide
-        con la punta, ma il sigillo
-        rimane completamente visibile.
-    */
-
     left: 50%;
     bottom: 0;
 
@@ -325,11 +299,11 @@ body {
     align-items: center;
 
     /*
-        Fondamentale:
-        nessuna clip.
+        Non deve essere tagliato dal triangolo.
     */
 
     clip-path: none !important;
+
     -webkit-clip-path: none !important;
 
     overflow: visible !important;
@@ -337,10 +311,6 @@ body {
     pointer-events: none;
 }
 
-
-/* ================================================== */
-/* IMMAGINE DEL SIGILLO                               */
-/* ================================================== */
 
 .wax-image {
     display: block;
@@ -356,11 +326,6 @@ body {
 
     -webkit-user-drag: none;
 
-    /*
-        Questa ombra riguarda soltanto
-        la ceralacca, non la pagina.
-    */
-
     filter:
         drop-shadow(
             0 5px 5px
@@ -370,44 +335,28 @@ body {
 
 
 /* ================================================== */
-/* SECONDA PAGINA                                     */
+/* SECONDA PAGINA: TOTALMENTE INVISIBILE              */
 /* ================================================== */
 
-/*
-    Questa è la correzione fondamentale.
-
-    La seconda pagina esiste soltanto
-    perché PageFlip necessita di qualcosa
-    verso cui completare lo sfoglio.
-
-    Non disegniamo NIENTE al suo interno.
-*/
-
-.flap-page-back {
+.flap-page-back,
+.flap-page-back .flap-page-content,
+.flap-page-transparent {
     background: transparent !important;
 
     border: 0 !important;
 
     box-shadow: none !important;
-}
 
-.flap-page-back .flap-page-content {
-    background: transparent !important;
-
-    border: 0 !important;
-
-    box-shadow: none !important;
+    filter: none !important;
 }
 
 
 /*
-    Importantissimo:
-
-    nessun ::before
-    nessun ::after
-    nessun secondo triangolo.
+    Nessun triangolo generato sulla seconda pagina.
 */
 
+.flap-page-back::before,
+.flap-page-back::after,
 .flap-page-back .flap-page-content::before,
 .flap-page-back .flap-page-content::after {
     content: none !important;
@@ -417,58 +366,38 @@ body {
 
 
 /* ================================================== */
-/* CONTENUTO TRASPARENTE                              */
+/* ELEMENTI INTERNI GENERATI DA STPAGEFLIP            */
 /* ================================================== */
-
-.flap-page-transparent {
-    background: transparent !important;
-
-    border: 0 !important;
-
-    box-shadow: none !important;
-}
-
-
-/* ================================================== */
-/* ELEMENTI GENERATI DA STPAGEFLIP                    */
-/* ================================================== */
-
-/*
-    Togliamo qualsiasi fondo impostato
-    sui contenitori strutturali.
-*/
 
 .flap-book .stf__parent,
 .flap-book .stf__wrapper,
 .flap-book .stf__block,
 .flap-book .stf__item {
     background: transparent !important;
-}
 
-
-/*
-    Niente bordi rettangolari visibili.
-*/
-
-.flap-book .stf__item {
     border: 0 !important;
 
     box-shadow: none !important;
 }
 
 
-/* ================================================== */
-/* EVENTUALI CANVAS / OMBRE DELLA LIBRERIA            */
-/* ================================================== */
-
 /*
-    Non nascondiamo il canvas di PageFlip:
-    altrimenti perderemmo proprio l'effetto
-    di curvatura.
-
-    Qui ci limitiamo a evitare che riceva
-    un background.
+    Molto importante:
+    impediamo a StPageFlip di aggiungere
+    margini visivi attorno al nostro viewer.
 */
+
+.flap-book .stf__parent,
+.flap-book .stf__wrapper {
+    margin: 0 !important;
+
+    padding: 0 !important;
+}
+
+
+/* ================================================== */
+/* CANVAS DELLA LIBRERIA                              */
+/* ================================================== */
 
 .flap-book canvas {
     background: transparent !important;
@@ -476,7 +405,7 @@ body {
 
 
 /* ================================================== */
-/* STATO APERTO                                       */
+/* STATO FINALE                                       */
 /* ================================================== */
 
 .envelope-screen.opened {
@@ -507,6 +436,7 @@ body {
     padding: 40px 20px;
 }
 
+
 .portrait {
     width: min(60vw, 380px);
 
@@ -521,6 +451,7 @@ body {
     pointer-events: none;
 }
 
+
 h1 {
     margin: 0;
 
@@ -530,6 +461,7 @@ h1 {
 
     font-weight: 400;
 }
+
 
 .data {
     margin: 18px 0 0;
@@ -552,6 +484,7 @@ h1 {
     padding: 45px 0 35px;
 }
 
+
 .rsvp-section,
 .locations-section,
 .photos-section,
@@ -559,9 +492,11 @@ h1 {
     padding-top: 50px;
 }
 
+
 .gift-section {
     padding-bottom: 50px;
 }
+
 
 .section-title {
     display: flex;
@@ -574,6 +509,7 @@ h1 {
     margin-bottom: 36px;
 }
 
+
 .section-title h2 {
     margin: 0;
 
@@ -581,6 +517,7 @@ h1 {
 
     font-weight: 400;
 }
+
 
 .pin-icon {
     width: 32px;
@@ -614,6 +551,7 @@ h1 {
     -webkit-backdrop-filter: blur(18px);
 }
 
+
 .card-icon {
     margin-bottom: 16px;
 
@@ -621,6 +559,7 @@ h1 {
 
     line-height: 1;
 }
+
 
 .card h3 {
     margin: 0 0 24px;
@@ -631,6 +570,7 @@ h1 {
 
     font-weight: 400;
 }
+
 
 .card-text {
     max-width: 500px;
@@ -659,6 +599,7 @@ h1 {
 
     flex-wrap: wrap;
 }
+
 
 .button {
     display: inline-flex;
@@ -691,6 +632,7 @@ h1 {
         background 0.15s ease;
 }
 
+
 .button:hover {
     transform: translateY(-2px);
 
@@ -699,9 +641,11 @@ h1 {
         rgba(0, 0, 0, 0.09);
 }
 
+
 .button:active {
     transform: scale(0.97);
 }
+
 
 .button-primary {
     background: var(--lilac);
@@ -709,15 +653,18 @@ h1 {
     color: white;
 }
 
+
 .button-primary:hover {
     background: var(--lilac-dark);
 }
+
 
 .button-secondary {
     background: #F0EDF6;
 
     color: #514A59;
 }
+
 
 .button-secondary:hover {
     background: #E6E0EF;
@@ -734,9 +681,11 @@ h1 {
     color: var(--warm-white);
 }
 
+
 .button-gold:hover {
     background: var(--gold-dark);
 }
+
 
 .button-gold:active {
     background: var(--gold-active);
@@ -758,6 +707,7 @@ h1 {
     align-items: center;
 }
 
+
 .ceremony-booklet .button {
     min-width: 230px;
 }
@@ -773,6 +723,7 @@ h1 {
     width: 100%;
 }
 
+
 .rsvp-section .button {
     min-width: 190px;
 }
@@ -787,6 +738,7 @@ h1 {
 
     width: 100%;
 }
+
 
 .access-box {
     margin-top: 28px;
@@ -807,6 +759,7 @@ h1 {
     gap: 12px;
 }
 
+
 .access-label {
     color: var(--muted);
 
@@ -819,6 +772,7 @@ h1 {
     text-transform: uppercase;
 }
 
+
 #accessCode {
     font-family: "Courier New", monospace;
 
@@ -826,6 +780,7 @@ h1 {
 
     letter-spacing: 1.5px;
 }
+
 
 .copy-message {
     min-height: 18px;
@@ -846,6 +801,7 @@ h1 {
     overflow: hidden;
 }
 
+
 .gift-intro {
     max-width: 520px;
 
@@ -857,6 +813,7 @@ h1 {
 
     line-height: 1.7;
 }
+
 
 .gift-details {
     margin-top: 28px;
@@ -876,9 +833,11 @@ h1 {
         transform 0.3s ease;
 }
 
+
 .gift-details[hidden] {
     display: none;
 }
+
 
 .bank-detail {
     display: flex;
@@ -892,6 +851,7 @@ h1 {
     margin-bottom: 24px;
 }
 
+
 .bank-label {
     color: var(--muted);
 
@@ -904,11 +864,13 @@ h1 {
     text-transform: uppercase;
 }
 
+
 .bank-detail strong {
     font-size: 1.05rem;
 
     font-weight: 600;
 }
+
 
 .bank-code {
     max-width: 100%;
@@ -921,6 +883,7 @@ h1 {
 
     word-break: break-all;
 }
+
 
 .copy-bank-button {
     margin-top: 6px;
@@ -979,12 +942,14 @@ h1 {
         transform 0.35s ease;
 }
 
+
 .scroll-indicator.hidden {
     opacity: 0;
 
     transform:
         translate(-50%, 14px);
 }
+
 
 .scroll-arrow {
     font-size: 1.15rem;
@@ -997,6 +962,7 @@ h1 {
         ease-in-out
         infinite;
 }
+
 
 @keyframes arrowBounce {
 
@@ -1032,6 +998,7 @@ h1 {
         height: 104px;
     }
 
+
     .hero {
         min-height: 100vh;
 
@@ -1040,11 +1007,13 @@ h1 {
         padding: 35px 20px;
     }
 
+
     .portrait {
         width: min(72vw, 340px);
 
         margin-bottom: 20px;
     }
+
 
     .section {
         width: calc(100% - 28px);
@@ -1052,15 +1021,18 @@ h1 {
         padding-top: 40px;
     }
 
+
     .section-title {
         margin-bottom: 30px;
     }
+
 
     .card {
         padding: 30px 18px 22px;
 
         border-radius: 24px;
     }
+
 
     .button-row {
         display: grid;
@@ -1073,6 +1045,7 @@ h1 {
         gap: 10px;
     }
 
+
     .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
@@ -1080,12 +1053,14 @@ h1 {
         justify-content: center;
     }
 
+
     .rsvp-section .button-row .button,
     .photos-section .button-row .button {
         width: auto;
 
         min-width: 170px;
     }
+
 
     .button {
         min-width: 0;
@@ -1096,9 +1071,11 @@ h1 {
         padding-right: 10px;
     }
 
+
     .ceremony-booklet {
         margin-top: 14px;
     }
+
 
     .ceremony-booklet .button {
         width: auto;
@@ -1106,9 +1083,11 @@ h1 {
         min-width: 220px;
     }
 
+
     .access-box {
         margin-top: 24px;
     }
+
 
     .gift-intro {
         font-size: 1rem;
@@ -1116,15 +1095,18 @@ h1 {
         line-height: 1.65;
     }
 
+
     .bank-code {
         font-size: 0.93rem;
     }
+
 
     .copy-bank-button {
         width: auto;
 
         min-width: 150px;
     }
+
 
     .page-end {
         height: 180px;
@@ -1144,14 +1126,17 @@ h1 {
         height: 94px;
     }
 
+
     .button-row {
         grid-template-columns: 1fr;
     }
+
 
     .rsvp-section .button-row,
     .photos-section .button-row {
         display: flex;
     }
+
 
     .ceremony-booklet .button {
         min-width: 0;

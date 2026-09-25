@@ -249,15 +249,6 @@
         .wax-seal {
             position: absolute;
 
-            /*
-                50% della larghezza
-                + 100% di un lembo alto 50vh.
-
-                = 50vw / 50vh
-
-                quindi centro esatto dello schermo.
-            */
-
             left: 50%;
             top: 100%;
 
@@ -450,19 +441,6 @@
             >
 
 
-                <!--
-                    ORDINE DEGLI ELEMENTI:
-
-                    1. lembo laterale sinistro
-                    2. lembo laterale destro
-                    3. lembo inferiore
-
-                    Essendo l'ultimo disegnato,
-                    il lembo inferiore si trova
-                    SOPRA ai due laterali.
-                -->
-
-
                 <!-- ======================================== -->
                 <!-- LATERALE SINISTRO                       -->
                 <!-- ======================================== -->
@@ -473,8 +451,6 @@
                     fill="#E8D7C0"
                 />
 
-
-                <!-- PIEGA SINISTRA -->
 
                 <path
                     id="bodyLeftFold"
@@ -500,8 +476,6 @@
                 />
 
 
-                <!-- PIEGA DESTRA -->
-
                 <path
                     id="bodyRightFold"
                     d=""
@@ -525,8 +499,6 @@
                     fill="#EBDCC6"
                 />
 
-
-                <!-- BORDO SUPERIORE DEL LEMBO INFERIORE -->
 
                 <path
                     id="bodyBottomFold"
@@ -892,15 +864,8 @@
 
 
         /* ================================================== */
-        /* GEOMETRIA DEL LEMBO SUPERIORE                    */
+        /* GEOMETRIA LEMBO SUPERIORE                        */
         /* ================================================== */
-
-        /*
-            QUESTA È LA VERSIONE APPROVATA.
-
-            NON modifichiamo la proporzione
-            rispetto all'ultimo test.
-        */
 
         function getFlapGeometry(t) {
 
@@ -919,11 +884,6 @@
                     bend
                 );
 
-
-            /*
-                Tratti verticali lunghi:
-                circa 42% del lembo.
-            */
 
             const shoulderY =
                 420 +
@@ -1076,64 +1036,36 @@
 
 
         /* ================================================== */
-        /* GEOMETRIA DEL CORPO DELLA BUSTA                  */
+        /* GEOMETRIA CORPO BUSTA                            */
         /* ================================================== */
 
         function drawEnvelopeBody() {
 
             /*
-                Il tratto dritto del lembo superiore
-                arriva, a riposo, a circa:
+                CORREZIONE 1
 
-                420 / 1000 del lembo.
+                Prima partivamo da circa 10,5%.
 
-                Siccome il lembo è alto 50vh:
-
-                420 / 1000 × 50vh = 21vh.
-
-                La metà di quel tratto è quindi
-                circa 10,5vh.
-
-                Nel nostro SVG del corpo,
-                alto 100% della viewport,
-                equivale a circa Y = 105.
+                Ora partiamo da circa 15%
+                dell'altezza dello schermo.
             */
 
             const sideStartY =
-                105;
+                150;
 
 
             /*
-                La diagonale del lembo superiore,
-                sullo schermo, percorre circa:
+                Manteniamo una diagonale coerente
+                con il lembo superiore.
 
-                50vw in orizzontale
-                29vh in verticale.
-
-                Manteniamo praticamente
-                la stessa inclinazione.
-
-                Partendo da Y = 105,
-                arriviamo quindi intorno a Y = 395.
+                Siccome partiamo più in basso,
+                anche il punto interno viene
+                leggermente abbassato.
             */
 
             const sideMeetY =
-                395;
+                445;
 
-
-            /*
-                I due lembi laterali
-                NON devono necessariamente
-                incontrarsi esattamente.
-
-                Lasciamo un piccolissimo spazio
-                centrale, che verrà poi coperto
-                dal lembo inferiore.
-
-                Questo aiuta a dare la sensazione
-                di pezzi di carta realmente
-                sovrapposti.
-            */
 
             const leftMeetX =
                 492;
@@ -1212,47 +1144,43 @@
             /* ---------------------------------------------- */
 
             /*
-                Il lembo inferiore viene disegnato
-                SOPRA ai laterali.
+                CORREZIONE 2
 
-                La sua punta arriva leggermente
-                sotto il sigillo.
+                Prima la punta del lembo inferiore
+                arrivava troppo in basso.
 
-                Il vertice non è geometrico:
-                utilizziamo una curva Q per
-                smussarlo.
+                Ora sale molto di più.
+
+                In questo modo, a busta chiusa,
+                il lembo inferiore copre il vuoto
+                centrale e non lascia intravedere
+                la Hero.
             */
 
-
             const bottomTipY =
-                535;
+                455;
 
 
             /*
-                Questi due punti definiscono
-                la zona arrotondata della punta.
+                Zona smussata della punta.
             */
 
             const bottomRoundLeftX =
-                452;
+                445;
 
 
             const bottomRoundRightX =
-                548;
-
-
-            const bottomRoundY =
                 555;
 
 
-            /*
-                I lati inferiori partono
-                dagli angoli bassi dello schermo
-                e salgono verso la punta.
+            const bottomRoundY =
+                485;
 
-                In questo modo il pezzo inferiore
-                copre chiaramente i due laterali,
-                come su una busta reale.
+
+            /*
+                Il pezzo inferiore continua a essere
+                DISEGNATO DOPO i laterali,
+                quindi rimane sopra.
             */
 
             const bottomD = `
@@ -1285,14 +1213,6 @@
                 bottomD
             );
 
-
-            /*
-                Disegniamo soltanto il bordo
-                superiore visibile del lembo
-                inferiore.
-
-                Anche qui la punta è arrotondata.
-            */
 
             const bottomFoldD = `
 

@@ -47,13 +47,13 @@
     margin-bottom: 18px;
 
     transform:
-        translateY(8px)
-        scale(0.97);
+        translateY(10px)
+        scale(0.85);
 
     transform-origin: center center;
 
     transition:
-        transform 3s
+        transform 3.3s
         cubic-bezier(0.22, 1, 0.36, 1);
 
     will-change: transform;
@@ -85,13 +85,13 @@
     color: var(--text);
 
     transform:
-        translateY(6px)
-        scale(0.97);
+        translateY(8px)
+        scale(0.85);
 
     transform-origin: center center;
 
     transition:
-        transform 3s
+        transform 3.3s
         cubic-bezier(0.22, 1, 0.36, 1);
 
     will-change: transform;
@@ -105,13 +105,13 @@
 .hero.is-revealed .hero-portrait {
     transform:
         translateY(0)
-        scale(1.08);
+        scale(1);
 }
 
 .hero.is-revealed h1 {
     transform:
         translateY(0)
-        scale(1.08);
+        scale(1);
 }
 
 

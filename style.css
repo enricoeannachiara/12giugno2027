@@ -23,7 +23,9 @@
     --paper-bottom: #EBDCC6;
     --paper-edge: #C8B18F;
 
-    --shadow-soft: 0 14px 40px rgba(74, 61, 53, 0.08);
+    --shadow-soft:
+        0 14px 40px
+        rgba(74, 61, 53, 0.08);
 }
 
 
@@ -68,7 +70,6 @@ body.envelope-locked {
 
 a {
     color: inherit;
-
     text-decoration: none;
 }
 
@@ -85,9 +86,7 @@ button {
 
 
 
-/* ========================================================= */
-/* BUSTA                                                     */
-/* ========================================================= */
+/* BUSTA */
 
 
 .envelope-screen {
@@ -324,9 +323,7 @@ button {
 
 
 
-/* ========================================================= */
-/* SITO                                                      */
-/* ========================================================= */
+/* SITO */
 
 
 .site {
@@ -339,9 +336,7 @@ button {
 
 
 
-/* ========================================================= */
-/* HERO                                                      */
-/* ========================================================= */
+/* HERO */
 
 
 .hero {
@@ -424,9 +419,158 @@ button {
 
 
 
-/* ========================================================= */
-/* SEZIONI                                                   */
-/* ========================================================= */
+/* COUNTDOWN */
+
+
+.countdown-card {
+    width: min(92vw, 520px);
+
+    margin-top: 32px;
+
+    padding:
+        21px
+        22px
+        23px;
+
+    border:
+        1px solid
+        rgba(180, 160, 135, 0.22);
+
+    border-radius: 22px;
+
+    background:
+        rgba(
+            255,
+            253,
+            248,
+            0.72
+        );
+
+    box-shadow:
+        0 13px 32px
+        rgba(74, 61, 53, 0.07);
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+.countdown-title {
+    margin:
+        0
+        0
+        17px;
+
+    color: var(--lilac-dark);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 0.72rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.19em;
+
+    text-transform: uppercase;
+}
+
+
+.countdown-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    align-items: center;
+
+    width: 100%;
+}
+
+
+.countdown-item {
+    position: relative;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        0
+        6px;
+}
+
+
+.countdown-item:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+
+    top: 3px;
+    right: 0;
+
+    width: 1px;
+    height: 42px;
+
+    background:
+        rgba(
+            138,
+            129,
+            120,
+            0.18
+        );
+}
+
+
+.countdown-item strong {
+    display: block;
+
+    min-width: 2ch;
+
+    color: var(--text);
+
+    font-size:
+        clamp(
+            1.55rem,
+            5vw,
+            2.15rem
+        );
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    font-variant-numeric:
+        tabular-nums;
+}
+
+
+.countdown-item span {
+    color: var(--muted);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 0.66rem;
+
+    line-height: 1;
+
+    letter-spacing: 0.04em;
+}
+
+
+
+/* SEZIONI */
 
 
 .section {
@@ -447,6 +591,7 @@ button {
 
 .section-inner {
     width: 100%;
+
     max-width: 980px;
 
     margin: 0 auto;
@@ -478,11 +623,19 @@ button {
 }
 
 
-.section h2 {
+.section-title {
     margin:
         0
         0
         24px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
 
     font-size:
         clamp(
@@ -494,6 +647,25 @@ button {
     font-weight: 400;
 
     line-height: 1.1;
+}
+
+
+.section-emoji {
+    display: block;
+
+    font-size: 2rem;
+
+    line-height: 1;
+}
+
+
+.section-title-image {
+    display: block;
+
+    width: 46px;
+    height: 46px;
+
+    object-fit: contain;
 }
 
 
@@ -519,9 +691,7 @@ button {
 
 
 
-/* ========================================================= */
-/* PULSANTI                                                  */
-/* ========================================================= */
+/* PULSANTI */
 
 
 .button {
@@ -529,6 +699,8 @@ button {
 
     justify-content: center;
     align-items: center;
+
+    gap: 8px;
 
     min-height: 48px;
 
@@ -623,6 +795,23 @@ button {
 }
 
 
+.map-button {
+    gap: 7px;
+}
+
+
+.navigation-logo {
+    display: block;
+
+    width: 20px;
+    height: 20px;
+
+    object-fit: contain;
+
+    flex: 0 0 auto;
+}
+
+
 .ceremony-button {
     margin-top: 20px;
 
@@ -651,9 +840,7 @@ button {
 
 
 
-/* ========================================================= */
-/* LUOGHI                                                    */
-/* ========================================================= */
+/* LUOGHI */
 
 
 .places-grid {
@@ -695,6 +882,8 @@ button {
     box-shadow: var(--shadow-soft);
 
     backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
 }
 
 
@@ -703,6 +892,13 @@ button {
         0
         0
         26px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 8px;
 
     font-size:
         clamp(
@@ -714,6 +910,8 @@ button {
     font-weight: 400;
 
     line-height: 1.25;
+
+    text-align: center;
 }
 
 
@@ -729,9 +927,7 @@ button {
 
 
 
-/* ========================================================= */
-/* ALBUM                                                     */
-/* ========================================================= */
+/* ALBUM */
 
 
 .album-card {
@@ -779,7 +975,13 @@ button {
 }
 
 
-.access-code span {
+.access-code-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
     font-size: 0.82rem;
 }
 
@@ -794,6 +996,13 @@ button {
 
 
 .copy-button {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+
     min-height: 36px;
 
     padding:
@@ -837,9 +1046,7 @@ button {
 
 
 
-/* ========================================================= */
-/* REGALO                                                    */
-/* ========================================================= */
+/* REGALO */
 
 
 .gift-details {
@@ -851,7 +1058,6 @@ button {
         0;
 
     padding:
-        30px
         30px;
 
     border:
@@ -935,9 +1141,7 @@ button {
 
 
 
-/* ========================================================= */
-/* INDICATORE SCROLL                                         */
-/* ========================================================= */
+/* INDICATORE SCROLL */
 
 
 .scroll-indicator {
@@ -1018,9 +1222,7 @@ button {
 
 
 
-/* ========================================================= */
-/* FONDO PAGINA                                              */
-/* ========================================================= */
+/* FONDO PAGINA */
 
 
 #sogno {
@@ -1029,9 +1231,7 @@ button {
 
 
 
-/* ========================================================= */
-/* MOBILE                                                    */
-/* ========================================================= */
+/* MOBILE */
 
 
 @media (max-width: 760px) {
@@ -1079,10 +1279,74 @@ button {
     }
 
 
+    .countdown-card {
+        margin-top: 28px;
+
+        padding:
+            19px
+            14px
+            21px;
+
+        border-radius: 20px;
+    }
+
+
+    .countdown-title {
+        margin-bottom: 15px;
+    }
+
+
+    .countdown-item {
+        padding:
+            0
+            4px;
+
+        gap: 6px;
+    }
+
+
+    .countdown-item strong {
+        font-size:
+            clamp(
+                1.4rem,
+                7vw,
+                1.8rem
+            );
+    }
+
+
+    .countdown-item span {
+        font-size: 0.62rem;
+    }
+
+
+    .countdown-item:not(:last-child)::after {
+        top: 2px;
+
+        height: 38px;
+    }
+
+
     .section {
         padding:
             78px
             20px;
+    }
+
+
+    .section-title {
+        gap: 9px;
+    }
+
+
+    .section-emoji {
+        font-size: 1.85rem;
+    }
+
+
+    .section-title-image {
+        width: 42px;
+        height: 42px;
     }
 
 
@@ -1106,6 +1370,11 @@ button {
     }
 
 
+    .place-card h3 {
+        gap: 7px;
+    }
+
+
     .navigation-buttons {
         width: 100%;
     }
@@ -1116,6 +1385,12 @@ button {
             1
             1
             120px;
+    }
+
+
+    .navigation-logo {
+        width: 19px;
+        height: 19px;
     }
 
 
@@ -1159,10 +1434,32 @@ button {
 }
 
 
+@media (max-width: 420px) {
 
-/* ========================================================= */
-/* RIDUZIONE MOVIMENTO                                       */
-/* ========================================================= */
+    .countdown-card {
+        width: 94vw;
+
+        padding:
+            18px
+            10px
+            20px;
+    }
+
+
+    .countdown-item strong {
+        font-size: 1.42rem;
+    }
+
+
+    .countdown-item span {
+        font-size: 0.58rem;
+    }
+
+}
+
+
+
+/* RIDUZIONE MOVIMENTO */
 
 
 @media (prefers-reduced-motion: reduce) {
@@ -1175,11 +1472,14 @@ button {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
+        animation-duration:
+            0.01ms !important;
 
-        animation-iteration-count: 1 !important;
+        animation-iteration-count:
+            1 !important;
 
-        transition-duration: 0.01ms !important;
+        transition-duration:
+            0.01ms !important;
     }
 
 }

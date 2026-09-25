@@ -195,10 +195,10 @@
             position: absolute;
 
             left: 50%;
-            top: 46%;
+            top: 50%;
 
-            width: 66%;
-            height: 15%;
+            width: 68%;
+            height: 16%;
 
             z-index: 12;
 
@@ -283,7 +283,7 @@
             position: absolute;
 
             left: 50%;
-            top: 84%;
+            top: 100%;
 
             width: 108px;
             height: 108px;
@@ -321,7 +321,7 @@
 
 
         /* ================================================== */
-        /* INTERFACCIA DI TEST                                */
+        /* INTERFACCIA TEST                                   */
         /* ================================================== */
 
         .hint {
@@ -689,8 +689,7 @@
         /* ================================================== */
 
         /*
-            Apertura del lembo:
-            manteniamo i 3,4 secondi.
+            Apertura completa del lembo.
         */
 
         const flapDuration =
@@ -698,39 +697,33 @@
 
 
         /*
-            CAMBIAMENTO IMPORTANTE:
+            GRANDE ANTICIPO DELLA BUSTA.
 
-            il corpo della busta inizia
-            a scendere molto prima.
+            La discesa parte già dopo 1,8 s.
 
-            Prima: 3250 ms
-            Ora:   2450 ms
-
-            Quindi la discesa comincia
-            mentre il lembo sta ancora
-            completando l'apertura.
+            Quindi per circa 1,6 secondi
+            apertura del lembo e sfilamento
+            avvengono contemporaneamente.
         */
 
         const bodyStart =
-            2450;
+            1800;
 
 
         /*
-            Durata sfilamento.
+            Durata discesa.
         */
 
         const bodyDuration =
-            1250;
+            1450;
 
 
         /*
-            Il lembo scompare solo quando
-            ha praticamente completato
-            la propria apertura.
+            Dissolvenza del lembo.
         */
 
         const flapFadeDuration =
-            320;
+            300;
 
 
         /* ================================================== */
@@ -817,59 +810,48 @@
 
 
             /*
-                NUOVA FORMA.
+                Il lembo torna a occupare
+                TUTTA la metà superiore.
 
-                La base non occupa più
-                esattamente tutta la larghezza.
+                Quindi:
 
-                Prima:
-                0 ---------------- 1000
+                sinistra = 0
+                destra   = 1000
+                punta    = 1000
 
-                Ora:
-                65 -------------- 935
-
-                Inoltre la punta è più alta.
-
-                Risultato:
-                angolo decisamente meno acuto.
+                La punta corrisponde esattamente
+                al centro verticale dello schermo.
             */
 
-
             const baseLeft =
-                65;
+                0;
 
 
             const baseRight =
-                935;
+                1000;
 
-
-            /*
-                Punta iniziale a 840 invece
-                di 1000.
-
-                Questo rende il triangolo
-                sensibilmente più largo
-                rispetto alla sua altezza.
-            */
 
             const restingTipY =
-                840;
+                1000;
 
 
             /*
-                Durante la curvatura la punta
-                viene richiamata verso la piega.
+                Durante la piega la punta
+                sale temporaneamente.
+
+                A riposo però torna sempre
+                al centro dello schermo.
             */
 
             const tipY =
                 restingTipY -
-                (185 * bend);
+                (235 * bend);
 
 
             const tipX =
                 500 +
                 (
-                    6 *
+                    5 *
                     Math.sin(
                         Math.PI *
                         t *
@@ -880,35 +862,47 @@
 
 
             /*
-                Controlli Bézier molto larghi.
+                QUI otteniamo l'angolo
+                meno acuto.
 
-                Evitiamo che gli ultimi centimetri
-                convergano troppo rapidamente
-                verso la punta.
+                Non accorciamo il lembo.
+
+                Facciamo invece arrivare
+                le curve verso la punta
+                molto più orizzontalmente.
             */
 
+
             const rightUpperX =
-                880 -
+                930 -
                 (25 * bend);
 
 
             const rightUpperY =
-                235 +
-                (95 * bend);
+                260 +
+                (100 * bend);
 
+
+            /*
+                Questo punto è volutamente
+                molto lontano dalla punta.
+
+                È ciò che rende l'angolo finale
+                molto più aperto.
+            */
 
             const rightLowerX =
-                765 -
-                (30 * bend);
+                860 -
+                (40 * bend);
 
 
             const rightLowerY =
-                710 -
-                (80 * bend);
+                900 -
+                (125 * bend);
 
 
             const leftUpperX =
-                120 +
+                70 +
                 (25 * bend);
 
 
@@ -917,8 +911,8 @@
 
 
             const leftLowerX =
-                235 +
-                (30 * bend);
+                140 +
+                (40 * bend);
 
 
             const leftLowerY =
@@ -977,7 +971,7 @@
 
 
             /*
-                Assestamento finale molto piccolo.
+                Assestamento finale.
             */
 
             let rotation;
@@ -1067,12 +1061,6 @@
             waxSeal.style.top =
                 `${geometry.tipY / 10}%`;
 
-
-            /*
-                Quando il foglio passa
-                oltre i 90°, il sigillo è
-                dietro la carta.
-            */
 
             waxSeal.style.visibility =
                 rotation < 90
@@ -1211,7 +1199,7 @@
 
 
         /* ================================================== */
-        /* DISCESA DELLA SOLA BUSTA                          */
+        /* DISCESA DEL CORPO BUSTA                           */
         /* ================================================== */
 
         function animateEnvelopeDown() {
@@ -1245,9 +1233,10 @@
 
 
                         /*
-                            Scende SOLO la parte inferiore.
+                            Scende SOLO il corpo.
 
-                            Il lembo resta in alto.
+                            Il lembo rimane in alto
+                            e verrà dissolto separatamente.
                         */
 
                         envelopeBody.style.transform =
@@ -1287,7 +1276,7 @@
 
 
         /* ================================================== */
-        /* DISSOLVENZA DEL LEMBO                             */
+        /* DISSOLVENZA LEMBO                                 */
         /* ================================================== */
 
         function fadeOutFlap() {
@@ -1325,7 +1314,7 @@
 
 
                         flapShadow.style.opacity =
-                            `${0.08 * (1 - e)}`;
+                            `${0.07 * (1 - e)}`;
 
 
                         if (progress < 1) {
@@ -1387,8 +1376,7 @@
 
 
             /*
-                0 ms:
-                parte l'apertura del lembo.
+                Il lembo parte immediatamente.
             */
 
             const flapPromise =
@@ -1396,11 +1384,9 @@
 
 
             /*
-                2450 ms:
-                la busta inizia GIÀ a scendere.
-
-                Il lembo sta ancora completando
-                il movimento.
+                Dopo appena 1,8 secondi
+                comincia già a sfilarsi
+                la parte inferiore della busta.
             */
 
             await wait(
@@ -1413,34 +1399,22 @@
 
 
             /*
-                Attendiamo che il lembo
-                completi fisicamente
-                la sua apertura.
-
-                Nel frattempo la busta
-                sta già scendendo.
+                Lasciamo che il lembo
+                completi il proprio gesto.
             */
 
             await flapPromise;
 
 
             /*
-                Nessuna pausa.
-
-                Appena il lembo termina,
-                inizia immediatamente
-                a dissolversi.
+                Appena raggiunge la posizione
+                completamente aperta,
+                sparisce rapidamente.
             */
 
             const fadePromise =
                 fadeOutFlap();
 
-
-            /*
-                Attendiamo solo che
-                busta e lembo abbiano
-                terminato.
-            */
 
             await Promise.all([
                 bodyPromise,
@@ -1449,7 +1423,6 @@
 
 
             opening = false;
-
             opened = true;
 
         }

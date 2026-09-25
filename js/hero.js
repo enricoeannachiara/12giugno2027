@@ -36,18 +36,15 @@ window.addEventListener(
         }
 
         /*
-         * La discesa del corpo della busta
-         * inizia a circa 1600 ms.
-         *
-         * Il reveal parte 350 ms prima,
-         * così il movimento comincia mentre
-         * il lembo superiore sta ancora
-         * completando l'apertura.
+         * Il movimento della Hero parte molto presto,
+         * mentre il lembo superiore è ancora in apertura,
+         * così ritratto e nomi accompagnano tutta
+         * la sequenza della busta.
          */
         heroRevealTimer =
             setTimeout(
                 revealHero,
-                650
+                550
             );
     }
 );

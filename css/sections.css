@@ -1,1 +1,603 @@
+.section {
+    position: relative;
+    width: 100%;
 
+    padding:
+        90px
+        24px;
+}
+
+.section-alt {
+    background: var(--background-alt);
+}
+
+.section-inner {
+    width: 100%;
+    max-width: 980px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.section-title {
+    margin:
+        0
+        0
+        24px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size:
+        clamp(
+            2rem,
+            5vw,
+            3.4rem
+        );
+
+    font-weight: 400;
+
+    line-height: 1.1;
+}
+
+.section-emoji {
+    display: block;
+
+    font-size: 2rem;
+
+    line-height: 1;
+}
+
+.section-title-image {
+    display: block;
+
+    width: 46px;
+    height: 46px;
+
+    object-fit: contain;
+}
+
+.section-text {
+    max-width: 700px;
+
+    margin:
+        0
+        auto
+        34px;
+
+    color: var(--muted);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 1rem;
+
+    line-height: 1.75;
+}
+
+
+/* PULSANTI */
+
+.button {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 8px;
+
+    min-height: 48px;
+
+    padding:
+        13px
+        24px;
+
+    border: 0;
+
+    border-radius: 999px;
+
+    background: var(--lilac);
+
+    color: #FFFFFF;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 0.88rem;
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 22px
+        rgba(145, 129, 187, 0.16);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.button:hover {
+    background: var(--lilac-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 26px
+        rgba(145, 129, 187, 0.22);
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+.button-primary {
+    background: var(--lilac);
+}
+
+.button-secondary {
+    background: transparent;
+
+    color: var(--lilac-dark);
+
+    border:
+        1px solid
+        rgba(145, 129, 187, 0.45);
+
+    box-shadow: none;
+}
+
+.button-secondary:hover {
+    background:
+        rgba(168, 156, 200, 0.1);
+
+    color: var(--lilac-dark);
+
+    box-shadow: none;
+}
+
+.button-small {
+    min-height: 42px;
+
+    padding:
+        10px
+        17px;
+
+    font-size: 0.8rem;
+}
+
+.map-button {
+    gap: 7px;
+}
+
+.navigation-logo {
+    display: block;
+
+    width: 20px;
+    height: 20px;
+
+    object-fit: contain;
+
+    flex: 0 0 auto;
+}
+
+.ceremony-button {
+    margin-top: 20px;
+
+    background: var(--gold);
+
+    color: var(--warm-white);
+
+    box-shadow:
+        0 8px 20px
+        rgba(189, 169, 120, 0.2);
+}
+
+.ceremony-button:hover {
+    background: var(--gold-dark);
+
+    box-shadow:
+        0 10px 25px
+        rgba(189, 169, 120, 0.25);
+}
+
+.ceremony-button:active {
+    background: var(--gold-active);
+}
+
+
+/* LUOGHI */
+
+.places-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 24px;
+
+    margin-top: 42px;
+}
+
+.place-card {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    min-height: 220px;
+
+    padding:
+        34px
+        28px;
+
+    border:
+        1px solid
+        var(--card-border);
+
+    border-radius: 28px;
+
+    background: var(--card);
+
+    box-shadow: var(--shadow-soft);
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.place-card h3 {
+    margin:
+        0
+        0
+        26px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 8px;
+
+    font-size:
+        clamp(
+            1.25rem,
+            3vw,
+            1.55rem
+        );
+
+    font-weight: 400;
+
+    line-height: 1.25;
+
+    text-align: center;
+}
+
+.navigation-buttons {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 10px;
+}
+
+
+/* ALBUM */
+
+.album-card {
+    max-width: 600px;
+
+    margin:
+        40px
+        auto
+        0;
+
+    padding:
+        34px
+        28px;
+
+    border:
+        1px solid
+        var(--card-border);
+
+    border-radius: 28px;
+
+    background: var(--card);
+
+    box-shadow: var(--shadow-soft);
+}
+
+.access-code {
+    margin-top: 28px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 12px;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: var(--muted);
+}
+
+.access-code-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    font-size: 0.82rem;
+}
+
+.access-code strong {
+    color: var(--text);
+
+    font-size: 0.95rem;
+
+    letter-spacing: 0.04em;
+}
+
+.copy-button {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+
+    min-height: 36px;
+
+    padding:
+        8px
+        14px;
+
+    border:
+        1px solid
+        rgba(145, 129, 187, 0.32);
+
+    border-radius: 999px;
+
+    background: transparent;
+
+    color: var(--lilac-dark);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 0.75rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.copy-button:hover {
+    background:
+        rgba(168, 156, 200, 0.1);
+
+    border-color:
+        rgba(145, 129, 187, 0.5);
+}
+
+
+/* REGALO */
+
+.gift-details {
+    max-width: 620px;
+
+    margin:
+        34px
+        auto
+        0;
+
+    padding: 30px;
+
+    border:
+        1px solid
+        var(--card-border);
+
+    border-radius: 28px;
+
+    background: var(--card);
+
+    box-shadow: var(--shadow-soft);
+}
+
+.gift-details[hidden] {
+    display: none;
+}
+
+.gift-row {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    padding:
+        14px
+        0;
+
+    border-bottom:
+        1px solid
+        rgba(125, 111, 101, 0.1);
+
+    text-align: left;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+.gift-row:last-child {
+    border-bottom: 0;
+}
+
+.gift-row span {
+    flex: 0 0 auto;
+
+    color: var(--muted);
+
+    font-size: 0.8rem;
+}
+
+.gift-row strong {
+    text-align: right;
+
+    font-size: 0.92rem;
+
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+.gift-iban {
+    margin-bottom: 12px;
+}
+
+.gift-details > .copy-button {
+    margin:
+        4px
+        0
+        12px;
+}
+
+
+/* FONDO PAGINA */
+
+#sogno {
+    padding-bottom: 160px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+
+    .section {
+        padding:
+            74px
+            20px;
+    }
+
+    .section-title {
+        gap: 9px;
+    }
+
+    .section-emoji {
+        font-size: 1.85rem;
+    }
+
+    .section-title-image {
+        width: 42px;
+        height: 42px;
+    }
+
+    .places-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+        margin-top: 34px;
+    }
+
+    .place-card {
+        min-height: 0;
+
+        padding:
+            28px
+            22px;
+
+        border-radius: 24px;
+    }
+
+    .place-card h3 {
+        gap: 7px;
+    }
+
+    .navigation-buttons {
+        width: 100%;
+    }
+
+    .navigation-buttons .button {
+        flex:
+            1
+            1
+            120px;
+    }
+
+    .navigation-logo {
+        width: 19px;
+        height: 19px;
+    }
+
+    .album-card,
+    .gift-details {
+        padding:
+            28px
+            20px;
+
+        border-radius: 24px;
+    }
+
+    .access-code {
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+    .gift-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 6px;
+    }
+
+    .gift-row strong {
+        width: 100%;
+
+        text-align: left;
+    }
+
+    #sogno {
+        padding-bottom: 180px;
+    }
+
+}

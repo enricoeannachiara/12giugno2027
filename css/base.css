@@ -79,11 +79,16 @@ button {
     font: inherit;
 }
 
+
+/* =======================================================
+   DECORAZIONE FLOREALE
+======================================================= */
+
 .corner-flowers {
     position: absolute;
 
-    top: -180px;
-    left: -220px;
+    top: -60px;
+    left: -70px;
 
     z-index: 2;
 
@@ -94,9 +99,14 @@ button {
 .corner-flowers img {
     display: block;
 
-    width: 760px;
+    width: 260px;
     height: auto;
 }
+
+
+/* =======================================================
+   CONTENUTO SITO
+======================================================= */
 
 .site {
     position: relative;
@@ -104,18 +114,28 @@ button {
     width: 100%;
 }
 
+
+/* =======================================================
+   MOBILE
+======================================================= */
+
 @media (max-width: 760px) {
 
     .corner-flowers {
-        top: -110px;
-        left: -140px;
+        top: -35px;
+        left: -40px;
     }
 
     .corner-flowers img {
-        width: 470px;
+        width: 170px;
     }
 
 }
+
+
+/* =======================================================
+   ACCESSIBILITÀ
+======================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 

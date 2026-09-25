@@ -29,8 +29,8 @@ function initEnvelopeFlip() {
     }
 
     /*
-     * Verifica che la libreria sia stata
-     * caricata correttamente.
+     * Controlliamo che la libreria
+     * PageFlip sia stata caricata.
      */
 
     if (
@@ -46,18 +46,16 @@ function initEnvelopeFlip() {
     }
 
 
-    /*
-     * Dimensioni logiche del viewer.
-     *
-     * Il CSS ruota il viewer di 90°,
-     * quindi queste dimensioni non
-     * corrispondono direttamente a quelle
-     * visibili sullo schermo.
-     */
-
     pageFlip = new St.PageFlip(
         flapBook,
         {
+
+            /*
+             * Dimensioni logiche del viewer.
+             *
+             * Il CSS ruota poi tutto di 90°.
+             */
+
             width: 500,
             height: 900,
 
@@ -69,85 +67,70 @@ function initEnvelopeFlip() {
             minHeight: 450,
             maxHeight: 1800,
 
+
             /*
-             * IMPORTANTISSIMO:
-             *
-             * niente copertina rigida.
-             * La prima pagina deve comportarsi
-             * come un vero foglio morbido.
+             * La prima pagina NON deve
+             * essere una copertina rigida.
              */
 
             showCover: false,
 
 
             /*
-             * Evitiamo il comportamento
-             * automatico da libro su desktop.
+             * Manteniamo la modalità portrait
+             * per evitare il comportamento
+             * da libro aperto su desktop.
              */
 
             usePortrait: true,
 
 
             /*
-             * L'utente NON deve sfogliare
-             * manualmente.
+             * Disattiviamo completamente
+             * le gesture automatiche.
              *
-             * Lo sfoglio viene avviato
-             * esclusivamente dal nostro click.
+             * L'utente apre il lembo
+             * esclusivamente con il nostro tap.
              */
 
             useMouseEvents: false,
 
             mobileScrollSupport: false,
 
-
-            /*
-             * Nessun angolino che suggerisca
-             * la presenza di un libro.
-             */
+            disableFlipByClick: true,
 
             showPageCorners: false,
 
 
             /*
-             * Durata del movimento.
-             *
-             * StPageFlip usa millisecondi.
+             * Durata lenta.
              */
 
             flippingTime: 3400,
 
 
             /*
-             * Ombre generate dal motore.
+             * TEST IMPORTANTE:
              *
-             * Le teniamo attive perché sono
-             * una parte importante dell'effetto
-             * di pagina che si incurva.
+             * disattiviamo completamente
+             * le ombre generate da PageFlip.
+             *
+             * In questo modo la pagina
+             * trasparente non dovrebbe più
+             * diventare visibile attraverso
+             * le sue ombreggiature.
              */
 
-            drawShadow: true,
+            drawShadow: false,
 
-
-            /*
-             * Ombra piuttosto delicata.
-             */
-
-            maxShadowOpacity: 0.22,
-
-
-            /*
-             * Nessuna modalità rigida.
-             */
-
-            disableFlipByClick: true
+            maxShadowOpacity: 0
         }
     );
 
 
     /*
-     * Carichiamo le due pagine HTML
-     * presenti nell'index.
+     * Carichiamo le due pagine
+     * presenti nell'HTML.
      */
 
     pageFlip.loadFromHTML(
@@ -156,8 +139,7 @@ function initEnvelopeFlip() {
 
 
     /*
-     * Per sicurezza partiamo dalla
-     * prima pagina.
+     * Partenza dalla prima pagina.
      */
 
     try {
@@ -167,8 +149,9 @@ function initEnvelopeFlip() {
     } catch (error) {
 
         /*
-         * Alcune versioni della libreria
-         * non richiedono questo passaggio.
+         * Se la versione della libreria
+         * non richiede questo comando,
+         * ignoriamo semplicemente l'errore.
          */
 
     }
@@ -177,7 +160,7 @@ function initEnvelopeFlip() {
 
 
 /* ========================================= */
-/* APERTURA DELLA BUSTA */
+/* APERTURA DEL LEMBO */
 /* ========================================= */
 
 function openEnvelope() {
@@ -194,8 +177,7 @@ function openEnvelope() {
 
 
     /*
-     * Avviamo programmaticamente
-     * lo sfoglio.
+     * Avviamo lo sfoglio programmatico.
      */
 
     try {
@@ -253,16 +235,6 @@ if (envelopeButton) {
 /* EVENTI PAGEFLIP */
 /* ========================================= */
 
-/*
- * StPageFlip emette l'evento "flip"
- * quando cambia pagina.
- *
- * Per ora NON nascondiamo immediatamente
- * l'overlay.
- *
- * Aspettiamo che finisca l'animazione.
- */
-
 function connectPageFlipEvents() {
 
     if (!pageFlip) {
@@ -275,9 +247,10 @@ function connectPageFlipEvents() {
         (event) => {
 
             /*
-             * Quando siamo arrivati alla
-             * seconda pagina, significa
-             * che il lembo si è aperto.
+             * Quando PageFlip segnala
+             * il passaggio alla pagina 1,
+             * il lembo ha completato
+             * lo sfoglio.
              */
 
             if (event.data === 1) {
@@ -290,9 +263,10 @@ function connectPageFlipEvents() {
 
 
                     /*
-                     * Per ora rimuoviamo
-                     * semplicemente l'overlay
-                     * dopo la fine dello sfoglio.
+                     * Nascondiamo l'overlay.
+                     *
+                     * A questo punto resta
+                     * soltanto la Hero reale.
                      */
 
                     envelopeScreen.classList.add(
@@ -306,7 +280,7 @@ function connectPageFlipEvents() {
 
                     updateScrollIndicator();
 
-                }, 150);
+                }, 120);
 
             }
 
@@ -326,6 +300,11 @@ function updateScrollIndicator() {
         return;
     }
 
+
+    /*
+     * Finché la busta non è aperta,
+     * l'indicatore resta nascosto.
+     */
 
     if (
         envelopeScreen &&

@@ -1,1 +1,276 @@
+/* =======================================================
+   HERO
+======================================================= */
 
+.hero {
+    position: relative;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding:
+        30px
+        24px
+        60px;
+
+    text-align: center;
+
+    background: var(--background);
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 720px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-portrait {
+    display: block;
+
+    width: min(60vw, 380px);
+    height: auto;
+
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    margin: 0;
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size:
+        clamp(
+            4rem,
+            9vw,
+            6.2rem
+        );
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    color: var(--text);
+}
+
+.hero-date {
+    margin:
+        12px
+        0
+        0;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(
+            0.9rem,
+            2vw,
+            1.05rem
+        );
+
+    letter-spacing: .32em;
+
+    text-transform: uppercase;
+}
+
+
+
+/* =======================================================
+   COUNTDOWN
+======================================================= */
+
+.countdown-paper {
+
+    position: relative;
+
+    width:
+        min(
+            94vw,
+            560px
+        );
+
+    margin-top: 18px;
+}
+
+.countdown-paper-image {
+
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    user-select: none;
+
+    pointer-events: none;
+}
+
+.countdown-paper-content {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 80%;
+
+    transform:
+        translate(-50%, -48%);
+
+    text-align: center;
+}
+
+.countdown-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    align-items: center;
+}
+
+.countdown-item {
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+}
+
+.countdown-item strong {
+
+    display: block;
+
+    color:
+        rgba(
+            67,
+            46,
+            33,
+            .92
+        );
+
+    font-size:
+        clamp(
+            1.9rem,
+            5.6vw,
+            2.55rem
+        );
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    font-variant-numeric:
+        tabular-nums;
+}
+
+.countdown-item span {
+
+    color:
+        rgba(
+            92,
+            64,
+            45,
+            .78
+        );
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: .64rem;
+
+    text-transform: lowercase;
+
+    letter-spacing: .04em;
+}
+
+
+
+/* =======================================================
+   MOBILE
+======================================================= */
+
+@media (max-width:760px){
+
+    .hero{
+
+        padding:
+            22px
+            20px
+            50px;
+    }
+
+    .hero-portrait{
+
+        width:
+            min(
+                72vw,
+                340px
+            );
+
+        margin-bottom:14px;
+    }
+
+    .hero h1{
+
+        font-size:
+            clamp(
+                3.2rem,
+                15vw,
+                5rem
+            );
+    }
+
+    .hero-date{
+
+        margin-top:8px;
+
+        font-size:.82rem;
+    }
+
+    .countdown-paper{
+
+        width:
+            min(
+                96vw,
+                560px
+            );
+
+        margin-top:16px;
+    }
+
+    .countdown-paper-content{
+
+        width:82%;
+    }
+
+    .countdown-item strong{
+
+        font-size:
+            clamp(
+                1.6rem,
+                7vw,
+                2rem
+            );
+    }
+
+    .countdown-item span{
+
+        font-size:.58rem;
+    }
+
+}

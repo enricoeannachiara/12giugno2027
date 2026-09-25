@@ -38,6 +38,7 @@ window.envelopeState = {
     opened: false
 };
 
+
 function clamp(value, min, max) {
     return Math.min(
         Math.max(value, min),
@@ -45,15 +46,18 @@ function clamp(value, min, max) {
     );
 }
 
+
 function easeInOutCubic(t) {
     return t < 0.5
         ? 4 * t * t * t
         : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+
 function easeOutCubic(t) {
     return 1 - Math.pow(1 - t, 3);
 }
+
 
 function bendCurve(t) {
     return Math.pow(
@@ -65,13 +69,20 @@ function bendCurve(t) {
     );
 }
 
+
 function wait(milliseconds) {
     return new Promise(resolve => {
         setTimeout(resolve, milliseconds);
     });
 }
 
+
+/* =======================================================
+   GEOMETRIA LEMBO SUPERIORE
+======================================================= */
+
 function getFlapGeometry(t) {
+
     const bend = bendCurve(t);
 
     const tipY =
@@ -84,8 +95,22 @@ function getFlapGeometry(t) {
     const tipRightX =
         532;
 
+    /*
+     * La punta è specchiata rispetto a quella
+     * del lembo inferiore.
+     *
+     * Prima era:
+     *
+     * tipY + 15
+     *
+     * e produceva una piccola concavità.
+     *
+     * Ora i due estremi della curva sono 15 unità
+     * più in alto rispetto al centro, producendo
+     * una punta leggermente convessa.
+     */
     const tipSideY =
-        tipY + 15;
+        tipY - 15;
 
     const shoulderY =
         420 +
@@ -192,12 +217,19 @@ function getFlapGeometry(t) {
     };
 }
 
+
+/* =======================================================
+   CORPO DELLA BUSTA
+======================================================= */
+
 function drawEnvelopeBody() {
+
     const sideStartY = 192.5;
     const sideMeetY = 500;
 
     const leftMeetX = 492;
     const rightMeetX = 508;
+
 
     bodyLeftPath.setAttribute(
         "d",
@@ -214,6 +246,7 @@ function drawEnvelopeBody() {
         `
     );
 
+
     bodyLeftFold.setAttribute(
         "d",
         `
@@ -224,6 +257,7 @@ function drawEnvelopeBody() {
             ${sideMeetY}
         `
     );
+
 
     bodyRightPath.setAttribute(
         "d",
@@ -240,6 +274,7 @@ function drawEnvelopeBody() {
         `
     );
 
+
     bodyRightFold.setAttribute(
         "d",
         `
@@ -251,12 +286,14 @@ function drawEnvelopeBody() {
         `
     );
 
+
     const tipY = 490;
     const tipLeftX = 468;
     const tipRightX = 532;
     const tipSideY = 505;
 
     const verticalStartY = 750;
+
 
     bodyBottomPath.setAttribute(
         "d",
@@ -290,6 +327,7 @@ function drawEnvelopeBody() {
         `
     );
 
+
     bodyBottomFold.setAttribute(
         "d",
         `
@@ -315,7 +353,13 @@ function drawEnvelopeBody() {
     );
 }
 
+
+/* =======================================================
+   DISEGNO DEL LEMBO DURANTE L'ANIMAZIONE
+======================================================= */
+
 function drawFlapFrame(progress) {
+
     const t =
         clamp(
             progress,
@@ -329,7 +373,9 @@ function drawFlapFrame(progress) {
     const bend =
         geometry.bend;
 
+
     let rotation;
+
 
     if (t < 0.94) {
 
@@ -351,24 +397,30 @@ function drawFlapFrame(progress) {
             easeOutCubic(
                 settle
             );
+
     }
+
 
     const depth =
         20 * bend;
 
+
     flap.style.transform =
         `rotateX(${rotation}deg)
          translateZ(${depth}px)`;
+
 
     flapPath.setAttribute(
         "d",
         geometry.d
     );
 
+
     flapEdgePath.setAttribute(
         "d",
         geometry.d
     );
+
 
     flapPath.setAttribute(
         "fill",
@@ -377,19 +429,24 @@ function drawFlapFrame(progress) {
             : "url(#paperBack)"
     );
 
+
     waxSeal.style.left =
         "50%";
 
+
     waxSeal.style.top =
         `${geometry.tipY / 10}%`;
+
 
     waxSeal.style.visibility =
         rotation < 90
             ? "visible"
             : "hidden";
 
+
     flapShadow.style.opacity =
         `${0.23 * bend}`;
+
 
     flapShadow.style.transform =
         `
@@ -407,10 +464,12 @@ function drawFlapFrame(progress) {
             )
         `;
 
+
     const shade =
         Math.round(
             8 * bend
         );
+
 
     frontStop1.setAttribute(
         "stop-color",
@@ -421,6 +480,7 @@ function drawFlapFrame(progress) {
         )`
     );
 
+
     frontStop2.setAttribute(
         "stop-color",
         `rgb(
@@ -430,6 +490,7 @@ function drawFlapFrame(progress) {
         )`
     );
 
+
     frontStop3.setAttribute(
         "stop-color",
         `rgb(
@@ -438,18 +499,28 @@ function drawFlapFrame(progress) {
             ${173 - shade}
         )`
     );
+
 }
+
+
+/* =======================================================
+   MOTORE ANIMAZIONE
+======================================================= */
 
 function animate(
     duration,
     draw,
     setFrameId
 ) {
+
     return new Promise(resolve => {
+
         const start =
             performance.now();
 
+
         function frame(now) {
+
             const progress =
                 clamp(
                     (now - start) /
@@ -458,75 +529,115 @@ function animate(
                     1
                 );
 
+
             draw(progress);
 
+
             if (progress < 1) {
+
                 setFrameId(
                     requestAnimationFrame(
                         frame
                     )
                 );
+
             } else {
+
                 setFrameId(null);
+
                 resolve();
+
             }
+
         }
+
 
         setFrameId(
             requestAnimationFrame(
                 frame
             )
         );
+
     });
+
 }
 
+
+/* =======================================================
+   ANIMAZIONE LEMBO
+======================================================= */
+
 function animateFlap() {
+
     return animate(
         FLAP_DURATION,
+
         drawFlapFrame,
+
         id => {
             flapFrameId = id;
         }
     );
+
 }
 
+
+/* =======================================================
+   DISCESA DEL CORPO DELLA BUSTA
+======================================================= */
+
 function animateEnvelopeDown() {
+
     return animate(
         BODY_DURATION,
 
         progress => {
+
             const e =
                 easeInOutCubic(
                     progress
                 );
 
+
             envelopeBody.style.transform =
                 `translateY(
                     ${112 * e}vh
                 )`;
+
         },
 
         id => {
             bodyFrameId = id;
         }
     );
+
 }
 
+
+/* =======================================================
+   DISSOLVENZA DEL LEMBO
+======================================================= */
+
 function fadeOutFlap() {
+
     return animate(
         FLAP_FADE_DURATION,
 
         progress => {
+
             const e =
                 easeOutCubic(
                     progress
                 );
 
+
             flap.style.opacity =
                 `${1 - e}`;
 
+
             flapShadow.style.opacity =
                 `${0.06 * (1 - e)}`;
+
         },
 
         id => {
@@ -534,15 +645,25 @@ function fadeOutFlap() {
         }
 
     ).then(() => {
+
         flap.style.opacity =
             "0";
 
+
         flapShadow.style.opacity =
             "0";
+
     });
+
 }
 
+
+/* =======================================================
+   APERTURA DELLA BUSTA
+======================================================= */
+
 async function openEnvelope() {
+
     if (
         opening ||
         opened
@@ -550,8 +671,10 @@ async function openEnvelope() {
         return;
     }
 
+
     opening =
         true;
+
 
     window.dispatchEvent(
         new CustomEvent(
@@ -559,97 +682,133 @@ async function openEnvelope() {
         )
     );
 
+
     const flapPromise =
         animateFlap();
+
 
     await wait(
         BODY_START
     );
 
+
     const bodyPromise =
         animateEnvelopeDown();
 
+
     await flapPromise;
+
 
     const fadePromise =
         fadeOutFlap();
+
 
     await Promise.all([
         bodyPromise,
         fadePromise
     ]);
 
+
     opening =
         false;
+
 
     opened =
         true;
 
+
     window.envelopeState.opened =
         true;
+
 
     envelopeScreen.classList.add(
         "opened"
     );
+
 
     envelopeScreen.setAttribute(
         "aria-hidden",
         "true"
     );
 
+
     envelopeScreen.hidden =
         true;
+
 
     document.body.classList.remove(
         "envelope-locked"
     );
+
 
     window.dispatchEvent(
         new CustomEvent(
             "envelopeopened"
         )
     );
+
 }
 
+
+/* =======================================================
+   INIZIALIZZAZIONE
+======================================================= */
+
 function initialiseEnvelope() {
+
     document.body.classList.add(
         "envelope-locked"
     );
 
+
     drawEnvelopeBody();
+
 
     const initialGeometry =
         getFlapGeometry(0);
+
 
     flapPath.setAttribute(
         "d",
         initialGeometry.d
     );
+
 
     flapEdgePath.setAttribute(
         "d",
         initialGeometry.d
     );
 
+
     flapPath.setAttribute(
         "fill",
         "url(#paperFront)"
     );
 
+
     waxSeal.style.left =
         "50%";
+
 
     waxSeal.style.top =
         `${initialGeometry.tipY / 10}%`;
 
+
     waxSeal.style.visibility =
         "visible";
+
 }
+
+
+/* =======================================================
+   EVENTI
+======================================================= */
 
 envelopeStage.addEventListener(
     "click",
     openEnvelope
 );
+
 
 envelopeStage.addEventListener(
     "keydown",
@@ -663,8 +822,11 @@ envelopeStage.addEventListener(
             event.preventDefault();
 
             openEnvelope();
+
         }
+
     }
 );
+
 
 initialiseEnvelope();

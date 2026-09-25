@@ -33,12 +33,19 @@ const giftDetails = $("giftDetails");
 const copyIban = $("copyIban");
 const ibanCode = $("ibanCode");
 
+const countdown = $("countdown");
+const countdownDays = $("countdownDays");
+const countdownHours = $("countdownHours");
+const countdownMinutes = $("countdownMinutes");
+const countdownSeconds = $("countdownSeconds");
 
 const FLAP_DURATION = 3400;
 const BODY_START = 1600;
 const BODY_DURATION = 1450;
 const FLAP_FADE_DURATION = 280;
 
+const WEDDING_DATE =
+    new Date("2027-06-12T11:00:00+02:00");
 
 let flapFrameId = null;
 let bodyFrameId = null;
@@ -47,6 +54,8 @@ let fadeFrameId = null;
 let opening = false;
 let opened = false;
 
+let countdownTimer = null;
+let scrollFramePending = false;
 
 function clamp(value, min, max) {
     return Math.min(
@@ -55,18 +64,15 @@ function clamp(value, min, max) {
     );
 }
 
-
 function easeInOutCubic(t) {
     return t < 0.5
         ? 4 * t * t * t
         : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-
 function easeOutCubic(t) {
     return 1 - Math.pow(1 - t, 3);
 }
-
 
 function bendCurve(t) {
     return Math.pow(
@@ -78,7 +84,6 @@ function bendCurve(t) {
     );
 }
 
-
 function wait(milliseconds) {
     return new Promise(resolve => {
         setTimeout(
@@ -88,76 +93,60 @@ function wait(milliseconds) {
     });
 }
 
-
 function getFlapGeometry(t) {
 
     const bend =
         bendCurve(t);
 
-
     const tipX =
         500;
-
 
     const tipY =
         1000 -
         190 * bend;
 
-
     const shoulderY =
         420 +
         35 * bend;
 
-
     const leftShoulderX =
         12 * bend;
-
 
     const rightShoulderX =
         1000 -
         12 * bend;
 
-
     const rightControl1X =
         835 -
         18 * bend;
-
 
     const rightControl1Y =
         590 +
         15 * bend;
 
-
     const rightControl2X =
         625 -
         10 * bend;
-
 
     const rightControl2Y =
         860 -
         50 * bend;
 
-
     const leftControl1X =
         165 +
         18 * bend;
 
-
     const leftControl1Y =
         rightControl1Y;
-
 
     const leftControl2X =
         375 +
         10 * bend;
 
-
     const leftControl2Y =
         rightControl2Y;
 
-
     const d = `
-
         M 0 0
 
         L 1000 0
@@ -207,7 +196,6 @@ function getFlapGeometry(t) {
         Z
     `;
 
-
     return {
         d,
         tipY,
@@ -215,24 +203,19 @@ function getFlapGeometry(t) {
     };
 }
 
-
 function drawEnvelopeBody() {
 
     const sideStartY =
         192.5;
 
-
     const sideMeetY =
         500;
-
 
     const leftMeetX =
         492;
 
-
     const rightMeetX =
         508;
-
 
     bodyLeftPath.setAttribute(
         "d",
@@ -249,7 +232,6 @@ function drawEnvelopeBody() {
         `
     );
 
-
     bodyLeftFold.setAttribute(
         "d",
         `
@@ -260,7 +242,6 @@ function drawEnvelopeBody() {
             ${sideMeetY}
         `
     );
-
 
     bodyRightPath.setAttribute(
         "d",
@@ -277,7 +258,6 @@ function drawEnvelopeBody() {
         `
     );
 
-
     bodyRightFold.setAttribute(
         "d",
         `
@@ -289,26 +269,20 @@ function drawEnvelopeBody() {
         `
     );
 
-
     const tipY =
         490;
-
 
     const tipLeftX =
         468;
 
-
     const tipRightX =
         532;
-
 
     const tipSideY =
         505;
 
-
     const verticalStartY =
         750;
-
 
     bodyBottomPath.setAttribute(
         "d",
@@ -342,7 +316,6 @@ function drawEnvelopeBody() {
         `
     );
 
-
     bodyBottomFold.setAttribute(
         "d",
         `
@@ -368,7 +341,6 @@ function drawEnvelopeBody() {
     );
 }
 
-
 function drawFlapFrame(progress) {
 
     const t =
@@ -378,17 +350,13 @@ function drawFlapFrame(progress) {
             1
         );
 
-
     const geometry =
         getFlapGeometry(t);
-
 
     const bend =
         geometry.bend;
 
-
     let rotation;
-
 
     if (t < 0.94) {
 
@@ -404,7 +372,6 @@ function drawFlapFrame(progress) {
             (t - 0.94) /
             0.06;
 
-
         rotation =
             181.5 -
             1.5 *
@@ -413,27 +380,22 @@ function drawFlapFrame(progress) {
             );
     }
 
-
     const depth =
         20 * bend;
-
 
     flap.style.transform =
         `rotateX(${rotation}deg)
          translateZ(${depth}px)`;
-
 
     flapPath.setAttribute(
         "d",
         geometry.d
     );
 
-
     flapEdgePath.setAttribute(
         "d",
         geometry.d
     );
-
 
     flapPath.setAttribute(
         "fill",
@@ -442,24 +404,19 @@ function drawFlapFrame(progress) {
             : "url(#paperBack)"
     );
 
-
     waxSeal.style.left =
         "50%";
 
-
     waxSeal.style.top =
         `${geometry.tipY / 10}%`;
-
 
     waxSeal.style.visibility =
         rotation < 90
             ? "visible"
             : "hidden";
 
-
     flapShadow.style.opacity =
         `${0.23 * bend}`;
-
 
     flapShadow.style.transform =
         `
@@ -477,12 +434,10 @@ function drawFlapFrame(progress) {
             )
         `;
 
-
     const shade =
         Math.round(
             8 * bend
         );
-
 
     frontStop1.setAttribute(
         "stop-color",
@@ -493,7 +448,6 @@ function drawFlapFrame(progress) {
         )`
     );
 
-
     frontStop2.setAttribute(
         "stop-color",
         `rgb(
@@ -502,7 +456,6 @@ function drawFlapFrame(progress) {
             ${200 - shade / 2}
         )`
     );
-
 
     frontStop3.setAttribute(
         "stop-color",
@@ -513,7 +466,6 @@ function drawFlapFrame(progress) {
         )`
     );
 }
-
 
 function animate(
     duration,
@@ -526,7 +478,6 @@ function animate(
         const start =
             performance.now();
 
-
         function frame(now) {
 
             const progress =
@@ -537,9 +488,7 @@ function animate(
                     1
                 );
 
-
             draw(progress);
-
 
             if (progress < 1) {
 
@@ -557,7 +506,6 @@ function animate(
             }
         }
 
-
         setFrameId(
             requestAnimationFrame(
                 frame
@@ -565,7 +513,6 @@ function animate(
         );
     });
 }
-
 
 function animateFlap() {
 
@@ -581,7 +528,6 @@ function animateFlap() {
     );
 }
 
-
 function animateEnvelopeDown() {
 
     return animate(
@@ -595,7 +541,6 @@ function animateEnvelopeDown() {
                     progress
                 );
 
-
             envelopeBody.style.transform =
                 `translateY(
                     ${112 * e}vh
@@ -607,7 +552,6 @@ function animateEnvelopeDown() {
         }
     );
 }
-
 
 function fadeOutFlap() {
 
@@ -622,10 +566,8 @@ function fadeOutFlap() {
                     progress
                 );
 
-
             flap.style.opacity =
                 `${1 - e}`;
-
 
             flapShadow.style.opacity =
                 `${0.06 * (1 - e)}`;
@@ -640,12 +582,10 @@ function fadeOutFlap() {
         flap.style.opacity =
             "0";
 
-
         flapShadow.style.opacity =
             "0";
     });
 }
-
 
 async function openEnvelope() {
 
@@ -656,68 +596,53 @@ async function openEnvelope() {
         return;
     }
 
-
     opening =
         true;
 
-
     const flapPromise =
         animateFlap();
-
 
     await wait(
         BODY_START
     );
 
-
     const bodyPromise =
         animateEnvelopeDown();
 
-
     await flapPromise;
-
 
     const fadePromise =
         fadeOutFlap();
-
 
     await Promise.all([
         bodyPromise,
         fadePromise
     ]);
 
-
     opening =
         false;
-
 
     opened =
         true;
 
-
     envelopeScreen.classList.add(
         "opened"
     );
-
 
     envelopeScreen.setAttribute(
         "aria-hidden",
         "true"
     );
 
-
     envelopeScreen.hidden =
         true;
-
 
     document.body.classList.remove(
         "envelope-locked"
     );
 
-
     updateScrollIndicator();
 }
-
 
 function initialiseEnvelope() {
 
@@ -725,63 +650,134 @@ function initialiseEnvelope() {
         "envelope-locked"
     );
 
-
     drawEnvelopeBody();
-
 
     const initialGeometry =
         getFlapGeometry(0);
-
 
     flapPath.setAttribute(
         "d",
         initialGeometry.d
     );
-
 
     flapEdgePath.setAttribute(
         "d",
         initialGeometry.d
     );
 
-
     flapPath.setAttribute(
         "fill",
         "url(#paperFront)"
     );
 
-
     waxSeal.style.left =
         "50%";
-
 
     waxSeal.style.top =
         "100%";
 }
 
+function updateCountdown() {
 
-envelopeStage.addEventListener(
-    "click",
-    openEnvelope
-);
-
-
-envelopeStage.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter" ||
-            event.key === " "
-        ) {
-
-            event.preventDefault();
-
-            openEnvelope();
-        }
+    if (
+        !countdown ||
+        !countdownDays ||
+        !countdownHours ||
+        !countdownMinutes ||
+        !countdownSeconds
+    ) {
+        return;
     }
-);
 
+    const now =
+        Date.now();
+
+    const remaining =
+        WEDDING_DATE.getTime() -
+        now;
+
+    if (remaining <= 0) {
+
+        countdown.innerHTML =
+            `
+                <p class="countdown-title">
+                    È arrivato il nostro giorno ❤️
+                </p>
+            `;
+
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+
+        return;
+    }
+
+    const totalSeconds =
+        Math.floor(
+            remaining / 1000
+        );
+
+    const days =
+        Math.floor(
+            totalSeconds /
+            86400
+        );
+
+    const hours =
+        Math.floor(
+            (totalSeconds % 86400) /
+            3600
+        );
+
+    const minutes =
+        Math.floor(
+            (totalSeconds % 3600) /
+            60
+        );
+
+    const seconds =
+        totalSeconds %
+        60;
+
+    countdownDays.textContent =
+        String(days);
+
+    countdownHours.textContent =
+        String(hours).padStart(
+            2,
+            "0"
+        );
+
+    countdownMinutes.textContent =
+        String(minutes).padStart(
+            2,
+            "0"
+        );
+
+    countdownSeconds.textContent =
+        String(seconds).padStart(
+            2,
+            "0"
+        );
+}
+
+function startCountdown() {
+
+    updateCountdown();
+
+    if (
+        WEDDING_DATE.getTime() >
+        Date.now()
+    ) {
+
+        countdownTimer =
+            setInterval(
+                updateCountdown,
+                1000
+            );
+    }
+}
 
 async function copyText(
     text,
@@ -790,8 +786,7 @@ async function copyText(
 ) {
 
     const originalLabel =
-        button.textContent;
-
+        button.innerHTML;
 
     try {
 
@@ -811,41 +806,35 @@ async function copyText(
                     "textarea"
                 );
 
-
             textarea.value =
                 text;
-
 
             textarea.style.position =
                 "fixed";
 
-
             textarea.style.opacity =
                 "0";
 
+            textarea.style.pointerEvents =
+                "none";
 
             document.body.appendChild(
                 textarea
             );
 
-
             textarea.focus();
 
             textarea.select();
-
 
             document.execCommand(
                 "copy"
             );
 
-
             textarea.remove();
         }
 
-
         button.textContent =
             successLabel;
-
 
     } catch {
 
@@ -853,11 +842,10 @@ async function copyText(
             "Seleziona e copia";
     }
 
-
     window.setTimeout(
         () => {
 
-            button.textContent =
+            button.innerHTML =
                 originalLabel;
 
         },
@@ -865,6 +853,68 @@ async function copyText(
     );
 }
 
+function updateScrollIndicator() {
+
+    if (
+        !opened ||
+        !scrollIndicator
+    ) {
+        return;
+    }
+
+    const documentHeight =
+        document.documentElement
+            .scrollHeight;
+
+    const viewportBottom =
+        window.scrollY +
+        window.innerHeight;
+
+    const distanceFromBottom =
+        documentHeight -
+        viewportBottom;
+
+    const canScroll =
+        documentHeight >
+        window.innerHeight + 40;
+
+    if (
+        canScroll &&
+        distanceFromBottom > 100
+    ) {
+
+        scrollIndicator.classList.add(
+            "visible"
+        );
+
+    } else {
+
+        scrollIndicator.classList.remove(
+            "visible"
+        );
+    }
+}
+
+envelopeStage.addEventListener(
+    "click",
+    openEnvelope
+);
+
+envelopeStage.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter" ||
+            event.key === " "
+        ) {
+
+            event.preventDefault();
+
+            openEnvelope();
+        }
+    }
+);
 
 if (
     copyWedshootsCode &&
@@ -883,7 +933,6 @@ if (
         }
     );
 }
-
 
 if (
     copyIban &&
@@ -907,7 +956,6 @@ if (
     );
 }
 
-
 if (
     giftToggle &&
     giftDetails
@@ -922,77 +970,31 @@ if (
                     "aria-expanded"
                 ) === "true";
 
-
             giftToggle.setAttribute(
                 "aria-expanded",
                 String(!isOpen)
             );
 
-
             giftDetails.hidden =
                 isOpen;
 
-
-            giftToggle.textContent =
+            giftToggle.innerHTML =
                 isOpen
-                    ? "Scopri di più"
-                    : "Nascondi";
+                    ? `
+                        <span aria-hidden="true">
+                            💝
+                        </span>
+                        Scopri di più
+                    `
+                    : `
+                        <span aria-hidden="true">
+                            💝
+                        </span>
+                        Nascondi
+                    `;
         }
     );
 }
-
-
-function updateScrollIndicator() {
-
-    if (
-        !opened ||
-        !scrollIndicator
-    ) {
-        return;
-    }
-
-
-    const documentHeight =
-        document.documentElement
-            .scrollHeight;
-
-
-    const viewportBottom =
-        window.scrollY +
-        window.innerHeight;
-
-
-    const distanceFromBottom =
-        documentHeight -
-        viewportBottom;
-
-
-    const canScroll =
-        documentHeight >
-        window.innerHeight + 40;
-
-
-    if (
-        canScroll &&
-        distanceFromBottom > 100
-    ) {
-
-        scrollIndicator.classList.add(
-            "visible"
-        );
-
-    } else {
-
-        scrollIndicator.classList.remove(
-            "visible"
-        );
-    }
-}
-
-
-let scrollFramePending =
-    false;
-
 
 window.addEventListener(
     "scroll",
@@ -1004,10 +1006,8 @@ window.addEventListener(
             return;
         }
 
-
         scrollFramePending =
             true;
-
 
         requestAnimationFrame(
             () => {
@@ -1024,11 +1024,10 @@ window.addEventListener(
     }
 );
 
-
 window.addEventListener(
     "resize",
     updateScrollIndicator
 );
 
-
 initialiseEnvelope();
+startCountdown();

@@ -47,7 +47,7 @@ window.addEventListener(
         heroRevealTimer =
             setTimeout(
                 revealHero,
-                1250
+                650
             );
     }
 );

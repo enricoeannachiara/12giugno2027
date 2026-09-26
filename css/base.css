@@ -52,21 +52,15 @@ html {
  * COLORE DEL DOCUMENTO DURANTE LA BUSTA
  * =========================================================
  *
- * Safari utilizza il background del documento anche nelle
- * aree integrate con la propria interfaccia.
- *
- * Durante la schermata iniziale utilizziamo quindi lo stesso
- * colore della carta della busta.
- *
- * Quando envelope.js rimuove "envelope-active", il colore
- * ritorna a quello normale della pagina con una transizione
- * di 800 ms.
+ * Il colore utilizzato nelle aree superiore e inferiore
+ * mostrate da Safari viene uniformato al colore dei lembi
+ * laterali della busta.
  * =========================================================
  */
 
 html.envelope-active {
     background-color:
-        var(--paper-front);
+        var(--paper-side);
 }
 
 
@@ -153,11 +147,6 @@ body::before {
 /*
  * =========================================================
  * BLOCCO DELLA PAGINA DURANTE LA BUSTA
- * =========================================================
- *
- * Impedisce a Safari iOS di mostrare una posizione
- * precedentemente ripristinata della pagina mentre
- * è presente la schermata iniziale della busta.
  * =========================================================
  */
 

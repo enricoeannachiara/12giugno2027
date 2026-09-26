@@ -1,48 +1,24 @@
 .envelope-screen {
     position: fixed;
-
-    /*
-     * La busta viene estesa fisicamente oltre
-     * il viewport di 200 px sopra e sotto.
-     */
-    left: 0;
-    right: 0;
-    top: -200px;
-    bottom: -200px;
-
+    inset: 0;
     z-index: 1000;
     overflow: hidden;
     pointer-events: auto;
 }
 
-
 .envelope-screen.opened {
     pointer-events: none;
 }
 
-
-/*
- * Lo stage vero e proprio resta ESATTAMENTE
- * allineato al viewport originale.
- *
- * I 200 px compensano l'estensione applicata
- * a .envelope-screen.
- */
 .envelope-stage {
     position: absolute;
-
-    left: 0;
-    right: 0;
-    top: 200px;
-    bottom: 200px;
-
+    inset: 0;
     perspective: 1800px;
     perspective-origin: 50% 10%;
     cursor: pointer;
     outline: none;
     -webkit-tap-highlight-color: transparent;
 }
-
 
 .envelope-body {
     position: absolute;
@@ -53,7 +29,6 @@
     will-change: transform;
 }
 
-
 .body-svg {
     position: absolute;
     inset: 0;
@@ -63,16 +38,13 @@
     overflow: visible;
 }
 
-
 .body-side {
     fill: var(--paper-side);
 }
 
-
 .body-bottom {
     fill: var(--paper-bottom);
 }
-
 
 .body-fold {
     fill: none;
@@ -81,14 +53,12 @@
     vector-effect: non-scaling-stroke;
 }
 
-
 .body-bottom-fold {
     fill: none;
     stroke: rgba(105, 82, 58, 0.24);
     stroke-width: 2;
     vector-effect: non-scaling-stroke;
 }
-
 
 .flap-shadow {
     position: absolute;
@@ -99,20 +69,17 @@
     height: 13%;
     transform: translate(-50%, -50%) scaleY(0.04);
     transform-origin: center;
-
     background: radial-gradient(
         ellipse at center,
         rgba(70, 48, 30, 0.22) 0%,
         rgba(70, 48, 30, 0.09) 48%,
         rgba(70, 48, 30, 0) 80%
     );
-
     filter: blur(12px);
     opacity: 0;
     pointer-events: none;
     will-change: opacity, transform;
 }
-
 
 .envelope-flap {
     position: absolute;
@@ -127,7 +94,6 @@
     will-change: transform, opacity;
 }
 
-
 .flap-svg {
     position: absolute;
     inset: 0;
@@ -138,7 +104,6 @@
     pointer-events: none;
 }
 
-
 .flap-edge {
     fill: none;
     stroke: var(--paper-edge);
@@ -147,12 +112,10 @@
     opacity: 0.55;
 }
 
-
 .flap-paper {
     fill: url(#paperFront);
     filter: url(#paperShadow);
 }
-
 
 .wax-seal {
     position: absolute;
@@ -167,7 +130,6 @@
     will-change: left, top;
 }
 
-
 .wax-seal img {
     display: block;
     width: 100%;
@@ -176,12 +138,9 @@
     filter: drop-shadow(0 6px 7px rgba(70, 25, 20, 0.24));
 }
 
-
 @media (max-width: 760px) {
-
     .wax-seal {
         width: 96px;
         height: 96px;
     }
-
 }

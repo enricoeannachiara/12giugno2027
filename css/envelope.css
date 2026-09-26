@@ -4,6 +4,7 @@
     z-index: 1000;
     overflow: hidden;
     pointer-events: auto;
+    background: var(--paper-side);
 }
 
 .envelope-screen.opened {

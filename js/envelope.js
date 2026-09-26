@@ -268,8 +268,7 @@ function animateEnvelopeDown() {
     return animate(
         BODY_DURATION,
         progress => {
-            const e =
-                easeInOutCubic(progress);
+            const e = easeInOutCubic(progress);
 
             envelopeBody.style.transform =
                 `translateY(${112 * e}vh)`;
@@ -284,8 +283,7 @@ function fadeOutFlap() {
     return animate(
         FLAP_FADE_DURATION,
         progress => {
-            const e =
-                easeOutCubic(progress);
+            const e = easeOutCubic(progress);
 
             flap.style.opacity =
                 `${1 - e}`;
@@ -313,27 +311,15 @@ async function openEnvelope() {
         new CustomEvent("envelopeopening")
     );
 
-    const flapPromise =
-        animateFlap();
+    const flapPromise = animateFlap();
 
     await wait(BODY_START);
 
-    /*
-     * Nel momento esatto in cui il corpo della busta
-     * comincia a scendere, togliamo il fondo opaco.
-     *
-     * Da qui in poi la Hero è nuovamente visibile
-     * attraverso l'envelope-screen.
-     */
-    envelopeScreen.classList.add("revealing");
-
-    const bodyPromise =
-        animateEnvelopeDown();
+    const bodyPromise = animateEnvelopeDown();
 
     await flapPromise;
 
-    const fadePromise =
-        fadeOutFlap();
+    const fadePromise = fadeOutFlap();
 
     await Promise.all([
         bodyPromise,
@@ -388,8 +374,7 @@ function initialiseEnvelope() {
     waxSeal.style.top =
         `${initialGeometry.tipY / 10}%`;
 
-    waxSeal.style.visibility =
-        "visible";
+    waxSeal.style.visibility = "visible";
 }
 
 envelopeStage.addEventListener(

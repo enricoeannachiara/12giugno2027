@@ -40,7 +40,33 @@
 html {
     scroll-behavior: smooth;
 
-    background: #F8F4EC;
+    background-color: #F8F4EC;
+
+    transition:
+        background-color 800ms ease;
+}
+
+
+/*
+ * =========================================================
+ * COLORE DEL DOCUMENTO DURANTE LA BUSTA
+ * =========================================================
+ *
+ * Safari utilizza il background del documento anche nelle
+ * aree integrate con la propria interfaccia.
+ *
+ * Durante la schermata iniziale utilizziamo quindi lo stesso
+ * colore della carta della busta.
+ *
+ * Quando envelope.js rimuove "envelope-active", il colore
+ * ritorna a quello normale della pagina con una transizione
+ * di 800 ms.
+ * =========================================================
+ */
+
+html.envelope-active {
+    background-color:
+        var(--paper-front);
 }
 
 

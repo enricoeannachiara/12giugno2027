@@ -9,14 +9,6 @@
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
-    <!--
-        Safari può ripristinare la precedente posizione di scroll
-        durante un refresh, prima che gli script in fondo alla pagina
-        vengano eseguiti.
-
-        La schermata iniziale con la busta deve invece partire sempre
-        dall'inizio del documento.
-    -->
     <script>
         if ("scrollRestoration" in history) {
             history.scrollRestoration = "manual";
@@ -86,6 +78,28 @@
 
 <body>
 
+    <!-- =========================================================
+         COPERTURA AREE SAFARI
+    ========================================================== -->
+
+    <div
+        class="safari-edge-cover"
+        id="safariEdgeCover"
+        aria-hidden="true"
+    >
+
+        <div class="safari-edge-cover-top"></div>
+
+        <div class="safari-edge-cover-bottom"></div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         BUSTA
+    ========================================================== -->
+
     <div
         class="envelope-screen"
         id="envelopeScreen"
@@ -127,7 +141,6 @@
                         class="body-fold"
                     ></path>
 
-
                     <path
                         id="bodyRightPath"
                         class="body-side"
@@ -137,7 +150,6 @@
                         id="bodyRightFold"
                         class="body-fold"
                     ></path>
-
 
                     <path
                         id="bodyBottomPath"
@@ -243,7 +255,6 @@
                         id="flapEdgePath"
                         class="flap-edge"
                     ></path>
-
 
                     <path
                         id="flapPath"
@@ -470,8 +481,6 @@
                 <div class="places-grid">
 
 
-                    <!-- CASA DELLO SPOSO -->
-
                     <article class="place-card">
 
                         <h3>
@@ -481,7 +490,6 @@
 
                             Casa dello sposo
                         </h3>
-
 
                         <div class="navigation-buttons">
 
@@ -501,7 +509,6 @@
                                 Google Maps
 
                             </a>
-
 
                             <a
                                 class="button button-small button-secondary map-button"
@@ -526,8 +533,6 @@
 
 
 
-                    <!-- CASA DELLA SPOSA -->
-
                     <article class="place-card">
 
                         <h3>
@@ -537,7 +542,6 @@
 
                             Casa della sposa
                         </h3>
-
 
                         <div class="navigation-buttons">
 
@@ -557,7 +561,6 @@
                                 Google Maps
 
                             </a>
-
 
                             <a
                                 class="button button-small button-secondary map-button"
@@ -582,8 +585,6 @@
 
 
 
-                    <!-- CHIESA -->
-
                     <article class="place-card">
 
                         <h3>
@@ -593,7 +594,6 @@
 
                             Chiesa di San Martino Vescovo
                         </h3>
-
 
                         <div class="navigation-buttons">
 
@@ -613,7 +613,6 @@
                                 Google Maps
 
                             </a>
-
 
                             <a
                                 class="button button-small button-secondary map-button"
@@ -654,8 +653,6 @@
 
 
 
-                    <!-- MASSERIA -->
-
                     <article class="place-card">
 
                         <h3>
@@ -665,7 +662,6 @@
 
                             Masseria La Morella
                         </h3>
-
 
                         <div class="navigation-buttons">
 
@@ -685,7 +681,6 @@
                                 Google Maps
 
                             </a>
-
 
                             <a
                                 class="button button-small button-secondary map-button"
@@ -780,11 +775,9 @@
 
                         </span>
 
-
                         <strong id="wedshootsCode">
                             ITb2ea31c8
                         </strong>
-
 
                         <button
                             class="copy-button"
@@ -929,7 +922,7 @@
 
 
         <!-- =====================================================
-             FIAT 500 - DECORAZIONE FINALE
+             FIAT 500
         ====================================================== -->
 
         <div

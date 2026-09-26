@@ -1,114 +1,146 @@
-@import url("https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=Great+Vibes&display=swap");
-
-:root {
-    --background: #F8F4EC;
-    --background-alt: rgba(243, 238, 232, 0.72);
-    --text: #3E3A39;
-    --muted: #8A8178;
-    --lilac: #ABA5F0;
-    --lilac-dark: #9181BB;
-    --card: rgba(255, 255, 255, 0.72);
-    --card-border: rgba(125, 111, 101, 0.12);
-    --gold: #CDBB8B;
-    --gold-dark: #BDA978;
-    --gold-active: #B19E70;
-    --warm-white: #FFFDF8;
-    --paper-front: #EADCC8;
-    --paper-back: #E4D3BC;
-    --paper-side: #E8D7C0;
-    --paper-bottom: #EBDCC6;
-    --paper-edge: #C8B18F;
-    --shadow-soft: 0 14px 40px rgba(74, 61, 53, .08);
+.envelope-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    overflow: hidden;
+    pointer-events: auto;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-    background: #F8F4EC;
-}
-
-html,
-body {
-    margin: 0;
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    position: relative;
-    margin: 0;
-    background-color: #F8F4EC;
-    background-image: url("../images/sfondo-2.png");
-    background-repeat: repeat-y;
-    background-position: top center;
-    background-size: 100% auto;
-    color: var(--text);
-    font-family: Georgia, "Times New Roman", serif;
-    overflow-x: hidden;
-}
-
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    aspect-ratio: 2 / 3;
-    background-image: url("../images/sfondo-1.png");
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: 100% 100%;
+.envelope-screen.opened {
     pointer-events: none;
-    z-index: 0;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button,
-a {
+.envelope-stage {
+    position: absolute;
+    inset: 0;
+    perspective: 1800px;
+    perspective-origin: 50% 10%;
+    cursor: pointer;
+    outline: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-button {
-    font: inherit;
+.envelope-body {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    transform: translateY(0);
+    will-change: transform;
 }
 
-.site {
-    position: relative;
+.body-svg {
+    position: absolute;
+    inset: 0;
+    display: block;
     width: 100%;
-    z-index: 1;
+    height: 100%;
+    overflow: visible;
+}
+
+.body-side {
+    fill: var(--paper-side);
+}
+
+.body-bottom {
+    fill: var(--paper-bottom);
+}
+
+.body-fold {
+    fill: none;
+    stroke: rgba(105, 82, 58, 0.22);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+}
+
+.body-bottom-fold {
+    fill: none;
+    stroke: rgba(105, 82, 58, 0.24);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+}
+
+.flap-shadow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 12;
+    width: 65%;
+    height: 13%;
+    transform: translate(-50%, -50%) scaleY(0.04);
+    transform-origin: center;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(70, 48, 30, 0.22) 0%,
+        rgba(70, 48, 30, 0.09) 48%,
+        rgba(70, 48, 30, 0) 80%
+    );
+    filter: blur(12px);
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity, transform;
+}
+
+.envelope-flap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 20;
+    width: 100vw;
+    height: 50vh;
+    transform-origin: 50% 0;
+    transform-style: preserve-3d;
+    opacity: 1;
+    will-change: transform, opacity;
+}
+
+.flap-svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.flap-edge {
+    fill: none;
+    stroke: var(--paper-edge);
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.55;
+}
+
+.flap-paper {
+    fill: url(#paperFront);
+    filter: url(#paperShadow);
+}
+
+.wax-seal {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    z-index: 30;
+    width: 108px;
+    height: 108px;
+    transform: translate(-50%, -50%) translateZ(5px);
+    transform-origin: center;
+    pointer-events: none;
+    will-change: left, top;
+}
+
+.wax-seal img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 7px rgba(70, 25, 20, 0.24));
 }
 
 @media (max-width: 760px) {
-
-    body {
-        background-size: 100% auto;
+    .wax-seal {
+        width: 96px;
+        height: 96px;
     }
-
-    body::before {
-        background-size: 100% 100%;
-    }
-
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    html {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-    }
-
 }

@@ -40,27 +40,8 @@
 html {
     scroll-behavior: smooth;
 
-    background-color: #F8F4EC;
-
-    transition:
-        background-color 800ms ease;
-}
-
-
-/*
- * =========================================================
- * COLORE DEL DOCUMENTO DURANTE LA BUSTA
- * =========================================================
- *
- * Il colore utilizzato nelle aree superiore e inferiore
- * mostrate da Safari viene uniformato al colore dei lembi
- * laterali della busta.
- * =========================================================
- */
-
-html.envelope-active {
-    background-color:
-        var(--paper-side);
+    background:
+        #F8F4EC;
 }
 
 
@@ -78,7 +59,8 @@ body {
 
     margin: 0;
 
-    background-color: #F8F4EC;
+    background-color:
+        #F8F4EC;
 
     background-image:
         url("../images/sfondo-2.png");
@@ -147,6 +129,11 @@ body::before {
 /*
  * =========================================================
  * BLOCCO DELLA PAGINA DURANTE LA BUSTA
+ * =========================================================
+ *
+ * Manteniamo questa parte perché è quella che ha risolto
+ * il ripristino della vecchia posizione di scroll su Safari.
+ * Non crea alcuna fascia artificiale.
  * =========================================================
  */
 

@@ -2,7 +2,7 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    overflow: visible;
+    overflow: hidden;
     pointer-events: auto;
     touch-action: none;
 }
@@ -61,35 +61,6 @@
     vector-effect: non-scaling-stroke;
 }
 
-
-/* =========================================================
-   ESTENSIONE INFERIORE — TEST SAFARI
-
-   Il pannello parte esattamente dal bordo inferiore
-   della busta e continua per 200 px.
-
-   Essendo figlio di .envelope-body, si muove insieme
-   al corpo della busta durante l'apertura.
-========================================================= */
-
-.envelope-bottom-extension {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 200px;
-    z-index: 9;
-
-    background: var(--paper-bottom);
-
-    pointer-events: none;
-}
-
-
-/* =========================================================
-   OMBRA DEL LEMBO
-========================================================= */
-
 .flap-shadow {
     position: absolute;
     left: 50%;
@@ -99,132 +70,78 @@
     height: 13%;
     transform: translate(-50%, -50%) scaleY(0.04);
     transform-origin: center;
-
     background: radial-gradient(
         ellipse at center,
         rgba(70, 48, 30, 0.22) 0%,
         rgba(70, 48, 30, 0.09) 48%,
         rgba(70, 48, 30, 0) 80%
     );
-
     filter: blur(12px);
     opacity: 0;
     pointer-events: none;
-
-    will-change:
-        opacity,
-        transform;
+    will-change: opacity, transform;
 }
-
-
-/* =========================================================
-   LEMBO SUPERIORE
-========================================================= */
 
 .envelope-flap {
     position: absolute;
     left: 0;
     top: 0;
     z-index: 20;
-
     width: 100vw;
     height: 50vh;
-
     transform-origin: 50% 0;
     transform-style: preserve-3d;
-
     opacity: 1;
-
-    will-change:
-        transform,
-        opacity;
+    will-change: transform, opacity;
 }
 
 .flap-svg {
     position: absolute;
     inset: 0;
-
     display: block;
-
     width: 100%;
     height: 100%;
-
     overflow: visible;
-
     pointer-events: none;
 }
 
 .flap-edge {
     fill: none;
-
     stroke: var(--paper-edge);
     stroke-width: 3;
-
     vector-effect: non-scaling-stroke;
-
     opacity: 0.55;
 }
 
 .flap-paper {
     fill: url(#paperFront);
-
     filter: url(#paperShadow);
 }
 
-
-/* =========================================================
-   SIGILLO
-========================================================= */
-
 .wax-seal {
     position: absolute;
-
     left: 50%;
     top: 100%;
-
     z-index: 30;
-
     width: 108px;
     height: 108px;
-
-    transform:
-        translate(-50%, -50%)
-        translateZ(5px);
-
+    transform: translate(-50%, -50%) translateZ(5px);
     transform-origin: center;
-
     pointer-events: none;
-
-    will-change:
-        left,
-        top;
+    will-change: left, top;
 }
 
 .wax-seal img {
     display: block;
-
     width: 100%;
     height: 100%;
-
     object-fit: contain;
-
-    filter:
-        drop-shadow(
-            0 6px 7px
-            rgba(70, 25, 20, 0.24)
-        );
+    filter: drop-shadow(0 6px 7px rgba(70, 25, 20, 0.24));
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media (max-width: 760px) {
-
     .wax-seal {
         width: 96px;
         height: 96px;
     }
-
 }

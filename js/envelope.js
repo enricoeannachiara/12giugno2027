@@ -22,22 +22,11 @@ const bodyLeftFold = $("bodyLeftFold");
 const bodyRightFold = $("bodyRightFold");
 const bodyBottomFold = $("bodyBottomFold");
 
-const safariEdgeCover = $("safariEdgeCover");
-
 
 const FLAP_DURATION = 3400;
 const BODY_START = 1600;
 const BODY_DURATION = 1450;
 const FLAP_FADE_DURATION = 280;
-
-/*
- * Durata della dissolvenza delle due fasce
- * superiore e inferiore di Safari.
- *
- * Deve corrispondere alla transition impostata
- * in base.css.
- */
-const EDGE_FADE_DURATION = 1000;
 
 
 let flapFrameId = null;
@@ -137,13 +126,7 @@ function getFlapGeometry(t) {
      * La punta è specchiata rispetto a quella
      * del lembo inferiore.
      *
-     * Prima era:
-     *
-     * tipY + 15
-     *
-     * e produceva una piccola concavità.
-     *
-     * Ora i due estremi della curva sono 15 unità
+     * I due estremi della curva sono 15 unità
      * più in alto rispetto al centro, producendo
      * una punta leggermente convessa.
      */
@@ -737,53 +720,6 @@ function fadeOutFlap() {
 
 
 /* =======================================================
-   DISSOLVENZA DELLE FASCE SAFARI
-======================================================= */
-
-async function fadeOutSafariEdges() {
-
-    if (!safariEdgeCover) {
-        return;
-    }
-
-
-    /*
-     * Forziamo il browser a registrare prima lo stato
-     * iniziale opacity:1.
-     *
-     * Nel frame successivo aggiungiamo la classe che
-     * porta le due fasce a opacity:0.
-     */
-
-    await new Promise(resolve => {
-
-        requestAnimationFrame(() => {
-
-            requestAnimationFrame(resolve);
-
-        });
-
-    });
-
-
-    safariEdgeCover.classList.add(
-        "is-fading"
-    );
-
-
-    await wait(
-        EDGE_FADE_DURATION
-    );
-
-
-    safariEdgeCover.classList.add(
-        "is-hidden"
-    );
-
-}
-
-
-/* =======================================================
    APERTURA DELLA BUSTA
 ======================================================= */
 
@@ -862,7 +798,8 @@ async function openEnvelope() {
 
 
     /*
-     * Sblocchiamo la pagina.
+     * Sblocchiamo la pagina dopo la scomparsa
+     * completa della busta.
      */
 
     document.body.classList.remove(
@@ -871,30 +808,16 @@ async function openEnvelope() {
 
 
     /*
-     * Manteniamo la pagina all'inizio dopo la rimozione
-     * di position:fixed.
+     * Rimuovendo position: fixed, Safari potrebbe
+     * tentare di recuperare una vecchia posizione
+     * di scorrimento. Manteniamo esplicitamente
+     * la pagina all'inizio.
      */
 
     window.scrollTo(
         0,
         0
     );
-
-
-    /*
-     * A questo punto la busta è scomparsa e la Hero
-     * è visibile.
-     *
-     * Le due fasce rimangono ancora presenti e iniziano
-     * ora la loro dissolvenza indipendente di 1000 ms.
-     *
-     * Non aspettiamo la fine della dissolvenza prima
-     * di inviare envelopeopened: la Hero e gli altri
-     * comportamenti del sito possono quindi proseguire
-     * normalmente mentre le fasce sfumano.
-     */
-
-    fadeOutSafariEdges();
 
 
     window.dispatchEvent(
@@ -913,17 +836,12 @@ async function openEnvelope() {
 function initialiseEnvelope() {
 
     /*
-     * Safari iOS può tentare di ripristinare la posizione
-     * precedente durante un refresh.
+     * scrollRestoration viene disabilitato nell'head
+     * di index.html, prima del caricamento della pagina.
+     *
+     * Qui ci assicuriamo soltanto che la posizione
+     * iniziale sia zero prima di bloccare il body.
      */
-
-    if ("scrollRestoration" in history) {
-
-        history.scrollRestoration =
-            "manual";
-
-    }
-
 
     window.scrollTo(
         0,
@@ -934,37 +852,6 @@ function initialiseEnvelope() {
     document.body.classList.add(
         "envelope-locked"
     );
-
-
-    /*
-     * Seconda correzione nel frame successivo contro
-     * un eventuale ripristino tardivo dello scroll.
-     */
-
-    requestAnimationFrame(() => {
-
-        window.scrollTo(
-            0,
-            0
-        );
-
-    });
-
-
-    /*
-     * Assicuriamoci che le fasce siano nello stato
-     * iniziale nel caso in cui la pagina venga
-     * ripristinata dalla cache di Safari.
-     */
-
-    if (safariEdgeCover) {
-
-        safariEdgeCover.classList.remove(
-            "is-fading",
-            "is-hidden"
-        );
-
-    }
 
 
     drawEnvelopeBody();

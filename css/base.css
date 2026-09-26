@@ -1,235 +1,114 @@
 @import url("https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=Great+Vibes&display=swap");
 
-
 :root {
     --background: #F8F4EC;
     --background-alt: rgba(243, 238, 232, 0.72);
-
     --text: #3E3A39;
     --muted: #8A8178;
-
     --lilac: #ABA5F0;
     --lilac-dark: #9181BB;
-
     --card: rgba(255, 255, 255, 0.72);
     --card-border: rgba(125, 111, 101, 0.12);
-
     --gold: #CDBB8B;
     --gold-dark: #BDA978;
     --gold-active: #B19E70;
-
     --warm-white: #FFFDF8;
-
     --paper-front: #EADCC8;
     --paper-back: #E4D3BC;
     --paper-side: #E8D7C0;
     --paper-bottom: #EBDCC6;
     --paper-edge: #C8B18F;
-
-    --shadow-soft:
-        0 14px 40px
-        rgba(74, 61, 53, .08);
+    --shadow-soft: 0 14px 40px rgba(74, 61, 53, .08);
 }
-
 
 * {
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
-
-    background:
-        #F8F4EC;
+    background: #F8F4EC;
 }
-
 
 html,
 body {
     margin: 0;
-
     width: 100%;
     min-height: 100%;
 }
 
-
 body {
     position: relative;
-
     margin: 0;
-
-    background-color:
-        #F8F4EC;
-
-    background-image:
-        url("../images/sfondo-2.png");
-
-    background-repeat:
-        repeat-y;
-
-    background-position:
-        top center;
-
-    background-size:
-        100% auto;
-
-    color:
-        var(--text);
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    overflow-x:
-        hidden;
+    background-color: #F8F4EC;
+    background-image: url("../images/sfondo-2.png");
+    background-repeat: repeat-y;
+    background-position: top center;
+    background-size: 100% auto;
+    color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    overflow-x: hidden;
 }
-
-
-/*
- * =========================================================
- * PRIMA IMMAGINE DELLO SFONDO
- * =========================================================
- */
 
 body::before {
     content: "";
-
     position: absolute;
-
     top: 0;
     left: 0;
-
     width: 100%;
-
-    aspect-ratio:
-        2 / 3;
-
-    background-image:
-        url("../images/sfondo-1.png");
-
-    background-repeat:
-        no-repeat;
-
-    background-position:
-        top center;
-
-    background-size:
-        100% 100%;
-
-    pointer-events:
-        none;
-
-    z-index:
-        0;
+    aspect-ratio: 2 / 3;
+    background-image: url("../images/sfondo-1.png");
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: 100% 100%;
+    pointer-events: none;
+    z-index: 0;
 }
-
-
-/*
- * =========================================================
- * BLOCCO DELLA PAGINA DURANTE LA BUSTA
- * =========================================================
- *
- * Manteniamo questa parte perché è quella che ha risolto
- * il ripristino della vecchia posizione di scroll su Safari.
- * Non crea alcuna fascia artificiale.
- * =========================================================
- */
-
-body.envelope-locked {
-    position: fixed;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-}
-
 
 a {
-    color:
-        inherit;
-
-    text-decoration:
-        none;
+    color: inherit;
+    text-decoration: none;
 }
-
 
 button,
 a {
-    -webkit-tap-highlight-color:
-        transparent;
+    -webkit-tap-highlight-color: transparent;
 }
-
 
 button {
-    font:
-        inherit;
+    font: inherit;
 }
-
 
 .site {
-    position:
-        relative;
-
-    width:
-        100%;
-
-    z-index:
-        1;
+    position: relative;
+    width: 100%;
+    z-index: 1;
 }
-
-
-/*
- * =========================================================
- * MOBILE
- * =========================================================
- */
 
 @media (max-width: 760px) {
 
     body {
-        background-size:
-            100% auto;
+        background-size: 100% auto;
     }
 
-
     body::before {
-        background-size:
-            100% 100%;
+        background-size: 100% 100%;
     }
 
 }
 
-
-/*
- * =========================================================
- * RIDUZIONE MOVIMENTO
- * =========================================================
- */
-
 @media (prefers-reduced-motion: reduce) {
 
     html {
-        scroll-behavior:
-            auto;
+        scroll-behavior: auto;
     }
-
 
     *,
     *::before,
     *::after {
-        animation-duration:
-            .01ms !important;
-
-        animation-iteration-count:
-            1 !important;
-
-        transition-duration:
-            .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
     }
 
 }

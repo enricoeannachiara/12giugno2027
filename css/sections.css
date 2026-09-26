@@ -8,7 +8,7 @@
     width: 100%;
 
     padding:
-        90px
+        60px
         24px;
 
     background: transparent;
@@ -46,7 +46,7 @@
     margin:
         0
         0
-        24px;
+        18px;
 
     display: flex;
     flex-direction: column;
@@ -54,7 +54,7 @@
     justify-content: center;
     align-items: center;
 
-    gap: 10px;
+    gap: 8px;
 
     font-size:
         clamp(
@@ -98,7 +98,7 @@
     margin:
         0
         auto
-        34px;
+        26px;
 
     color: var(--muted);
 
@@ -319,7 +319,7 @@
 ======================================================= */
 
 .ceremony-button {
-    margin-top: 20px;
+    margin-top: 14px;
 
     background:
         var(--gold);
@@ -363,9 +363,11 @@
             minmax(0, 1fr)
         );
 
-    gap: 24px;
+    gap:
+        12px
+        24px;
 
-    margin-top: 42px;
+    margin-top: 22px;
 }
 
 
@@ -376,11 +378,11 @@
     justify-content: center;
     align-items: center;
 
-    min-height: 220px;
+    min-height: 170px;
 
     padding:
-        34px
-        28px;
+        20px
+        24px;
 
     border: none;
 
@@ -399,7 +401,7 @@
     margin:
         0
         0
-        26px;
+        18px;
 
     display: flex;
 
@@ -442,12 +444,12 @@
     max-width: 600px;
 
     margin:
-        40px
+        24px
         auto
         0;
 
     padding:
-        34px
+        18px
         28px;
 
     border: none;
@@ -493,7 +495,7 @@
 ======================================================= */
 
 .access-code {
-    margin-top: 28px;
+    margin-top: 20px;
 
     display: flex;
 
@@ -612,11 +614,13 @@
     max-width: 620px;
 
     margin:
-        34px
+        24px
         auto
         0;
 
-    padding: 30px;
+    padding:
+        20px
+        30px;
 
     border: none;
 
@@ -674,7 +678,7 @@
     gap: 20px;
 
     padding:
-        14px
+        12px
         0;
 
     border-bottom:
@@ -720,15 +724,15 @@
 
 
 .gift-iban {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 
 .gift-details > .copy-button {
     margin:
-        4px
+        2px
         0
-        12px;
+        8px;
 }
 
 
@@ -737,7 +741,7 @@
 ======================================================= */
 
 #sogno {
-    padding-bottom: 70px;
+    padding-bottom: 42px;
 }
 
 
@@ -799,13 +803,15 @@
 
     .section {
         padding:
-            74px
+            48px
             20px;
     }
 
 
     .section-title {
-        gap: 9px;
+        gap: 7px;
+
+        margin-bottom: 16px;
     }
 
 
@@ -820,13 +826,18 @@
     }
 
 
+    .section-text {
+        margin-bottom: 22px;
+    }
+
+
     .places-grid {
         grid-template-columns:
             1fr;
 
-        gap: 18px;
+        gap: 4px;
 
-        margin-top: 34px;
+        margin-top: 18px;
     }
 
 
@@ -834,8 +845,8 @@
         min-height: 0;
 
         padding:
-            28px
-            22px;
+            18px
+            12px;
 
         border-radius: 0;
     }
@@ -843,6 +854,8 @@
 
     .place-card h3 {
         gap: 7px;
+
+        margin-bottom: 14px;
     }
 
 
@@ -868,17 +881,29 @@
     .album-card,
     .gift-details {
         padding:
-            28px
+            16px
             20px;
 
         border-radius: 0;
     }
 
 
+    .album-card {
+        margin-top: 18px;
+    }
+
+
     .access-code {
+        margin-top: 18px;
+
         flex-direction: column;
 
         gap: 8px;
+    }
+
+
+    .gift-details {
+        margin-top: 18px;
     }
 
 
@@ -899,7 +924,7 @@
 
 
     #sogno {
-        padding-bottom: 55px;
+        padding-bottom: 34px;
     }
 
 

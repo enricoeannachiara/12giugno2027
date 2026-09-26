@@ -11,9 +11,6 @@
         90px
         24px;
 
-    /*
-     * Lasciamo visibile la carta sottostante.
-     */
     background: transparent;
 }
 
@@ -23,11 +20,6 @@
 ======================================================= */
 
 .section-alt {
-    /*
-     * Non usiamo più un colore pieno.
-     * Questa velatura distingue leggermente
-     * la sezione senza nascondere la carta.
-     */
     background:
         rgba(255, 253, 248, 0.26);
 }
@@ -42,6 +34,8 @@
     margin: 0 auto;
 
     text-align: center;
+
+    z-index: 2;
 }
 
 
@@ -159,10 +153,6 @@
 
     cursor: pointer;
 
-    /*
-     * Niente ombra:
-     * manteniamo l'aspetto pulito che avevamo scelto.
-     */
     box-shadow: none;
 
     transition:
@@ -190,7 +180,7 @@
    RSVP
 ======================================================= */
 
-.button-primary {
+#rsvp .button-primary {
     background:
         #ED81C0;
 
@@ -202,7 +192,7 @@
 }
 
 
-.button-primary:hover {
+#rsvp .button-primary:hover {
     background:
         #E673B6;
 
@@ -318,7 +308,7 @@
 
 .map-button[href*="waze"]:hover {
     background:
-        rgba(255, 255, 255, 1);
+        #FFFFFF;
 
     color:
         #2A30A4;
@@ -399,10 +389,6 @@
 
     border-radius: 28px;
 
-    /*
-     * La carta resta leggermente visibile
-     * attraverso le card.
-     */
     background:
         rgba(255, 253, 248, 0.68);
 
@@ -498,7 +484,7 @@
    PULSANTE ALBUM
 ======================================================= */
 
-.album-card > .button {
+#album .button-primary {
     background:
         #ABA5F0;
 
@@ -510,7 +496,7 @@
 }
 
 
-.album-card > .button:hover {
+#album .button-primary:hover {
     background:
         #9D96E4;
 
@@ -607,8 +593,7 @@
 
     cursor: pointer;
 
-    box-shadow:
-        none;
+    box-shadow: none;
 
     transition:
         transform 0.28s cubic-bezier(.22, 1, .36, 1),
@@ -773,11 +758,69 @@
 
 
 /* =======================================================
-   FONDO PAGINA
+   SEZIONE FINALE
 ======================================================= */
 
 #sogno {
-    padding-bottom: 160px;
+    /*
+     * Non serve più il grande padding inferiore
+     * usato in precedenza: la 500 avrà un proprio
+     * spazio nel flusso della pagina.
+     */
+    padding-bottom: 70px;
+}
+
+
+/* =======================================================
+   FIAT 500 - DECORAZIONE FINALE
+
+   È un elemento separato dallo sfondo.
+   Scorre normalmente insieme alla pagina.
+======================================================= */
+
+.footer-500 {
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    padding:
+        0
+        clamp(22px, 4vw, 64px)
+        clamp(28px, 4vw, 50px);
+
+    pointer-events: none;
+
+    user-select: none;
+
+    z-index: 2;
+}
+
+
+.footer-500 img {
+    display: block;
+
+    /*
+     * Circa il 45% della larghezza della pagina,
+     * come avevamo stabilito.
+     */
+    width: min(45vw, 700px);
+
+    max-width: 100%;
+
+    height: auto;
+
+    object-fit: contain;
+
+    pointer-events: none;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
 }
 
 
@@ -889,7 +932,24 @@
 
 
     #sogno {
-        padding-bottom: 180px;
+        padding-bottom: 55px;
+    }
+
+
+    /*
+     * Manteniamo anche su smartphone la proporzione
+     * richiesta: 45% della larghezza dello schermo.
+     */
+    .footer-500 {
+        padding:
+            0
+            18px
+            24px;
+    }
+
+
+    .footer-500 img {
+        width: 45vw;
     }
 
 }

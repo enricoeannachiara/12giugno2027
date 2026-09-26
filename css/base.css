@@ -1,10 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=Great+Vibes&display=swap");
 
 
-/* =======================================================
-   VARIABILI
-======================================================= */
-
 :root {
     --background: #F8F4EC;
     --background-alt: rgba(243, 238, 232, 0.72);
@@ -32,22 +28,21 @@
 
     --shadow-soft:
         0 14px 40px
-        rgba(74, 61, 53, 0.08);
+        rgba(74, 61, 53, .08);
 }
 
-
-/* =======================================================
-   RESET
-======================================================= */
 
 * {
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
+
     background: #F8F4EC;
 }
+
 
 html,
 body {
@@ -57,17 +52,6 @@ body {
     min-height: 100%;
 }
 
-
-/* =======================================================
-   SFONDO PRINCIPALE
-
-   sfondo-2.png costituisce la carta continua del sito.
-   Viene ripetuto verticalmente per tutta la lunghezza
-   della pagina.
-
-   sfondo-1.png viene invece sovrapposto all'inizio
-   tramite body::before.
-======================================================= */
 
 body {
     position: relative;
@@ -85,10 +69,6 @@ body {
     background-position:
         top center;
 
-    /*
-     * La larghezza dell'immagine coincide con quella
-     * della pagina. L'altezza mantiene le proporzioni.
-     */
     background-size:
         100% auto;
 
@@ -105,15 +85,11 @@ body {
 }
 
 
-/* =======================================================
-   PRIMO FOGLIO DECORATO
-
-   L'immagine generata è in rapporto 2:3.
-   Con una larghezza del 100%, la sua altezza sarà
-   quindi pari al 150% della larghezza della viewport.
-
-   Sotto di essa continua sfondo-2.png.
-======================================================= */
+/*
+ * =========================================================
+ * PRIMA IMMAGINE DELLO SFONDO
+ * =========================================================
+ */
 
 body::before {
     content: "";
@@ -125,10 +101,8 @@ body::before {
 
     width: 100%;
 
-    /*
-     * Rapporto originale 2:3
-     */
-    aspect-ratio: 2 / 3;
+    aspect-ratio:
+        2 / 3;
 
     background-image:
         url("../images/sfondo-1.png");
@@ -142,30 +116,53 @@ body::before {
     background-size:
         100% 100%;
 
-    pointer-events: none;
+    pointer-events:
+        none;
 
-    z-index: 0;
+    z-index:
+        0;
 }
 
 
-/* =======================================================
-   BLOCCO SCROLL DURANTE APERTURA BUSTA
-======================================================= */
+/*
+ * =========================================================
+ * BLOCCO DELLA PAGINA DURANTE LA BUSTA
+ * =========================================================
+ *
+ * Su Safari iOS il solo overflow:hidden non è sufficiente:
+ * durante un refresh il browser può ripristinare la
+ * precedente posizione di scroll dietro alla schermata
+ * iniziale.
+ *
+ * Finché la busta è presente fissiamo quindi il body
+ * alla viewport.
+ *
+ * Quando envelope.js rimuove la classe envelope-locked,
+ * il documento torna automaticamente al comportamento
+ * normale.
+ * =========================================================
+ */
 
 body.envelope-locked {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
     overflow: hidden;
 }
 
 
-/* =======================================================
-   ELEMENTI GENERALI
-======================================================= */
-
 a {
-    color: inherit;
+    color:
+        inherit;
 
-    text-decoration: none;
+    text-decoration:
+        none;
 }
+
 
 button,
 a {
@@ -173,29 +170,30 @@ a {
         transparent;
 }
 
+
 button {
-    font: inherit;
+    font:
+        inherit;
 }
 
-
-/* =======================================================
-   CONTENUTO SITO
-
-   Deve trovarsi sopra gli sfondi.
-======================================================= */
 
 .site {
-    position: relative;
+    position:
+        relative;
 
-    width: 100%;
+    width:
+        100%;
 
-    z-index: 1;
+    z-index:
+        1;
 }
 
 
-/* =======================================================
-   MOBILE
-======================================================= */
+/*
+ * =========================================================
+ * MOBILE
+ * =========================================================
+ */
 
 @media (max-width: 760px) {
 
@@ -203,6 +201,7 @@ button {
         background-size:
             100% auto;
     }
+
 
     body::before {
         background-size:
@@ -212,9 +211,11 @@ button {
 }
 
 
-/* =======================================================
-   ACCESSIBILITÀ
-======================================================= */
+/*
+ * =========================================================
+ * RIDUZIONE MOVIMENTO
+ * =========================================================
+ */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -223,17 +224,18 @@ button {
             auto;
     }
 
+
     *,
     *::before,
     *::after {
         animation-duration:
-            0.01ms !important;
+            .01ms !important;
 
         animation-iteration-count:
             1 !important;
 
         transition-duration:
-            0.01ms !important;
+            .01ms !important;
     }
 
 }

@@ -192,6 +192,7 @@ function drawFlapFrame(progress) {
 
     waxSeal.style.left = "50%";
     waxSeal.style.top = `${geometry.tipY / 10}%`;
+
     waxSeal.style.visibility =
         rotation < 90
             ? "visible"
@@ -229,12 +230,11 @@ function animate(duration, draw, setFrameId) {
         const start = performance.now();
 
         function frame(now) {
-            const progress =
-                clamp(
-                    (now - start) / duration,
-                    0,
-                    1
-                );
+            const progress = clamp(
+                (now - start) / duration,
+                0,
+                1
+            );
 
             draw(progress);
 
@@ -317,6 +317,15 @@ async function openEnvelope() {
         animateFlap();
 
     await wait(BODY_START);
+
+    /*
+     * Nel momento esatto in cui il corpo della busta
+     * comincia a scendere, togliamo il fondo opaco.
+     *
+     * Da qui in poi la Hero è nuovamente visibile
+     * attraverso l'envelope-screen.
+     */
+    envelopeScreen.classList.add("revealing");
 
     const bodyPromise =
         animateEnvelopeDown();

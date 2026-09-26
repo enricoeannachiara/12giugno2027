@@ -84,7 +84,9 @@
 }
 
 
-/* PULSANTI */
+/* =======================================================
+   PULSANTI
+======================================================= */
 
 .button {
     display: inline-flex;
@@ -100,11 +102,13 @@
         13px
         24px;
 
-    border: 0;
+    border:
+        1px solid
+        rgba(90, 83, 181, 0.14);
 
     border-radius: 999px;
 
-    background: var(--lilac);
+    background: #8885DE;
 
     color: #FFFFFF;
 
@@ -122,53 +126,163 @@
     cursor: pointer;
 
     box-shadow:
-        0 8px 22px
-        rgba(145, 129, 187, 0.16);
+        0 7px 0 rgba(90, 82, 164, 0.13),
+        0 10px 22px rgba(91, 82, 164, 0.16);
+
+    transform: translateY(0);
 
     transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.18s ease,
+        background-color 0.28s ease,
+        border-color 0.28s ease,
+        color 0.28s ease,
+        box-shadow 0.28s ease;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
-.button:hover {
-    background: var(--lilac-dark);
 
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 10px 26px
-        rgba(145, 129, 187, 0.22);
-}
-
-.button:active {
-    transform: translateY(0);
-}
+/* =======================================================
+   PULSANTE PRIMARIO
+======================================================= */
 
 .button-primary {
-    background: var(--lilac);
+    background: #8885DE;
+
+    border-color:
+        rgba(90, 83, 181, 0.14);
+
+    color: #FFFFFF;
 }
 
-.button-secondary {
-    background: transparent;
 
-    color: var(--lilac-dark);
+/* =======================================================
+   HOVER - SOLO DISPOSITIVI CON PUNTATORE
+======================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+    .button:hover {
+        background: #7773D2;
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 8px 0 rgba(90, 82, 164, 0.12),
+            0 14px 28px rgba(91, 82, 164, 0.22);
+    }
+
+    .button-secondary:hover {
+        background:
+            rgba(136, 133, 222, 0.11);
+
+        border-color:
+            rgba(112, 105, 199, 0.58);
+
+        color: #6861B4;
+
+        box-shadow:
+            0 5px 14px
+            rgba(91, 82, 164, 0.08);
+
+        transform:
+            translateY(-2px);
+    }
+
+    .ceremony-button:hover {
+        background: #DF72AD;
+
+        border-color:
+            rgba(184, 73, 132, 0.18);
+
+        box-shadow:
+            0 8px 0 rgba(166, 64, 119, 0.11),
+            0 14px 28px rgba(185, 78, 137, 0.20);
+
+        transform:
+            translateY(-2px);
+    }
+
+    .copy-button:hover {
+        background:
+            rgba(136, 133, 222, 0.10);
+
+        border-color:
+            rgba(112, 105, 199, 0.55);
+
+        color: #6861B4;
+
+        transform:
+            translateY(-1px);
+
+        box-shadow:
+            0 5px 12px
+            rgba(91, 82, 164, 0.08);
+    }
+
+}
+
+
+/* =======================================================
+   EFFETTO CARTA PREMUTA
+======================================================= */
+
+.button:active {
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        0 1px 0 rgba(90, 82, 164, 0.10),
+        0 3px 7px rgba(91, 82, 164, 0.12),
+        inset 0 2px 4px rgba(73, 64, 140, 0.10);
+}
+
+.button-primary:active {
+    background: #716DCC;
+}
+
+
+/* =======================================================
+   PULSANTE SECONDARIO
+======================================================= */
+
+.button-secondary {
+    background:
+        rgba(255, 253, 248, 0.82);
+
+    color: #6E68B7;
 
     border:
         1px solid
-        rgba(145, 129, 187, 0.45);
+        rgba(126, 119, 205, 0.48);
 
-    box-shadow: none;
+    box-shadow:
+        0 4px 12px
+        rgba(91, 82, 164, 0.06);
 }
 
-.button-secondary:hover {
+.button-secondary:active {
     background:
-        rgba(168, 156, 200, 0.1);
+        rgba(136, 133, 222, 0.14);
 
-    color: var(--lilac-dark);
+    border-color:
+        rgba(112, 105, 199, 0.60);
 
-    box-shadow: none;
+    transform:
+        translateY(2px);
+
+    box-shadow:
+        0 1px 4px
+        rgba(91, 82, 164, 0.08),
+        inset 0 2px 4px
+        rgba(91, 82, 164, 0.08);
 }
+
+
+/* =======================================================
+   PULSANTI PICCOLI
+======================================================= */
 
 .button-small {
     min-height: 42px;
@@ -179,6 +293,11 @@
 
     font-size: 0.8rem;
 }
+
+
+/* =======================================================
+   NAVIGAZIONE
+======================================================= */
 
 .map-button {
     gap: 7px;
@@ -195,32 +314,56 @@
     flex: 0 0 auto;
 }
 
+
+/* =======================================================
+   CERIMONIA
+======================================================= */
+
 .ceremony-button {
     margin-top: 20px;
 
-    background: var(--gold);
+    background: #EB83BB;
 
-    color: var(--warm-white);
+    border-color:
+        rgba(184, 73, 132, 0.14);
 
-    box-shadow:
-        0 8px 20px
-        rgba(189, 169, 120, 0.2);
-}
-
-.ceremony-button:hover {
-    background: var(--gold-dark);
+    color: #FFFFFF;
 
     box-shadow:
-        0 10px 25px
-        rgba(189, 169, 120, 0.25);
+        0 7px 0 rgba(166, 64, 119, 0.11),
+        0 10px 22px rgba(185, 78, 137, 0.16);
 }
 
 .ceremony-button:active {
-    background: var(--gold-active);
+    background: #D96DA6;
+
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        0 1px 0 rgba(166, 64, 119, 0.09),
+        0 3px 7px rgba(185, 78, 137, 0.12),
+        inset 0 2px 4px rgba(150, 53, 104, 0.10);
 }
 
 
-/* LUOGHI */
+/* =======================================================
+   FOCUS DA TASTIERA
+======================================================= */
+
+.button:focus-visible,
+.copy-button:focus-visible {
+    outline:
+        3px solid
+        rgba(112, 105, 199, 0.24);
+
+    outline-offset: 4px;
+}
+
+
+/* =======================================================
+   LUOGHI
+======================================================= */
 
 .places-grid {
     display: grid;
@@ -302,7 +445,9 @@
 }
 
 
-/* ALBUM */
+/* =======================================================
+   ALBUM
+======================================================= */
 
 .album-card {
     max-width: 600px;
@@ -365,6 +510,11 @@
     letter-spacing: 0.04em;
 }
 
+
+/* =======================================================
+   PULSANTE COPIA
+======================================================= */
+
 .copy-button {
     display: inline-flex;
 
@@ -381,13 +531,14 @@
 
     border:
         1px solid
-        rgba(145, 129, 187, 0.32);
+        rgba(126, 119, 205, 0.38);
 
     border-radius: 999px;
 
-    background: transparent;
+    background:
+        rgba(255, 253, 248, 0.62);
 
-    color: var(--lilac-dark);
+    color: #6E68B7;
 
     font-family:
         Arial,
@@ -400,21 +551,41 @@
 
     cursor: pointer;
 
+    transform:
+        translateY(0);
+
+    box-shadow:
+        0 3px 9px
+        rgba(91, 82, 164, 0.05);
+
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+        transform 0.18s ease,
+        background-color 0.28s ease,
+        border-color 0.28s ease,
+        color 0.28s ease,
+        box-shadow 0.28s ease;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
-.copy-button:hover {
+.copy-button:active {
     background:
-        rgba(168, 156, 200, 0.1);
+        rgba(136, 133, 222, 0.14);
 
-    border-color:
-        rgba(145, 129, 187, 0.5);
+    transform:
+        translateY(2px);
+
+    box-shadow:
+        0 1px 3px
+        rgba(91, 82, 164, 0.06),
+        inset 0 2px 3px
+        rgba(91, 82, 164, 0.07);
 }
 
 
-/* REGALO */
+/* =======================================================
+   REGALO
+======================================================= */
 
 .gift-details {
     max-width: 620px;
@@ -499,14 +670,18 @@
 }
 
 
-/* FONDO PAGINA */
+/* =======================================================
+   FONDO PAGINA
+======================================================= */
 
 #sogno {
     padding-bottom: 160px;
 }
 
 
-/* MOBILE */
+/* =======================================================
+   MOBILE
+======================================================= */
 
 @media (max-width: 760px) {
 

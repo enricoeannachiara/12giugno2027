@@ -4,6 +4,21 @@
     z-index: 1000;
     overflow: hidden;
     pointer-events: auto;
+
+    /*
+     * TEST SAFARI:
+     * fascia opaca color carta in alto e in basso,
+     * centro completamente trasparente.
+     */
+    background: linear-gradient(
+        to bottom,
+        var(--paper-side) 0%,
+        var(--paper-side) 15%,
+        transparent 15%,
+        transparent 85%,
+        var(--paper-bottom) 85%,
+        var(--paper-bottom) 100%
+    );
 }
 
 .envelope-screen.opened {

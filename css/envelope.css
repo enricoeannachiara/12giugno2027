@@ -1,6 +1,9 @@
 .envelope-screen {
     position: fixed;
-    inset: 0;
+    left: 0;
+    top: 0;
+    width: var(--envelope-width, 100vw);
+    height: var(--envelope-height, 100vh);
     z-index: 1000;
     overflow: hidden;
     pointer-events: auto;
@@ -86,8 +89,8 @@
     left: 0;
     top: 0;
     z-index: 20;
-    width: 100vw;
-    height: 50vh;
+    width: var(--envelope-width, 100vw);
+    height: calc(var(--envelope-height, 100vh) / 2);
     transform-origin: 50% 0;
     transform-style: preserve-3d;
     opacity: 1;

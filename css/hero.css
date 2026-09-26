@@ -18,7 +18,11 @@
 
     text-align: center;
 
-    background: var(--background);
+    /*
+     * Nessun background:
+     * lasciamo visibile lo sfondo carta del body.
+     */
+    background: transparent;
 }
 
 .hero-content {

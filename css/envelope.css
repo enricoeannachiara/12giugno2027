@@ -121,8 +121,15 @@
 
     z-index: 20;
 
-    width: 100vw;
-    height: 50vh;
+    /*
+     * Il lembo usa ora le dimensioni dello stage,
+     * non quelle della viewport del browser.
+     *
+     * In questo modo Safari non può calcolare
+     * stage e flap usando due viewport differenti.
+     */
+    width: 100%;
+    height: 50%;
 
     transform-origin: 50% 0;
     transform-style: preserve-3d;

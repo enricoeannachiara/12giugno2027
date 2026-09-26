@@ -37,6 +37,17 @@ let opening = false;
 let opened = false;
 
 
+/*
+ * Dimensioni della busta.
+ *
+ * Vengono valorizzate una sola volta all'avvio e poi
+ * NON vengono aggiornate quando Safari modifica il
+ * proprio visual viewport.
+ */
+let envelopeWidth = 0;
+let envelopeHeight = 0;
+
+
 window.envelopeState = {
     opened: false
 };
@@ -95,6 +106,34 @@ function wait(milliseconds) {
         );
 
     });
+
+}
+
+
+/* =======================================================
+   DIMENSIONI INIZIALI DELLA BUSTA
+======================================================= */
+
+function freezeEnvelopeSize() {
+
+    envelopeWidth =
+        window.innerWidth;
+
+
+    envelopeHeight =
+        window.innerHeight;
+
+
+    document.documentElement.style.setProperty(
+        "--envelope-width",
+        `${envelopeWidth}px`
+    );
+
+
+    document.documentElement.style.setProperty(
+        "--envelope-height",
+        `${envelopeHeight}px`
+    );
 
 }
 
@@ -651,10 +690,14 @@ function animateEnvelopeDown() {
                 );
 
 
+            const distance =
+                envelopeHeight *
+                1.12 *
+                e;
+
+
             envelopeBody.style.transform =
-                `translateY(
-                    ${112 * e}vh
-                )`;
+                `translateY(${distance}px)`;
 
         },
 
@@ -813,6 +856,14 @@ function initialiseEnvelope() {
         0,
         0
     );
+
+
+    /*
+     * Leggiamo le dimensioni una sola volta.
+     * Da questo momento la busta non segue più
+     * le variazioni del viewport di Safari.
+     */
+    freezeEnvelopeSize();
 
 
     drawEnvelopeBody();

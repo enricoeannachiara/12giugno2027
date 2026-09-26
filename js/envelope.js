@@ -799,16 +799,6 @@ async function openEnvelope() {
     );
 
 
-    /*
-     * Al termine dell'apertura rimuoviamo lo stato
-     * utilizzato per il colore delle aree Safari.
-     */
-
-    document.documentElement.classList.remove(
-        "envelope-active"
-    );
-
-
     window.dispatchEvent(
         new CustomEvent(
             "envelopeopened"
@@ -827,17 +817,6 @@ function initialiseEnvelope() {
     window.scrollTo(
         0,
         0
-    );
-
-
-    /*
-     * Durante la presenza della busta il background
-     * del documento utilizza lo stesso colore dei
-     * lembi laterali.
-     */
-
-    document.documentElement.classList.add(
-        "envelope-active"
     );
 
 

@@ -820,6 +820,22 @@ async function openEnvelope() {
     );
 
 
+    /*
+     * La busta è ormai completamente scomparsa.
+     *
+     * Rimuovendo envelope-active da <html>, il
+     * background del documento passa dal colore
+     * della carta al colore normale della pagina.
+     *
+     * La durata della dissolvenza è definita
+     * esclusivamente in base.css: 800 ms.
+     */
+
+    document.documentElement.classList.remove(
+        "envelope-active"
+    );
+
+
     window.dispatchEvent(
         new CustomEvent(
             "envelopeopened"
@@ -846,6 +862,16 @@ function initialiseEnvelope() {
     window.scrollTo(
         0,
         0
+    );
+
+
+    /*
+     * Finché la busta è presente, il background
+     * del documento assume il colore della carta.
+     */
+
+    document.documentElement.classList.add(
+        "envelope-active"
     );
 
 

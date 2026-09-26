@@ -1,17 +1,41 @@
+/* =======================================================
+   SEZIONI
+======================================================= */
+
 .section {
     position: relative;
+
     width: 100%;
 
     padding:
         90px
         24px;
+
+    /*
+     * Lasciamo visibile la carta sottostante.
+     */
+    background: transparent;
 }
+
+
+/* =======================================================
+   SEZIONI ALTERNATE
+======================================================= */
 
 .section-alt {
-    background: var(--background-alt);
+    /*
+     * Non usiamo più un colore pieno.
+     * Questa velatura distingue leggermente
+     * la sezione senza nascondere la carta.
+     */
+    background:
+        rgba(255, 253, 248, 0.26);
 }
 
+
 .section-inner {
+    position: relative;
+
     width: 100%;
     max-width: 980px;
 
@@ -19,6 +43,11 @@
 
     text-align: center;
 }
+
+
+/* =======================================================
+   TITOLI
+======================================================= */
 
 .section-title {
     margin:
@@ -46,6 +75,7 @@
     line-height: 1.1;
 }
 
+
 .section-emoji {
     display: block;
 
@@ -53,6 +83,7 @@
 
     line-height: 1;
 }
+
 
 .section-title-image {
     display: block;
@@ -62,6 +93,11 @@
 
     object-fit: contain;
 }
+
+
+/* =======================================================
+   TESTO
+======================================================= */
 
 .section-text {
     max-width: 700px;
@@ -108,8 +144,6 @@
 
     border-radius: 999px;
 
-    background: #ABA5F0;
-
     color: #FFFFFF;
 
     font-family:
@@ -125,228 +159,81 @@
 
     cursor: pointer;
 
-    transform:
-        scale(1);
+    /*
+     * Niente ombra:
+     * manteniamo l'aspetto pulito che avevamo scelto.
+     */
+    box-shadow: none;
 
     transition:
-        transform 0.18s ease,
+        transform 0.28s cubic-bezier(.22, 1, .36, 1),
         background-color 0.28s ease,
         border-color 0.28s ease,
         color 0.28s ease;
-
-    -webkit-tap-highlight-color: transparent;
 }
 
 
-/* =======================================================
-   FEEDBACK PRESSIONE
-======================================================= */
+.button:hover {
+    transform:
+        translateY(-1px);
+}
+
 
 .button:active {
     transform:
+        translateY(1px)
         scale(0.985);
 }
 
 
 /* =======================================================
-   CONFERMA PRESENZA
-   Rosa ortensia
+   RSVP
 ======================================================= */
 
-#rsvp .button-primary {
-    background: #ED81C0;
+.button-primary {
+    background:
+        #ED81C0;
 
-    border-color: #ED81C0;
+    border-color:
+        #ED81C0;
 
-    color: #FFFFFF;
+    color:
+        #FFFFFF;
+}
+
+
+.button-primary:hover {
+    background:
+        #E673B6;
+
+    border-color:
+        #E673B6;
 }
 
 
 /* =======================================================
-   ALBUM FOTOGRAFICO
-   Lilla ortensia
+   PULSANTE SECONDARIO
 ======================================================= */
 
-#album .button-primary {
-    background: #ABA5F0;
+.button-secondary {
+    background:
+        rgba(255, 255, 255, 0.60);
 
-    border-color: #ABA5F0;
-
-    color: #FFFFFF;
-}
-
-
-/* =======================================================
-   SCOPRI DI PIÙ
-   Lilla ortensia
-======================================================= */
-
-#sogno .button-primary {
-    background: #ABA5F0;
-
-    border-color: #ABA5F0;
-
-    color: #FFFFFF;
-}
-
-
-/* =======================================================
-   GOOGLE MAPS
-   Blu ortensia
-======================================================= */
-
-.map-button {
-    gap: 7px;
-
-    background: #6770E1;
+    color:
+        #9181BB;
 
     border:
         1px solid
-        #2A30A4;
-
-    color: #FFFFFF;
+        #ABA5F0;
 }
 
 
-/* =======================================================
-   WAZE
-   Bianco con bordo blu scuro
-======================================================= */
+.button-secondary:hover {
+    background:
+        rgba(171, 165, 240, 0.10);
 
-.map-button.button-secondary {
-    background: #FFFFFF;
-
-    border:
-        1px solid
-        #2A30A4;
-
-    color: #2A30A4;
-}
-
-
-/* =======================================================
-   PULSANTE CERIMONIA
-   Oro
-======================================================= */
-
-.ceremony-button {
-    margin-top: 20px;
-
-    background: var(--gold);
-
-    border-color: var(--gold);
-
-    color: var(--warm-white);
-}
-
-
-/* =======================================================
-   HOVER
-   Solo dispositivi con mouse
-======================================================= */
-
-@media (hover: hover) and (pointer: fine) {
-
-    #rsvp .button-primary:hover {
-        background: #DF72B2;
-
-        border-color: #DF72B2;
-
-        transform:
-            translateY(-1px);
-    }
-
-    #album .button-primary:hover,
-    #sogno .button-primary:hover {
-        background: #9B94E3;
-
-        border-color: #9B94E3;
-
-        transform:
-            translateY(-1px);
-    }
-
-    .map-button:hover {
-        background: #5963D4;
-
-        border-color: #2A30A4;
-
-        transform:
-            translateY(-1px);
-    }
-
-    .map-button.button-secondary:hover {
-        background: #F5F4FF;
-
-        border-color: #2A30A4;
-
-        color: #2A30A4;
-
-        transform:
-            translateY(-1px);
-    }
-
-    .ceremony-button:hover {
-        background: var(--gold-dark);
-
-        border-color: var(--gold-dark);
-
-        transform:
-            translateY(-1px);
-    }
-
-    .copy-button:hover {
-        background: #F6F4FF;
-
-        border-color: #ABA5F0;
-
-        color: #7069B8;
-
-        transform:
-            translateY(-1px);
-    }
-
-}
-
-
-/* =======================================================
-   STATO PREMUTO
-======================================================= */
-
-#rsvp .button-primary:active {
-    background: #D96BAA;
-
-    transform:
-        scale(0.985);
-}
-
-#album .button-primary:active,
-#sogno .button-primary:active {
-    background: #928BD8;
-
-    transform:
-        scale(0.985);
-}
-
-.map-button:active {
-    background: #515AC6;
-
-    transform:
-        scale(0.985);
-}
-
-.map-button.button-secondary:active {
-    background: #ECEAFF;
-
-    transform:
-        scale(0.985);
-}
-
-.ceremony-button:active {
-    background: var(--gold-active);
-
-    transform:
-        scale(0.985);
+    color:
+        #8176B8;
 }
 
 
@@ -366,8 +253,13 @@
 
 
 /* =======================================================
-   LOGHI NAVIGAZIONE
+   NAVIGAZIONE
 ======================================================= */
+
+.map-button {
+    gap: 7px;
+}
+
 
 .navigation-logo {
     display: block;
@@ -382,16 +274,90 @@
 
 
 /* =======================================================
-   FOCUS TASTIERA
+   GOOGLE MAPS
 ======================================================= */
 
-.button:focus-visible,
-.copy-button:focus-visible {
-    outline:
-        3px solid
-        rgba(171, 165, 240, 0.35);
+.map-button[href*="maps"] {
+    background:
+        #6770E1;
 
-    outline-offset: 4px;
+    color:
+        #FFFFFF;
+
+    border:
+        1px solid
+        #2A30A4;
+}
+
+
+.map-button[href*="maps"]:hover {
+    background:
+        #5C65D8;
+
+    border-color:
+        #2A30A4;
+}
+
+
+/* =======================================================
+   WAZE
+======================================================= */
+
+.map-button[href*="waze"] {
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    color:
+        #2A30A4;
+
+    border:
+        1px solid
+        #2A30A4;
+}
+
+
+.map-button[href*="waze"]:hover {
+    background:
+        rgba(255, 255, 255, 1);
+
+    color:
+        #2A30A4;
+}
+
+
+/* =======================================================
+   CERIMONIA
+======================================================= */
+
+.ceremony-button {
+    margin-top: 20px;
+
+    background:
+        var(--gold);
+
+    color:
+        var(--warm-white);
+
+    border-color:
+        var(--gold);
+}
+
+
+.ceremony-button:hover {
+    background:
+        var(--gold-dark);
+
+    border-color:
+        var(--gold-dark);
+}
+
+
+.ceremony-button:active {
+    background:
+        var(--gold-active);
+
+    border-color:
+        var(--gold-active);
 }
 
 
@@ -413,6 +379,7 @@
     margin-top: 42px;
 }
 
+
 .place-card {
     display: flex;
     flex-direction: column;
@@ -428,18 +395,28 @@
 
     border:
         1px solid
-        var(--card-border);
+        rgba(125, 111, 101, 0.14);
 
     border-radius: 28px;
 
-    background: var(--card);
+    /*
+     * La carta resta leggermente visibile
+     * attraverso le card.
+     */
+    background:
+        rgba(255, 253, 248, 0.68);
 
-    box-shadow: var(--shadow-soft);
+    box-shadow:
+        0 10px 32px
+        rgba(74, 61, 53, 0.055);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter:
+        blur(3px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter:
+        blur(3px);
 }
+
 
 .place-card h3 {
     margin:
@@ -467,6 +444,7 @@
 
     text-align: center;
 }
+
 
 .navigation-buttons {
     display: flex;
@@ -497,14 +475,53 @@
 
     border:
         1px solid
-        var(--card-border);
+        rgba(125, 111, 101, 0.14);
 
     border-radius: 28px;
 
-    background: var(--card);
+    background:
+        rgba(255, 253, 248, 0.68);
 
-    box-shadow: var(--shadow-soft);
+    box-shadow:
+        0 10px 32px
+        rgba(74, 61, 53, 0.055);
+
+    backdrop-filter:
+        blur(3px);
+
+    -webkit-backdrop-filter:
+        blur(3px);
 }
+
+
+/* =======================================================
+   PULSANTE ALBUM
+======================================================= */
+
+.album-card > .button {
+    background:
+        #ABA5F0;
+
+    border-color:
+        #ABA5F0;
+
+    color:
+        #FFFFFF;
+}
+
+
+.album-card > .button:hover {
+    background:
+        #9D96E4;
+
+    border-color:
+        #9D96E4;
+}
+
+
+/* =======================================================
+   CODICE ACCESSO
+======================================================= */
 
 .access-code {
     margin-top: 28px;
@@ -523,8 +540,10 @@
         Helvetica,
         sans-serif;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 }
+
 
 .access-code-label {
     display: inline-flex;
@@ -536,8 +555,10 @@
     font-size: 0.82rem;
 }
 
+
 .access-code strong {
-    color: var(--text);
+    color:
+        var(--text);
 
     font-size: 0.95rem;
 
@@ -569,9 +590,11 @@
 
     border-radius: 999px;
 
-    background: #FFFFFF;
+    background:
+        rgba(255, 255, 255, 0.82);
 
-    color: #7069B8;
+    color:
+        #8176B8;
 
     font-family:
         Arial,
@@ -584,22 +607,31 @@
 
     cursor: pointer;
 
-    transform:
-        scale(1);
+    box-shadow:
+        none;
 
     transition:
-        transform 0.18s ease,
+        transform 0.28s cubic-bezier(.22, 1, .36, 1),
         background-color 0.28s ease,
-        border-color 0.28s ease,
-        color 0.28s ease;
-
-    -webkit-tap-highlight-color: transparent;
+        border-color 0.28s ease;
 }
 
-.copy-button:active {
-    background: #EEEAFE;
+
+.copy-button:hover {
+    background:
+        #FFFFFF;
+
+    border-color:
+        #918BE0;
 
     transform:
+        translateY(-1px);
+}
+
+
+.copy-button:active {
+    transform:
+        translateY(1px)
         scale(0.985);
 }
 
@@ -620,18 +652,58 @@
 
     border:
         1px solid
-        var(--card-border);
+        rgba(125, 111, 101, 0.14);
 
     border-radius: 28px;
 
-    background: var(--card);
+    background:
+        rgba(255, 253, 248, 0.68);
 
-    box-shadow: var(--shadow-soft);
+    box-shadow:
+        0 10px 32px
+        rgba(74, 61, 53, 0.055);
+
+    backdrop-filter:
+        blur(3px);
+
+    -webkit-backdrop-filter:
+        blur(3px);
 }
+
 
 .gift-details[hidden] {
     display: none;
 }
+
+
+/* =======================================================
+   PULSANTE SCOPRI DI PIÙ
+======================================================= */
+
+#giftToggle {
+    background:
+        #ABA5F0;
+
+    border-color:
+        #ABA5F0;
+
+    color:
+        #FFFFFF;
+}
+
+
+#giftToggle:hover {
+    background:
+        #9D96E4;
+
+    border-color:
+        #9D96E4;
+}
+
+
+/* =======================================================
+   DATI REGALO
+======================================================= */
 
 .gift-row {
     display: flex;
@@ -647,7 +719,7 @@
 
     border-bottom:
         1px solid
-        rgba(125, 111, 101, 0.1);
+        rgba(125, 111, 101, 0.10);
 
     text-align: left;
 
@@ -657,17 +729,24 @@
         sans-serif;
 }
 
+
 .gift-row:last-child {
     border-bottom: 0;
 }
 
-.gift-row span {
-    flex: 0 0 auto;
 
-    color: var(--muted);
+.gift-row span {
+    flex:
+        0
+        0
+        auto;
+
+    color:
+        var(--muted);
 
     font-size: 0.8rem;
 }
+
 
 .gift-row strong {
     text-align: right;
@@ -679,9 +758,11 @@
     overflow-wrap: anywhere;
 }
 
+
 .gift-iban {
     margin-bottom: 12px;
 }
+
 
 .gift-details > .copy-button {
     margin:
@@ -712,26 +793,32 @@
             20px;
     }
 
+
     .section-title {
         gap: 9px;
     }
 
+
     .section-emoji {
         font-size: 1.85rem;
     }
+
 
     .section-title-image {
         width: 42px;
         height: 42px;
     }
 
+
     .places-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
 
         gap: 18px;
 
         margin-top: 34px;
     }
+
 
     .place-card {
         min-height: 0;
@@ -743,13 +830,16 @@
         border-radius: 24px;
     }
 
+
     .place-card h3 {
         gap: 7px;
     }
 
+
     .navigation-buttons {
         width: 100%;
     }
+
 
     .navigation-buttons .button {
         flex:
@@ -758,10 +848,12 @@
             120px;
     }
 
+
     .navigation-logo {
         width: 19px;
         height: 19px;
     }
+
 
     .album-card,
     .gift-details {
@@ -772,11 +864,13 @@
         border-radius: 24px;
     }
 
+
     .access-code {
         flex-direction: column;
 
         gap: 8px;
     }
+
 
     .gift-row {
         flex-direction: column;
@@ -786,11 +880,13 @@
         gap: 6px;
     }
 
+
     .gift-row strong {
         width: 100%;
 
         text-align: left;
     }
+
 
     #sogno {
         padding-bottom: 180px;

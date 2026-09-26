@@ -107,7 +107,10 @@
 
 .flap-edge {
     fill: none;
-    stroke: none;
+    stroke: var(--paper-edge);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.32;
 }
 
 .flap-paper {

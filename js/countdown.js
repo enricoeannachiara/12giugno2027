@@ -23,18 +23,149 @@ let countdownTimer =
 
 
 /* =======================================================
-   DURATA ANIMAZIONE
+   IMPOSTAZIONI FLIP
 ======================================================= */
 
-const NUMBER_ANIMATION_DURATION =
-    320;
+const FLIP_DURATION =
+    500;
+
+const prefersReducedMotion =
+    window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    );
 
 
 /* =======================================================
-   ANIMAZIONE NUMERO
+   STATO DEI CONTATORI
 ======================================================= */
 
-function animateNumberChange(
+const flipStates =
+    new WeakMap();
+
+
+/* =======================================================
+   CREA STRUTTURA FLIP
+======================================================= */
+
+function initialiseFlipElement(element) {
+
+    if (!element) {
+        return;
+    }
+
+
+    const initialValue =
+        element.textContent.trim();
+
+
+    element.innerHTML = `
+        <div class="countdown-flip">
+
+            <div
+                class="
+                    countdown-flip-face
+                    countdown-flip-current
+                "
+            >
+                ${initialValue}
+            </div>
+
+            <div
+                class="
+                    countdown-flip-face
+                    countdown-flip-next
+                "
+            >
+                ${initialValue}
+            </div>
+
+        </div>
+    `;
+
+
+    const flip =
+        element.querySelector(
+            ".countdown-flip"
+        );
+
+
+    const currentFace =
+        element.querySelector(
+            ".countdown-flip-current"
+        );
+
+
+    const nextFace =
+        element.querySelector(
+            ".countdown-flip-next"
+        );
+
+
+    flipStates.set(
+        element,
+        {
+            flip,
+            currentFace,
+            nextFace,
+            currentValue: initialValue,
+            isFlipping: false,
+            pendingValue: null
+        }
+    );
+}
+
+
+/* =======================================================
+   AGGIORNAMENTO IMMEDIATO
+======================================================= */
+
+function setValueImmediately(
+    element,
+    newValue
+) {
+
+    const state =
+        flipStates.get(
+            element
+        );
+
+
+    if (!state) {
+        return;
+    }
+
+
+    state.flip.classList.remove(
+        "is-flipping"
+    );
+
+
+    state.currentFace.textContent =
+        newValue;
+
+
+    state.nextFace.textContent =
+        newValue;
+
+
+    state.currentValue =
+        newValue;
+
+
+    state.isFlipping =
+        false;
+
+
+    state.pendingValue =
+        null;
+}
+
+
+/* =======================================================
+   FLIP DEL NUMERO
+======================================================= */
+
+function flipToValue(
     element,
     newValue
 ) {
@@ -44,89 +175,154 @@ function animateNumberChange(
     }
 
 
-    const currentValue =
-        element.textContent.trim();
+    const state =
+        flipStates.get(
+            element
+        );
 
 
-    /*
-     * Se il valore è già corretto,
-     * non facciamo partire nessuna animazione.
-     */
-    if (currentValue === newValue) {
+    if (!state) {
         return;
     }
 
 
     /*
-     * Se l'utente ha chiesto di ridurre
-     * le animazioni, aggiorniamo subito.
+     * Nessuna animazione se il valore
+     * non è cambiato.
      */
     if (
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
+        state.currentValue === newValue &&
+        !state.isFlipping
+    ) {
+        return;
+    }
+
+
+    /*
+     * Accessibilità:
+     * niente animazione se l'utente
+     * preferisce movimenti ridotti.
+     */
+    if (
+        prefersReducedMotion.matches
     ) {
 
-        element.textContent =
+        setValueImmediately(
+            element,
+            newValue
+        );
+
+        return;
+    }
+
+
+    /*
+     * Se un flip è ancora in corso,
+     * memorizziamo l'ultimo valore
+     * richiesto.
+     */
+    if (
+        state.isFlipping
+    ) {
+
+        state.pendingValue =
             newValue;
 
         return;
     }
 
 
-    element.classList.remove(
-        "countdown-number-enter"
+    state.isFlipping =
+        true;
+
+
+    state.pendingValue =
+        null;
+
+
+    state.nextFace.textContent =
+        newValue;
+
+
+    /*
+     * Rimuoviamo e riaggiungiamo
+     * la classe per garantire che
+     * l'animazione parta sempre.
+     */
+    state.flip.classList.remove(
+        "is-flipping"
     );
 
-    element.classList.add(
-        "countdown-number-exit"
+
+    void state.flip.offsetWidth;
+
+
+    state.flip.classList.add(
+        "is-flipping"
     );
 
 
     setTimeout(
         () => {
 
-            element.textContent =
+            state.currentFace.textContent =
                 newValue;
 
 
-            element.classList.remove(
-                "countdown-number-exit"
+            state.nextFace.textContent =
+                newValue;
+
+
+            state.currentValue =
+                newValue;
+
+
+            state.flip.classList.remove(
+                "is-flipping"
             );
+
+
+            state.isFlipping =
+                false;
 
 
             /*
-             * Forziamo il browser a registrare
-             * lo stato iniziale della nuova animazione.
+             * Se nel frattempo è arrivato
+             * un altro valore, lo animiamo
+             * immediatamente dopo.
              */
-            void element.offsetWidth;
+            if (
+                state.pendingValue !== null &&
+                state.pendingValue !== state.currentValue
+            ) {
+
+                const pending =
+                    state.pendingValue;
 
 
-            element.classList.add(
-                "countdown-number-enter"
-            );
+                state.pendingValue =
+                    null;
 
 
-            setTimeout(
-                () => {
+                flipToValue(
+                    element,
+                    pending
+                );
 
-                    element.classList.remove(
-                        "countdown-number-enter"
-                    );
+            } else {
 
-                },
-                NUMBER_ANIMATION_DURATION
-            );
+                state.pendingValue =
+                    null;
+            }
 
         },
-        NUMBER_ANIMATION_DURATION / 2
+        FLIP_DURATION
     );
-
 }
 
 
 /* =======================================================
-   AGGIORNAMENTO COUNTDOWN
+   CALCOLO COUNTDOWN
 ======================================================= */
 
 function updateCountdown() {
@@ -147,7 +343,9 @@ function updateCountdown() {
         Date.now();
 
 
-    if (remaining <= 0) {
+    if (
+        remaining <= 0
+    ) {
 
         countdown.innerHTML = `
             <img
@@ -157,18 +355,23 @@ function updateCountdown() {
             >
 
             <div class="countdown-paper-content">
+
                 <p class="countdown-finished">
                     È arrivato il nostro giorno ❤️
                 </p>
+
             </div>
         `;
 
 
-        if (countdownTimer) {
+        if (
+            countdownTimer
+        ) {
 
             clearInterval(
                 countdownTimer
             );
+
 
             countdownTimer =
                 null;
@@ -187,87 +390,136 @@ function updateCountdown() {
 
     const days =
         Math.floor(
-            totalSeconds / 86400
+            totalSeconds /
+            86400
         );
 
 
     const hours =
         Math.floor(
-            (totalSeconds % 86400) /
+            (
+                totalSeconds %
+                86400
+            ) /
             3600
         );
 
 
     const minutes =
         Math.floor(
-            (totalSeconds % 3600) /
+            (
+                totalSeconds %
+                3600
+            ) /
             60
         );
 
 
     const seconds =
-        totalSeconds % 60;
+        totalSeconds %
+        60;
 
 
     const daysValue =
-        String(days);
+        String(
+            days
+        );
 
 
     const hoursValue =
-        String(hours).padStart(
+        String(
+            hours
+        ).padStart(
             2,
             "0"
         );
 
 
     const minutesValue =
-        String(minutes).padStart(
+        String(
+            minutes
+        ).padStart(
             2,
             "0"
         );
 
 
     const secondsValue =
-        String(seconds).padStart(
+        String(
+            seconds
+        ).padStart(
             2,
             "0"
         );
 
 
-    animateNumberChange(
+    flipToValue(
         countdownDays,
         daysValue
     );
 
 
-    animateNumberChange(
+    flipToValue(
         countdownHours,
         hoursValue
     );
 
 
-    animateNumberChange(
+    flipToValue(
         countdownMinutes,
         minutesValue
     );
 
 
-    animateNumberChange(
+    flipToValue(
         countdownSeconds,
         secondsValue
     );
-
 }
 
 
 /* =======================================================
-   AVVIO
+   INIZIALIZZAZIONE
 ======================================================= */
 
 function startCountdown() {
 
+    /*
+     * Prima trasformiamo i quattro
+     * valori nella struttura necessaria
+     * al flip.
+     */
+
+    initialiseFlipElement(
+        countdownDays
+    );
+
+
+    initialiseFlipElement(
+        countdownHours
+    );
+
+
+    initialiseFlipElement(
+        countdownMinutes
+    );
+
+
+    initialiseFlipElement(
+        countdownSeconds
+    );
+
+
+    /*
+     * Primo aggiornamento.
+     */
+
     updateCountdown();
 
+
+    /*
+     * Poi aggiorniamo ogni secondo.
+     */
 
     if (
         WEDDING_DATE.getTime() >
@@ -280,7 +532,6 @@ function startCountdown() {
                 1000
             );
     }
-
 }
 
 

@@ -122,15 +122,6 @@ function getFlapGeometry(t) {
         532;
 
 
-    /*
-     * La punta è specchiata rispetto a quella
-     * del lembo inferiore.
-     *
-     * I due estremi della curva sono 15 unità
-     * più in alto rispetto al centro, producendo
-     * una punta leggermente convessa.
-     */
-
     const tipSideY =
         tipY - 15;
 
@@ -797,22 +788,10 @@ async function openEnvelope() {
         true;
 
 
-    /*
-     * Sblocchiamo la pagina dopo la scomparsa
-     * completa della busta.
-     */
-
     document.body.classList.remove(
         "envelope-locked"
     );
 
-
-    /*
-     * Rimuovendo position: fixed, Safari potrebbe
-     * tentare di recuperare una vecchia posizione
-     * di scorrimento. Manteniamo esplicitamente
-     * la pagina all'inizio.
-     */
 
     window.scrollTo(
         0,
@@ -821,14 +800,8 @@ async function openEnvelope() {
 
 
     /*
-     * La busta è ormai completamente scomparsa.
-     *
-     * Rimuovendo envelope-active da <html>, il
-     * background del documento passa dal colore
-     * della carta al colore normale della pagina.
-     *
-     * La durata della dissolvenza è definita
-     * esclusivamente in base.css: 800 ms.
+     * Al termine dell'apertura rimuoviamo lo stato
+     * utilizzato per il colore delle aree Safari.
      */
 
     document.documentElement.classList.remove(
@@ -851,14 +824,6 @@ async function openEnvelope() {
 
 function initialiseEnvelope() {
 
-    /*
-     * scrollRestoration viene disabilitato nell'head
-     * di index.html, prima del caricamento della pagina.
-     *
-     * Qui ci assicuriamo soltanto che la posizione
-     * iniziale sia zero prima di bloccare il body.
-     */
-
     window.scrollTo(
         0,
         0
@@ -866,8 +831,9 @@ function initialiseEnvelope() {
 
 
     /*
-     * Finché la busta è presente, il background
-     * del documento assume il colore della carta.
+     * Durante la presenza della busta il background
+     * del documento utilizza lo stesso colore dei
+     * lembi laterali.
      */
 
     document.documentElement.classList.add(

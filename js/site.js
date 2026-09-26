@@ -1,928 +1,263 @@
-<!DOCTYPE html>
-<html lang="it">
+const scrollIndicator =
+    document.getElementById("scrollIndicator");
 
-<head>
-    <meta charset="UTF-8">
+const copyWedshootsCode =
+    document.getElementById("copyWedshootsCode");
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+const wedshootsCode =
+    document.getElementById("wedshootsCode");
 
-    <script>
-        if ("scrollRestoration" in history) {
-            history.scrollRestoration = "manual";
+const giftToggle =
+    document.getElementById("giftToggle");
+
+const giftDetails =
+    document.getElementById("giftDetails");
+
+const copyIban =
+    document.getElementById("copyIban");
+
+const ibanCode =
+    document.getElementById("ibanCode");
+
+let scrollFramePending = false;
+let scrollIndicatorEnabled = false;
+
+async function copyText(
+    text,
+    button,
+    successLabel
+) {
+    const originalLabel =
+        button.innerHTML;
+
+    try {
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
+            await navigator.clipboard.writeText(
+                text
+            );
+        } else {
+            const textarea =
+                document.createElement("textarea");
+
+            textarea.value =
+                text;
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.opacity =
+                "0";
+
+            textarea.style.pointerEvents =
+                "none";
+
+            document.body.appendChild(
+                textarea
+            );
+
+            textarea.focus();
+            textarea.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            textarea.remove();
         }
 
-        window.scrollTo(0, 0);
-    </script>
-
-    <title>
-        Enrico & Annachiara | 12 giugno 2027
-    </title>
-
-    <link
-        rel="preload"
-        href="images/sigillo-AE.png"
-        as="image"
-    >
-
-    <link
-        rel="preload"
-        href="images/ritratto.png"
-        as="image"
-    >
-
-    <link
-        rel="preload"
-        href="images/cartoncino.png"
-        as="image"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/base.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/envelope.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/hero.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/sections.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/scroll.css"
-    >
-</head>
-
-
-<body>
-
-    <!-- =====================================================
-         BUSTA
-    ====================================================== -->
-
-    <div
-        class="envelope-screen"
-        id="envelopeScreen"
-    >
-
-        <div
-            class="envelope-stage"
-            id="envelopeStage"
-            role="button"
-            tabindex="0"
-            aria-label="Apri l'invito"
-        >
-
-            <!-- CORPO DELLA BUSTA -->
-
-            <div
-                class="envelope-body"
-                id="envelopeBody"
-            >
-
-                <svg
-                    class="body-svg"
-                    viewBox="0 0 1000 1000"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                >
-
-                    <path
-                        class="body-side"
-                        id="bodyLeftPath"
-                    ></path>
-
-                    <path
-                        class="body-side"
-                        id="bodyRightPath"
-                    ></path>
-
-                    <path
-                        class="body-bottom"
-                        id="bodyBottomPath"
-                    ></path>
-
-                    <path
-                        class="body-fold"
-                        id="bodyLeftFold"
-                    ></path>
-
-                    <path
-                        class="body-fold"
-                        id="bodyRightFold"
-                    ></path>
-
-                    <path
-                        class="body-bottom-fold"
-                        id="bodyBottomFold"
-                    ></path>
-
-                </svg>
-
-            </div>
-
-
-            <!-- OMBRA DEL LEMBO -->
-
-            <div
-                class="flap-shadow"
-                id="flapShadow"
-            ></div>
-
-
-            <!-- LEMBO SUPERIORE -->
-
-            <div
-                class="envelope-flap"
-                id="flap"
-            >
-
-                <svg
-                    class="flap-svg"
-                    viewBox="0 0 1000 1000"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                >
-
-                    <defs>
-
-                        <linearGradient
-                            id="paperFront"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                        >
-
-                            <stop
-                                id="frontStop1"
-                                offset="0%"
-                                stop-color="#EADCC8"
-                            ></stop>
-
-                            <stop
-                                id="frontStop2"
-                                offset="58%"
-                                stop-color="#EADCC8"
-                            ></stop>
-
-                            <stop
-                                id="frontStop3"
-                                offset="100%"
-                                stop-color="#DEC8AD"
-                            ></stop>
-
-                        </linearGradient>
-
-
-                        <linearGradient
-                            id="paperBack"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                        >
-
-                            <stop
-                                offset="0%"
-                                stop-color="#E4D3BC"
-                            ></stop>
-
-                            <stop
-                                offset="100%"
-                                stop-color="#D8C2A6"
-                            ></stop>
-
-                        </linearGradient>
-
-
-                        <filter
-                            id="paperShadow"
-                            x="-20%"
-                            y="-20%"
-                            width="140%"
-                            height="160%"
-                        >
-
-                            <feDropShadow
-                                dx="0"
-                                dy="7"
-                                stdDeviation="8"
-                                flood-color="#6F5137"
-                                flood-opacity="0.16"
-                            ></feDropShadow>
-
-                        </filter>
-
-                    </defs>
-
-
-                    <path
-                        class="flap-paper"
-                        id="flapPath"
-                    ></path>
-
-                    <path
-                        class="flap-edge"
-                        id="flapEdgePath"
-                    ></path>
-
-                </svg>
-
-
-                <!-- SIGILLO -->
-
-                <div
-                    class="wax-seal"
-                    id="waxSeal"
-                >
-
-                    <img
-                        src="images/sigillo-AE.png"
-                        alt=""
-                        draggable="false"
-                    >
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         SITO
-    ====================================================== -->
-
-    <main
-        class="site"
-        id="site"
-    >
-
-
-        <!-- =================================================
-             HERO
-        ================================================== -->
-
-        <section
-            class="hero"
-            id="hero"
-        >
-
-            <div class="hero-content">
-
-                <img
-                    class="hero-portrait"
-                    src="images/ritratto.png"
-                    alt="Enrico e Annachiara"
-                    draggable="false"
-                >
-
-                <h1>
-                    Enrico &amp; Annachiara
-                </h1>
-
-                <p class="hero-date">
-                    12 giugno 2027
-                </p>
-
-
-                <!-- COUNTDOWN -->
-
-                <div
-                    class="countdown-paper"
-                    id="countdown"
-                >
-
-                    <img
-                        class="countdown-paper-image"
-                        src="images/cartoncino.png"
-                        alt=""
-                        draggable="false"
-                    >
-
-                    <div class="countdown-paper-content">
-
-                        <div class="countdown-grid">
-
-                            <div class="countdown-item">
-
-                                <strong id="countdownDays">
-                                    000
-                                </strong>
-
-                                <span>
-                                    Giorni
-                                </span>
-
-                            </div>
-
-
-                            <div class="countdown-item">
-
-                                <strong id="countdownHours">
-                                    00
-                                </strong>
-
-                                <span>
-                                    Ore
-                                </span>
-
-                            </div>
-
-
-                            <div class="countdown-item">
-
-                                <strong id="countdownMinutes">
-                                    00
-                                </strong>
-
-                                <span>
-                                    Minuti
-                                </span>
-
-                            </div>
-
-
-                            <div class="countdown-item">
-
-                                <strong id="countdownSeconds">
-                                    00
-                                </strong>
-
-                                <span>
-                                    Secondi
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             RSVP
-        ================================================== -->
-
-        <section
-            class="section"
-            id="rsvp"
-        >
-
-            <div class="section-inner">
-
-                <h2 class="section-title">
-
-                    <span
-                        class="section-emoji"
-                        aria-hidden="true"
-                    >
-                        💌
-                    </span>
-
-                    Ci sarete?
-
-                </h2>
-
-
-                <p class="section-text">
-                    Fateci sapere se festeggerete con noi.
-                </p>
-
-
-                <a
-                    class="button button-primary"
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSfR47MLRdUuwzttRWqgoxmSrlCjPIJb15usxh1CkX8zXxw4Rw/viewform"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Conferma la tua presenza
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             LUOGHI
-        ================================================== -->
-
-        <section
-            class="section section-alt"
-            id="luoghi"
-        >
-
-            <div class="section-inner">
-
-                <h2 class="section-title">
-
-                    <img
-                        class="section-title-image"
-                        src="images/pin.png"
-                        alt=""
-                        draggable="false"
-                    >
-
-                    I luoghi del nostro giorno
-
-                </h2>
-
-
-                <div class="places-grid">
-
-
-                    <!-- CASA DELLO SPOSO -->
-
-                    <article class="place-card">
-
-                        <h3>
-                            Casa dello sposo
-                        </h3>
-
-                        <div class="navigation-buttons">
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://maps.app.goo.gl/kmqRrXZQPzqEgdiU8"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/maps.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Maps
-
-                            </a>
-
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://waze.com/ul?ll=40.608131%2C14.978180&navigate=yes"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/waze.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Waze
-
-                            </a>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- CASA DELLA SPOSA -->
-
-                    <article class="place-card">
-
-                        <h3>
-                            Casa della sposa
-                        </h3>
-
-                        <div class="navigation-buttons">
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://maps.app.goo.gl/kNUKDeFUFzFnu2As5"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/maps.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Maps
-
-                            </a>
-
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://waze.com/ul?ll=40.739052%2C14.755519&navigate=yes"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/waze.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Waze
-
-                            </a>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- CHIESA -->
-
-                    <article class="place-card">
-
-                        <h3>
-                            Chiesa di San Martino Vescovo
-                        </h3>
-
-                        <div class="navigation-buttons">
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://maps.app.goo.gl/6omwCTy1Atd1c3Cb7"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/maps.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Maps
-
-                            </a>
-
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://waze.com/ul?ll=40.761874%2C14.785191&navigate=yes"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/waze.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Waze
-
-                            </a>
-
-                        </div>
-
-
-                        <a
-                            class="button ceremony-button"
-                            href="documenti/libretto-messa.pdf"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            📖 Segui con noi la cerimonia
-                        </a>
-
-                    </article>
-
-
-                    <!-- MASSERIA -->
-
-                    <article class="place-card">
-
-                        <h3>
-                            Masseria La Morella
-                        </h3>
-
-                        <div class="navigation-buttons">
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://maps.app.goo.gl/2apy9TeoYDG768eM7"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/maps.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Maps
-
-                            </a>
-
-
-                            <a
-                                class="button button-small map-button"
-                                href="https://waze.com/ul?ll=40.610224%2C14.942694&navigate=yes"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-
-                                <img
-                                    class="navigation-logo"
-                                    src="images/waze.png"
-                                    alt=""
-                                    draggable="false"
-                                >
-
-                                Waze
-
-                            </a>
-
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ALBUM
-        ================================================== -->
-
-        <section
-            class="section"
-            id="album"
-        >
-
-            <div class="section-inner">
-
-                <h2 class="section-title">
-
-                    <span
-                        class="section-emoji"
-                        aria-hidden="true"
-                    >
-                        📸
-                    </span>
-
-                    Il nostro album
-
-                </h2>
-
-
-                <p class="section-text">
-                    Condividete con noi le foto e i video
-                    del nostro giorno.
-                </p>
-
-
-                <div class="album-card">
-
-                    <a
-                        class="button button-primary"
-                        href="https://www.wedshoots.com/it?albumId=ITb2ea31c8"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Apri WedShoots
-                    </a>
-
-
-                    <div class="access-code">
-
-                        <span class="access-code-label">
-                            Codice album
+        button.textContent =
+            successLabel;
+
+    } catch {
+        button.textContent =
+            "Seleziona e copia";
+    }
+
+    window.setTimeout(
+        () => {
+            button.innerHTML =
+                originalLabel;
+        },
+        1600
+    );
+}
+
+function updateScrollIndicator() {
+    if (
+        !scrollIndicator ||
+        !scrollIndicatorEnabled
+    ) {
+        return;
+    }
+
+    const documentHeight =
+        document.documentElement.scrollHeight;
+
+    const viewportBottom =
+        window.scrollY +
+        window.innerHeight;
+
+    const distanceFromBottom =
+        documentHeight -
+        viewportBottom;
+
+    const canScroll =
+        documentHeight >
+        window.innerHeight + 40;
+
+    if (
+        window.scrollY > 25
+    ) {
+        scrollIndicator.classList.add(
+            "compact"
+        );
+    } else {
+        scrollIndicator.classList.remove(
+            "compact"
+        );
+    }
+
+    if (
+        canScroll &&
+        distanceFromBottom > 100
+    ) {
+        scrollIndicator.classList.add(
+            "visible"
+        );
+    } else {
+        scrollIndicator.classList.remove(
+            "visible"
+        );
+    }
+}
+
+function enableScrollIndicator() {
+    scrollIndicatorEnabled = true;
+
+    updateScrollIndicator();
+}
+
+window.addEventListener(
+    "envelopeopening",
+    () => {
+        window.setTimeout(
+            enableScrollIndicator,
+            700
+        );
+    }
+);
+
+window.addEventListener(
+    "envelopeopened",
+    () => {
+        scrollIndicatorEnabled = true;
+
+        updateScrollIndicator();
+    }
+);
+
+window.addEventListener(
+    "scroll",
+    () => {
+        if (
+            scrollFramePending
+        ) {
+            return;
+        }
+
+        scrollFramePending =
+            true;
+
+        requestAnimationFrame(
+            () => {
+                updateScrollIndicator();
+
+                scrollFramePending =
+                    false;
+            }
+        );
+    },
+    {
+        passive: true
+    }
+);
+
+window.addEventListener(
+    "resize",
+    updateScrollIndicator
+);
+
+if (
+    copyWedshootsCode &&
+    wedshootsCode
+) {
+    copyWedshootsCode.addEventListener(
+        "click",
+        () => {
+            copyText(
+                wedshootsCode.textContent.trim(),
+                copyWedshootsCode,
+                "Copiato!"
+            );
+        }
+    );
+}
+
+if (
+    copyIban &&
+    ibanCode
+) {
+    copyIban.addEventListener(
+        "click",
+        () => {
+            copyText(
+                ibanCode.textContent
+                    .replace(/\s/g, "")
+                    .trim(),
+                copyIban,
+                "Copiato!"
+            );
+        }
+    );
+}
+
+if (
+    giftToggle &&
+    giftDetails
+) {
+    giftToggle.addEventListener(
+        "click",
+        () => {
+            const isOpen =
+                giftToggle.getAttribute(
+                    "aria-expanded"
+                ) === "true";
+
+            giftToggle.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+            giftDetails.hidden =
+                isOpen;
+
+            giftToggle.innerHTML =
+                isOpen
+                    ? `
+                        <span aria-hidden="true">
+                            💝
                         </span>
-
-                        <strong id="wedshootsCode">
-                            ITb2ea31c8
-                        </strong>
-
-                        <button
-                            class="copy-button"
-                            id="copyWedshootsCode"
-                            type="button"
-                        >
-                            Copia
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             IL NOSTRO SOGNO
-        ================================================== -->
-
-        <section
-            class="section section-alt"
-            id="sogno"
-        >
-
-            <div class="section-inner">
-
-                <h2 class="section-title">
-
-                    <span
-                        class="section-emoji"
-                        aria-hidden="true"
-                    >
-                        ❤️
-                    </span>
-
-                    Il nostro sogno
-
-                </h2>
-
-
-                <p class="section-text">
-                    Il nostro desiderio più grande è avervi con noi
-                    nel nostro giorno. Se desiderate contribuire alla
-                    realizzazione del nostro sogno, cliccate qui.
-                </p>
-
-
-                <button
-                    class="button"
-                    id="giftToggle"
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="giftDetails"
-                >
-
-                    <span aria-hidden="true">
-                        💝
-                    </span>
-
-                    Scopri di più
-
-                </button>
-
-
-                <div
-                    class="gift-details"
-                    id="giftDetails"
-                    hidden
-                >
-
-                    <div class="gift-row">
-
-                        <span>
-                            Intestatario
+                        Scopri di più
+                    `
+                    : `
+                        <span aria-hidden="true">
+                            💝
                         </span>
-
-                        <strong>
-                            Enrico Forte
-                        </strong>
-
-                    </div>
-
-
-                    <div
-                        class="gift-row gift-iban"
-                    >
-
-                        <span>
-                            IBAN
-                        </span>
-
-                        <strong id="ibanCode">
-                            IT95D0367401600000878189011
-                        </strong>
-
-                    </div>
-
-
-                    <button
-                        class="copy-button"
-                        id="copyIban"
-                        type="button"
-                    >
-                        Copia IBAN
-                    </button>
-
-
-                    <div class="gift-row">
-
-                        <span>
-                            BIC / SWIFT
-                        </span>
-
-                        <strong>
-                            TRBKITMMXXX
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             FIAT 500
-        ================================================== -->
-
-        <div
-            class="footer-500"
-            aria-hidden="true"
-        >
-
-            <img
-                src="images/500.png"
-                alt=""
-                draggable="false"
-            >
-
-        </div>
-
-    </main>
-
-
-    <!-- =====================================================
-         INDICATORE SCROLL
-    ====================================================== -->
-
-    <div
-        class="scroll-indicator"
-        id="scrollIndicator"
-        aria-hidden="true"
-    >
-
-        <span class="scroll-label">
-            Scorri
-        </span>
-
-
-        <span
-            class="scroll-arrow"
-            aria-hidden="true"
-        >
-
-            <svg
-                viewBox="0 0 24 24"
-                focusable="false"
-            >
-
-                <path
-                    d="M12 4.5V18.5M6.5 13L12 18.5L17.5 13"
-                ></path>
-
-            </svg>
-
-        </span>
-
-    </div>
-
-
-    <!-- =====================================================
-         SCRIPT
-    ====================================================== -->
-
-    <script src="js/envelope.js"></script>
-    <script src="js/countdown.js"></script>
-    <script src="js/site.js"></script>
-    <script src="js/hero.js"></script>
-
-</body>
-
-</html>
+                        Nascondi
+                    `;
+        }
+    );
+}

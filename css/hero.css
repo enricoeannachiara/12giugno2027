@@ -68,14 +68,15 @@
     margin: 0;
 
     font-family:
+        "Allura",
         "Great Vibes",
         cursive;
 
     font-size:
         clamp(
-            4rem,
+            4.2rem,
             9vw,
-            6.2rem
+            6.4rem
         );
 
     font-weight: 400;
@@ -127,6 +128,11 @@
 
     color: var(--muted);
 
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
     font-size:
         clamp(
             0.9rem,
@@ -172,7 +178,7 @@
     left: 50%;
     top: 50%;
 
-    width: 80%;
+    width: 82%;
 
     transform:
         translate(-50%, -48%);
@@ -199,7 +205,14 @@
     align-items: center;
 
     gap: 4px;
+
+    min-width: 0;
 }
+
+
+/* =======================================================
+   NUMERI COUNTDOWN
+======================================================= */
 
 .countdown-item strong {
     display: block;
@@ -209,23 +222,35 @@
             67,
             46,
             33,
-            .92
+            0.92
         );
+
+    font-family:
+        "Cormorant Garamond",
+        Georgia,
+        serif;
 
     font-size:
         clamp(
-            1.9rem,
+            2.35rem,
             5.6vw,
-            2.55rem
+            2.6rem
         );
 
-    font-weight: 400;
+    font-weight: 600;
 
-    line-height: 1;
+    line-height: 0.95;
 
     font-variant-numeric:
         tabular-nums;
+
+    letter-spacing: 0.01em;
 }
+
+
+/* =======================================================
+   ETICHETTE COUNTDOWN
+======================================================= */
 
 .countdown-item span {
     color:
@@ -233,19 +258,23 @@
             92,
             64,
             45,
-            .78
+            0.72
         );
 
     font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+        "Cormorant Garamond",
+        Georgia,
+        serif;
 
-    font-size: .64rem;
+    font-size: 0.60rem;
 
-    text-transform: lowercase;
+    font-weight: 600;
 
-    letter-spacing: .04em;
+    line-height: 1;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.12em;
 }
 
 
@@ -275,9 +304,9 @@
     .hero h1 {
         font-size:
             clamp(
-                3.2rem,
+                3.4rem,
                 15vw,
-                5rem
+                5.2rem
             );
     }
 
@@ -298,20 +327,22 @@
     }
 
     .countdown-paper-content {
-        width: 82%;
+        width: 84%;
     }
 
     .countdown-item strong {
         font-size:
             clamp(
-                1.6rem,
-                7vw,
-                2rem
+                2rem,
+                8vw,
+                2.45rem
             );
     }
 
     .countdown-item span {
-        font-size: .58rem;
+        font-size: 0.58rem;
+
+        letter-spacing: 0.10em;
     }
 
 }

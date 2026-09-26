@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=Great+Vibes&display=swap");
 
+
+/* =======================================================
+   VARIABILI
+======================================================= */
+
 :root {
     --background: #F8F4EC;
     --background-alt: rgba(243, 238, 232, 0.72);
@@ -68,16 +73,21 @@ body {
         #F8F4EC;
 
     background-image:
-        url("../images/carta-amalfi-texture.webp");
+        url("../images/sfondo-carta.png");
 
     background-repeat:
-        repeat-y;
+        no-repeat;
 
     background-position:
         top center;
 
+    /*
+     * L'immagine segue tutta l'altezza della pagina.
+     * La larghezza viene adattata automaticamente
+     * mantenendo le proporzioni originali.
+     */
     background-size:
-        max(100vw, 1150px) auto;
+        auto 100%;
 
     color:
         var(--text);
@@ -127,6 +137,44 @@ button {
 
 
 /* =======================================================
+   VECCHIA DECORAZIONE ORTENSIE
+   La lasciamo temporaneamente disponibile.
+   La elimineremo dopo aver verificato il nuovo sfondo.
+======================================================= */
+
+.corner-flowers {
+    position:
+        absolute;
+
+    top:
+        -60px;
+
+    left:
+        -70px;
+
+    z-index:
+        2;
+
+    pointer-events:
+        none;
+
+    user-select:
+        none;
+}
+
+.corner-flowers img {
+    display:
+        block;
+
+    width:
+        260px;
+
+    height:
+        auto;
+}
+
+
+/* =======================================================
    CONTENUTO SITO
 ======================================================= */
 
@@ -148,15 +196,33 @@ button {
 
 @media (max-width: 760px) {
 
+    /*
+     * Su smartphone manteniamo l'intera altezza
+     * dell'illustrazione. Essendo stata realizzata
+     * in formato verticale, è proprio qui che dovrebbe
+     * rendere al meglio.
+     */
+
     body {
-        /*
-         * Manteniamo la texture abbastanza grande
-         * anche su telefono, evitando che i richiami
-         * floreali si ripetano ogni poche centinaia
-         * di pixel.
-         */
+        background-position:
+            top center;
+
         background-size:
-            1050px auto;
+            auto 100%;
+    }
+
+
+    .corner-flowers {
+        top:
+            -35px;
+
+        left:
+            -40px;
+    }
+
+    .corner-flowers img {
+        width:
+            170px;
     }
 
 }

@@ -1,6 +1,15 @@
 .envelope-screen {
     position: fixed;
-    inset: 0;
+
+    /*
+     * La busta viene estesa fisicamente oltre
+     * il viewport di 200 px sopra e sotto.
+     */
+    left: 0;
+    right: 0;
+    top: -200px;
+    bottom: -200px;
+
     z-index: 1000;
     overflow: hidden;
     pointer-events: auto;
@@ -12,9 +21,21 @@
 }
 
 
+/*
+ * Lo stage vero e proprio resta ESATTAMENTE
+ * allineato al viewport originale.
+ *
+ * I 200 px compensano l'estensione applicata
+ * a .envelope-screen.
+ */
 .envelope-stage {
     position: absolute;
-    inset: 0;
+
+    left: 0;
+    right: 0;
+    top: 200px;
+    bottom: 200px;
+
     perspective: 1800px;
     perspective-origin: 50% 10%;
     cursor: pointer;

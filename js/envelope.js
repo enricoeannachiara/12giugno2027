@@ -29,6 +29,22 @@ const BODY_DURATION = 1450;
 const FLAP_FADE_DURATION = 280;
 
 
+/*
+ * Variazioni inferiori a questa soglia vengono considerate
+ * variazioni del viewport dovute all'interfaccia del browser
+ * e non un vero ridimensionamento della finestra.
+ */
+const REAL_RESIZE_THRESHOLD = 20;
+
+
+/*
+ * Piccolo ritardo per lasciare terminare il ridimensionamento
+ * della finestra o la rotazione dello smartphone prima di
+ * rileggere le dimensioni.
+ */
+const REAL_RESIZE_DELAY = 180;
+
+
 let flapFrameId = null;
 let bodyFrameId = null;
 let fadeFrameId = null;
@@ -38,14 +54,32 @@ let opened = false;
 
 
 /*
- * Dimensioni della busta.
- *
- * Vengono valorizzate una sola volta all'avvio e poi
- * NON vengono aggiornate quando Safari modifica il
- * proprio visual viewport.
+ * Dimensioni attualmente utilizzate dalla busta.
  */
 let envelopeWidth = 0;
 let envelopeHeight = 0;
+
+
+/*
+ * Larghezza usata per distinguere:
+ *
+ * - variazione verticale delle barre di Safari
+ * - vero resize / rotazione
+ */
+let lastWindowWidth = 0;
+
+
+/*
+ * Timer per il debounce del resize.
+ */
+let resizeTimer = null;
+
+
+/*
+ * Se avviene un vero resize mentre la busta si sta aprendo,
+ * lo memorizziamo e lo applichiamo al termine dell'animazione.
+ */
+let resizePending = false;
 
 
 window.envelopeState = {
@@ -111,7 +145,7 @@ function wait(milliseconds) {
 
 
 /* =======================================================
-   DIMENSIONI INIZIALI DELLA BUSTA
+   DIMENSIONI DELLA BUSTA
 ======================================================= */
 
 function freezeEnvelopeSize() {
@@ -134,6 +168,98 @@ function freezeEnvelopeSize() {
         "--envelope-height",
         `${envelopeHeight}px`
     );
+
+}
+
+
+/*
+ * Aggiorna le dimensioni dopo un vero resize.
+ *
+ * IMPORTANTE:
+ * non viene richiamata quando cambia soltanto l'altezza
+ * disponibile a causa delle barre dinamiche di Safari.
+ */
+function updateEnvelopeSize() {
+
+    if (opened) {
+        return;
+    }
+
+
+    freezeEnvelopeSize();
+
+
+    lastWindowWidth =
+        window.innerWidth;
+
+}
+
+
+/* =======================================================
+   GESTIONE RESIZE / ROTAZIONE
+======================================================= */
+
+function handleViewportResize() {
+
+    if (opened) {
+        return;
+    }
+
+
+    const currentWidth =
+        window.innerWidth;
+
+
+    const widthDifference =
+        Math.abs(
+            currentWidth -
+            lastWindowWidth
+        );
+
+
+    /*
+     * Se cambia soltanto l'altezza, oppure la variazione
+     * della larghezza è minima, ignoriamo l'evento.
+     *
+     * Questo è il caso tipico delle barre dinamiche
+     * di Safari su iPhone.
+     */
+    if (
+        widthDifference <=
+        REAL_RESIZE_THRESHOLD
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * Abbiamo rilevato un vero ridimensionamento.
+     *
+     * Se la busta si sta aprendo, non tocchiamo la sua
+     * geometria a metà animazione.
+     */
+    if (opening) {
+
+        resizePending = true;
+
+        return;
+
+    }
+
+
+    clearTimeout(
+        resizeTimer
+    );
+
+
+    resizeTimer =
+        setTimeout(() => {
+
+            updateEnvelopeSize();
+
+        }, REAL_RESIZE_DELAY);
 
 }
 
@@ -219,58 +345,18 @@ function getFlapGeometry(t) {
 
     const d = `
         M 0 0
-
         L 1000 0
-
-        L
-        1000
-        ${shoulderY - 30}
-
-        Q
-        1000
-        ${shoulderY}
-
-        ${rightShoulderX}
-        ${shoulderY}
-
-        C
-        ${rightControl1X}
-        ${rightControl1Y},
-
-        ${rightControl2X}
-        ${rightControl2Y},
-
-        ${tipRightX}
-        ${tipSideY}
-
-        Q
-        500
-        ${tipY}
-
-        ${tipLeftX}
-        ${tipSideY}
-
-        C
-        ${leftControl2X}
-        ${leftControl2Y},
-
-        ${leftControl1X}
-        ${leftControl1Y},
-
-        ${leftShoulderX}
-        ${shoulderY}
-
-        Q
-        0
-        ${shoulderY}
-
-        0
-        ${shoulderY - 30}
-
-        L
-        0
-        0
-
+        L 1000 ${shoulderY - 30}
+        Q 1000 ${shoulderY} ${rightShoulderX} ${shoulderY}
+        C ${rightControl1X} ${rightControl1Y},
+          ${rightControl2X} ${rightControl2Y},
+          ${tipRightX} ${tipSideY}
+        Q 500 ${tipY} ${tipLeftX} ${tipSideY}
+        C ${leftControl2X} ${leftControl2Y},
+          ${leftControl1X} ${leftControl1Y},
+          ${leftShoulderX} ${shoulderY}
+        Q 0 ${shoulderY} 0 ${shoulderY - 30}
+        L 0 0
         Z
     `;
 
@@ -290,33 +376,18 @@ function getFlapGeometry(t) {
 
 function drawEnvelopeBody() {
 
-    const sideStartY =
-        192.5;
-
-
-    const sideMeetY =
-        500;
-
-
-    const leftMeetX =
-        492;
-
-
-    const rightMeetX =
-        508;
+    const sideStartY = 192.5;
+    const sideMeetY = 500;
+    const leftMeetX = 492;
+    const rightMeetX = 508;
 
 
     bodyLeftPath.setAttribute(
         "d",
         `
             M 0 ${sideStartY}
-
-            L
-            ${leftMeetX}
-            ${sideMeetY}
-
+            L ${leftMeetX} ${sideMeetY}
             L 0 1000
-
             Z
         `
     );
@@ -326,10 +397,7 @@ function drawEnvelopeBody() {
         "d",
         `
             M 0 ${sideStartY}
-
-            L
-            ${leftMeetX}
-            ${sideMeetY}
+            L ${leftMeetX} ${sideMeetY}
         `
     );
 
@@ -338,13 +406,8 @@ function drawEnvelopeBody() {
         "d",
         `
             M 1000 ${sideStartY}
-
             L 1000 1000
-
-            L
-            ${rightMeetX}
-            ${sideMeetY}
-
+            L ${rightMeetX} ${sideMeetY}
             Z
         `
     );
@@ -354,62 +417,27 @@ function drawEnvelopeBody() {
         "d",
         `
             M 1000 ${sideStartY}
-
-            L
-            ${rightMeetX}
-            ${sideMeetY}
+            L ${rightMeetX} ${sideMeetY}
         `
     );
 
 
-    const tipY =
-        490;
-
-
-    const tipLeftX =
-        468;
-
-
-    const tipRightX =
-        532;
-
-
-    const tipSideY =
-        505;
-
-
-    const verticalStartY =
-        750;
+    const tipY = 490;
+    const tipLeftX = 468;
+    const tipRightX = 532;
+    const tipSideY = 505;
+    const verticalStartY = 750;
 
 
     bodyBottomPath.setAttribute(
         "d",
         `
             M 0 1000
-
-            L
-            0
-            ${verticalStartY}
-
-            L
-            ${tipLeftX}
-            ${tipSideY}
-
-            Q
-            500
-            ${tipY}
-
-            ${tipRightX}
-            ${tipSideY}
-
-            L
-            1000
-            ${verticalStartY}
-
-            L
-            1000
-            1000
-
+            L 0 ${verticalStartY}
+            L ${tipLeftX} ${tipSideY}
+            Q 500 ${tipY} ${tipRightX} ${tipSideY}
+            L 1000 ${verticalStartY}
+            L 1000 1000
             Z
         `
     );
@@ -418,24 +446,10 @@ function drawEnvelopeBody() {
     bodyBottomFold.setAttribute(
         "d",
         `
-            M
-            0
-            ${verticalStartY}
-
-            L
-            ${tipLeftX}
-            ${tipSideY}
-
-            Q
-            500
-            ${tipY}
-
-            ${tipRightX}
-            ${tipSideY}
-
-            L
-            1000
-            ${verticalStartY}
+            M 0 ${verticalStartY}
+            L ${tipLeftX} ${tipSideY}
+            Q 500 ${tipY} ${tipRightX} ${tipSideY}
+            L 1000 ${verticalStartY}
         `
     );
 
@@ -539,21 +553,11 @@ function drawFlapFrame(progress) {
         `${0.23 * bend}`;
 
 
-    flapShadow.style.transform =
-        `
-            translate(
-                -50%,
-                ${-50 + 17 * t}%
-            )
-
-            scaleX(
-                ${0.93 - 0.15 * bend}
-            )
-
-            scaleY(
-                ${0.08 + 0.74 * bend}
-            )
-        `;
+    flapShadow.style.transform = `
+        translate(-50%, ${-50 + 17 * t}%)
+        scaleX(${0.93 - 0.15 * bend})
+        scaleY(${0.08 + 0.74 * bend})
+    `;
 
 
     const shade =
@@ -564,31 +568,19 @@ function drawFlapFrame(progress) {
 
     frontStop1.setAttribute(
         "stop-color",
-        `rgb(
-            ${234 - shade},
-            ${220 - shade},
-            ${200 - shade}
-        )`
+        `rgb(${234 - shade}, ${220 - shade}, ${200 - shade})`
     );
 
 
     frontStop2.setAttribute(
         "stop-color",
-        `rgb(
-            ${234 - shade / 2},
-            ${220 - shade / 2},
-            ${200 - shade / 2}
-        )`
+        `rgb(${234 - shade / 2}, ${220 - shade / 2}, ${200 - shade / 2})`
     );
 
 
     frontStop3.setAttribute(
         "stop-color",
-        `rgb(
-            ${222 - shade},
-            ${200 - shade},
-            ${173 - shade}
-        )`
+        `rgb(${222 - shade}, ${200 - shade}, ${173 - shade})`
     );
 
 }
@@ -816,6 +808,15 @@ async function openEnvelope() {
         true;
 
 
+    /*
+     * A questo punto la busta sta per essere nascosta,
+     * quindi un eventuale resize rimasto in sospeso
+     * non ha più bisogno di essere applicato.
+     */
+    resizePending =
+        false;
+
+
     envelopeScreen.classList.add(
         "opened"
     );
@@ -859,11 +860,16 @@ function initialiseEnvelope() {
 
 
     /*
-     * Leggiamo le dimensioni una sola volta.
-     * Da questo momento la busta non segue più
-     * le variazioni del viewport di Safari.
+     * Al caricamento rileviamo le dimensioni reali.
+     *
+     * Da questo momento le variazioni della sola altezza
+     * causate dalle barre di Safari vengono ignorate.
      */
     freezeEnvelopeSize();
+
+
+    lastWindowWidth =
+        window.innerWidth;
 
 
     drawEnvelopeBody();
@@ -906,7 +912,7 @@ function initialiseEnvelope() {
 
 
 /* =======================================================
-   EVENTI
+   EVENTI BUSTA
 ======================================================= */
 
 envelopeStage.addEventListener(
@@ -929,6 +935,60 @@ envelopeStage.addEventListener(
             openEnvelope();
 
         }
+
+    }
+);
+
+
+/* =======================================================
+   EVENTI RESIZE
+======================================================= */
+
+/*
+ * Desktop:
+ * ridimensionamento della finestra.
+ *
+ * iPhone:
+ * anche le barre di Safari generano resize, ma vengono
+ * ignorate perché non modificano significativamente
+ * window.innerWidth.
+ */
+window.addEventListener(
+    "resize",
+    handleViewportResize
+);
+
+
+/*
+ * orientationchange ci dà un secondo segnale esplicito
+ * sui dispositivi mobili.
+ *
+ * Non aggiorniamo immediatamente perché Safari impiega
+ * un breve intervallo per stabilizzare le nuove dimensioni.
+ */
+window.addEventListener(
+    "orientationchange",
+    () => {
+
+        if (
+            opened ||
+            opening
+        ) {
+            return;
+        }
+
+
+        clearTimeout(
+            resizeTimer
+        );
+
+
+        resizeTimer =
+            setTimeout(() => {
+
+                updateEnvelopeSize();
+
+            }, REAL_RESIZE_DELAY);
 
     }
 );

@@ -85,7 +85,7 @@
 
 
 /* =======================================================
-   PULSANTI
+   PULSANTI - BASE
 ======================================================= */
 
 .button {
@@ -104,11 +104,11 @@
 
     border:
         1px solid
-        rgba(90, 83, 181, 0.14);
+        transparent;
 
     border-radius: 999px;
 
-    background: #8885DE;
+    background: #ABA5F0;
 
     color: #FFFFFF;
 
@@ -125,158 +125,228 @@
 
     cursor: pointer;
 
-    box-shadow:
-        0 7px 0 rgba(90, 82, 164, 0.13),
-        0 10px 22px rgba(91, 82, 164, 0.16);
-
-    transform: translateY(0);
+    transform:
+        scale(1);
 
     transition:
         transform 0.18s ease,
         background-color 0.28s ease,
         border-color 0.28s ease,
-        color 0.28s ease,
-        box-shadow 0.28s ease;
+        color 0.28s ease;
 
     -webkit-tap-highlight-color: transparent;
 }
 
 
 /* =======================================================
-   PULSANTE PRIMARIO
+   FEEDBACK PRESSIONE
 ======================================================= */
 
-.button-primary {
-    background: #8885DE;
+.button:active {
+    transform:
+        scale(0.985);
+}
 
-    border-color:
-        rgba(90, 83, 181, 0.14);
+
+/* =======================================================
+   CONFERMA PRESENZA
+   Rosa ortensia
+======================================================= */
+
+#rsvp .button-primary {
+    background: #ED81C0;
+
+    border-color: #ED81C0;
 
     color: #FFFFFF;
 }
 
 
 /* =======================================================
-   HOVER - SOLO DISPOSITIVI CON PUNTATORE
+   ALBUM FOTOGRAFICO
+   Lilla ortensia
+======================================================= */
+
+#album .button-primary {
+    background: #ABA5F0;
+
+    border-color: #ABA5F0;
+
+    color: #FFFFFF;
+}
+
+
+/* =======================================================
+   SCOPRI DI PIÙ
+   Lilla ortensia
+======================================================= */
+
+#sogno .button-primary {
+    background: #ABA5F0;
+
+    border-color: #ABA5F0;
+
+    color: #FFFFFF;
+}
+
+
+/* =======================================================
+   GOOGLE MAPS
+   Blu ortensia
+======================================================= */
+
+.map-button {
+    gap: 7px;
+
+    background: #6770E1;
+
+    border:
+        1px solid
+        #2A30A4;
+
+    color: #FFFFFF;
+}
+
+
+/* =======================================================
+   WAZE
+   Bianco con bordo blu scuro
+======================================================= */
+
+.map-button.button-secondary {
+    background: #FFFFFF;
+
+    border:
+        1px solid
+        #2A30A4;
+
+    color: #2A30A4;
+}
+
+
+/* =======================================================
+   PULSANTE CERIMONIA
+   Oro
+======================================================= */
+
+.ceremony-button {
+    margin-top: 20px;
+
+    background: var(--gold);
+
+    border-color: var(--gold);
+
+    color: var(--warm-white);
+}
+
+
+/* =======================================================
+   HOVER
+   Solo dispositivi con mouse
 ======================================================= */
 
 @media (hover: hover) and (pointer: fine) {
 
-    .button:hover {
-        background: #7773D2;
+    #rsvp .button-primary:hover {
+        background: #DF72B2;
 
-        transform:
-            translateY(-2px);
-
-        box-shadow:
-            0 8px 0 rgba(90, 82, 164, 0.12),
-            0 14px 28px rgba(91, 82, 164, 0.22);
-    }
-
-    .button-secondary:hover {
-        background:
-            rgba(136, 133, 222, 0.11);
-
-        border-color:
-            rgba(112, 105, 199, 0.58);
-
-        color: #6861B4;
-
-        box-shadow:
-            0 5px 14px
-            rgba(91, 82, 164, 0.08);
-
-        transform:
-            translateY(-2px);
-    }
-
-    .ceremony-button:hover {
-        background: #DF72AD;
-
-        border-color:
-            rgba(184, 73, 132, 0.18);
-
-        box-shadow:
-            0 8px 0 rgba(166, 64, 119, 0.11),
-            0 14px 28px rgba(185, 78, 137, 0.20);
-
-        transform:
-            translateY(-2px);
-    }
-
-    .copy-button:hover {
-        background:
-            rgba(136, 133, 222, 0.10);
-
-        border-color:
-            rgba(112, 105, 199, 0.55);
-
-        color: #6861B4;
+        border-color: #DF72B2;
 
         transform:
             translateY(-1px);
+    }
 
-        box-shadow:
-            0 5px 12px
-            rgba(91, 82, 164, 0.08);
+    #album .button-primary:hover,
+    #sogno .button-primary:hover {
+        background: #9B94E3;
+
+        border-color: #9B94E3;
+
+        transform:
+            translateY(-1px);
+    }
+
+    .map-button:hover {
+        background: #5963D4;
+
+        border-color: #2A30A4;
+
+        transform:
+            translateY(-1px);
+    }
+
+    .map-button.button-secondary:hover {
+        background: #F5F4FF;
+
+        border-color: #2A30A4;
+
+        color: #2A30A4;
+
+        transform:
+            translateY(-1px);
+    }
+
+    .ceremony-button:hover {
+        background: var(--gold-dark);
+
+        border-color: var(--gold-dark);
+
+        transform:
+            translateY(-1px);
+    }
+
+    .copy-button:hover {
+        background: #F6F4FF;
+
+        border-color: #ABA5F0;
+
+        color: #7069B8;
+
+        transform:
+            translateY(-1px);
     }
 
 }
 
 
 /* =======================================================
-   EFFETTO CARTA PREMUTA
+   STATO PREMUTO
 ======================================================= */
 
-.button:active {
-    transform:
-        translateY(3px);
-
-    box-shadow:
-        0 1px 0 rgba(90, 82, 164, 0.10),
-        0 3px 7px rgba(91, 82, 164, 0.12),
-        inset 0 2px 4px rgba(73, 64, 140, 0.10);
-}
-
-.button-primary:active {
-    background: #716DCC;
-}
-
-
-/* =======================================================
-   PULSANTE SECONDARIO
-======================================================= */
-
-.button-secondary {
-    background:
-        rgba(255, 253, 248, 0.82);
-
-    color: #6E68B7;
-
-    border:
-        1px solid
-        rgba(126, 119, 205, 0.48);
-
-    box-shadow:
-        0 4px 12px
-        rgba(91, 82, 164, 0.06);
-}
-
-.button-secondary:active {
-    background:
-        rgba(136, 133, 222, 0.14);
-
-    border-color:
-        rgba(112, 105, 199, 0.60);
+#rsvp .button-primary:active {
+    background: #D96BAA;
 
     transform:
-        translateY(2px);
+        scale(0.985);
+}
 
-    box-shadow:
-        0 1px 4px
-        rgba(91, 82, 164, 0.08),
-        inset 0 2px 4px
-        rgba(91, 82, 164, 0.08);
+#album .button-primary:active,
+#sogno .button-primary:active {
+    background: #928BD8;
+
+    transform:
+        scale(0.985);
+}
+
+.map-button:active {
+    background: #515AC6;
+
+    transform:
+        scale(0.985);
+}
+
+.map-button.button-secondary:active {
+    background: #ECEAFF;
+
+    transform:
+        scale(0.985);
+}
+
+.ceremony-button:active {
+    background: var(--gold-active);
+
+    transform:
+        scale(0.985);
 }
 
 
@@ -296,12 +366,8 @@
 
 
 /* =======================================================
-   NAVIGAZIONE
+   LOGHI NAVIGAZIONE
 ======================================================= */
-
-.map-button {
-    gap: 7px;
-}
 
 .navigation-logo {
     display: block;
@@ -316,46 +382,14 @@
 
 
 /* =======================================================
-   CERIMONIA
-======================================================= */
-
-.ceremony-button {
-    margin-top: 20px;
-
-    background: #EB83BB;
-
-    border-color:
-        rgba(184, 73, 132, 0.14);
-
-    color: #FFFFFF;
-
-    box-shadow:
-        0 7px 0 rgba(166, 64, 119, 0.11),
-        0 10px 22px rgba(185, 78, 137, 0.16);
-}
-
-.ceremony-button:active {
-    background: #D96DA6;
-
-    transform:
-        translateY(3px);
-
-    box-shadow:
-        0 1px 0 rgba(166, 64, 119, 0.09),
-        0 3px 7px rgba(185, 78, 137, 0.12),
-        inset 0 2px 4px rgba(150, 53, 104, 0.10);
-}
-
-
-/* =======================================================
-   FOCUS DA TASTIERA
+   FOCUS TASTIERA
 ======================================================= */
 
 .button:focus-visible,
 .copy-button:focus-visible {
     outline:
         3px solid
-        rgba(112, 105, 199, 0.24);
+        rgba(171, 165, 240, 0.35);
 
     outline-offset: 4px;
 }
@@ -512,7 +546,7 @@
 
 
 /* =======================================================
-   PULSANTE COPIA
+   COPIA CODICE / COPIA IBAN
 ======================================================= */
 
 .copy-button {
@@ -531,14 +565,13 @@
 
     border:
         1px solid
-        rgba(126, 119, 205, 0.38);
+        #ABA5F0;
 
     border-radius: 999px;
 
-    background:
-        rgba(255, 253, 248, 0.62);
+    background: #FFFFFF;
 
-    color: #6E68B7;
+    color: #7069B8;
 
     font-family:
         Arial,
@@ -552,34 +585,22 @@
     cursor: pointer;
 
     transform:
-        translateY(0);
-
-    box-shadow:
-        0 3px 9px
-        rgba(91, 82, 164, 0.05);
+        scale(1);
 
     transition:
         transform 0.18s ease,
         background-color 0.28s ease,
         border-color 0.28s ease,
-        color 0.28s ease,
-        box-shadow 0.28s ease;
+        color 0.28s ease;
 
     -webkit-tap-highlight-color: transparent;
 }
 
 .copy-button:active {
-    background:
-        rgba(136, 133, 222, 0.14);
+    background: #EEEAFE;
 
     transform:
-        translateY(2px);
-
-    box-shadow:
-        0 1px 3px
-        rgba(91, 82, 164, 0.06),
-        inset 0 2px 3px
-        rgba(91, 82, 164, 0.07);
+        scale(0.985);
 }
 
 

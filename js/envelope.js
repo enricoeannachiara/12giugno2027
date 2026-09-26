@@ -22,10 +22,23 @@ const bodyLeftFold = $("bodyLeftFold");
 const bodyRightFold = $("bodyRightFold");
 const bodyBottomFold = $("bodyBottomFold");
 
+const safariEdgeCover = $("safariEdgeCover");
+
+
 const FLAP_DURATION = 3400;
 const BODY_START = 1600;
 const BODY_DURATION = 1450;
 const FLAP_FADE_DURATION = 280;
+
+/*
+ * Durata della dissolvenza delle due fasce
+ * superiore e inferiore di Safari.
+ *
+ * Deve corrispondere alla transition impostata
+ * in base.css.
+ */
+const EDGE_FADE_DURATION = 1000;
+
 
 let flapFrameId = null;
 let bodyFrameId = null;
@@ -33,6 +46,7 @@ let fadeFrameId = null;
 
 let opening = false;
 let opened = false;
+
 
 window.envelopeState = {
     opened: false
@@ -44,26 +58,33 @@ window.envelopeState = {
 ======================================================= */
 
 function clamp(value, min, max) {
+
     return Math.min(
         Math.max(value, min),
         max
     );
+
 }
 
 
 function easeInOutCubic(t) {
+
     return t < 0.5
         ? 4 * t * t * t
         : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
 }
 
 
 function easeOutCubic(t) {
+
     return 1 - Math.pow(1 - t, 3);
+
 }
 
 
 function bendCurve(t) {
+
     return Math.pow(
         Math.max(
             0,
@@ -71,13 +92,21 @@ function bendCurve(t) {
         ),
         0.72
     );
+
 }
 
 
 function wait(milliseconds) {
+
     return new Promise(resolve => {
-        setTimeout(resolve, milliseconds);
+
+        setTimeout(
+            resolve,
+            milliseconds
+        );
+
     });
+
 }
 
 
@@ -87,17 +116,22 @@ function wait(milliseconds) {
 
 function getFlapGeometry(t) {
 
-    const bend = bendCurve(t);
+    const bend =
+        bendCurve(t);
+
 
     const tipY =
         1000 -
         190 * bend;
 
+
     const tipLeftX =
         468;
 
+
     const tipRightX =
         532;
+
 
     /*
      * La punta è specchiata rispetto a quella
@@ -117,46 +151,58 @@ function getFlapGeometry(t) {
     const tipSideY =
         tipY - 15;
 
+
     const shoulderY =
         420 +
         35 * bend;
 
+
     const leftShoulderX =
         12 * bend;
+
 
     const rightShoulderX =
         1000 -
         12 * bend;
 
+
     const rightControl1X =
         835 -
         18 * bend;
+
 
     const rightControl1Y =
         590 +
         15 * bend;
 
+
     const rightControl2X =
         625 -
         10 * bend;
+
 
     const rightControl2Y =
         860 -
         50 * bend;
 
+
     const leftControl1X =
         165 +
         18 * bend;
 
+
     const leftControl1Y =
         rightControl1Y;
+
 
     const leftControl2X =
         375 +
         10 * bend;
 
+
     const leftControl2Y =
         rightControl2Y;
+
 
     const d = `
         M 0 0
@@ -215,11 +261,13 @@ function getFlapGeometry(t) {
         Z
     `;
 
+
     return {
         d,
         tipY,
         bend
     };
+
 }
 
 
@@ -229,11 +277,20 @@ function getFlapGeometry(t) {
 
 function drawEnvelopeBody() {
 
-    const sideStartY = 192.5;
-    const sideMeetY = 500;
+    const sideStartY =
+        192.5;
 
-    const leftMeetX = 492;
-    const rightMeetX = 508;
+
+    const sideMeetY =
+        500;
+
+
+    const leftMeetX =
+        492;
+
+
+    const rightMeetX =
+        508;
 
 
     bodyLeftPath.setAttribute(
@@ -292,12 +349,24 @@ function drawEnvelopeBody() {
     );
 
 
-    const tipY = 490;
-    const tipLeftX = 468;
-    const tipRightX = 532;
-    const tipSideY = 505;
+    const tipY =
+        490;
 
-    const verticalStartY = 750;
+
+    const tipLeftX =
+        468;
+
+
+    const tipRightX =
+        532;
+
+
+    const tipSideY =
+        505;
+
+
+    const verticalStartY =
+        750;
 
 
     bodyBottomPath.setAttribute(
@@ -356,6 +425,7 @@ function drawEnvelopeBody() {
             ${verticalStartY}
         `
     );
+
 }
 
 
@@ -372,8 +442,10 @@ function drawFlapFrame(progress) {
             1
         );
 
+
     const geometry =
         getFlapGeometry(t);
+
 
     const bend =
         geometry.bend;
@@ -395,6 +467,7 @@ function drawFlapFrame(progress) {
         const settle =
             (t - 0.94) /
             0.06;
+
 
         rotation =
             181.5 -
@@ -664,6 +737,53 @@ function fadeOutFlap() {
 
 
 /* =======================================================
+   DISSOLVENZA DELLE FASCE SAFARI
+======================================================= */
+
+async function fadeOutSafariEdges() {
+
+    if (!safariEdgeCover) {
+        return;
+    }
+
+
+    /*
+     * Forziamo il browser a registrare prima lo stato
+     * iniziale opacity:1.
+     *
+     * Nel frame successivo aggiungiamo la classe che
+     * porta le due fasce a opacity:0.
+     */
+
+    await new Promise(resolve => {
+
+        requestAnimationFrame(() => {
+
+            requestAnimationFrame(resolve);
+
+        });
+
+    });
+
+
+    safariEdgeCover.classList.add(
+        "is-fading"
+    );
+
+
+    await wait(
+        EDGE_FADE_DURATION
+    );
+
+
+    safariEdgeCover.classList.add(
+        "is-hidden"
+    );
+
+}
+
+
+/* =======================================================
    APERTURA DELLA BUSTA
 ======================================================= */
 
@@ -741,22 +861,40 @@ async function openEnvelope() {
         true;
 
 
+    /*
+     * Sblocchiamo la pagina.
+     */
+
     document.body.classList.remove(
         "envelope-locked"
     );
 
 
     /*
-     * Dopo aver rimosso position:fixed dal body,
-     * assicuriamoci che la pagina resti all'inizio.
-     *
-     * In questo modo la Hero compare sempre dalla
-     * sua posizione iniziale dopo l'apertura.
+     * Manteniamo la pagina all'inizio dopo la rimozione
+     * di position:fixed.
      */
+
     window.scrollTo(
         0,
         0
     );
+
+
+    /*
+     * A questo punto la busta è scomparsa e la Hero
+     * è visibile.
+     *
+     * Le due fasce rimangono ancora presenti e iniziano
+     * ora la loro dissolvenza indipendente di 1000 ms.
+     *
+     * Non aspettiamo la fine della dissolvenza prima
+     * di inviare envelopeopened: la Hero e gli altri
+     * comportamenti del sito possono quindi proseguire
+     * normalmente mentre le fasce sfumano.
+     */
+
+    fadeOutSafariEdges();
 
 
     window.dispatchEvent(
@@ -777,14 +915,13 @@ function initialiseEnvelope() {
     /*
      * Safari iOS può tentare di ripristinare la posizione
      * precedente durante un refresh.
-     *
-     * L'index.html ha già disattivato scrollRestoration
-     * nel <head>. Qui imponiamo nuovamente la posizione
-     * iniziale immediatamente prima di bloccare il body.
      */
+
     if ("scrollRestoration" in history) {
+
         history.scrollRestoration =
             "manual";
+
     }
 
 
@@ -800,10 +937,10 @@ function initialiseEnvelope() {
 
 
     /*
-     * Una seconda richiesta nel frame successivo evita
-     * che un eventuale ripristino tardivo di Safari
-     * prevalga sull'inizializzazione della busta.
+     * Seconda correzione nel frame successivo contro
+     * un eventuale ripristino tardivo dello scroll.
      */
+
     requestAnimationFrame(() => {
 
         window.scrollTo(
@@ -812,6 +949,22 @@ function initialiseEnvelope() {
         );
 
     });
+
+
+    /*
+     * Assicuriamoci che le fasce siano nello stato
+     * iniziale nel caso in cui la pagina venga
+     * ripristinata dalla cache di Safari.
+     */
+
+    if (safariEdgeCover) {
+
+        safariEdgeCover.classList.remove(
+            "is-fading",
+            "is-hidden"
+        );
+
+    }
 
 
     drawEnvelopeBody();

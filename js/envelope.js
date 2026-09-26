@@ -39,6 +39,10 @@ window.envelopeState = {
 };
 
 
+/* =======================================================
+   FUNZIONI DI SUPPORTO
+======================================================= */
+
 function clamp(value, min, max) {
     return Math.min(
         Math.max(value, min),
@@ -109,6 +113,7 @@ function getFlapGeometry(t) {
      * più in alto rispetto al centro, producendo
      * una punta leggermente convessa.
      */
+
     const tipSideY =
         tipY - 15;
 
@@ -741,6 +746,19 @@ async function openEnvelope() {
     );
 
 
+    /*
+     * Dopo aver rimosso position:fixed dal body,
+     * assicuriamoci che la pagina resti all'inizio.
+     *
+     * In questo modo la Hero compare sempre dalla
+     * sua posizione iniziale dopo l'apertura.
+     */
+    window.scrollTo(
+        0,
+        0
+    );
+
+
     window.dispatchEvent(
         new CustomEvent(
             "envelopeopened"
@@ -756,9 +774,44 @@ async function openEnvelope() {
 
 function initialiseEnvelope() {
 
+    /*
+     * Safari iOS può tentare di ripristinare la posizione
+     * precedente durante un refresh.
+     *
+     * L'index.html ha già disattivato scrollRestoration
+     * nel <head>. Qui imponiamo nuovamente la posizione
+     * iniziale immediatamente prima di bloccare il body.
+     */
+    if ("scrollRestoration" in history) {
+        history.scrollRestoration =
+            "manual";
+    }
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+
     document.body.classList.add(
         "envelope-locked"
     );
+
+
+    /*
+     * Una seconda richiesta nel frame successivo evita
+     * che un eventuale ripristino tardivo di Safari
+     * prevalga sull'inizializzazione della busta.
+     */
+    requestAnimationFrame(() => {
+
+        window.scrollTo(
+            0,
+            0
+        );
+
+    });
 
 
     drawEnvelopeBody();
@@ -828,5 +881,9 @@ envelopeStage.addEventListener(
     }
 );
 
+
+/* =======================================================
+   AVVIO
+======================================================= */
 
 initialiseEnvelope();

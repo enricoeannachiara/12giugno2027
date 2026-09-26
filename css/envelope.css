@@ -7,11 +7,54 @@
     overflow: hidden;
 
     pointer-events: auto;
+
+    /*
+     * Crea un proprio stacking context.
+     * Serve a tenere il fondale di sicurezza
+     * dietro a tutti gli elementi della busta.
+     */
+    isolation: isolate;
 }
+
+
+/*
+ * =======================================================
+ * FONDALE DI SICUREZZA
+ *
+ * Safari su iPhone può modificare dinamicamente l'area
+ * visibile quando compaiono o scompaiono le barre del
+ * browser.
+ *
+ * Questo pannello deborda abbondantemente sopra e sotto
+ * la viewport, senza modificare in alcun modo la
+ * geometria della busta.
+ * =======================================================
+ */
+
+.envelope-screen::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: -15vh;
+    bottom: -15vh;
+
+    z-index: -1;
+
+    background:
+        var(--paper-side);
+
+    pointer-events: none;
+}
+
 
 .envelope-screen.opened {
     pointer-events: none;
 }
+
 
 .envelope-stage {
     position: absolute;
@@ -26,6 +69,7 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+
 .envelope-body {
     position: absolute;
     inset: 0;
@@ -39,6 +83,7 @@
     will-change: transform;
 }
 
+
 .body-svg {
     position: absolute;
     inset: 0;
@@ -51,13 +96,16 @@
     overflow: visible;
 }
 
+
 .body-side {
     fill: var(--paper-side);
 }
 
+
 .body-bottom {
     fill: var(--paper-bottom);
 }
+
 
 .body-fold {
     fill: none;
@@ -68,6 +116,7 @@
     vector-effect: non-scaling-stroke;
 }
 
+
 .body-bottom-fold {
     fill: none;
 
@@ -76,6 +125,7 @@
 
     vector-effect: non-scaling-stroke;
 }
+
 
 .flap-shadow {
     position: absolute;
@@ -113,6 +163,7 @@
         transform;
 }
 
+
 .envelope-flap {
     position: absolute;
 
@@ -134,6 +185,7 @@
         opacity;
 }
 
+
 .flap-svg {
     position: absolute;
     inset: 0;
@@ -148,6 +200,7 @@
     pointer-events: none;
 }
 
+
 .flap-edge {
     fill: none;
 
@@ -159,11 +212,13 @@
     opacity: 0.55;
 }
 
+
 .flap-paper {
     fill: url(#paperFront);
 
     filter: url(#paperShadow);
 }
+
 
 .wax-seal {
     position: absolute;
@@ -189,6 +244,7 @@
         top;
 }
 
+
 .wax-seal img {
     display: block;
 
@@ -203,6 +259,7 @@
             rgba(70, 25, 20, 0.24)
         );
 }
+
 
 @media (max-width: 760px) {
 

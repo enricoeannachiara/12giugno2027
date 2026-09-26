@@ -215,7 +215,11 @@
 ======================================================= */
 
 .countdown-item strong {
-    display: block;
+    position: relative;
+
+    display: inline-block;
+
+    min-width: 2ch;
 
     color:
         rgba(
@@ -245,6 +249,14 @@
         tabular-nums;
 
     letter-spacing: 0.01em;
+
+    transition:
+        transform 0.16s ease,
+        opacity 0.16s ease;
+
+    will-change:
+        transform,
+        opacity;
 }
 
 
@@ -275,6 +287,43 @@
     text-transform: uppercase;
 
     letter-spacing: 0.12em;
+}
+
+
+/* =======================================================
+   ANIMAZIONE NUMERI COUNTDOWN
+======================================================= */
+
+.countdown-number-exit {
+    opacity: 0;
+
+    transform:
+        translateY(-8px);
+}
+
+.countdown-number-enter {
+    animation:
+        countdownNumberIn
+        0.32s
+        cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes countdownNumberIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
 }
 
 
@@ -368,6 +417,20 @@
         transform:
             translateY(0)
             scale(1);
+    }
+
+    .countdown-item strong {
+        transition: none;
+        animation: none;
+    }
+
+    .countdown-number-exit,
+    .countdown-number-enter {
+        opacity: 1;
+
+        transform: none;
+
+        animation: none;
     }
 
 }

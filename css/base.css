@@ -1,13 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=Great+Vibes&display=swap");
 
 :root {
-    --background: #FAF7F2;
-    --background-alt: #F3EEE8;
+    --background: #F8F4EC;
+    --background-alt: rgba(243, 238, 232, 0.72);
 
     --text: #3E3A39;
     --muted: #8A8178;
 
-    --lilac: #A89CC8;
+    --lilac: #ABA5F0;
     --lilac-dark: #9181BB;
 
     --card: rgba(255, 255, 255, 0.72);
@@ -30,77 +30,99 @@
         rgba(74, 61, 53, 0.08);
 }
 
+
+/* =======================================================
+   RESET
+======================================================= */
+
 * {
     box-sizing: border-box;
 }
 
 html {
     scroll-behavior: smooth;
+
+    background:
+        #F8F4EC;
 }
 
 html,
 body {
     margin: 0;
+
     width: 100%;
     min-height: 100%;
 }
+
+
+/* =======================================================
+   SFONDO CARTA D'AMALFI
+======================================================= */
 
 body {
     position: relative;
 
     margin: 0;
 
-    background: var(--background);
-    color: var(--text);
+    background-color:
+        #F8F4EC;
+
+    background-image:
+        url("../images/carta-amalfi-texture.webp");
+
+    background-repeat:
+        repeat-y;
+
+    background-position:
+        top center;
+
+    background-size:
+        max(100vw, 1150px) auto;
+
+    color:
+        var(--text);
 
     font-family:
         Georgia,
         "Times New Roman",
         serif;
 
-    overflow-x: hidden;
-}
-
-body.envelope-locked {
-    overflow: hidden;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
-
-button {
-    font: inherit;
+    overflow-x:
+        hidden;
 }
 
 
 /* =======================================================
-   DECORAZIONE FLOREALE
+   BLOCCO SCROLL DURANTE APERTURA BUSTA
 ======================================================= */
 
-.corner-flowers {
-    position: absolute;
-
-    top: -60px;
-    left: -70px;
-
-    z-index: 2;
-
-    pointer-events: none;
-    user-select: none;
+body.envelope-locked {
+    overflow:
+        hidden;
 }
 
-.corner-flowers img {
-    display: block;
 
-    width: 260px;
-    height: auto;
+/* =======================================================
+   ELEMENTI GENERALI
+======================================================= */
+
+a {
+    color:
+        inherit;
+
+    text-decoration:
+        none;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+button {
+    font:
+        inherit;
 }
 
 
@@ -109,9 +131,14 @@ button {
 ======================================================= */
 
 .site {
-    position: relative;
+    position:
+        relative;
 
-    width: 100%;
+    width:
+        100%;
+
+    z-index:
+        1;
 }
 
 
@@ -121,13 +148,15 @@ button {
 
 @media (max-width: 760px) {
 
-    .corner-flowers {
-        top: -35px;
-        left: -40px;
-    }
-
-    .corner-flowers img {
-        width: 170px;
+    body {
+        /*
+         * Manteniamo la texture abbastanza grande
+         * anche su telefono, evitando che i richiami
+         * floreali si ripetano ogni poche centinaia
+         * di pixel.
+         */
+        background-size:
+            1050px auto;
     }
 
 }
@@ -140,15 +169,21 @@ button {
 @media (prefers-reduced-motion: reduce) {
 
     html {
-        scroll-behavior: auto;
+        scroll-behavior:
+            auto;
     }
 
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
     }
 
 }

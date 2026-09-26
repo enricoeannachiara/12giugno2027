@@ -4,20 +4,7 @@
     z-index: 1000;
     overflow: hidden;
     pointer-events: auto;
-
-    /*
-     * Finché la busta occupa lo schermo, Safari utilizza
-     * questo colore anche nelle proprie aree traslucide.
-     */
-    background: var(--background);
-}
-
-/*
- * Quando il corpo della busta comincia a scendere,
- * il fondo scompare immediatamente e lascia vedere la Hero.
- */
-.envelope-screen.revealing {
-    background: transparent;
+    touch-action: none;
 }
 
 .envelope-screen.opened {
@@ -153,8 +140,10 @@
 }
 
 @media (max-width: 760px) {
+
     .wax-seal {
         width: 96px;
         height: 96px;
     }
+
 }

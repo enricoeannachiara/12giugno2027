@@ -50,6 +50,44 @@ body {
     overflow-x: hidden;
 }
 
+
+/* =========================================================
+   ESTENSIONI CARTA PER LE AREE ESTERNE DI SAFARI
+========================================================= */
+
+html::before,
+html::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 180px;
+    pointer-events: none;
+    background: var(--paper-side);
+    z-index: 999;
+}
+
+/*
+ * Prosecuzione superiore della carta.
+ * Rimane esterna al viewport del documento.
+ */
+html::before {
+    bottom: 100%;
+}
+
+/*
+ * Prosecuzione inferiore della carta.
+ * Rimane esterna al viewport del documento.
+ */
+html::after {
+    top: 100%;
+}
+
+
+/* =========================================================
+   SFONDO DEL SITO
+========================================================= */
+
 body::before {
     content: "";
     position: absolute;
@@ -65,25 +103,30 @@ body::before {
     z-index: 0;
 }
 
+
 a {
     color: inherit;
     text-decoration: none;
 }
+
 
 button,
 a {
     -webkit-tap-highlight-color: transparent;
 }
 
+
 button {
     font: inherit;
 }
+
 
 .site {
     position: relative;
     width: 100%;
     z-index: 1;
 }
+
 
 @media (max-width: 760px) {
 
@@ -96,6 +139,7 @@ button {
     }
 
 }
+
 
 @media (prefers-reduced-motion: reduce) {
 

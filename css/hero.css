@@ -181,7 +181,7 @@
     width: 82%;
 
     transform:
-        translate(-50%, -48%);
+        translate(-50%, -50%);
 
     text-align: center;
 }
@@ -215,11 +215,7 @@
 ======================================================= */
 
 .countdown-item strong {
-    position: relative;
-
-    display: inline-block;
-
-    min-width: 2ch;
+    display: block;
 
     color:
         rgba(
@@ -249,14 +245,101 @@
         tabular-nums;
 
     letter-spacing: 0.01em;
+}
 
-    transition:
-        transform 0.16s ease,
-        opacity 0.16s ease;
 
-    will-change:
-        transform,
-        opacity;
+/* =======================================================
+   STRUTTURA FLIP
+======================================================= */
+
+.countdown-flip {
+    position: relative;
+
+    display: inline-block;
+
+    min-width: 2ch;
+    height: 1em;
+
+    perspective: 700px;
+
+    line-height: 1;
+
+    vertical-align: middle;
+}
+
+.countdown-flip-face {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    transform-style: preserve-3d;
+
+    transform-origin: center center;
+}
+
+.countdown-flip-current {
+    transform:
+        rotateX(0deg);
+}
+
+.countdown-flip-next {
+    transform:
+        rotateX(90deg);
+}
+
+.countdown-flip.is-flipping
+.countdown-flip-current {
+    animation:
+        countdownFlipOut
+        0.28s
+        ease-in
+        forwards;
+}
+
+.countdown-flip.is-flipping
+.countdown-flip-next {
+    animation:
+        countdownFlipIn
+        0.28s
+        0.20s
+        ease-out
+        forwards;
+}
+
+@keyframes countdownFlipOut {
+
+    from {
+        transform:
+            rotateX(0deg);
+    }
+
+    to {
+        transform:
+            rotateX(-90deg);
+    }
+
+}
+
+@keyframes countdownFlipIn {
+
+    from {
+        transform:
+            rotateX(90deg);
+    }
+
+    to {
+        transform:
+            rotateX(0deg);
+    }
+
 }
 
 
@@ -287,43 +370,6 @@
     text-transform: uppercase;
 
     letter-spacing: 0.12em;
-}
-
-
-/* =======================================================
-   ANIMAZIONE NUMERI COUNTDOWN
-======================================================= */
-
-.countdown-number-exit {
-    opacity: 0;
-
-    transform:
-        translateY(-8px);
-}
-
-.countdown-number-enter {
-    animation:
-        countdownNumberIn
-        0.32s
-        cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes countdownNumberIn {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-
 }
 
 
@@ -419,17 +465,11 @@
             scale(1);
     }
 
-    .countdown-item strong {
-        transition: none;
-        animation: none;
-    }
+    .countdown-flip.is-flipping
+    .countdown-flip-current,
 
-    .countdown-number-exit,
-    .countdown-number-enter {
-        opacity: 1;
-
-        transform: none;
-
+    .countdown-flip.is-flipping
+    .countdown-flip-next {
         animation: none;
     }
 

@@ -9,6 +9,22 @@
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
+    <!--
+        Safari può ripristinare la precedente posizione di scroll
+        durante un refresh, prima che gli script in fondo alla pagina
+        vengano eseguiti.
+
+        La schermata iniziale con la busta deve invece partire sempre
+        dall'inizio del documento.
+    -->
+    <script>
+        if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+        }
+
+        window.scrollTo(0, 0);
+    </script>
+
     <meta
         name="theme-color"
         content="#FAF7F2"

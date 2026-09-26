@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600&family=Great+Vibes&display=swap");
 
 :root {
     --background: #FAF7F2;
@@ -110,6 +110,7 @@ button {
 
 .site {
     position: relative;
+
     width: 100%;
 }
 

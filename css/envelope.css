@@ -140,8 +140,10 @@
 }
 
 @media (max-width: 760px) {
+
     .wax-seal {
         width: 96px;
         height: 96px;
     }
+
 }

@@ -788,11 +788,6 @@ async function openEnvelope() {
         true;
 
 
-    document.body.classList.remove(
-        "envelope-locked"
-    );
-
-
     window.scrollTo(
         0,
         0
@@ -817,11 +812,6 @@ function initialiseEnvelope() {
     window.scrollTo(
         0,
         0
-    );
-
-
-    document.body.classList.add(
-        "envelope-locked"
     );
 
 

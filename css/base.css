@@ -128,6 +128,11 @@ body::before {
  * =========================================================
  * BLOCCO DELLA PAGINA DURANTE LA BUSTA
  * =========================================================
+ *
+ * Impedisce a Safari iOS di mostrare una posizione
+ * precedentemente ripristinata della pagina mentre
+ * è presente la schermata iniziale della busta.
+ * =========================================================
  */
 
 body.envelope-locked {
@@ -139,122 +144,6 @@ body.envelope-locked {
     height: 100%;
 
     overflow: hidden;
-}
-
-
-/*
- * =========================================================
- * COPERTURA DELLE AREE SUPERIORE E INFERIORE DI SAFARI
- * =========================================================
- *
- * Queste due fasce sono indipendenti dalla busta.
- *
- * Rimangono visibili durante l'animazione iniziale e,
- * quando envelope.js aggiunge la classe "is-fading",
- * passano gradualmente da opacity 1 a opacity 0.
- *
- * Durata dissolvenza: 1000 ms.
- *
- * Lo z-index 999 le mantiene:
- *
- * - sopra il sito;
- * - sotto la busta, che usa z-index 1000.
- * =========================================================
- */
-
-.safari-edge-cover {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 999;
-
-    pointer-events: none;
-}
-
-
-/*
- * Fascia superiore.
- *
- * env(safe-area-inset-top) permette di comprendere
- * l'area superiore dell'iPhone quando presente.
- *
- * Aggiungiamo qualche pixel di margine per evitare
- * eventuali sottilissime linee dovute agli arrotondamenti
- * della visual viewport di Safari.
- */
-
-.safari-edge-cover-top {
-    position: absolute;
-
-    top: 0;
-    left: 0;
-    right: 0;
-
-    height:
-        calc(
-            env(safe-area-inset-top, 0px)
-            + 8px
-        );
-
-    background:
-        var(--paper-front);
-
-    opacity: 1;
-
-    transition:
-        opacity 1000ms ease;
-}
-
-
-/*
- * Fascia inferiore.
- */
-
-.safari-edge-cover-bottom {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    height:
-        calc(
-            env(safe-area-inset-bottom, 0px)
-            + 8px
-        );
-
-    background:
-        var(--paper-bottom);
-
-    opacity: 1;
-
-    transition:
-        opacity 1000ms ease;
-}
-
-
-/*
- * La dissolvenza viene avviata da envelope.js.
- */
-
-.safari-edge-cover.is-fading
-.safari-edge-cover-top,
-
-.safari-edge-cover.is-fading
-.safari-edge-cover-bottom {
-    opacity: 0;
-}
-
-
-/*
- * Terminata la dissolvenza envelope.js aggiunge
- * anche "is-hidden", eliminando completamente
- * le fasce dal rendering.
- */
-
-.safari-edge-cover.is-hidden {
-    display: none;
 }
 
 

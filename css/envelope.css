@@ -4,95 +4,197 @@
 
     z-index: 1000;
 
-    overflow: hidden;
+    overflow: visible;
 
     pointer-events: auto;
 }
+
+
+/*
+ * =========================================================
+ * OVERSCAN DELLA BUSTA
+ * =========================================================
+ *
+ * Estendiamo fisicamente la superficie della busta oltre
+ * il viewport senza modificare le dimensioni dello stage.
+ *
+ * In questo modo la geometria centrale della busta rimane
+ * esattamente quella già approvata.
+ * =========================================================
+ */
+
+.envelope-screen::before,
+.envelope-screen::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 160px;
+
+    background:
+        var(--paper-side);
+
+    pointer-events:
+        none;
+
+    z-index:
+        9;
+}
+
+
+.envelope-screen::before {
+    bottom: 100%;
+}
+
+
+.envelope-screen::after {
+    top: 100%;
+}
+
 
 .envelope-screen.opened {
     pointer-events: none;
 }
 
+
 .envelope-stage {
     position: absolute;
+
     inset: 0;
 
-    perspective: 1800px;
-    perspective-origin: 50% 10%;
+    perspective:
+        1800px;
 
-    cursor: pointer;
-    outline: none;
+    perspective-origin:
+        50% 10%;
 
-    -webkit-tap-highlight-color: transparent;
+    cursor:
+        pointer;
+
+    outline:
+        none;
+
+    -webkit-tap-highlight-color:
+        transparent;
 }
+
+
+/* =======================================================
+   CORPO DELLA BUSTA
+======================================================= */
 
 .envelope-body {
     position: absolute;
+
     inset: 0;
 
     z-index: 10;
 
-    pointer-events: none;
+    pointer-events:
+        none;
 
-    transform: translateY(0);
+    transform:
+        translateY(0);
 
-    will-change: transform;
+    will-change:
+        transform;
 }
+
 
 .body-svg {
     position: absolute;
+
     inset: 0;
 
-    display: block;
+    display:
+        block;
 
-    width: 100%;
-    height: 100%;
+    width:
+        100%;
 
-    overflow: visible;
+    height:
+        100%;
+
+    overflow:
+        visible;
 }
+
 
 .body-side {
-    fill: var(--paper-side);
+    fill:
+        var(--paper-side);
 }
+
 
 .body-bottom {
-    fill: var(--paper-bottom);
+    fill:
+        var(--paper-bottom);
 }
+
 
 .body-fold {
-    fill: none;
+    fill:
+        none;
 
-    stroke: rgba(105, 82, 58, 0.22);
-    stroke-width: 2;
+    stroke:
+        rgba(105, 82, 58, 0.22);
 
-    vector-effect: non-scaling-stroke;
+    stroke-width:
+        2;
+
+    vector-effect:
+        non-scaling-stroke;
 }
+
 
 .body-bottom-fold {
-    fill: none;
+    fill:
+        none;
 
-    stroke: rgba(105, 82, 58, 0.24);
-    stroke-width: 2;
+    stroke:
+        rgba(105, 82, 58, 0.24);
 
-    vector-effect: non-scaling-stroke;
+    stroke-width:
+        2;
+
+    vector-effect:
+        non-scaling-stroke;
 }
 
+
+/* =======================================================
+   OMBRA DEL LEMBO
+======================================================= */
+
 .flap-shadow {
-    position: absolute;
+    position:
+        absolute;
 
-    left: 50%;
-    top: 50%;
+    left:
+        50%;
 
-    z-index: 12;
+    top:
+        50%;
 
-    width: 65%;
-    height: 13%;
+    z-index:
+        12;
+
+    width:
+        65%;
+
+    height:
+        13%;
 
     transform:
         translate(-50%, -50%)
         scaleY(0.04);
 
-    transform-origin: center;
+    transform-origin:
+        center;
 
     background:
         radial-gradient(
@@ -102,107 +204,161 @@
             rgba(70, 48, 30, 0) 80%
         );
 
-    filter: blur(12px);
+    filter:
+        blur(12px);
 
-    opacity: 0;
+    opacity:
+        0;
 
-    pointer-events: none;
+    pointer-events:
+        none;
 
     will-change:
         opacity,
         transform;
 }
 
+
+/* =======================================================
+   LEMBO SUPERIORE
+======================================================= */
+
 .envelope-flap {
-    position: absolute;
+    position:
+        absolute;
 
-    left: 0;
-    top: 0;
+    left:
+        0;
 
-    z-index: 20;
+    top:
+        0;
 
-    /*
-     * Il lembo usa ora le dimensioni dello stage,
-     * non quelle della viewport del browser.
-     *
-     * In questo modo Safari non può calcolare
-     * stage e flap usando due viewport differenti.
-     */
-    width: 100%;
-    height: 50%;
+    z-index:
+        20;
 
-    transform-origin: 50% 0;
-    transform-style: preserve-3d;
+    width:
+        100vw;
 
-    opacity: 1;
+    height:
+        50vh;
+
+    transform-origin:
+        50% 0;
+
+    transform-style:
+        preserve-3d;
+
+    opacity:
+        1;
 
     will-change:
         transform,
         opacity;
 }
 
+
 .flap-svg {
-    position: absolute;
-    inset: 0;
+    position:
+        absolute;
 
-    display: block;
+    inset:
+        0;
 
-    width: 100%;
-    height: 100%;
+    display:
+        block;
 
-    overflow: visible;
+    width:
+        100%;
 
-    pointer-events: none;
+    height:
+        100%;
+
+    overflow:
+        visible;
+
+    pointer-events:
+        none;
 }
+
 
 .flap-edge {
-    fill: none;
+    fill:
+        none;
 
-    stroke: var(--paper-edge);
-    stroke-width: 3;
+    stroke:
+        var(--paper-edge);
 
-    vector-effect: non-scaling-stroke;
+    stroke-width:
+        3;
 
-    opacity: 0.55;
+    vector-effect:
+        non-scaling-stroke;
+
+    opacity:
+        0.55;
 }
+
 
 .flap-paper {
-    fill: url(#paperFront);
+    fill:
+        url(#paperFront);
 
-    filter: url(#paperShadow);
+    filter:
+        url(#paperShadow);
 }
 
+
+/* =======================================================
+   SIGILLO
+======================================================= */
+
 .wax-seal {
-    position: absolute;
+    position:
+        absolute;
 
-    left: 50%;
-    top: 100%;
+    left:
+        50%;
 
-    z-index: 30;
+    top:
+        100%;
 
-    width: 108px;
-    height: 108px;
+    z-index:
+        30;
+
+    width:
+        108px;
+
+    height:
+        108px;
 
     transform:
         translate(-50%, -50%)
         translateZ(5px);
 
-    transform-origin: center;
+    transform-origin:
+        center;
 
-    pointer-events: none;
+    pointer-events:
+        none;
 
     will-change:
         left,
         top;
 }
 
+
 .wax-seal img {
-    display: block;
+    display:
+        block;
 
-    width: 100%;
-    height: 100%;
+    width:
+        100%;
 
-    object-fit: contain;
+    height:
+        100%;
+
+    object-fit:
+        contain;
 
     filter:
         drop-shadow(
@@ -211,11 +367,19 @@
         );
 }
 
+
+/* =======================================================
+   MOBILE
+======================================================= */
+
 @media (max-width: 760px) {
 
     .wax-seal {
-        width: 96px;
-        height: 96px;
+        width:
+            96px;
+
+        height:
+            96px;
     }
 
 }

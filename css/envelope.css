@@ -1,58 +1,9 @@
 .envelope-screen {
     position: fixed;
     inset: 0;
-
     z-index: 1000;
-
-    overflow: visible;
-
+    overflow: hidden;
     pointer-events: auto;
-}
-
-
-/*
- * =========================================================
- * OVERSCAN DELLA BUSTA
- * =========================================================
- *
- * Estendiamo fisicamente la superficie della busta oltre
- * il viewport senza modificare le dimensioni dello stage.
- *
- * In questo modo la geometria centrale della busta rimane
- * esattamente quella già approvata.
- * =========================================================
- */
-
-.envelope-screen::before,
-.envelope-screen::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    width: 100%;
-
-    height: 160px;
-
-    background:
-        var(--paper-side);
-
-    pointer-events:
-        none;
-
-    z-index:
-        9;
-}
-
-
-.envelope-screen::before {
-    bottom: 100%;
-}
-
-
-.envelope-screen::after {
-    top: 100%;
 }
 
 
@@ -63,323 +14,153 @@
 
 .envelope-stage {
     position: absolute;
-
     inset: 0;
-
-    perspective:
-        1800px;
-
-    perspective-origin:
-        50% 10%;
-
-    cursor:
-        pointer;
-
-    outline:
-        none;
-
-    -webkit-tap-highlight-color:
-        transparent;
+    perspective: 1800px;
+    perspective-origin: 50% 10%;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 
-/* =======================================================
-   CORPO DELLA BUSTA
-======================================================= */
-
 .envelope-body {
     position: absolute;
-
     inset: 0;
-
     z-index: 10;
-
-    pointer-events:
-        none;
-
-    transform:
-        translateY(0);
-
-    will-change:
-        transform;
+    pointer-events: none;
+    transform: translateY(0);
+    will-change: transform;
 }
 
 
 .body-svg {
     position: absolute;
-
     inset: 0;
-
-    display:
-        block;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    overflow:
-        visible;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
 }
 
 
 .body-side {
-    fill:
-        var(--paper-side);
+    fill: var(--paper-side);
 }
 
 
 .body-bottom {
-    fill:
-        var(--paper-bottom);
+    fill: var(--paper-bottom);
 }
 
 
 .body-fold {
-    fill:
-        none;
-
-    stroke:
-        rgba(105, 82, 58, 0.22);
-
-    stroke-width:
-        2;
-
-    vector-effect:
-        non-scaling-stroke;
+    fill: none;
+    stroke: rgba(105, 82, 58, 0.22);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
 }
 
 
 .body-bottom-fold {
-    fill:
-        none;
-
-    stroke:
-        rgba(105, 82, 58, 0.24);
-
-    stroke-width:
-        2;
-
-    vector-effect:
-        non-scaling-stroke;
+    fill: none;
+    stroke: rgba(105, 82, 58, 0.24);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
 }
 
-
-/* =======================================================
-   OMBRA DEL LEMBO
-======================================================= */
 
 .flap-shadow {
-    position:
-        absolute;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 12;
+    width: 65%;
+    height: 13%;
+    transform: translate(-50%, -50%) scaleY(0.04);
+    transform-origin: center;
 
-    left:
-        50%;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(70, 48, 30, 0.22) 0%,
+        rgba(70, 48, 30, 0.09) 48%,
+        rgba(70, 48, 30, 0) 80%
+    );
 
-    top:
-        50%;
-
-    z-index:
-        12;
-
-    width:
-        65%;
-
-    height:
-        13%;
-
-    transform:
-        translate(-50%, -50%)
-        scaleY(0.04);
-
-    transform-origin:
-        center;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            rgba(70, 48, 30, 0.22) 0%,
-            rgba(70, 48, 30, 0.09) 48%,
-            rgba(70, 48, 30, 0) 80%
-        );
-
-    filter:
-        blur(12px);
-
-    opacity:
-        0;
-
-    pointer-events:
-        none;
-
-    will-change:
-        opacity,
-        transform;
+    filter: blur(12px);
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity, transform;
 }
 
 
-/* =======================================================
-   LEMBO SUPERIORE
-======================================================= */
-
 .envelope-flap {
-    position:
-        absolute;
-
-    left:
-        0;
-
-    top:
-        0;
-
-    z-index:
-        20;
-
-    width:
-        100vw;
-
-    height:
-        50vh;
-
-    transform-origin:
-        50% 0;
-
-    transform-style:
-        preserve-3d;
-
-    opacity:
-        1;
-
-    will-change:
-        transform,
-        opacity;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 20;
+    width: 100vw;
+    height: 50vh;
+    transform-origin: 50% 0;
+    transform-style: preserve-3d;
+    opacity: 1;
+    will-change: transform, opacity;
 }
 
 
 .flap-svg {
-    position:
-        absolute;
-
-    inset:
-        0;
-
-    display:
-        block;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    overflow:
-        visible;
-
-    pointer-events:
-        none;
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
 }
 
 
 .flap-edge {
-    fill:
-        none;
-
-    stroke:
-        var(--paper-edge);
-
-    stroke-width:
-        3;
-
-    vector-effect:
-        non-scaling-stroke;
-
-    opacity:
-        0.55;
+    fill: none;
+    stroke: var(--paper-edge);
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.55;
 }
 
 
 .flap-paper {
-    fill:
-        url(#paperFront);
-
-    filter:
-        url(#paperShadow);
+    fill: url(#paperFront);
+    filter: url(#paperShadow);
 }
 
 
-/* =======================================================
-   SIGILLO
-======================================================= */
-
 .wax-seal {
-    position:
-        absolute;
-
-    left:
-        50%;
-
-    top:
-        100%;
-
-    z-index:
-        30;
-
-    width:
-        108px;
-
-    height:
-        108px;
-
-    transform:
-        translate(-50%, -50%)
-        translateZ(5px);
-
-    transform-origin:
-        center;
-
-    pointer-events:
-        none;
-
-    will-change:
-        left,
-        top;
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    z-index: 30;
+    width: 108px;
+    height: 108px;
+    transform: translate(-50%, -50%) translateZ(5px);
+    transform-origin: center;
+    pointer-events: none;
+    will-change: left, top;
 }
 
 
 .wax-seal img {
-    display:
-        block;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    object-fit:
-        contain;
-
-    filter:
-        drop-shadow(
-            0 6px 7px
-            rgba(70, 25, 20, 0.24)
-        );
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 7px rgba(70, 25, 20, 0.24));
 }
 
-
-/* =======================================================
-   MOBILE
-======================================================= */
 
 @media (max-width: 760px) {
 
     .wax-seal {
-        width:
-            96px;
-
-        height:
-            96px;
+        width: 96px;
+        height: 96px;
     }
 
 }
